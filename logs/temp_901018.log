@@ -1,0 +1,18 @@
+INFO:root:log file created!
+INFO:root:Start time: 2024-06-03 16:44:44.201375
+INFO:root:User input: 
+hello, what time is it today?
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Assistant response: 
+Hello, the current time is 6:25:43 pm EDT on Monday, June 3, 2024.
+INFO:root:User input: 
+can you tell me the time in Beijing right now?
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Assistant response: 
+The current time in Beijing is 13:50:05 CST (China Standard Time) on Monday, June 3, 2024.
+INFO:root:User input: 
+你会说中文吗？
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Assistant response: 
+Yes, I can speak Chinese.
+INFO:root:End time: 2024-06-03 16:45:40.794533
