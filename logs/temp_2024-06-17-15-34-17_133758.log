@@ -1,0 +1,83 @@
+INFO:root:log file created!
+INFO:root:Start time: 2024-06-17 15:34:17.599164
+INFO:openai._base_client:Retrying request to /chat/completions in 0.802518 seconds
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Assistant response: 
+#Step1Output:
+```c
+int fib(int n) {
+    if (n <= 1) {
+        return n;
+    }
+    int ret_val = 0;
+    ret_val = fib(n - 1) + fib(n - 2);
+    return ret_val;
+}
+```
+
+#Step2Output:
+```plaintext
+## 1) type, size, alignment
+n:  int, size 4, align 4, (0, -4], -4(%rbp)
+ret_val: int, size 4, align 4, (-4, -8], -8(%rbp)
+## 2) fix alignment(final)
+n:  int, size 4, align 4, (0, -4], -4(%rbp)
+ret_val: int, size 4, align 4, (-4, -8], -8(%rbp)
+```
+
+#FinalOutput:
+```x86
+    .text
+    .globl  _fib
+_fib:
+    pushq    %rbp
+    movq     %rsp, %rbp
+    movl     %edi, -4(%rbp)    # n
+    cmpl     $1, -4(%rbp)
+    jle     .L1
+    movl     $0, -8(%rbp)      # ret_val = 0
+    movl     -4(%rbp), %eax
+    subl     $1, %eax
+    movl     %eax, %esi
+    call    _fib
+    movl     %eax, %edx
+    movl     -4(%rbp), %eax
+    subl     $2, %eax
+    movl     %eax, %esi
+    call    _fib
+    addl     %edx, %eax
+    movl     %eax, -8(%rbp)    # ret_val = fib(n - 1) + fib(n - 2)
+.L1:
+    movl     -8(%rbp), %eax    # return ret_val
+    popq	%rbp
+    retq
+```
+INFO:root:x86 code: 
+
+    .text
+    .globl  _fib
+_fib:
+    pushq    %rbp
+    movq     %rsp, %rbp
+    movl     %edi, -4(%rbp)    # n
+    cmpl     $1, -4(%rbp)
+    jle     .L1
+    movl     $0, -8(%rbp)      # ret_val = 0
+    movl     -4(%rbp), %eax
+    subl     $1, %eax
+    movl     %eax, %esi
+    call    _fib
+    movl     %eax, %edx
+    movl     -4(%rbp), %eax
+    subl     $2, %eax
+    movl     %eax, %esi
+    call    _fib
+    addl     %edx, %eax
+    movl     %eax, -8(%rbp)    # ret_val = fib(n - 1) + fib(n - 2)
+.L1:
+    movl     -8(%rbp), %eax    # return ret_val
+    popq	%rbp
+    retq
+
+INFO:root:Succeed to compile the x86 code!
+INFO:root:End time: 2024-06-17 15:34:29.804680

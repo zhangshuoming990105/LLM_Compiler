@@ -2,6 +2,10 @@
 
 under development on ICT, CAS.
 
+## Techniques
+
+ChainofThought, Retrieval-Augmented Generation, etc.
+
 ## Workflow
             |>45-->
             |     |
@@ -27,3 +31,31 @@ under development on ICT, CAS.
 4. Long context
 5. Floating-point values storage
 6. Function signature inference
+
+
+## tier 1: neural-symbolic compiler for c function to assembly
+"""
+Components:
+1. general LLM
+2.1 fine-tuned LLM for c-x86 translation
+2.2 fine-tuned LLM for c-riscv translation
+2.3 fine-tuned LLM for c-arm translation
+3. stack allocator(symbolic)
+4. cfg generator(symbolic)
+5. 
+"""
+## neural-symbolic stack allocation for any c function
+"""
+1. neural:
+input: c function
+output: c function with renamed variables
+2. neural:
+input: c function
+output: list of variables with type, size, alignment
+3. symbolic:
+input: list of variables with type, size, alignment
+output: variable binding table that satisfy (non-overlapping, alignment) requirement
+4. neural:
+input: c function, variable binding table from 3
+output: assembly code
+"""

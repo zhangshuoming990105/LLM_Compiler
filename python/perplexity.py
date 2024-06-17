@@ -8,32 +8,6 @@ from neural.prompts import prompts
 
 YOUR_API_KEY = "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"
 
-# tier 1: neural-symbolic compiler for c function to assembly
-"""
-Components:
-1. general LLM
-2.1 fine-tuned LLM for c-x86 translation
-2.2 fine-tuned LLM for c-riscv translation
-2.3 fine-tuned LLM for c-arm translation
-3. stack allocator(symbolic)
-4. cfg generator(symbolic)
-5. 
-"""
-# neural-symbolic stack allocation for any c function
-"""
-1. neural:
-input: c function
-output: c function with renamed variables
-2. neural:
-input: c function
-output: list of variables with type, size, alignment
-3. symbolic:
-input: list of variables with type, size, alignment
-output: variable binding table that satisfy (non-overlapping, alignment) requirement
-4. neural:
-input: c function, variable binding table from 3
-output: assembly code
-"""
 AVAILABLE_MODELS = [
     "mixtral-8x7b-instruct",
     "llama-3-8b-instruct",
@@ -64,9 +38,10 @@ class Chat():
         self.messages = initial_messages
 
     # one round chat, user input -> assistant response
-    def chat(self, temperature=0.01):
-        user_input = input("User: \n")
-        logging.info(f"User input: \n{user_input}")
+    def chat(self, temperature=0.01, user_input=None):
+        if user_input is None:
+            user_input = input("User: \n")
+            logging.info(f"stdin user input: \n{user_input}")
         self.messages.append(
             {
                 "role": "user",
@@ -79,7 +54,7 @@ class Chat():
             messages=self.messages,
         )
         rsp_content = response.choices[0].message.content
-        print(rsp_content)
+        # print(rsp_content)
         logging.info(f"Assistant response: \n{rsp_content}")
         self.messages.append(
             {
@@ -90,7 +65,7 @@ class Chat():
 
 
 class Compiler(Chat):
-    def __init__(self):
+    def __init__(self, model="mixtral-8x7b-instruct"):
         super().__init__()
         self.system_prompt = (
             prompts["general"]
@@ -110,24 +85,67 @@ class Compiler(Chat):
             },
         ]
         self.messages = initial_messages
-
-
-if __name__ == "__main__":
+        
+    def chat(self, temperature=0.01, user_input=None):
+        super().chat(temperature, user_input)
+        
+    def compile(self, code=None):
+        # identify the code type
+        # first assume it's c code
+        # check code is a file path or code content
+        if os.path.exists(code):
+            with open(code, "r") as f:
+                code = f.read()
+        self.chat(user_input=code)
+        # grep the ```x86 code``` part
+        compiler_rsp = self.messages[-1]["content"]
+        self.assemble(compiler_rsp)
+    
+    #   
+    def assemble(self, compiler_rsp):
+    # grep the ```x86 code``` part
+        if "```x86" in compiler_rsp:
+            x86_code = compiler_rsp.split("```x86")[1].split("```")[0]
+            logging.info(f"x86 code: \n{x86_code}")
+            # write the x86 code into a file
+            with open("output.s", "w") as f:
+                f.write(x86_code)
+            # compile the x86 code into object file, output.o
+            ret = subprocess.run(["clang", "-arch", "x86_64", "output.s", "-c"])
+            if ret.returncode != 0:
+                error_output = ret.stderr
+                normal_output = ret.stdout
+                logging.warning("Failed to compile the x86 code!")
+                logging.info(error_output)
+                logging.info(normal_output)
+                # we can further analyze them
+            else:
+                logging.info("Succeed to compile the x86 code!")
+        else:
+            logging.warning("Failed to find the x86 code!")
+        
+        
+def get_env():
     cwd = os.getcwd()
     root_dir = cwd.split("LLM_Compiler")[0]
     os.chdir(root_dir)
     if os.path.exists("LLM_Compiler"):
         os.chdir("LLM_Compiler")
-        print(os.getcwd())
         root_dir = os.getcwd()
     else:
+        root_dir = None
+    return root_dir
+
+if __name__ == "__main__":
+    root_dir = get_env()
+    if root_dir is None:
         print("Failed to locate the working directory!")
         exit(1)
     python_dir = os.path.join(root_dir, "python")
     sandbox_dir = os.path.join(root_dir, "sandbox/temp")
     log_dir = os.path.join(root_dir, "logs")
-    # create temp name
-    temp_name = f"temp_{random.randint(0, 1000000)}"
+    # create temp name with random number + date
+    temp_name = f"temp_{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{random.randint(0, 1000000)}"
     temp_dir = os.path.join(sandbox_dir, temp_name)
     # create temp dir
     if not os.path.exists(temp_dir):
@@ -140,66 +158,16 @@ if __name__ == "__main__":
     # log time
     logging.info("Start time: " + str(datetime.datetime.now()))
 
-    compiler = Chat("llama-3-sonar-large-32k-online")
-    for i in range(3):
-        compiler.chat()
+    # initialize the compiler
+    compiler = Compiler()
+    # compiler = Compiler("llama-3-sonar-large-32k-online")
+    code = """int fib(int n) {
+    if (n <= 1) {
+        return n;
+    }
+    return fib(n - 1) + fib(n - 2);
+}"""
+    file_code = "/Users/zhangshuoming/workspace/LLM_CoT_compilation/LLM_Compiler/sandbox/example/example.c"
+    # first round chat
+    compiler.compile(file_code)
     logging.info("End time: " + str(datetime.datetime.now()))
-
-
-# # create a chat-response loop
-# for i in range(3):
-#     # user input
-#     user_input = input(f"Iteration {i}\nUser: \n")
-#     print(user_input)
-#     print("=" * 20)
-#     # possible tools, handling user input
-#     # 1. if input is a file path, read the file content
-#     # 2. if input is a error message, analyze the error message
-#     # 3. if input is a question, answer the question
-#     # others, just use the input as it is
-
-#     # 1. convert the input into abs path or relative path
-#     if os.path.exists(user_input):
-#         with open(user_input, "r") as f:
-#             user_input = f.read()
-#         print(user_input)
-#         print("=" * 20)
-#     messages.append(
-#         {
-#             "role": "user",
-#             "content": user_input,
-#         }
-#     )
-#     response = client.chat.completions.create(
-#         model="mixtral-8x7b-instruct",
-#         temperature=0.01,
-#         messages=messages,
-#     )
-#     rsp_content = response.choices[0].message.content
-#     print(rsp_content)
-#     # grep the ```x86 code``` part
-#     if "```x86" in rsp_content:
-#         x86_code = rsp_content.split("```x86")[1].split("```")[0]
-#         print(x86_code)
-#         print("=" * 20)
-#         # write the x86 code into a file
-#         with open("output.s", "w") as f:
-#             f.write(x86_code)
-#         # compile the x86 code into object file, output.o
-#         ret = subprocess.run(["clang", "-arch", "x86_64", "output.s", "-c"])
-#         if ret.returncode != 0:
-#             print("Failed to compile the x86 code!")
-#             error_output = ret.stderr
-#             normal_output = ret.stdout
-#             print(error_output)
-#             print(normal_output)
-#             # we can further analyze them
-#         else:
-#             print("Succeed to compile the x86 code!")
-#             # break
-#     messages.append(
-#         {
-#             "role": "assistant",
-#             "content": rsp_content,
-#         }
-#     )
