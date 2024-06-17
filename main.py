@@ -3,7 +3,7 @@ import random
 import datetime
 import logging
 from utils import get_env
-from models import Compiler
+from models import Compiler, CodeTranslator
 from logging_config import configure_logging
 
 if __name__ == "__main__":
@@ -24,7 +24,10 @@ if __name__ == "__main__":
     configure_logging(log_file)
     logging.info("Start time: " + str(datetime.datetime.now()))
 
-    compiler = Compiler()
-    file_code = "/Users/zhangshuoming/workspace/LLM_CoT_compilation/LLM_Compiler/sandbox/example/example.c"
-    compiler.compile(file_code)
+    # compiler = Compiler()
+    # file_code = "/Users/zhangshuoming/workspace/LLM_CoT_compilation/LLM_Compiler/sandbox/example/example.c"
+    # compiler.compile(file_code)
+    code_translator = CodeTranslator()
+    file_code = "/Users/zhangshuoming/workspace/LLM_CoT_compilation/LLM_Compiler/sandbox/example/example.py"
+    code_translator.translate(file_code)
     logging.info("End time: " + str(datetime.datetime.now()))

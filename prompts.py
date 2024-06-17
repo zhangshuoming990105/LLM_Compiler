@@ -1,7 +1,7 @@
 # This file contains the prompts for the AI model to generate the x86 assembly code from the input C code.
 
 # for mistral LLM, use [INST][/INST] to wrap the instruction prompt
-prompts = {
+compiler_prompts = {
     "general": """[INST]you are a helpful AI assistant, you will think carefully and follow the instructions to assist the user.[/INST]""",
     "mission": """[INST]you are a professional AI assistant in code, based on the following instructions, 
 you are going to help me to generate the corresponding x86 assembly of input c code step by step.[/INST]
@@ -174,3 +174,36 @@ The input will be marked with #Input[/INST]
 """,
 }
 
+code_translator_prompts = {
+    "general": """[INST]you are a helpful AI assistant, you will think carefully and follow the instructions to assist the user.[/INST]
+""",
+    "mission": """[INST]you are a professional AI assistant in code, based on the following instructions,
+you are going to help to translate the input code into another language.[/INST]
+""",
+    "task_format": """[INST]#Description:##A description of task, from source language to target language##
+#Input:
+##Input source language code##
+#Output:
+##Output target language code##[/INST]
+""",
+    "task_example": """[INST]#Description:translate the following C code into Python code.
+#Input:
+```c
+int sum_list(int arr[], int n) {
+    int sum = 0;
+    for(int i = 0; i < n; i++) {
+        sum += arr[i];
+    }
+    return sum;
+}
+```
+#Output:
+```python
+def sum_list(arr: List[int], n: int) -> int:
+    sum = 0
+    for i in range(n):
+        sum += arr[i]
+    return sum
+```[/INST]
+""",
+}

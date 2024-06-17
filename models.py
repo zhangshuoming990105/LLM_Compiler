@@ -3,7 +3,7 @@ from openai import OpenAI
 import os
 import logging
 import subprocess
-from prompts import prompts
+from prompts import compiler_prompts, code_translator_prompts
 from config import AVAILABLE_MODELS, YOUR_API_KEY
 
 class Chat():
@@ -13,7 +13,7 @@ class Chat():
             exit(1)
         self.model = model
         self.client = OpenAI(api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai")
-        self.system_prompt = prompts["general"]
+        self.system_prompt = compiler_prompts["general"]
         initial_messages = [
             {
                 "role": "system",
@@ -45,20 +45,30 @@ class Chat():
                 "content": rsp_content,
             }
         )
+    
+    def paraphrase(self, text):
+        task_description = "paraphrase the following text, make sure it is well written and syntax correct."
+        prompt = f"{task_description}\n{text}"
+        self.chat(user_input=prompt)
+        paraphrased_text = self.messages[-1]["content"]
+        logging.info(f"Paraphrased text: \n{paraphrased_text}")
+        return paraphrased_text
+        
+
 
 class Compiler(Chat):
     def __init__(self, model="mixtral-8x7b-instruct"):
         super().__init__(model)
         self.system_prompt = (
-            prompts["general"]
-            + prompts["mission"]
-            + prompts["step1"]
-            + prompts["step1_example"]
-            + prompts["step2"]
-            + prompts["step2_example"]
-            + prompts["step3"]
-            + prompts["step3_example"]
-            + prompts["recap"]
+            compiler_prompts["general"]
+            + compiler_prompts["mission"]
+            + compiler_prompts["step1"]
+            + compiler_prompts["step1_example"]
+            + compiler_prompts["step2"]
+            + compiler_prompts["step2_example"]
+            + compiler_prompts["step3"]
+            + compiler_prompts["step3_example"]
+            + compiler_prompts["recap"]
         )
         initial_messages = [
             {
@@ -100,3 +110,48 @@ class Compiler(Chat):
                 logging.info("Succeed to compile the x86 code!")
         else:
             logging.warning("Failed to find the x86 code!")
+            
+class CodeTranslator(Chat):
+    def __init__(self, model="mixtral-8x7b-instruct"):
+        super().__init__(model)
+        self.system_prompt = (
+            code_translator_prompts["general"]
+            + code_translator_prompts["mission"]
+            + code_translator_prompts["task_format"]
+            + code_translator_prompts["task_example"]
+        )
+        initial_messages = [
+            {
+                "role": "system",
+                "content": (self.system_prompt),
+            },
+        ]
+        self.messages = initial_messages
+        
+    def translate(self, code=None, source="python", target="c"):
+        if os.path.exists(code):
+            # copy to the current directory
+            os.system(f"cp {code} .")
+            # get the file name
+            code = code.split("/")[-1]
+            if code is not None:
+                with open(code, "r") as f:
+                    code = f.read()
+        # set the source and target language
+        description = f"translate the following {source} code into {target} code."
+        # we could call a paraphraser to get the task description
+        description = self.paraphrase(description)
+        prompt = f"[INST]#Description:\n{description}\n#Input:\n```{source}\n{code}```[/INST]\n"
+        
+        self.chat(user_input=prompt)
+        compiler_rsp = self.messages[-1]["content"]
+        logging.info(f"Translated code: \n{compiler_rsp}")
+        # grep the translated code
+        if f"```{target}" in compiler_rsp:
+            target_code = compiler_rsp.split(f"```{target}")[1].split("```")
+            if len(target_code) > 0:
+                target_code = target_code[0]
+            logging.info(f"target {target} code: \n{target_code}")
+            with open(f"output.{target}", "w") as f:
+                f.write(target_code)
+        
