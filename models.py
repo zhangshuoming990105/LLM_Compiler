@@ -3,11 +3,12 @@ from openai import OpenAI
 import os
 import logging
 import subprocess
-from prompts import compiler_prompts, code_translator_prompts
+from prompts import compiler_prompts, decompiler_prompts, code_translator_prompts
 from config import AVAILABLE_MODELS, YOUR_API_KEY
 
-class Chat():
-    def __init__(self, model):
+
+class Chat:
+    def __init__(self, model="mixtral-8x7b-instruct"):
         if model not in AVAILABLE_MODELS:
             logging.error(f"Model {model} is not available!")
             exit(1)
@@ -45,7 +46,7 @@ class Chat():
                 "content": rsp_content,
             }
         )
-    
+
     def paraphrase(self, text):
         task_description = "paraphrase the following text, make sure it is well written and syntax correct."
         prompt = f"{task_description}\n{text}"
@@ -53,7 +54,6 @@ class Chat():
         paraphrased_text = self.messages[-1]["content"]
         logging.info(f"Paraphrased text: \n{paraphrased_text}")
         return paraphrased_text
-        
 
 
 class Compiler(Chat):
@@ -77,7 +77,7 @@ class Compiler(Chat):
             },
         ]
         self.messages = initial_messages
-        
+
     def compile(self, code=None):
         if os.path.exists(code):
             # copy to the current directory
@@ -90,7 +90,7 @@ class Compiler(Chat):
         self.chat(user_input=code)
         compiler_rsp = self.messages[-1]["content"]
         self.assemble(compiler_rsp)
-    
+
     def assemble(self, compiler_rsp):
         if "```x86" in compiler_rsp:
             x86_code = compiler_rsp.split("```x86")[1].split("```")
@@ -110,7 +110,49 @@ class Compiler(Chat):
                 logging.info("Succeed to compile the x86 code!")
         else:
             logging.warning("Failed to find the x86 code!")
-            
+
+
+class Decompiler(Chat):
+    def __init__(self, model="mixtral-8x7b-instruct", arch="x86"):
+        super().__init__(model)
+        self.system_prompt = (
+            decompiler_prompts["general"]
+            + decompiler_prompts["mission"]
+            + decompiler_prompts["task_format"]
+            + decompiler_prompts["task_example"]
+        )
+        initial_messages = [
+            {
+                "role": "system",
+                "content": (self.system_prompt),
+            },
+        ]
+        self.messages = initial_messages
+        self.arch = arch
+
+    def decompile(self, code=None):
+        if os.path.exists(code):
+            # copy to the current directory
+            os.system(f"cp {code} .")
+            # get the file name
+            code = code.split("/")[-1]
+            if code is not None:
+                with open(code, "r") as f:
+                    code = f.read()
+        # set the source and target language
+        description = f"decompile the following {self.arch} code into C code."
+        prompt = f"[INST]#Description:\n{description}\n#Input:\n```{self.arch}\n{code}```[/INST]\n"
+        self.chat(user_input=prompt)
+        decompiler_rsp = self.messages[-1]["content"]
+        if f"```c" in decompiler_rsp:
+            c_code = decompiler_rsp.split("```c")[1].split("```")
+            if len(c_code) > 0:
+                c_code = c_code[0]
+            logging.info(f"C code: \n{c_code}")
+            with open("disassembled.c", "w") as f:
+                f.write(c_code)
+
+
 class CodeTranslator(Chat):
     def __init__(self, model="mixtral-8x7b-instruct"):
         super().__init__(model)
@@ -127,7 +169,7 @@ class CodeTranslator(Chat):
             },
         ]
         self.messages = initial_messages
-        
+
     def translate(self, code=None, source="python", target="c"):
         if os.path.exists(code):
             # copy to the current directory
@@ -142,7 +184,7 @@ class CodeTranslator(Chat):
         # we could call a paraphraser to get the task description
         description = self.paraphrase(description)
         prompt = f"[INST]#Description:\n{description}\n#Input:\n```{source}\n{code}```[/INST]\n"
-        
+
         self.chat(user_input=prompt)
         compiler_rsp = self.messages[-1]["content"]
         logging.info(f"Translated code: \n{compiler_rsp}")
@@ -154,4 +196,3 @@ class CodeTranslator(Chat):
             logging.info(f"target {target} code: \n{target_code}")
             with open(f"output.{target}", "w") as f:
                 f.write(target_code)
-        
