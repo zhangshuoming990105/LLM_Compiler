@@ -41,12 +41,14 @@ def human_eval():
 
 
 def c_compiler():
-    compiler = Compiler()
+    compiler = Compiler("llama-3-70b-instruct", use_short_prompt=False)
     # ds = load_dataset("jordiae/exebench")["train_real_simple_io"]
-    ds = load_dataset("mistral0105/exebench_io_validated_full")["train"]
+    ds = load_dataset("mistral0105/exebench_io_validated_full_cleaned")["train"]
 
     # select validate example to a new dataset, by checking compile status and execution status
-    validate_ds = []
+    passed_id = []
+    case_id = 0
+    total = 100
     for e in ds:
         try:
             id = 0
@@ -59,6 +61,7 @@ def c_compiler():
                 else:
                     id += 1
             if x86_id == None:
+                case_id += 1
                 continue
             x86_code = e["asm"]["code"][x86_id]
             # arm_code = e["asm"]["code"][arm_id]
@@ -66,12 +69,11 @@ def c_compiler():
             # rm the "# 1" in the end
             c_deps = c_deps[: c_deps.rfind("# 1")]
             c_code = c_deps
-
             c_code += e["func_def"]
-
             # driver code
             c_exe = e["real_exe_wrapper"]
             if c_exe == None:
+                case_id += 1
                 continue
             c_exe_cleaned = c_exe
             start = c_exe.find("""extern "C" {""")
@@ -80,7 +82,11 @@ def c_compiler():
             end2 = func_decl.find("{")
             func_decl = func_decl[:end2]
             c_exe_cleaned = (
-                c_exe[:start] + 'extern "C" {\n' + func_decl + ";\n}\n" + c_exe[end + 1 :]
+                c_exe[:start]
+                + 'extern "C" {\n'
+                + func_decl
+                + ";\n}\n"
+                + c_exe[end + 1 :]
             )
             # remove the following part from c_exe_cleaned(unknown/unused header)
             """#include <clib/synthesizer.h>"""
@@ -93,6 +99,7 @@ def c_compiler():
             inputs = e["real_io_pairs"]["input"]
             outputs = e["real_io_pairs"]["output"]
             if len(inputs) == 0 and len(outputs) == 0:
+                case_id += 1
                 continue
             var_values_dict: dict = {}
             out_dict: dict = {}
@@ -148,92 +155,94 @@ def c_compiler():
                 data_file.write("}\n")
                 data_file.close()
             os.chdir("..")
+
             with open("tmp.c", "w") as f:
                 if c_code is not None:
                     f.write(c_code)
                     f.close()
-            # logging.info("C code: \n" + c_code)
-            with open("tmp.s", "w") as f:
+            logging.info(f"C code :\n{c_code}")
+
+            with open("tmp_ref.s", "w") as f:
                 if x86_code is not None:
                     f.write(x86_code)
                     f.close()
-            # logging.info("X86 code: \n" + x86_code)
             with open(f"tmp_driver.cpp", "w") as f:
                 if final_c_exe is not None:
                     f.write(final_c_exe)
                     f.close()
-            # logging.info("Driver code: \n" + final_c_exe)
 
             # using g++ to compile each file
             ret = subprocess.run(
-                ["g++-13", "-c", "tmp_driver.cpp", "-o", "tmp_driver.o"],
+                ["g++", "-S", "tmp_driver.cpp", "-o", "tmp_driver.s"],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
             if ret.returncode != 0:
-                # logging.warning("Failed to compile the driver code!")
+                logging.warning(f"CASE {case_id} Failed to compile the driver code!")
+                case_id += 1
                 continue
             # c source code using gcc to compile, not g++
             # to test llm_compiler, use aicc instead of gcc
-            ret = subprocess.run(
-                ["gcc-13", "-c", "tmp.c", "-o", "tmp.o"],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-            if ret.returncode != 0:
-                # logging.warning("Failed to compile the assembly code!")
-                continue
+            compiler.compile("tmp.c")
             # assemble the object files
             ret = subprocess.run(
-                ["g++-13", "tmp.o", "tmp_driver.o", "-o", "tmp"],
+                ["g++", "tmp.s", "tmp_driver.s", "-o", "tmp"],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
             if ret.returncode != 0:
-                # logging.warning("Failed to assemble the code!")
+                logging.warning(f"CASE {case_id} failed to assemble the code to executable!")
+                logging.warning(f"ret.stderr: {ret.stderr.decode()}")
+                logging.warning(f"ret.stdout: {ret.stdout.decode()}")
+                case_id += 1
                 continue
             # try to run the code, args are each input file
             local_err = 0
             local_succ = 0
-            for i in range(input_count):
+            for j in range(input_count):
                 ret = subprocess.run(
-                    ["./tmp", f"input/in{i}.json", f"output/out{i}_real.json"],
+                    ["./tmp", f"input/in{j}.json", f"output/out{j}_real.json"],
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
                     timeout=30,
                 )
                 if ret.returncode != 0:
-                    # logging.warning(f"WARNING: code failed to execute for input {i}")
+                    logging.warning(
+                        f"WARNING: code failed to execute for input {j} in case {case_id}"
+                    )
                     local_err += 1
                     continue
                 # compare the output with the expected output
-                with open(f"output/out{i}_real.json", "r") as f:
+                with open(f"output/out{j}_real.json", "r") as f:
                     real_output = f.read()
-                with open(f"output/out{i}.json", "r") as f:
+                with open(f"output/out{j}.json", "r") as f:
                     expected_output = f.read()
                 try:
                     json_my = json.loads(real_output)
                     json_ref = json.loads(expected_output)
                 except json.JSONDecodeError:
-                    # logging.warning(f"SKIP: json decode failed for input {i}")
+                    logging.error(f"SKIP: json decode failed for input {j}")
                     local_err += 1
                     break
                 if json_my == json_ref:
                     local_succ += 1
                 else:
                     local_err += 1
-            # logging.info(f"Local error rate: {local_err*100 / input_count}%")
+            logging.info(f"Local error rate: {local_err*100 / input_count}%")
             if local_err == 0:
-                # logging.info("All tests passed for this example!")
-                validate_ds.append(e)
-            print(len(validate_ds))
-            # if len(validate_ds) == 1000:
-            #     break
+                logging.info(f"CASE {case_id} succeeded")
+                passed_id.append(case_id)
+            else:
+                logging.info(f"CASE {case_id} failed")
+            case_id += 1
+            if case_id >= total:
+                break
         except Exception as e:
             logging.error(f"Error: {e}")
             continue
-        
-        print("Done")
+    logging.info("Done")
+    logging.info(f"Passed cases: {passed_id}")
+    logging.info(f"Pass rate: {len(passed_id)*100 / total}%")
 
 
 def python_compiler():
@@ -253,17 +262,17 @@ def x86_decompiler():
 def ir_optimizer():
     pass
 
+
 def workspace_clear(sandbox_dir, log_dir):
     # rm all the temp files in the sandbox
     for dir in os.listdir(sandbox_dir):
         if dir.startswith("temp_"):
             shutil.rmtree(os.path.join(sandbox_dir, dir))
-    
+
     for file in os.listdir(log_dir):
         if file.startswith("temp_"):
             os.remove(os.path.join(log_dir, file))
-        
-        
+
 
 if __name__ == "__main__":
     root_dir = get_env()
@@ -282,7 +291,6 @@ if __name__ == "__main__":
 
     configure_logging(log_file)
     logging.info("Start time: " + str(datetime.datetime.now()))
-
     c_compiler()
     logging.info("End time: " + str(datetime.datetime.now()))
     # workspace_clear(sandbox_dir, log_dir)

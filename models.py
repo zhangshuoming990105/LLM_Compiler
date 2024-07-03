@@ -1,10 +1,71 @@
 import datetime
+import tiktoken
 from openai import OpenAI
 import os
 import logging
 import subprocess
-from prompts import compiler_prompts, decompiler_prompts, code_translator_prompts
+from prompts import (
+    compiler_prompts,
+    compiler_short_prompts,
+    decompiler_prompts,
+    code_translator_prompts,
+)
 from config import AVAILABLE_MODELS, YOUR_API_KEY
+
+
+def num_token_from_string(
+    string: str, encoding_name: str = "gpt-3.5-turbo-0613"
+) -> int:
+    encoding = tiktoken.encoding_for_model(encoding_name)
+    num_tokens = len(encoding.encode(string))
+    return num_tokens
+
+
+def num_tokens_from_messages(messages, model="gpt-3.5-turbo-0613"):
+    """Return the number of tokens used by a list of messages."""
+    try:
+        encoding = tiktoken.encoding_for_model(model)
+    except KeyError:
+        print("Warning: model not found. Using cl100k_base encoding.")
+        encoding = tiktoken.get_encoding("cl100k_base")
+    if model in {
+        "gpt-3.5-turbo-0613",
+        "gpt-3.5-turbo-16k-0613",
+        "gpt-4-0314",
+        "gpt-4-32k-0314",
+        "gpt-4-0613",
+        "gpt-4-32k-0613",
+    }:
+        tokens_per_message = 3
+        tokens_per_name = 1
+    elif model == "gpt-3.5-turbo-0301":
+        tokens_per_message = (
+            4  # every message follows <|start|>{role/name}\n{content}<|end|>\n
+        )
+        tokens_per_name = -1  # if there's a name, the role is omitted
+    elif "gpt-3.5-turbo" in model:
+        print(
+            "Warning: gpt-3.5-turbo may update over time. Returning num tokens assuming gpt-3.5-turbo-0613."
+        )
+        return num_tokens_from_messages(messages, model="gpt-3.5-turbo-0613")
+    elif "gpt-4" in model:
+        print(
+            "Warning: gpt-4 may update over time. Returning num tokens assuming gpt-4-0613."
+        )
+        return num_tokens_from_messages(messages, model="gpt-4-0613")
+    else:
+        raise NotImplementedError(
+            f"""num_tokens_from_messages() is not implemented for model {model}. See https://github.com/openai/openai-python/blob/main/chatml.md for information on how messages are converted to tokens."""
+        )
+    num_tokens = 0
+    for message in messages:
+        num_tokens += tokens_per_message
+        for key, value in message.items():
+            num_tokens += len(encoding.encode(value))
+            if key == "name":
+                num_tokens += tokens_per_name
+    num_tokens += 3  # every reply is primed with <|start|>assistant<|message|>
+    return num_tokens
 
 
 class Chat:
@@ -33,13 +94,18 @@ class Chat:
                 "content": user_input,
             }
         )
+        query_size = num_tokens_from_messages(self.messages)
+        if query_size >= 8192:
+            logging.warning(
+                "LLM prompt size exceeds the limit, will truncate the prompt."
+            )
         response = self.client.chat.completions.create(
             model=self.model,
             temperature=temperature,
             messages=self.messages,
         )
         rsp_content = response.choices[0].message.content
-        logging.info(f"Assistant response: \n{rsp_content}")
+        # logging.info(f"LLM response: \n{rsp_content}")
         self.messages.append(
             {
                 "role": "assistant",
@@ -57,7 +123,7 @@ class Chat:
 
 
 class Compiler(Chat):
-    def __init__(self, model="mixtral-8x7b-instruct"):
+    def __init__(self, model="mixtral-8x7b-instruct", use_short_prompt=False):
         super().__init__(model)
         self.system_prompt = (
             compiler_prompts["general"]
@@ -70,44 +136,75 @@ class Compiler(Chat):
             + compiler_prompts["step3_example"]
             + compiler_prompts["recap"]
         )
+        self.simplified_prompt = (
+            compiler_short_prompts["general"]
+            + compiler_short_prompts["mission"]
+            + compiler_short_prompts["code_format"]
+            + compiler_short_prompts["code_example"]
+        )
+        if use_short_prompt:
+            simplified_query_size = num_token_from_string(self.simplified_prompt)
+            logging.info(f"LLM simplified prompt size: {simplified_query_size}")
+            initial_messages = [
+                {
+                    "role": "system",
+                    "content": (self.simplified_prompt),
+                },
+            ]
+            self.messages = initial_messages
+        else:
+            query_size = num_token_from_string(self.system_prompt)
+            logging.info(f"LLM default prompt size: {query_size}")
+            initial_messages = [
+                {
+                    "role": "system",
+                    "content": (self.system_prompt),
+                },
+            ]
+            self.messages = initial_messages
+
+    # will only chat once
+    def compile(self, code=None, out="tmp.s"):
+        if os.path.exists(code):
+            code_file_name = code.split("/")[-1]
+            if code_file_name != "tmp.c":
+                # copy to the current directory
+                os.system(f"cp {code} .")
+            # get the file name
+            code_file_name = code.split("/")[-1]
+            if code_file_name is not None:
+                with open(code_file_name, "r") as f:
+                    code = f.read()
+        self.chat(user_input=code)
+        compiler_rsp = self.messages[-1]["content"]
+        self.assemble(compiler_rsp, out=out)
+        # reset the messages
         initial_messages = [
             {
                 "role": "system",
-                "content": (self.system_prompt),
+                "content": (self.simplified_prompt),
             },
         ]
         self.messages = initial_messages
 
-    def compile(self, code=None):
-        if os.path.exists(code):
-            # copy to the current directory
-            os.system(f"cp {code} .")
-            # get the file name
-            code = code.split("/")[-1]
-            if code is not None:
-                with open(code, "r") as f:
-                    code = f.read()
-        self.chat(user_input=code)
-        compiler_rsp = self.messages[-1]["content"]
-        self.assemble(compiler_rsp)
-
-    def assemble(self, compiler_rsp):
+    def assemble(self, compiler_rsp, out="output.s", generate_binary=False):
         if "```x86" in compiler_rsp:
             x86_code = compiler_rsp.split("```x86")[1].split("```")
             if len(x86_code) > 0:
                 x86_code = x86_code[0]
             logging.info(f"x86 code: \n{x86_code}")
-            with open("output.s", "w") as f:
+            with open(out, "w") as f:
                 f.write(x86_code)
-            ret = subprocess.run(["clang", "-arch", "x86_64", "output.s", "-c"])
-            if ret.returncode != 0:
-                error_output = ret.stderr
-                normal_output = ret.stdout
-                logging.warning("Failed to compile the x86 code!")
-                logging.info(error_output)
-                logging.info(normal_output)
-            else:
-                logging.info("Succeed to compile the x86 code!")
+            if generate_binary:
+                ret = subprocess.run(["gcc", out, "-c"])
+                if ret.returncode != 0:
+                    error_output = ret.stderr
+                    normal_output = ret.stdout
+                    logging.warning("Failed to compile the x86 code!")
+                    logging.info(error_output)
+                    logging.info(normal_output)
+                else:
+                    logging.info("Succeed to compile the x86 code!")
         else:
             logging.warning("Failed to find the x86 code!")
 

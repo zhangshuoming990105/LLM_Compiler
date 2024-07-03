@@ -1,10 +1,45 @@
 # This file contains the prompts for the AI model to generate the x86 assembly code from the input C code.
 
-# for mistral LLM, use [INST][/INST] to wrap the instruction prompt
+compiler_short_prompts = {
+    "general": """[INST]you are a helpful AI assistant, you will think carefully and follow the instructions to assist the user.[/INST]""",
+    "mission": """[INST]you are a professional AI assistant in code, based on the user input C code, 
+you are going to help me to generate the corresponding x86 assembly.
+We can assume there will only be one function body to be compiled.[/INST]""",
+    "code_format": """[INST] input code will be insidde "```c" and "```"tags, please also make sure the generated x86 assembly be inside "```x86" and "```" tags.[/INST]""",
+    "code_example": """[INST]Example:
+#Input:
+```c
+int main() {
+    printf("Hello, World!\n");
+    return 0;
+}
+```
+#Output:
+```x86
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	leaq	.LC0(%rip), %rdi
+	call	puts@PLT
+	movl	$0, %eax
+	popq	%rbp
+	ret
+.LC0:
+	.string	"Hello, World!"
+
+```[/INST]""",
+}
+
 compiler_prompts = {
     "general": """[INST]you are a helpful AI assistant, you will think carefully and follow the instructions to assist the user.[/INST]""",
     "mission": """[INST]you are a professional AI assistant in code, based on the following instructions, 
-you are going to help me to generate the corresponding x86 assembly of input c code step by step.[/INST]
+you are going to help me to generate the corresponding x86 assembly of input c code step by step.
+We can assume there will only be one function body to be compiled.[/INST]
 """,
     "step1": """[INST]#Step1# rename the variables with the same names but across different scopes.[/INST]
 """,
@@ -42,7 +77,7 @@ int main() {
 ```[/INST]
 """,
     "step2": """[INST]#Step2# generate a variable binding table output(in plaintext) from the Step1Output,
-which binds each variable into a memory address in stack.
+which binds each variable into a memory address in stack for each function.
 let's assume the target platform is x86 assembly. For each variable, 
 1) we fill the item with: type, size, alignment, start index(l), end index(r), and we use (l, r] to represent the interval of the variable.
 where l starts from 0, and keeps decreasing for new item. r == l - size, l == r + size.
@@ -127,8 +162,8 @@ j_1: int, size 4, align 4, (-28, -32], -32(%rbp)
 #FinalOutput:
 ```x86
     .text
-    .globl  _foo
-_foo:
+    .globl  foo
+foo:
     pushq    %rbp
     movq     %rsp, %rbp
     movl     %edi, -4(%rbp)     # param_i

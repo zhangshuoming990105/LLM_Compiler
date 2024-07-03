@@ -71,8 +71,8 @@ def run_inference(
         candidates = model.generate(
             **model_input,
             max_new_tokens=2048,
-            use_cache = False,
-            num_beams=beam_num,
+            # use_cache = False,
+            # num_beams=beam_num,
             # num_return_sequences=beam_num,
             # do_sample=True,
             # temperature=1.2,
