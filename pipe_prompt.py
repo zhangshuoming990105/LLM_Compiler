@@ -1,6 +1,7 @@
 pipeline_prompts = [
     """[INST]Based on the C function program, generate another driver program that call this function in its main function.
 And generate 10 inputs for this function, and print their results to stdout.
+Make sure the function definition is not presented in the driver program, only put its declaration in the driver program.
 [/INST]
 [INST]Example:
 # Input Program:
@@ -83,7 +84,9 @@ Now we will perform Step2.
     """[INST]Step3. Finally, we will translate the rewritten program into x86 assembly, 
 where the translation is a mapping of temp variable to registers and non-temp variable into stack, 
 we will generate the x86 assembly instructions line by line, think step by step, 
-to make sure the assembly correctly reflects the original program.[/INST]
+to make sure the assembly correctly reflects the original program.
+Provide comments on the generated assembly to map the instructions to the original C program.
+Use '#' to comment, not '//'[/INST]
 [INST]Example:
 #Input:
 ```c
@@ -111,4 +114,40 @@ main:
 	.string	"Hello, World!"
 ```[/INST]
 Now perform Step3, and get the final x86 assembly.""",
+]
+direct_prompts = [
+    """[INST]translate the C function program into x86 assembly like GCC O0 style, we will use explicit typed AT&T syntax for x86 assembly.
+we will generate the x86 assembly instructions line by line, think step by step, 
+to make sure the assembly correctly reflects the original program.
+And, DON'T do any arithemetic optimizations, make the translation straight forward.
+Provide comments on the generated assembly to map the instructions to the original C program.
+Use '#' to comment, not '//'[/INST]
+[INST]Example:
+#Input:
+```c
+int main() {
+    printf("Hello, World!\n");
+    return 0;
+}
+```
+#Output:
+```x86
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	leaq	.LC0(%rip), %rdi
+	call	puts@PLT
+	movl	$0, %eax
+	popq	%rbp
+	ret
+.LC0:
+	.string	"Hello, World!"
+```[/INST]
+Below are the Input:
+"""
 ]

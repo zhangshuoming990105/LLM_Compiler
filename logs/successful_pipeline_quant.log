@@ -1,0 +1,91 @@
+INFO:root:log file created!
+INFO:root:Start time: 2024-07-05 18:39:28.036703
+INFO:root:['/data/zhangshuoming/data_workspace/LLM_Compiler/sandbox/example/example001/test.c']
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:test_driver.c: 
+#include <stdio.h>
+
+int quant(int n, int m);
+
+int main() {
+    int n[10] = {10, 24, -15, 43, -31, 57, -67, 80, -99, 3}; // 10 test inputs for n
+    int m[10] = {7, 5, 10, 2, 8, 4, 3, 9, 20, 1}; // 10 test inputs for m
+
+    for (int i = 0; i < 10; i++) {
+        printf("%d: quant(%d, %d) = %d\n", i, n[i], m[i], quant(n[i], m[i]));
+    }
+
+    return 0;
+}
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:test_llm.s: 
+.text
+	.globl	quant
+	.type	quant, @function
+quant:
+.LFB0:
+	endbr64
+## Prologue
+	pushq	%rbp                            # Save base pointer
+	movq	%rsp, %rbp                      # Set base pointer to stack pointer
+	subq	$32, %rsp                       # Allocate stack space for local variables
+
+## Allocate and initialize locals: i, neg
+	movl	$0, -8(%rbp)                    # neg = 0
+	movl	%edi, -20(%rbp)                 # n (parameter passed in %edi) to its local variable location
+	movl	%esi, -24(%rbp)                 # m (parameter passed in %esi) to its local variable location
+
+## if (n < 0)
+	movl	-20(%rbp), %eax                 # Load n
+	testl	%eax, %eax                      # Test n
+	jge	.L2                            # Jump if n >= 0
+
+## If true: neg++, n = -n
+	addl	$1, -8(%rbp)                    # neg++ (increment neg by 1)
+	negl	%eax                            # Negate n
+	movl	%eax, -20(%rbp)                 # Store back to n
+
+.L2:	                                        # Label for else and continuation
+## i = n / m
+	movl	-20(%rbp), %eax                 # Load n
+	cltd                                # Sign extend %eax to %edx:eax
+	idivl	-24(%rbp)                       # Signed divide n (in %eax) by m, quotient in %eax, remainder in %edx
+	movl	%eax, -4(%rbp)                  # Store quotient (i) to its local variable
+
+## if (n - m * i > m / 2)
+	movl	-24(%rbp), %ecx                 # Load m to %ecx
+	imull	-4(%rbp), %ecx                 # Compute m * i
+	movl	-20(%rbp), %eax                 # Load n to %eax
+	subl	%ecx, %eax                     # Compute n - m * i
+	movl	-24(%rbp), %ecx                 # Load m to %ecx again
+	sarl	%ecx                           # Compute m / 2 by shifting right
+	cmpl	%ecx, %eax                     # Compare n - m * i with m / 2
+	jle	.L3                            # Jump if n - m * i <= m / 2
+
+## If true: i += 1
+	addl	$1, -4(%rbp)                    # i += 1
+
+.L3:	                                        # Label for else and continuation
+## i *= m
+	movl	-4(%rbp), %eax                 # Load i
+	imull	-24(%rbp), %eax                # i * m
+	movl	%eax, -4(%rbp)                 # Store result back to i
+
+## if (neg)
+	cmpl	$0, -8(%rbp)                   # Compare neg with 0
+	je	.L4                            # Jump if neg == 0
+
+## If true: i = -i
+	negl	%eax                            # Negate i
+	movl	%eax, -4(%rbp)                  # Store back to i
+
+.L4:	                                        # Label for else and continuation
+## Return i
+	movl	-4(%rbp), %eax                 # Load i to be returned
+
+## Epilogue
+	movq	%rbp, %rsp                      # Restore stack pointer from base pointer
+	popq	%rbp                            # Restore base pointer
+	ret                                   # Return
+INFO:root:Output match
+INFO:root:End time: 2024-07-05 18:39:44.860657
