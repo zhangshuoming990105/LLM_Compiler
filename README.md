@@ -59,3 +59,6 @@ output: variable binding table that satisfy (non-overlapping, alignment) require
 input: c function, variable binding table from 3
 output: assembly code
 """
+
+
+## We will do multiple round query, and add extra round to solve errors based on execution.

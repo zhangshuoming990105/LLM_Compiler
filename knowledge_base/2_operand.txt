@@ -1,0 +1,32 @@
+In the following tables,
+● “byte” refers to a one-byte integer (suffix b),
+● “word” refers to a two-byte integer (suffix w),
+● “doubleword” refers to a four-byte integer (suffix l), and
+● “quadword” refers to an eight-byte value (suffix q).
+Most instructions, like mov, use a suffix to show how large the operands are going to be. For
+example, moving a quadword from %rax to %rbx results in the instruction movq %rax, %rbx.
+Some instructions, like ret, do not use suffixes because there is no need. Others, such as movs
+and movz will use two suffixes, as they convert operands of the type of the first suffix to that of
+the second. Thus, assembly to convert the byte in %al to a doubleword in %ebx with
+zero-extension would be movzbl %al, %ebx.
+In the tables below, instructions have one suffix unless otherwise stated.
+
+mov S, D
+push S
+pop D
+
+mov S, D
+push S
+
+Instruction, Description, Page #
+Instructions with one suffix
+mov S, D Move source to destination 171
+push S Push source onto stack 171
+pop D Pop top of stack into destination 171
+Instructions with two suffixes
+mov S, D Move byte to word (sign extended) 171
+push S Move byte to word (zero extended) 171
+Instructions with no suffixes
+cwtl Convert word in %ax to doubleword in %eax (sign-extended) 182
+cltq Convert doubleword in %eax to quadword in %rax (sign-extended) 182
+cqto Convert quadword in %rax to octoword in %rdx:%rax 182

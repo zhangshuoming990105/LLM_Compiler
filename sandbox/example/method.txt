@@ -1,0 +1,11 @@
+1. autogenerate driver and testcase
+# Input: a source program that contains one function to be compiled
+# Output: a driver program that call this function, and execute 10 individual cases.
+
+2. use gcc to compile the driver and the source, run the executable to get ref result
+
+3. use CoT/RAG-LLM to compile the program, get a .s file
+
+4. use gcc to compile the .s file with the driver to get executable, run the executable to get hyp result
+
+5. compare result

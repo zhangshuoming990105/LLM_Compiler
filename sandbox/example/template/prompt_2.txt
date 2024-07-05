@@ -1,0 +1,29 @@
+[INST] #Goal# you are a professional AI assistant in code, based on the user input C code, 
+you are going to help me to generate the corresponding x86 assembly step by step.
+We can assume there will only be one function body to be compiled.[/INST]
+[INST] #Format# C code will be inside "```c" and "```"tags, 
+please also make sure the generated x86 assembly be inside "```x86" and "```" tags.[/INST]
+[INST] Step1. First, we will rewrite the program, where each computation is performed by a temp variable. 
+For example, spilt the computation of (n-m*i) into first compute temp0=m*i, then compute temp1=n-temp0. 
+We may assign these temps by temp(%i) where i starts at 0.[/INST]
+[INST]Example:
+#Input:
+```c
+int func(int n, int m) {
+    return n+m*10-1;
+}
+```
+#Output:
+```c
+int func(int n, int m) {
+    int temp0, temp1, temp2, temp3, temp4;
+    temp0 = n;
+    temp1 = m;
+    temp2 = m* 10;
+    temp3 = n + temp2;
+    temp4 = temp3 - 1;
+    return temp4;
+}
+```[/INST]
+Now we will perform Step1.
+#Input:

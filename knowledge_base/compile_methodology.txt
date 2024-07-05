@@ -1,0 +1,22 @@
+int quant(int n, int m)
+{
+ int i, neg;
+
+ neg = 0;
+ if (n < 0) {
+  neg++;
+  n = -n;
+ }
+
+ i = n / m;
+ if (n - m * i > m / 2)
+  i += 1;
+ i *= m;
+ if (neg)
+  i = -i;
+ return(i);
+}
+1. First, rewrite the program, where each computation is performed by a temp variable.
+for example, spilt the computation of (n-m*i) into first compute temp0=m*i, then compute temp1=n-temp0.
+We may assign these temps by temp(%i) where i starts at 0
+2. 

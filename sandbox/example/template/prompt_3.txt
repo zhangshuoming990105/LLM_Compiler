@@ -1,0 +1,21 @@
+[INST] Step2. We will rewrite the program again, to make the program to be in SSA form, 
+where each variable is at most defined once, for continuous definition of value, 
+we will create a new variable to replace it and its later usage, 
+we will rename the variable x to x_{i} where i starts from 0, except the first variable, where we keep the original name. [/INST]
+[INST]Example:
+#Input:
+```c
+int func(int n) {
+  n = n + 1;
+  return n;
+}
+```
+#Output:
+```c
+int func(int n) {
+  int n_0;
+  n_0 = n + 1;
+  return n_0;
+}
+```[/INST]
+Now we will perform Step2.
