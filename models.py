@@ -10,7 +10,7 @@ from prompts import (
     decompiler_prompts,
     code_translator_prompts,
 )
-from config import AVAILABLE_MODELS, YOUR_API_KEY
+from config import AVAILABLE_MODELS, YOUR_API_KEY, GPT_AVAILABLE_MODELS
 
 
 def num_token_from_string(
@@ -70,11 +70,18 @@ def num_tokens_from_messages(messages, model="gpt-3.5-turbo-0613"):
 
 class Chat:
     def __init__(self, model="mixtral-8x7b-instruct"):
-        if model not in AVAILABLE_MODELS:
+        if model not in AVAILABLE_MODELS and model not in GPT_AVAILABLE_MODELS:
             logging.error(f"Model {model} is not available!")
             exit(1)
         self.model = model
-        self.client = OpenAI(api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai")
+        self.gpt_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        self.pplx_client = OpenAI(
+            api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai"
+        )
+        if self.model in GPT_AVAILABLE_MODELS:
+            self.client = self.gpt_client
+        else:
+            self.client = self.pplx_client
         self.system_prompt = compiler_prompts["general"]
         initial_messages = [
             {
@@ -95,9 +102,10 @@ class Chat:
             }
         )
         query_size = num_tokens_from_messages(self.messages)
+        logging.info(f"current LLM prompt size: {query_size}")
         if query_size >= 8192:
             logging.warning(
-                "LLM prompt size exceeds the limit, will truncate the prompt."
+                "LLM prompt size exceeds the limit 8192, will truncate the prompt."
             )
         response = self.client.chat.completions.create(
             model=self.model,
@@ -143,6 +151,7 @@ class Compiler(Chat):
             + compiler_short_prompts["code_example"]
         )
         if use_short_prompt:
+            self.use_short_prompt = True
             simplified_query_size = num_token_from_string(self.simplified_prompt)
             logging.info(f"LLM simplified prompt size: {simplified_query_size}")
             initial_messages = [
@@ -153,6 +162,7 @@ class Compiler(Chat):
             ]
             self.messages = initial_messages
         else:
+            self.use_short_prompt = False
             query_size = num_token_from_string(self.system_prompt)
             logging.info(f"LLM default prompt size: {query_size}")
             initial_messages = [
@@ -179,12 +189,20 @@ class Compiler(Chat):
         compiler_rsp = self.messages[-1]["content"]
         self.assemble(compiler_rsp, out=out)
         # reset the messages
-        initial_messages = [
-            {
-                "role": "system",
-                "content": (self.simplified_prompt),
-            },
-        ]
+        if self.use_short_prompt:
+            initial_messages = [
+                {
+                    "role": "system",
+                    "content": (self.simplified_prompt),
+                },
+            ]
+        else:
+            initial_messages = [
+                {
+                    "role": "system",
+                    "content": (self.system_prompt),
+                },
+            ]
         self.messages = initial_messages
 
     def assemble(self, compiler_rsp, out="output.s", generate_binary=False):

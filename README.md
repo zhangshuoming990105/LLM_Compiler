@@ -62,3 +62,29 @@ output: assembly code
 
 
 ## We will do multiple round query, and add extra round to solve errors based on execution.
+
+## We can first judge the input code's complexity to choose the proper prompt to save tokens
+
+## Further findings:
+
+1. A new evaluation on LLM's understanding on code, especially C language and x86 assembly language:
+
+
+2. LLM's key ability(through pretraining) to obtain high performance in such evaluation:
+        # in C:
+        A. ASCII: map a char 'xx' into its byte integer. where gpt-4o outperform others
+        B. compute order, +-*/, etc.
+        C. struct, union
+        D. array
+        # in x86:
+        A. float, double
+        B. control flow
+        C. memory alignment
+        D. stack caller/callee savings
+        
+3. by recording the compile/execute error, can the model fix the incorrectness?
+
+
+
+
+

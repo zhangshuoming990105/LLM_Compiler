@@ -9,3 +9,9 @@ AVAILABLE_MODELS = [
     "llama-3-sonar-small-32k-online",
     "llama-3-sonar-small-32k-chat",
 ]
+
+GPT_AVAILABLE_MODELS = [
+    "gpt-3.5-turbo",
+    "gpt-4-turbo",
+    "gpt-4o",
+]

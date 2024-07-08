@@ -40,16 +40,40 @@ def human_eval():
         i += 1
 
 
-def c_compiler():
-    compiler = Compiler("llama-3-70b-instruct", use_short_prompt=False)
+def log_failed(
+    failed_id,
+    failed_c,
+    failed_asm,
+    failed_asm_ref,
+    case_id,
+    c_code,
+    x86_llm_code,
+    x86_code,
+):
+    failed_id.append(case_id)
+    failed_c.append(c_code)
+    failed_asm.append(x86_llm_code)
+    failed_asm_ref.append(x86_code)
+
+
+def c_compiler(begin_id=0, end_id=100, use_short_prompt=False):
+    # llama3_70b_compiler = Compiler("llama-3-70b-instruct", use_short_prompt=False)
+    # gpt3_5_compiler = Compiler("gpt-3.5-turbo", use_short_prompt=False)
+    gpt4_compiler = Compiler("gpt-4o", use_short_prompt=use_short_prompt)
+    compiler = gpt4_compiler
     # ds = load_dataset("jordiae/exebench")["train_real_simple_io"]
     ds = load_dataset("mistral0105/exebench_io_validated_full_cleaned")["train"]
-
     # select validate example to a new dataset, by checking compile status and execution status
     passed_id = []
+    failed_id = []
+    failed_c = []
+    failed_asm = []
+    failed_asm_ref = []
     case_id = 0
-    total = 100
     for e in ds:
+        if case_id < begin_id:
+            case_id += 1
+            continue
         try:
             id = 0
             x86_id = None
@@ -184,6 +208,7 @@ def c_compiler():
             # c source code using gcc to compile, not g++
             # to test llm_compiler, use aicc instead of gcc
             compiler.compile("tmp.c")
+            x86_llm_code = open("tmp.s", "r").read()
             # assemble the object files
             ret = subprocess.run(
                 ["g++", "tmp.s", "tmp_driver.s", "-o", "tmp"],
@@ -191,9 +216,21 @@ def c_compiler():
                 stderr=subprocess.PIPE,
             )
             if ret.returncode != 0:
-                logging.warning(f"CASE {case_id} failed to assemble the code to executable!")
+                logging.warning(
+                    f"CASE {case_id} failed to assemble the code to executable!"
+                )
                 logging.warning(f"ret.stderr: {ret.stderr.decode()}")
                 logging.warning(f"ret.stdout: {ret.stdout.decode()}")
+                log_failed(
+                    failed_id,
+                    failed_c,
+                    failed_asm,
+                    failed_asm_ref,
+                    case_id,
+                    c_code,
+                    x86_llm_code,
+                    x86_code,
+                )
                 case_id += 1
                 continue
             # try to run the code, args are each input file
@@ -234,15 +271,42 @@ def c_compiler():
                 passed_id.append(case_id)
             else:
                 logging.info(f"CASE {case_id} failed")
+                log_failed(
+                    failed_id,
+                    failed_c,
+                    failed_asm,
+                    failed_asm_ref,
+                    case_id,
+                    c_code,
+                    x86_llm_code,
+                    x86_code,
+                )
             case_id += 1
-            if case_id >= total:
+            if case_id >= end_id:
                 break
         except Exception as e:
-            logging.error(f"Error: {e}")
+            logging.error(f"Unexpected Error: {e}")
+            case_id += 1
             continue
     logging.info("Done")
     logging.info(f"Passed cases: {passed_id}")
-    logging.info(f"Pass rate: {len(passed_id)*100 / total}%")
+    logging.info(f"Failed cases: {failed_id}")
+    logging.info(f"Pass rate: {len(passed_id)*100 / (end_id-begin_id)}%")
+    # save failed cases to a new directory named failed under current
+    if not os.path.exists("failed"):
+        os.mkdir("failed")
+    os.chdir("failed")
+    for i in range(len(failed_id)):
+        case_id = failed_id[i]
+        with open(f"case_{case_id}.c", "w") as f:
+            f.write(failed_c[i])
+            f.close()
+        with open(f"case_{case_id}_llm.s", "w") as f:
+            f.write(failed_asm[i])
+            f.close()
+        with open(f"case_{case_id}_ref.s", "w") as f:
+            f.write(failed_asm_ref[i])
+            f.close()
 
 
 def python_compiler():
@@ -291,6 +355,6 @@ if __name__ == "__main__":
 
     configure_logging(log_file)
     logging.info("Start time: " + str(datetime.datetime.now()))
-    c_compiler()
+    c_compiler(begin_id=0, end_id=100, use_short_prompt=True)
     logging.info("End time: " + str(datetime.datetime.now()))
     # workspace_clear(sandbox_dir, log_dir)
