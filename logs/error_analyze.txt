@@ -1,0 +1,395 @@
+error analysis:
+failed_cases = [7,9,32,33,51,60,76,78,86,88,89,98]
+
+Case 7:
+```c
+int big_endian(
+    void)
+{
+    union {
+        long l;
+        char c[sizeof(long)];
+    } u;
+
+    u.l = 1;
+
+    return (u.c[sizeof(long) - 1] == 1);
+}
+```
+```x86
+    .text
+    .globl  big_endian
+big_endian:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $8, %rsp              # Allocate space for union u
+
+    movq    $1, -8(%rbp)          # u.l = 1
+
+    movq    -8(%rbp), %rax
+    cmpb    $1, %al               # Compare the least significant byte with 1
+    #correct: movsbl    -1(%rbp), %eax        # Load u.l into %rax
+    #cmpl    $1, %eax               # Compare the least significant byte with 1
+    sete    %cl                   # Set %cl to 1 if comparison is true, otherwise 0
+    andb    $1, %cl               # Mask %cl with 1
+    movzbl  %cl, %eax             # Zero-extend %al to %eax
+    leave
+    ret
+```
+Error Reason: wrong usage of mov instruction
+
+Case 9:
+```c
+extern inline int JKMarray_idx(const int J, const int K, const int M) {
+  return (((4 * J * J + 5) * J) / 3 + 2 * J * J + K * (2 * J + 1) + M);
+}
+```
+```x86
+    .text
+    .globl  JKMarray_idx
+JKMarray_idx:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)     # J
+    movl    %esi, -8(%rbp)     # K
+    movl    %edx, -12(%rbp)    # M
+
+    movl    -4(%rbp), %eax     # %eax = J
+    imull   %eax, %eax         # %eax = J * J
+    leal    5(%rax,%rax,4), %eax  # %eax = 4 * J * J + 5
+    imull   -4(%rbp), %eax     # %eax = (4 * J * J + 5) * J
+    cltd
+    idivl   $3                 # %eax = ((4 * J * J + 5) * J) / 3
+
+    movl    -4(%rbp), %ecx     # %ecx = J
+    imull   %ecx, %ecx         # %ecx = J * J
+    leal    (%ecx,%ecx), %ecx  # %ecx = 2 * J * J
+    addl    %ecx, %eax         # %eax += 2 * J * J
+
+    movl    -8(%rbp), %ecx     # %ecx = K
+    movl    -4(%rbp), %edx     # %edx = J
+    leal    1(%rdx,%rdx), %edx # %edx = 2 * J + 1
+    imull   %ecx, %edx         # %edx = K * (2 * J + 1)
+    addl    %edx, %eax         # %eax += K * (2 * J + 1)
+
+    addl    -12(%rbp), %eax    # %eax += M
+
+    popq    %rbp
+    retq
+```
+Error Reason: wrong usage of div instruction, div imm is not valid
+
+Case 32:
+```c
+#include <stdio.h>
+
+#include <time.h>
+
+#include <stdlib.h>
+
+#include <ctype.h>
+
+int retPosVector(char letra, char alfabeto[]) {
+ int i;
+
+ for( i = 0; alfabeto[i]; i++) {
+  if(alfabeto[i] == letra) {
+   return i;
+  }
+ }
+}
+```
+```x86
+    .text
+    .globl  retPosVector
+retPosVector:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $20, %rsp           # Allocate space for local variables
+    movb    %dil, -1(%rbp)      # letra
+    movq    %rsi, -16(%rbp)     # alfabeto
+    movl    $0, -20(%rbp)       # i_0 = 0
+.L1:
+    movl    -20(%rbp), %eax
+    movq    -16(%rbp), %rdx
+    movzbl  (%rdx,%rax,1), %ecx
+    testb   %cl, %cl
+    je      .L2                 # if alfabeto[i_0] == 0, exit loop
+    movl    -20(%rbp), %eax
+    movq    -16(%rbp), %rdx
+    movzbl  (%rdx,%rax,1), %ecx
+    cmpb    -1(%rbp), %cl       # if alfabeto[i_0] == letra
+    je      .L3
+    addl    $1, -20(%rbp)       # i_0++
+    jmp     .L1
+.L2:
+    movl    $-1, %eax           # return -1 if not found (default case)
+    jmp     .L4
+.L3:
+    movl    -20(%rbp), %eax     # return i_0
+.L4:
+    leave
+    ret
+```
+Error Reason:
+it's not actually wrong, it's a UB for non-void function does not return a value in all control paths
+GCC return 0, Clang return the last eax value, while LLM generated a default -1 for not found
+For non-UB cases, the results are correct
+
+Case 33:
+```c
+unsigned int CgosStrLen(const char *s)
+  {
+  const char *ss=s;
+  if (!s) return 0;
+  while (*s++);
+  return s-ss-1;
+  }
+```
+```x86
+    .text
+    .globl  CgosStrLen
+CgosStrLen:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp             # Allocate space for ss_0 and s
+
+    movq    %rdi, -8(%rbp)        # s = %rdi
+    movq    -8(%rbp), %rax
+    movq    %rax, -16(%rbp)       # ss_0 = s
+
+    cmpq    $0, -8(%rbp)          # if (!s)
+    jne     .L1
+    movl    $0, %eax              # return 0
+    jmp     .L2
+
+.L1:
+    movq    -8(%rbp), %rax
+.L3:
+    cmpb    $0, (%rax)            # while (*s++)
+    je      .L4
+    incq    %rax
+    jmp     .L3
+
+.L4:
+    movq    -16(%rbp), %rdx       # s - ss_0 - 1
+    subq    %rdx, %rax
+    subq    $1, %rax
+    movq    %rax, %rdi
+    movl    %edi, %eax            # return value in %eax
+
+.L2:
+    leave
+    ret
+```
+Error Reason:
+C empty str is 1 byte, not 0 byte, where LLM didn't recap this knowledge. (can be fixed through RAG, where more C string knowledge can be supported)
+
+Case 51:
+```c
+float UI_ClampCvar(float min, float max, float value) {
+  if (value < min)
+    return min;
+  if (value > max)
+    return max;
+  return value;
+}
+```
+```x86
+    .text
+    .globl  UI_ClampCvar
+UI_ClampCvar:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp           # Allocate space for local variables
+
+    movss   %xmm0, -12(%rbp)    # value
+    movss   %xmm1, -4(%rbp)     # min
+    movss   %xmm2, -8(%rbp)     # max
+
+    movss   -12(%rbp), %xmm0    # Load value into xmm0
+    ucomiss -4(%rbp), %xmm0     # Compare value with min
+    jae     .L1                 # Jump if value >= min
+    movss   -4(%rbp), %xmm0     # Return min
+    jmp     .L3
+
+.L1:
+    movss   -12(%rbp), %xmm0    # Load value into xmm0
+    ucomiss -8(%rbp), %xmm0     # Compare value with max
+    jbe     .L2                 # Jump if value <= max
+    movss   -8(%rbp), %xmm0     # Return max
+    jmp     .L3
+
+.L2:
+    movss   -12(%rbp), %xmm0    # Return value
+
+.L3:
+    leave
+    ret
+```
+Error Reason:
+### Explanation of Changes:
+1. **Corrected the order of storing the parameters**: The original code stored the parameters in the wrong order. The corrected code stores `value` in `-12(%rbp)`, `min` in `-4(%rbp)`, and `max` in `-8(%rbp)`.
+2. **Consistent offsets**: The offsets used for the local variables are now consistent and correctly reflect the positions of `value`, `min`, and `max`.
+
+Fixed in 1 round. no human aid.
+
+Case 76:
+```c
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <ctype.h>
+
+int isspec(char c) {
+  return (((c >= '!') && (c <= '/')) || (c >= ':' && c <= '@') ||
+          ((c >= '[') && (c <= '`')) || ((c >= '{') && (c <= 'DEL')));
+}
+```
+```x86
+    .text
+    .globl  isspec
+isspec:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp
+    movb    %dil, -1(%rbp)      # c_0
+
+    movb    -1(%rbp), %al
+    cmpb    $'!', %al
+    jl      .L1
+    cmpb    $'/', %al
+    jle     .L2
+.L1:
+    movb    -1(%rbp), %al
+    cmpb    $':', %al
+    jl      .L3
+    cmpb    $'@', %al
+    jle     .L2
+.L3:
+    movb    -1(%rbp), %al
+    cmpb    $'[', %al
+    jl      .L4
+    cmpb    $'`', %al
+    jle     .L2
+.L4:
+    movb    -1(%rbp), %al
+    cmpb    $'{', %al
+    jl      .L5
+    cmpb    $'DEL', %al
+    jle     .L2
+.L5:
+    movl    $0, %eax
+    jmp     .L6
+.L2:
+    movl    $1, %eax
+.L6:
+    leave
+    ret
+```
+Error Reason:
+tmp.s:31: Error: junk `EL44%al' after expression
+tmp.s:31: Error: number of operands mismatch for `cmp'
+
+fixed in 1 round.
+
+Case 78:
+```c
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <stdint.h>
+
+#include <math.h>
+
+int cat_nums(char *str_out, char *str) {
+
+  int i = 0, j = 0;
+  while (str[i] != '\0') {
+    if (str[i] >= '0' && str[i] <= '9') {
+      str_out[j++] = str[i];
+    }
+    i++;
+  }
+  str_out[j] = '\0';
+  return (j);
+}
+```
+```x86
+    .text
+    .globl  cat_nums
+cat_nums:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $24, %rsp              # Allocate space for local variables
+    movq    %rdi, -8(%rbp)         # str_out
+    movq    %rsi, -16(%rbp)        # str
+    movl    $0, -20(%rbp)          # i = 0
+    movl    $0, -24(%rbp)          # j = 0
+
+.L1:
+    movl    -20(%rbp), %eax        # i
+    movq    -16(%rbp), %rdx        # str
+    movzbl  (%rdx,%rax,1), %eax    # str[i]
+    testb   %al, %al
+    je      .L2                    # if (str[i] == '\0') break
+
+    cmpb    $'0', %al
+    jl      .L3                    # if (str[i] < '0') continue
+    cmpb    $'9', %al
+    jg      .L3                    # if (str[i] > '9') continue
+
+    movl    -24(%rbp), %edx        # j
+    movq    -8(%rbp), %rcx         # str_out
+    movb    %al, (%rcx,%rdx,1)     # str_out[j] = str[i]
+    addl    $1, -24(%rbp)          # j++
+
+.L3:
+    addl    $1, -20(%rbp)          # i++
+    jmp     .L1
+
+.L2:
+    movl    -24(%rbp), %eax        # j
+    movq    -8(%rbp), %rdx         # str_out
+    movb    $'\0', (%rdx,%rax,1)   # str_out[j] = '\0'
+    movl    -24(%rbp), %eax        # return j
+
+    leave
+    ret
+```
+Error Reason:
+Wrong char operation
+
+Case 86:
+```c
+```
+```x86
+```
+Error Reason:
+
+Case 88:
+```c
+```
+```x86
+```
+Error Reason:
+
+Case 89:
+```c
+```
+```x86
+```
+Error Reason:
+
+Case 98:
+```c
+```
+```x86
+```
+Error Reason:
