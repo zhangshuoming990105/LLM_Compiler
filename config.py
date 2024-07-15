@@ -8,6 +8,8 @@ AVAILABLE_MODELS = [
     "llama-3-sonar-large-32k-chat",
     "llama-3-sonar-small-32k-online",
     "llama-3-sonar-small-32k-chat",
+    "pplx-70b-online",
+    "pplx-7b-online",
 ]
 
 GPT_AVAILABLE_MODELS = [

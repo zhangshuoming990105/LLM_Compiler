@@ -174,7 +174,7 @@ class Compiler(Chat):
             self.messages = initial_messages
 
     # will only chat once
-    def compile(self, code=None, out="tmp.s"):
+    def compile(self, code=None, out="tmp.s", reset_messages=True):
         if os.path.exists(code):
             code_file_name = code.split("/")[-1]
             if code_file_name != "tmp.c":
@@ -189,21 +189,22 @@ class Compiler(Chat):
         compiler_rsp = self.messages[-1]["content"]
         self.assemble(compiler_rsp, out=out)
         # reset the messages
-        if self.use_short_prompt:
-            initial_messages = [
-                {
-                    "role": "system",
-                    "content": (self.simplified_prompt),
-                },
-            ]
-        else:
-            initial_messages = [
-                {
-                    "role": "system",
-                    "content": (self.system_prompt),
-                },
-            ]
-        self.messages = initial_messages
+        if reset_messages:
+            if self.use_short_prompt:
+                initial_messages = [
+                    {
+                        "role": "system",
+                        "content": (self.simplified_prompt),
+                    },
+                ]
+            else:
+                initial_messages = [
+                    {
+                        "role": "system",
+                        "content": (self.system_prompt),
+                    },
+                ]
+            self.messages = initial_messages
 
     def assemble(self, compiler_rsp, out="output.s", generate_binary=False):
         if "```x86" in compiler_rsp:
@@ -236,16 +237,16 @@ class Decompiler(Chat):
             + decompiler_prompts["task_format"]
             + decompiler_prompts["task_example"]
         )
-        initial_messages = [
+        self.initial_messages = [
             {
                 "role": "system",
                 "content": (self.system_prompt),
             },
         ]
-        self.messages = initial_messages
+        self.messages = self.initial_messages
         self.arch = arch
 
-    def decompile(self, code=None):
+    def decompile(self, code=None, reset_messages=True):
         if os.path.exists(code):
             # copy to the current directory
             os.system(f"cp {code} .")
@@ -263,13 +264,22 @@ class Decompiler(Chat):
             c_code = decompiler_rsp.split("```c")[1].split("```")
             if len(c_code) > 0:
                 c_code = c_code[0]
-            logging.info(f"C code: \n{c_code}")
+            # logging.info(f"C code: \n{c_code}")
             with open("disassembled.c", "w") as f:
                 f.write(c_code)
+        # reset the messages for the next round
+        if reset_messages:
+            initial_messages = [
+                {
+                    "role": "system",
+                    "content": (self.system_prompt),
+                },
+            ]
+            self.messages = initial_messages
 
 
 class CodeTranslator(Chat):
-    def __init__(self, model="mixtral-8x7b-instruct"):
+    def __init__(self, model="mixtral-8x7b-instruct", source="python", target="c"):
         super().__init__(model)
         self.system_prompt = (
             code_translator_prompts["general"]
@@ -285,7 +295,16 @@ class CodeTranslator(Chat):
         ]
         self.messages = initial_messages
 
-    def translate(self, code=None, source="python", target="c"):
+    def translate(
+        self,
+        code=None,
+        source="python",
+        target="c",
+        specify_out_file="",
+        desc_pre="",
+        desc_post="",
+        reset_messages=True,
+    ):
         if os.path.exists(code):
             # copy to the current directory
             os.system(f"cp {code} .")
@@ -297,8 +316,10 @@ class CodeTranslator(Chat):
         # set the source and target language
         description = f"translate the following {source} code into {target} code."
         # we could call a paraphraser to get the task description
-        description = self.paraphrase(description)
-        prompt = f"[INST]#Description:\n{description}\n#Input:\n```{source}\n{code}```[/INST]\n"
+        # description = self.paraphrase(description)
+        prompt = desc_pre
+        prompt += f"[INST]#Description:\n{description}\n[/INST]#Input:\n```{source}\n{code}```\n"
+        prompt += desc_post
 
         self.chat(user_input=prompt)
         compiler_rsp = self.messages[-1]["content"]
@@ -309,5 +330,17 @@ class CodeTranslator(Chat):
             if len(target_code) > 0:
                 target_code = target_code[0]
             logging.info(f"target {target} code: \n{target_code}")
-            with open(f"output.{target}", "w") as f:
-                f.write(target_code)
+            if specify_out_file == "":
+                with open(f"output.{target}", "w") as f:
+                    f.write(target_code)
+            else:
+                with open(specify_out_file, "w") as f:
+                    f.write(target_code)
+        if reset_messages:
+            initial_messages = [
+                {
+                    "role": "system",
+                    "content": (self.system_prompt),
+                },
+            ]
+            self.messages = initial_messages

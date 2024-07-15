@@ -1,73 +1,42 @@
+from datasets import load_dataset
+import logging
 import os
-import shutil
-import random
 import json
 import datetime
-import logging
+import random
 import subprocess
-from datasets import load_dataset, Dataset
 from utils import get_env
-from models import Chat, Compiler, Decompiler, CodeTranslator
+from models import Compiler, Decompiler
 from logging_config import configure_logging
 
-def log_failed(
+
+def log_decompile_failed(
     failed_id,
-    failed_c,
     failed_asm,
-    failed_asm_ref,
+    failed_c_hyp,
+    failed_c_ref,
     case_id,
-    c_code,
-    x86_llm_code,
     x86_code,
+    c_llm_code,
+    c_code,
 ):
     failed_id.append(case_id)
-    failed_c.append(c_code)
-    failed_asm.append(x86_llm_code)
-    failed_asm_ref.append(x86_code)
+    failed_c_hyp.append(c_llm_code)
+    failed_asm.append(x86_code)
+    failed_c_ref.append(c_code)
 
 
-def human_eval():
-    humaneval_chatter = Chat()
-    dataset = load_dataset("openai/openai_humaneval")
-    i = 0
-    for e in dataset["test"]:
-        humaneval_goal = """You are going to fill the missing code in the following Python code snippet.\n
-        Be sure to return the filled code wrapped inside ```python\n and ```"""
-        humaneval_goal += e["prompt"]
-        humaneval_chatter.chat(user_input=humaneval_goal)
-        rsp_raw = humaneval_chatter.messages[-1]["content"]
-        # print(rsp_raw)
-        # grep the code block, which begin with ```python and end with ```
-        code = rsp_raw.split("```python")[1].split("```")[0]
-        # execute the code with the unittest
-        unittest = e["test"]
-        ret = subprocess.run(["python", "-c", code + unittest])
-        if ret.returncode == 0:
-            print("Pass")
-            logging.info(
-                f"HumanEval {i} passed. with the following code:\n{code} and unittest:\n{unittest}"
-            )
-        else:
-            print("Fail")
-            logging.info(
-                f"HumanEval {i} failed. with the following code:\n{code} and unittest:\n{unittest}"
-            )
-        i += 1
+def c_decompiler(begin_id=0, end_id=100, use_short_prompt=False):
+    decompiler = Decompiler("gpt-4o")
 
-
-def c_compiler(begin_id=0, end_id=100, use_short_prompt=False):
-    # llama3_70b_compiler = Compiler("llama-3-70b-instruct", use_short_prompt=False)
-    # gpt3_5_compiler = Compiler("gpt-3.5-turbo", use_short_prompt=False)
-    gpt4_compiler = Compiler("gpt-4o", use_short_prompt=use_short_prompt)
-    compiler = gpt4_compiler
     # ds = load_dataset("jordiae/exebench")["train_real_simple_io"]
     ds = load_dataset("mistral0105/exebench_io_validated_full_cleaned")["train"]
     # select validate example to a new dataset, by checking compile status and execution status
     passed_id = []
     failed_id = []
-    failed_c = []
+    failed_c_hyp = []
     failed_asm = []
-    failed_asm_ref = []
+    failed_c_ref = []
     case_id = 0
     for e in ds:
         if case_id < begin_id:
@@ -179,16 +148,18 @@ def c_compiler(begin_id=0, end_id=100, use_short_prompt=False):
                 data_file.close()
             os.chdir("..")
 
-            with open("tmp.c", "w") as f:
-                if c_code is not None:
-                    f.write(c_code)
-                    f.close()
-            logging.info(f"C code :\n{c_code}")
-
             with open("tmp_ref.s", "w") as f:
                 if x86_code is not None:
                     f.write(x86_code)
                     f.close()
+            logging.info(f"x86 code :\n{x86_code}")
+
+            with open("tmp.c", "w") as f:
+                if c_code is not None:
+                    f.write(c_code)
+                    f.close()
+            logging.info(f"ref C code :\n{c_code}")
+
             with open(f"tmp_driver.cpp", "w") as f:
                 if final_c_exe is not None:
                     f.write(final_c_exe)
@@ -196,7 +167,7 @@ def c_compiler(begin_id=0, end_id=100, use_short_prompt=False):
 
             # using g++ to compile each file
             ret = subprocess.run(
-                ["g++", "-S", "tmp_driver.cpp", "-o", "tmp_driver.s"],
+                ["g++-13", "-S", "tmp_driver.cpp", "-o", "tmp_driver.s"],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
@@ -206,11 +177,35 @@ def c_compiler(begin_id=0, end_id=100, use_short_prompt=False):
                 continue
             # c source code using gcc to compile, not g++
             # to test llm_compiler, use aicc instead of gcc
-            compiler.compile("tmp.c")
-            x86_llm_code = open("tmp.s", "r").read()
-            # assemble the object files
+            decompiler.decompile("tmp_ref.s")
+            decompiled_c_code = open("disassembled.c", "r").read()
+            logging.info(f"disassembled C code :\n{decompiled_c_code}")
+            # try to recompile the decompiled c code
             ret = subprocess.run(
-                ["g++", "tmp.s", "tmp_driver.s", "-o", "tmp"],
+                ["gcc-13", "disassembled.c", "-S"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            if ret.returncode != 0:
+                logging.warning(
+                    f"CASE {case_id} failed to compile the decompiled code!"
+                )
+                logging.warning(f"ret.stderr: {ret.stderr.decode()}")
+                logging.warning(f"ret.stdout: {ret.stdout.decode()}")
+                log_decompile_failed(
+                    failed_id,
+                    failed_asm,
+                    failed_c_hyp,
+                    failed_c_ref,
+                    case_id,
+                    x86_code,
+                    decompiled_c_code,
+                    c_code,
+                )
+                case_id += 1
+                continue
+            ret = subprocess.run(
+                ["g++-13", "disassembled.s", "tmp_driver.s", "-o", "tmp"],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
@@ -220,15 +215,15 @@ def c_compiler(begin_id=0, end_id=100, use_short_prompt=False):
                 )
                 logging.warning(f"ret.stderr: {ret.stderr.decode()}")
                 logging.warning(f"ret.stdout: {ret.stdout.decode()}")
-                log_failed(
+                log_decompile_failed(
                     failed_id,
-                    failed_c,
                     failed_asm,
-                    failed_asm_ref,
+                    failed_c_hyp,
+                    failed_c_ref,
                     case_id,
-                    c_code,
-                    x86_llm_code,
                     x86_code,
+                    decompiled_c_code,
+                    c_code,
                 )
                 case_id += 1
                 continue
@@ -244,7 +239,10 @@ def c_compiler(begin_id=0, end_id=100, use_short_prompt=False):
                 )
                 if ret.returncode != 0:
                     logging.warning(
-                        f"WARNING: code failed to execute for input {j} in case {case_id}"
+                        f"""WARNING: code failed to execute for input {j} in case {case_id}
+                        stdout: {ret.stdout.decode()}
+                        stderr: {ret.stderr.decode()}
+                    """
                     )
                     local_err += 1
                     continue
@@ -263,6 +261,9 @@ def c_compiler(begin_id=0, end_id=100, use_short_prompt=False):
                 if json_my == json_ref:
                     local_succ += 1
                 else:
+                    logging.warning(
+                        f"input {j} mismatched!\nref: {json_ref}\nhyp: {json_my}"
+                    )
                     local_err += 1
             logging.info(f"Local error rate: {local_err*100 / input_count}%")
             if local_err == 0:
@@ -270,15 +271,15 @@ def c_compiler(begin_id=0, end_id=100, use_short_prompt=False):
                 passed_id.append(case_id)
             else:
                 logging.info(f"CASE {case_id} failed")
-                log_failed(
+                log_decompile_failed(
                     failed_id,
-                    failed_c,
                     failed_asm,
-                    failed_asm_ref,
+                    failed_c_hyp,
+                    failed_c_ref,
                     case_id,
-                    c_code,
-                    x86_llm_code,
                     x86_code,
+                    decompiled_c_code,
+                    c_code,
                 )
             case_id += 1
             if case_id >= end_id:
@@ -297,101 +298,14 @@ def c_compiler(begin_id=0, end_id=100, use_short_prompt=False):
     os.chdir("failed")
     for i in range(len(failed_id)):
         case_id = failed_id[i]
-        with open(f"case_{case_id}.c", "w") as f:
-            f.write(failed_c[i])
+        with open(f"case_{case_id}_ref.c", "w") as f:
+            f.write(failed_c_ref[i])
             f.close()
-        with open(f"case_{case_id}_llm.s", "w") as f:
+        with open(f"case_{case_id}.s", "w") as f:
             f.write(failed_asm[i])
             f.close()
-        with open(f"case_{case_id}_ref.s", "w") as f:
-            f.write(failed_asm_ref[i])
-            f.close()
-
-
-def python_compiler(begin_id=0, end_id=1, use_short_prompt=False):
-    code_translator = CodeTranslator(source="python", target="c")
-    gpt4_compiler = Compiler("gpt-4o", use_short_prompt=use_short_prompt)
-    compiler = gpt4_compiler
-    dataset = load_dataset("openai/openai_humaneval")
-    case_id = 0
-    for e in dataset["test"]:
-        if case_id < begin_id:
-            case_id += 1
-            continue
-        human_eval_py_code = ""
-        human_eval_py_code += e["prompt"]
-        human_eval_py_code += e["canonical_solution"]
-
-        human_eval_driver_code = ""
-        human_eval_driver_code += e["test"]
-        human_eval_driver_code += """check_candidate()"""
-
-        code_translator.translate(
-            human_eval_py_code,
-            specify_out_file="humaneval.c",
-            desc_post="[INST]Only provide me with the #Output part. Check carefully with the escape characters, to make sure the Output code is correct.[\INST]",
-            reset_messages=False,
-        )
-        code_translator.translate(
-            human_eval_driver_code,
-            specify_out_file="humaneval_driver.c",
-            desc_pre="[INST]Continue to translate the driver function from Python to C.\nFor the Python function with its body pass, like \"def foo()->int:\npass\" we generate a function declaration in C, like \"int foo();\".[\INST]",
-            desc_post="[INST]Only provide me with the #Output part.[\INST]",
-        )
-        # llm compilation
-        compiler.compile("humaneval.c", out="humaneval_llm.s")
-
-        # gcc compile ref
-        ret = subprocess.run(
-            ["gcc", "-S", "humaneval_driver.c", "humaneval.c", "-o", "ref"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        if ret.returncode != 0:
-            logging.warning(f"Failed to compile the driver code!")
-            logging.info(
-                f"stdout: \n{ret.stdout.decode()}\nstderr: \n{ret.stderr.decode()}"
-            )
-            break
-        # gcc compile hyp
-        ret = subprocess.run(
-            ["gcc", "-S", "humaneval_driver.c", "humaneval_llm.s", "-o", "hyp"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        if ret.returncode != 0:
-            logging.warning(f"Failed to compile the driver code!")
-            logging.info(
-                f"stdout: \n{ret.stdout.decode()}\nstderr: \n{ret.stderr.decode()}"
-            )
-        case_id += 1
-        if case_id >= end_id:
-            break
-
-
-def arm_decompiler():
-    pass
-
-
-def x86_decompiler():
-    # decompiler = Decompiler()
-    # decompiler.decompile("/Users/zhangshuoming/workspace/LLM_CoT_compilation/LLM_Compiler/sandbox/example/hello_world.s")
-    pass
-
-
-def ir_optimizer():
-    pass
-
-
-def workspace_clear(sandbox_dir, log_dir):
-    # rm all the temp files in the sandbox
-    for dir in os.listdir(sandbox_dir):
-        if dir.startswith("temp_"):
-            shutil.rmtree(os.path.join(sandbox_dir, dir))
-
-    for file in os.listdir(log_dir):
-        if file.startswith("temp_"):
-            os.remove(os.path.join(log_dir, file))
+        with open(f"case_{case_id}_hyp.c", "w") as f:
+            f.write(failed_c_hyp[i])
 
 
 if __name__ == "__main__":
@@ -408,10 +322,5 @@ if __name__ == "__main__":
         os.makedirs(temp_dir, exist_ok=True)
         os.chdir(temp_dir)
     log_file = os.path.join(log_dir, f"{temp_name}.log")
-
-    # configure_logging(log_file)
-    # logging.info("Start time: " + str(datetime.datetime.now()))
-    # c_compiler(begin_id=0, end_id=100, use_short_prompt=True)
-    # python_compiler()
-    # logging.info("End time: " + str(datetime.datetime.now()))
-    workspace_clear(sandbox_dir, log_dir)
+    configure_logging(log_file)
+    c_decompiler(25, 100, False)
