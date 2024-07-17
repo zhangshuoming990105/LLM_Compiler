@@ -8,7 +8,6 @@ import subprocess
 from datasets import load_dataset, Dataset
 from utils import get_env
 from models import Chat, Compiler, Decompiler, CodeTranslator
-from logging_config import configure_logging
 
 
 def human_eval():
@@ -308,7 +307,7 @@ if __name__ == "__main__":
         os.chdir(temp_dir)
     log_file = os.path.join(log_dir, f"{temp_name}.log")
 
-    configure_logging(log_file)
+    logging.basicConfig(filename=log_file, level=logging.INFO)
     logging.info("Start time: " + str(datetime.datetime.now()))
 
     c_compiler()

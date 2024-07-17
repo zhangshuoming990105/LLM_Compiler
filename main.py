@@ -6,9 +6,9 @@ import datetime
 import logging
 import subprocess
 from datasets import load_dataset, Dataset
-from utils import get_env
+from utils import get_env, workspace_clear
 from models import Chat, Compiler, Decompiler, CodeTranslator
-from logging_config import configure_logging
+
 
 def log_failed(
     failed_id,
@@ -55,11 +55,8 @@ def human_eval():
         i += 1
 
 
-def c_compiler(begin_id=0, end_id=100, use_short_prompt=False):
-    # llama3_70b_compiler = Compiler("llama-3-70b-instruct", use_short_prompt=False)
-    # gpt3_5_compiler = Compiler("gpt-3.5-turbo", use_short_prompt=False)
-    gpt4_compiler = Compiler("gpt-4o", use_short_prompt=use_short_prompt)
-    compiler = gpt4_compiler
+def c_compiler(model="gpt-4o", begin_id=0, end_id=100, use_short_prompt=False):
+    compiler = Compiler(model, use_short_prompt=use_short_prompt)
     # ds = load_dataset("jordiae/exebench")["train_real_simple_io"]
     ds = load_dataset("mistral0105/exebench_io_validated_full_cleaned")["train"]
     # select validate example to a new dataset, by checking compile status and execution status
@@ -308,9 +305,9 @@ def c_compiler(begin_id=0, end_id=100, use_short_prompt=False):
             f.close()
 
 
-def python_compiler(begin_id=0, end_id=1, use_short_prompt=False):
-    code_translator = CodeTranslator(source="python", target="c")
-    gpt4_compiler = Compiler("gpt-4o", use_short_prompt=use_short_prompt)
+def python_compiler(model="gpt-4o",begin_id=0, end_id=1, use_short_prompt=False):
+    code_translator = CodeTranslator(model, source="python", target="c")
+    gpt4_compiler = Compiler(model, use_short_prompt=use_short_prompt)
     compiler = gpt4_compiler
     dataset = load_dataset("openai/openai_humaneval")
     case_id = 0
@@ -335,7 +332,7 @@ def python_compiler(begin_id=0, end_id=1, use_short_prompt=False):
         code_translator.translate(
             human_eval_driver_code,
             specify_out_file="humaneval_driver.c",
-            desc_pre="[INST]Continue to translate the driver function from Python to C.\nFor the Python function with its body pass, like \"def foo()->int:\npass\" we generate a function declaration in C, like \"int foo();\".[\INST]",
+            desc_pre='[INST]Continue to translate the driver function from Python to C.\nFor the Python function with its body pass, like "def foo()->int:\npass" we generate a function declaration in C, like "int foo();".[\INST]',
             desc_post="[INST]Only provide me with the #Output part.[\INST]",
         )
         # llm compilation
@@ -355,7 +352,7 @@ def python_compiler(begin_id=0, end_id=1, use_short_prompt=False):
             break
         # gcc compile hyp
         ret = subprocess.run(
-            ["gcc", "-S", "humaneval_driver.c", "humaneval_llm.s", "-o", "hyp"],
+            ["gcc", "humaneval_driver.c", "humaneval_llm.s", "-o", "hyp"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
@@ -367,6 +364,13 @@ def python_compiler(begin_id=0, end_id=1, use_short_prompt=False):
         case_id += 1
         if case_id >= end_id:
             break
+
+
+def python_c_translator(model="gpt-4o"):
+    translator = CodeTranslator(model=model, source="python", target="c")
+    translator.translate(
+        "/Users/zhangshuoming/workspace/LLM_CoT_compilation/LLM_Compiler/sandbox/humaneval_example/example.py"
+    )
 
 
 def arm_decompiler():
@@ -383,17 +387,6 @@ def ir_optimizer():
     pass
 
 
-def workspace_clear(sandbox_dir, log_dir):
-    # rm all the temp files in the sandbox
-    for dir in os.listdir(sandbox_dir):
-        if dir.startswith("temp_"):
-            shutil.rmtree(os.path.join(sandbox_dir, dir))
-
-    for file in os.listdir(log_dir):
-        if file.startswith("temp_"):
-            os.remove(os.path.join(log_dir, file))
-
-
 if __name__ == "__main__":
     root_dir = get_env()
     if root_dir is None:
@@ -408,10 +401,16 @@ if __name__ == "__main__":
         os.makedirs(temp_dir, exist_ok=True)
         os.chdir(temp_dir)
     log_file = os.path.join(log_dir, f"{temp_name}.log")
+    need_log = True
+    if need_log:
+        logging.basicConfig(filename=log_file, level=logging.INFO)
+    else:
+        logging.basicConfig(level=logging.INFO)
+    logging.info("log file created!")
+    logging.info("Start time: " + str(datetime.datetime.now()))
+    # c_compiler(model="claude-3-haiku-20240307",begin_id=0, end_id=1, use_short_prompt=True)
+    # python_c_translator(model="claude-3-haiku-20240307")
 
-    # configure_logging(log_file)
-    # logging.info("Start time: " + str(datetime.datetime.now()))
-    # c_compiler(begin_id=0, end_id=100, use_short_prompt=True)
-    # python_compiler()
-    # logging.info("End time: " + str(datetime.datetime.now()))
-    workspace_clear(sandbox_dir, log_dir)
+    python_compiler("claude-3-5-sonnet-20240620")
+    logging.info("End time: " + str(datetime.datetime.now()))
+    # workspace_clear(sandbox_dir, log_dir)

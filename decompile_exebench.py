@@ -5,9 +5,8 @@ import json
 import datetime
 import random
 import subprocess
-from utils import get_env
+from utils import get_env, workspace_clear
 from models import Compiler, Decompiler
-from logging_config import configure_logging
 
 
 def log_decompile_failed(
@@ -26,8 +25,8 @@ def log_decompile_failed(
     failed_c_ref.append(c_code)
 
 
-def c_decompiler(begin_id=0, end_id=100, use_short_prompt=False):
-    decompiler = Decompiler("gpt-4o")
+def c_decompiler(begin_id=0, end_id=100, use_short_prompt=False, model="gpt-4o"):
+    decompiler = Decompiler(model)
 
     # ds = load_dataset("jordiae/exebench")["train_real_simple_io"]
     ds = load_dataset("mistral0105/exebench_io_validated_full_cleaned")["train"]
@@ -287,7 +286,7 @@ def c_decompiler(begin_id=0, end_id=100, use_short_prompt=False):
         except Exception as e:
             logging.error(f"Unexpected Error: {e}")
             case_id += 1
-            continue
+            break
     logging.info("Done")
     logging.info(f"Passed cases: {passed_id}")
     logging.info(f"Failed cases: {failed_id}")
@@ -308,7 +307,7 @@ def c_decompiler(begin_id=0, end_id=100, use_short_prompt=False):
             f.write(failed_c_hyp[i])
 
 
-if __name__ == "__main__":
+def main(model="gpt-4o", use_log=False, cleanup=False):
     root_dir = get_env()
     if root_dir is None:
         print("Failed to locate the working directory!")
@@ -321,6 +320,15 @@ if __name__ == "__main__":
     if not os.path.exists(temp_dir):
         os.makedirs(temp_dir, exist_ok=True)
         os.chdir(temp_dir)
-    log_file = os.path.join(log_dir, f"{temp_name}.log")
-    configure_logging(log_file)
-    c_decompiler(25, 100, False)
+    if use_log:
+        log_file = os.path.join(log_dir, f"{temp_name}.log")
+        logging.basicConfig(filename=log_file, level=logging.INFO)
+    else:
+        logging.basicConfig(level=logging.INFO)
+    c_decompiler(0, 25, False, model=model)
+    if cleanup:
+        workspace_clear(sandbox_dir, log_dir)
+
+
+if __name__ == "__main__":
+    main(model="claude-3-haiku-20240307", use_log=True, cleanup=False)

@@ -1,6 +1,7 @@
 import datetime
 import tiktoken
 from openai import OpenAI
+import anthropic
 import os
 import logging
 import subprocess
@@ -10,7 +11,12 @@ from prompts import (
     decompiler_prompts,
     code_translator_prompts,
 )
-from config import AVAILABLE_MODELS, YOUR_API_KEY, GPT_AVAILABLE_MODELS
+from config import (
+    AVAILABLE_MODELS,
+    YOUR_API_KEY,
+    GPT_AVAILABLE_MODELS,
+    ANTHROPIC_AVAILABLE_MODELS,
+)
 
 
 def num_token_from_string(
@@ -70,7 +76,11 @@ def num_tokens_from_messages(messages, model="gpt-3.5-turbo-0613"):
 
 class Chat:
     def __init__(self, model="mixtral-8x7b-instruct"):
-        if model not in AVAILABLE_MODELS and model not in GPT_AVAILABLE_MODELS:
+        if (
+            model not in AVAILABLE_MODELS
+            and model not in GPT_AVAILABLE_MODELS
+            and model not in ANTHROPIC_AVAILABLE_MODELS
+        ):
             logging.error(f"Model {model} is not available!")
             exit(1)
         self.model = model
@@ -78,8 +88,11 @@ class Chat:
         self.pplx_client = OpenAI(
             api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai"
         )
+        self.claude_client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
         if self.model in GPT_AVAILABLE_MODELS:
             self.client = self.gpt_client
+        elif self.model in ANTHROPIC_AVAILABLE_MODELS:
+            self.client = self.claude_client
         else:
             self.client = self.pplx_client
         self.system_prompt = compiler_prompts["general"]
@@ -90,6 +103,8 @@ class Chat:
             },
         ]
         self.messages = initial_messages
+        if self.model in ANTHROPIC_AVAILABLE_MODELS:
+            self.messages = []
 
     def chat(self, temperature=0.01, user_input=None):
         if user_input is None:
@@ -107,12 +122,23 @@ class Chat:
             logging.warning(
                 "LLM prompt size exceeds the limit 8192, will truncate the prompt."
             )
-        response = self.client.chat.completions.create(
-            model=self.model,
-            temperature=temperature,
-            messages=self.messages,
-        )
-        rsp_content = response.choices[0].message.content
+        if self.model in ANTHROPIC_AVAILABLE_MODELS:
+            anthropic_client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+            message = anthropic_client.messages.create(
+                model=self.model,
+                system=self.system_prompt,
+                max_tokens=2048,
+                temperature=temperature,
+                messages=self.messages,
+            )
+            rsp_content = message.content[0].text
+        else:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                temperature=temperature,
+                messages=self.messages,
+            )
+            rsp_content = response.choices[0].message.content
         # logging.info(f"LLM response: \n{rsp_content}")
         self.messages.append(
             {
@@ -133,7 +159,7 @@ class Chat:
 class Compiler(Chat):
     def __init__(self, model="mixtral-8x7b-instruct", use_short_prompt=False):
         super().__init__(model)
-        self.system_prompt = (
+        self.full_prompt = (
             compiler_prompts["general"]
             + compiler_prompts["mission"]
             + compiler_prompts["step1"]
@@ -151,27 +177,22 @@ class Compiler(Chat):
             + compiler_short_prompts["code_example"]
         )
         if use_short_prompt:
+            self.system_prompt = self.simplified_prompt
             self.use_short_prompt = True
-            simplified_query_size = num_token_from_string(self.simplified_prompt)
-            logging.info(f"LLM simplified prompt size: {simplified_query_size}")
-            initial_messages = [
-                {
-                    "role": "system",
-                    "content": (self.simplified_prompt),
-                },
-            ]
-            self.messages = initial_messages
         else:
+            self.system_prompt = self.full_prompt
             self.use_short_prompt = False
-            query_size = num_token_from_string(self.system_prompt)
-            logging.info(f"LLM default prompt size: {query_size}")
-            initial_messages = [
-                {
-                    "role": "system",
-                    "content": (self.system_prompt),
-                },
-            ]
-            self.messages = initial_messages
+        query_size = num_token_from_string(self.system_prompt)
+        logging.info(f"LLM default prompt size: {query_size}")
+        initial_messages = [
+            {
+                "role": "system",
+                "content": (self.system_prompt),
+            },
+        ]
+        self.messages = initial_messages
+        if self.model in ANTHROPIC_AVAILABLE_MODELS:
+            self.messages = []
 
     # will only chat once
     def compile(self, code=None, out="tmp.s", reset_messages=True):
@@ -190,21 +211,15 @@ class Compiler(Chat):
         self.assemble(compiler_rsp, out=out)
         # reset the messages
         if reset_messages:
-            if self.use_short_prompt:
-                initial_messages = [
-                    {
-                        "role": "system",
-                        "content": (self.simplified_prompt),
-                    },
-                ]
-            else:
-                initial_messages = [
-                    {
-                        "role": "system",
-                        "content": (self.system_prompt),
-                    },
-                ]
+            initial_messages = [
+                {
+                    "role": "system",
+                    "content": (self.system_prompt),
+                },
+            ]
             self.messages = initial_messages
+            if self.model in ANTHROPIC_AVAILABLE_MODELS:
+                self.messages = []
 
     def assemble(self, compiler_rsp, out="output.s", generate_binary=False):
         if "```x86" in compiler_rsp:
@@ -244,6 +259,8 @@ class Decompiler(Chat):
             },
         ]
         self.messages = self.initial_messages
+        if self.model in ANTHROPIC_AVAILABLE_MODELS:
+            self.messages = []
         self.arch = arch
 
     def decompile(self, code=None, reset_messages=True):
@@ -265,8 +282,11 @@ class Decompiler(Chat):
             if len(c_code) > 0:
                 c_code = c_code[0]
             # logging.info(f"C code: \n{c_code}")
-            with open("disassembled.c", "w") as f:
-                f.write(c_code)
+        else:
+            logging.warning("Failed to find the C code tag \"```c\"!")
+            c_code = decompiler_rsp
+        with open("disassembled.c", "w") as f:
+            f.write(c_code)
         # reset the messages for the next round
         if reset_messages:
             initial_messages = [
@@ -276,6 +296,8 @@ class Decompiler(Chat):
                 },
             ]
             self.messages = initial_messages
+            if self.model in ANTHROPIC_AVAILABLE_MODELS:
+                self.messages = []
 
 
 class CodeTranslator(Chat):
@@ -294,6 +316,8 @@ class CodeTranslator(Chat):
             },
         ]
         self.messages = initial_messages
+        if self.model in ANTHROPIC_AVAILABLE_MODELS:
+            self.messages = []
 
     def translate(
         self,
@@ -323,7 +347,7 @@ class CodeTranslator(Chat):
 
         self.chat(user_input=prompt)
         compiler_rsp = self.messages[-1]["content"]
-        logging.info(f"Translated code: \n{compiler_rsp}")
+        # logging.info(f"Translated code: \n{compiler_rsp}")
         # grep the translated code
         if f"```{target}" in compiler_rsp:
             target_code = compiler_rsp.split(f"```{target}")[1].split("```")
@@ -344,3 +368,5 @@ class CodeTranslator(Chat):
                 },
             ]
             self.messages = initial_messages
+            if self.model in ANTHROPIC_AVAILABLE_MODELS:
+                self.messages = []

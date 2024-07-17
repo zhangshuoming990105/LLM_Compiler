@@ -10,7 +10,6 @@ from pipe_prompt import pipeline_prompts, direct_prompts
 from openai import OpenAI
 
 from utils import get_env
-from logging_config import configure_logging
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -233,7 +232,7 @@ def main(argv):
             os.chdir(temp_dir)
         log_file = os.path.join(log_dir, f"{temp_name}.log")
 
-    configure_logging(log_file)
+    logging.basicConfig(filename=log_file, level=logging.INFO)
     logging.info("Start time: " + str(datetime.datetime.now()))
     input_files = []
     for f in args.input_files:
