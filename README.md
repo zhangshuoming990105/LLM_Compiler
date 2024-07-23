@@ -86,5 +86,18 @@ output: assembly code
 
 
 
+# Thinking: What this work does?
+
+1. Enabling LLM to compile on code through compiler-knowledge-guided steps design.
+2. A first attempt and evaluation on most powerful LLMs on a vast low level code processing tasks,
+including code compilation, assembly decompilation, code optimization and error fixing.
+3. The above evaluation shows potential for LLMs to generate valid and correct unoptimized code,
+through our steps design, we improve the behavioral accuracy on code compilation for C-x86 on ExeBench, from 60% to over 90%,
+similar results for C-arm compilation.
+however, when dealing with optimizations, LLMs are struggling. We report this as LLMs internal pitfalls,
+including: arithemetic simplification, float value representation, and registers spilling.
+
+
+
 
 
