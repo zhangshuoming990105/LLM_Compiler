@@ -25,7 +25,7 @@ def log_decompile_failed(
     failed_c_ref.append(c_code)
 
 
-def c_decompiler(begin_id=0, end_id=100, use_short_prompt=False, model="gpt-4o"):
+def c_decompiler(begin_id=0, end_id=100, use_short_prompt=False, model="gpt-4o", test_O3=False):
     decompiler = Decompiler(model)
 
     # ds = load_dataset("jordiae/exebench")["train_real_simple_io"]
@@ -45,10 +45,12 @@ def c_decompiler(begin_id=0, end_id=100, use_short_prompt=False, model="gpt-4o")
             id = 0
             x86_id = None
             for name in e["asm"]["target"]:
-                if name == "real_gcc_x86_O0":
+                if name == "real_gcc_x86_O3" and test_O3:
                     x86_id = id
-                # elif name == "real_gcc_arm_O0":
-                #     arm_id = id
+                    break
+                elif (name == "real_gcc_x86_O0" and not test_O3):
+                    x86_id = id
+                    break
                 else:
                     id += 1
             if x86_id == None:
@@ -325,10 +327,11 @@ def main(model="gpt-4o", use_log=False, cleanup=False):
         logging.basicConfig(filename=log_file, level=logging.INFO)
     else:
         logging.basicConfig(level=logging.INFO)
-    c_decompiler(0, 25, False, model=model)
+    c_decompiler(187, 188, False, model=model, test_O3=True)
     if cleanup:
         workspace_clear(sandbox_dir, log_dir)
 
 
 if __name__ == "__main__":
-    main(model="claude-3-haiku-20240307", use_log=True, cleanup=False)
+    main(model="gpt-4o", use_log=True, cleanup=False)
+    # main(model="claude-3-haiku-20240307", use_log=True, cleanup=False)

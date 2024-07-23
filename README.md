@@ -98,6 +98,17 @@ however, when dealing with optimizations, LLMs are struggling. We report this as
 including: arithemetic simplification, float value representation, and registers spilling.
 
 
+# AddUp: More than forward compiler, also decompiler and code translator
 
+Zero-Shot flexibility is the most advanced part comparing to SFT method
+We can further utilize the LLM with RAG-based and tool-based methods. Like Llama-index.
 
+# Finally, in this work, we contributes to:
+
+- a methodology following the standard compilation pipeline to utilize foundation LLMs to achieve SOTA performance in neural code compilation, decompilation and translations.
+- a Retrieval Augmented Generation framework that automatically utilizing external knowledge related to the translation itself, the framework further dramastically enhances the model's ability on non-pretrained languages.
+- an automatic error-fixing mechanism to further improve the translation quality based on execution feedback.
+- The evaluation of our work establishing a benchmark for LLMs in low level code understanding and capability in translations. We investigate advanced LLMs like GPT-4o, Claude-3.5-sonnet, Llama-3-70b, Mixtral-8x22b, and their older models, where a strong improvement trend is found and characterized.
+
+# Takeaway and Findings: Foundation models can outperform SFTed models with advanced RAG support in low level code translation.
 

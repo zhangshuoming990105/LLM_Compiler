@@ -16,6 +16,7 @@ GPT_AVAILABLE_MODELS = [
     "gpt-3.5-turbo",
     "gpt-4-turbo",
     "gpt-4o",
+    "gpt-4o-mini",
 ]
 
 ANTHROPIC_AVAILABLE_MODELS = [

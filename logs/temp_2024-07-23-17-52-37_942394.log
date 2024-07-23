@@ -1,0 +1,181 @@
+INFO:root:x86 code :
+.globl TLAString_toDouble
+.type TLAString_toDouble, @function
+TLAString_toDouble:
+.LFB23:
+	.cfi_startproc
+	endbr64
+	movzbl	(%rdi), %ecx
+	leal	-43(%rcx), %edx
+	movsbl	%cl, %eax
+	andl	$253, %edx
+	jne	.L2
+	movsbl	1(%rdi), %eax
+	addq	$1, %rdi
+.L2:
+	pxor	%xmm0, %xmm0
+	testb	%al, %al
+	je	.L3
+	cmpb	$46, %al
+	je	.L3
+	movsd	.LC2(%rip), %xmm4
+	movss	.LC3(%rip), %xmm3
+	.p2align 4,,10
+	.p2align 3
+.L4:
+	pxor	%xmm1, %xmm1
+	movapd	%xmm0, %xmm2
+	pxor	%xmm0, %xmm0
+	addq	$1, %rdi
+	cvtsi2ssl	%eax, %xmm1
+	mulsd	%xmm4, %xmm2
+	movsbl	(%rdi), %eax
+	subss	%xmm3, %xmm1
+	cvtss2sd	%xmm1, %xmm0
+	addsd	%xmm2, %xmm0
+	testb	%al, %al
+	je	.L3
+	cmpb	$46, %al
+	jne	.L4
+.L25:
+	movsbl	1(%rdi), %eax
+	leaq	1(%rdi), %rdx
+	testb	%al, %al
+	je	.L6
+	movss	.LC1(%rip), %xmm4
+	movss	.LC3(%rip), %xmm3
+	movaps	%xmm4, %xmm2
+	.p2align 4,,10
+	.p2align 3
+.L7:
+	pxor	%xmm1, %xmm1
+	addq	$1, %rdx
+	cvtsi2ssl	%eax, %xmm1
+	movsbl	(%rdx), %eax
+	subss	%xmm3, %xmm1
+	divss	%xmm2, %xmm1
+	mulss	%xmm4, %xmm2
+	cvtss2sd	%xmm1, %xmm1
+	addsd	%xmm1, %xmm0
+	testb	%al, %al
+	jne	.L7
+.L6:
+	cmpb	$45, %cl
+	je	.L28
+.L1:
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L3:
+	cmpb	$46, %al
+	je	.L25
+	cmpb	$45, %cl
+	jne	.L1
+.L28:
+	xorpd	.LC4(%rip), %xmm0
+	ret
+	.cfi_endproc
+.LC4: 	.long	0
+.LC2: 	.long	0
+.LC3: 	.long	1111490560
+.LC1: 	.long	1092616192
+
+INFO:root:ref C code :
+#include <stdio.h>	//FILE*
+
+#include <time.h>	//clock_t, clock()
+
+double TLAString_toDouble(const char* string){
+ const char sign= (*string);
+ double value = 0;
+ if(sign=='-' || sign=='+') string++;
+
+ while((*string)!='\0' && (*string)!='.'){
+  value = (value * 10.0f) + ((*string) - 48.0f);
+  string++;
+ }
+
+ if((*string)=='.'){
+  float factorDivisor = 10.0f;
+  string++;
+  while((*string)!='\0'){
+   value += (((*string) - 48.0f) / factorDivisor);
+   factorDivisor *= 10.0f;
+   string++;
+  }
+ }
+
+ if(sign=='-') value = -value;
+
+ return value;
+}
+INFO:root:current LLM prompt size: 1227
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+double TLAString_toDouble(const char *str) {
+    double result = 0.0;
+    int sign = 1;
+    int integerPart = 0;
+    double fractionPart = 0.0;
+    double fractionMultiplier = 0.1;
+
+    // Check for negative sign
+    if (*str == '-') {
+        sign = -1;
+        str++;
+    }
+
+    // Process integer part
+    while (*str >= '0' && *str <= '9') {
+        integerPart = integerPart * 10 + (*str - '0');
+        str++;
+    }
+
+    // Process fractional part if present
+    if (*str == '.') {
+        str++;
+        while (*str >= '0' && *str <= '9') {
+            fractionPart += (*str - '0') * fractionMultiplier;
+            fractionMultiplier *= 0.1;
+            str++;
+        }
+    }
+
+    result = integerPart + fractionPart;
+    return sign * result;
+}
+
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 6.847745703179758e+17, 'string': 'nixcitwfgzwnxbdrc'}
+hyp: {'returnv': 0.0, 'string': 'nixcitwfgzwnxbdrc'}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': 7.087733925621895e+30, 'string': 'qcvvrsnqtuqreekmgfhzbwikcxdosj'}
+hyp: {'returnv': 0.0, 'string': 'qcvvrsnqtuqreekmgfhzbwikcxdosj'}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': 5.835588916068034e+21, 'string': 'cslbednqkqbmoslcihogk'}
+hyp: {'returnv': 0.0, 'string': 'cslbednqkqbmoslcihogk'}
+WARNING:root:input 4 mismatched!
+ref: {'returnv': 6690.0, 'string': 'kyl'}
+hyp: {'returnv': 0.0, 'string': 'kyl'}
+WARNING:root:input 5 mismatched!
+ref: {'returnv': 7.640703957353091e+26, 'string': 'uspkzhxvcjahoxoytzfdxpocvz'}
+hyp: {'returnv': 0.0, 'string': 'uspkzhxvcjahoxoytzfdxpocvz'}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': 5.957414060455792e+31, 'string': 'elbspryvfjjvdefoqfybcaoerkotquq'}
+hyp: {'returnv': 0.0, 'string': 'elbspryvfjjvdefoqfybcaoerkotquq'}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': 5.736818973595581e+18, 'string': 'btccredwijzbanfqxh'}
+hyp: {'returnv': 0.0, 'string': 'btccredwijzbanfqxh'}
+WARNING:root:input 8 mismatched!
+ref: {'returnv': 6783564.0, 'string': 'ndjalp'}
+hyp: {'returnv': 0.0, 'string': 'ndjalp'}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': 81878220272.0, 'string': 'zwvwqqormn'}
+hyp: {'returnv': 0.0, 'string': 'zwvwqqormn'}
+INFO:root:Local error rate: 90.0%
+INFO:root:CASE 187 failed
+INFO:root:Done
+INFO:root:Passed cases: []
+INFO:root:Failed cases: [187]
+INFO:root:Pass rate: 0.0%

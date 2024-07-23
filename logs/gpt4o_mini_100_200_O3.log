@@ -1,0 +1,5873 @@
+INFO:root:x86 code :
+.globl gcd
+.type gcd, @function
+gcd:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	%edi, %ecx
+	movl	%edi, %eax
+	movl	%esi, %edx
+	sarl	$31, %ecx
+	xorl	%ecx, %eax
+	subl	%ecx, %eax
+	movl	%esi, %ecx
+	sarl	$31, %ecx
+	xorl	%ecx, %edx
+	subl	%ecx, %edx
+	cmpl	%eax, %edx
+	jle	.L2
+	movl	%eax, %ecx
+	movl	%edx, %eax
+	movl	%ecx, %edx
+.L2:
+	testl	%edx, %edx
+	je	.L5
+	.p2align 4,,10
+	.p2align 3
+.L4:
+	movl	%edx, %r8d
+	cltd
+	idivl	%r8d
+	movl	%r8d, %eax
+	testl	%edx, %edx
+	jne	.L4
+	movl	%r8d, %eax
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L5:
+	movl	%eax, %r8d
+	movl	%r8d, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int gcd(int a,int b) {
+    int r;
+
+    if(a<0) {
+        a=-a;
+    }
+    if(b<0) {
+        b=-b;
+    }
+
+    if(b>a) {
+        int tmp=a;
+        a=b;
+        b=tmp;
+    }
+# 36 "/scratch/repos/new/home/jordi_armengol_estape/c-scraper/outputs/2022-01-22/02-19-57/repos/yigezhe/algorithm-summary/refs/heads/master/math/gcd/gcd_idea2_way2.c"
+    while (b != 0) {
+        r = a % b;
+        a = b;
+        b = r;
+    }
+    return a;
+}
+INFO:root:current LLM prompt size: 821
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int gcd(int a, int b) {
+    if (a < 0) a = -a;
+    if (b < 0) b = -b;
+
+    if (a < b) {
+        int temp = a;
+        a = b;
+        b = temp;
+    }
+
+    while (b != 0) {
+        int temp = b;
+        b = a % b;
+        a = temp;
+    }
+
+    return a;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 100 succeeded
+INFO:root:x86 code :
+.globl MungeHexDigit
+.type MungeHexDigit, @function
+MungeHexDigit:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movzbl	(%rdi), %edx
+	leal	-48(%rdx), %eax
+	cmpb	$9, %al
+	jbe	.L1
+	leal	-65(%rdx), %eax
+	cmpb	$5, %al
+	ja	.L4
+	leal	-55(%rdx), %eax
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L4:
+	movl	$-1, %eax
+.L1:
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+
+
+
+
+char MungeHexDigit(char* one_hexdigit)
+{
+ char r = -1;
+ char c = *one_hexdigit;
+ if (c >= '0' && c <= '9')
+ {
+  r = c - '0';
+ }
+ else if (c >= 'A' && c <= 'F')
+ {
+  r = c - 'A' + 10;
+ }
+ else if (c >= 'a' && c <= 'F')
+ {
+  r = c - 'a' + 10;
+ }
+
+ return r;
+}
+INFO:root:current LLM prompt size: 672
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int MungeHexDigit(char hexDigit) {
+    unsigned char digit = (unsigned char)hexDigit;
+    digit -= 48; // Convert ASCII to integer
+
+    if (digit <= 9) {
+        return digit; // Return the integer value for '0' to '9'
+    } else if (digit >= 10 && digit <= 15) {
+        return digit - 55; // Convert 'A' to 'F' to integer values 10 to 15
+    } else {
+        return -1; // Return -1 for invalid hex digit
+    }
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 101 succeeded
+INFO:root:x86 code :
+.globl mmr_diverse
+.type mmr_diverse, @function
+mmr_diverse:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	xorl	%eax, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int mmr_diverse (int q_no, int number_of_preresults, int number_of_results) {
+
+
+    return 0;
+}
+INFO:root:current LLM prompt size: 569
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+void mmr_diverse() {
+    return;
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 82}
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 24}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 43}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 101}
+WARNING:root:input 4 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 23}
+WARNING:root:input 5 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 93}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 66}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 18}
+WARNING:root:input 8 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 77}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 125}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 102 failed
+INFO:root:x86 code :
+.globl rgb2Int
+.type rgb2Int, @function
+rgb2Int:
+.LFB39:
+	.cfi_startproc
+	endbr64
+	sall	$16, %edi
+	movzbl	%dl, %edx
+	sall	$8, %esi
+	andl	$16711680, %edi
+	movzwl	%si, %eax
+	orl	%edx, %edi
+	orl	%eax, %edi
+	movl	%edi, %eax
+	orl	$-16777216, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdlib.h>
+
+#include <stdio.h>
+
+#include <math.h>
+
+int rgb2Int(const int r, const int g, const int b) {
+ int tr = (r << 16) & 0x00FF0000;
+ int tg = (g << 8) & 0x0000FF00;
+ int tb = b & 0x000000FF;
+
+ return 0xFF000000 | tr | tg | tb;
+}
+INFO:root:current LLM prompt size: 641
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int rgb2Int(unsigned char r, unsigned char g, unsigned char b) {
+    return (r << 16) | (g << 8) | b | 0xFF000000;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 103 succeeded
+INFO:root:x86 code :
+.globl min
+.type min, @function
+min:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	cmpl	%esi, %edi
+	movl	%esi, %eax
+	cmovle	%edi, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int min(int valor1, int valor2)
+{
+ if(valor1 < valor2)
+  return valor1;
+ else
+  return valor2;
+}
+INFO:root:current LLM prompt size: 575
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int min(int a, int b) {
+    return (b <= a) ? b : a;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 104 succeeded
+INFO:root:x86 code :
+.globl spook_log_deinit
+.type spook_log_deinit, @function
+spook_log_deinit:
+.LFB51:
+	.cfi_startproc
+	endbr64
+	xorl	%eax, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <unistd.h>
+
+#include <stdarg.h>
+
+#include <time.h>
+
+#include <pthread.h>
+
+int spook_log_deinit()
+{
+
+
+
+    return 0;
+}
+INFO:root:current LLM prompt size: 566
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+void spook_log_deinit() {
+    // This function does nothing and returns immediately.
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 16425}
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 13582}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 13227}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 12991}
+WARNING:root:input 4 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 13133}
+WARNING:root:input 5 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 12999}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 13004}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 13108}
+WARNING:root:input 8 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 12784}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 12958}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 105 failed
+INFO:root:x86 code :
+.globl PicoGetHashTableSize
+.type PicoGetHashTableSize, @function
+PicoGetHashTableSize:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	$7919, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int PicoGetHashTableSize( void ){
+ return 7919;
+}
+INFO:root:current LLM prompt size: 569
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int PicoGetHashTableSize() {
+    return 7919;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 106 succeeded
+INFO:root:x86 code :
+.globl f7c
+.type f7c, @function
+f7c:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	$1, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int f7c(int *p) {
+
+  p = (void*) 0;
+  return 1;
+}
+INFO:root:current LLM prompt size: 562
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int f7c() {
+    return 1;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 107 succeeded
+INFO:root:x86 code :
+.globl game_of_life
+.type game_of_life, @function
+game_of_life:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+void game_of_life(int** board, int N, int M, int steps, int** final_board) {
+}
+INFO:root:current LLM prompt size: 553
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+void game_of_life() {
+    // Function does nothing
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 108 succeeded
+INFO:root:x86 code :
+.globl doubleSize
+.type doubleSize, @function
+doubleSize:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	$8, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int doubleSize() {
+ double doubArray[10];
+ double * doubPtr1;
+ double * doubPtr2;
+
+ return (long)(doubArray+1)+(~(long)doubArray+1);
+}
+INFO:root:current LLM prompt size: 559
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int doubleSize() {
+    return 8;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 109 succeeded
+INFO:root:x86 code :
+.globl function
+.type function, @function
+function:
+.LFB23:
+	.cfi_startproc
+	endbr64
+	cmpl	$11, %esi
+	ja	.L2
+	leaq	.L4(%rip), %rdx
+	movl	%esi, %esi
+	movslq	(%rdx,%rsi,4), %rax
+	addq	%rdx, %rax
+	notrack jmp	*%rax
+	.section	.rodata
+	.align 4
+	.align 4
+.L4:
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L5-.L4
+	.long	.L2-.L4
+	.long	.L7-.L4
+	.long	.L2-.L4
+	.long	.L7-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L7-.L4
+	.long	.L2-.L4
+	.long	.L7-.L4
+	.text
+	.p2align 4,,10
+	.p2align 3
+.L7:
+	movl	$30, %eax
+.L1:
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L2:
+	movl	$31, %eax
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L5:
+	testb	$3, %dil
+	jne	.L6
+	imull	$-1030792151, %edi, %edx
+	movl	$29, %eax
+	addl	$85899344, %edx
+	rorl	$2, %edx
+	cmpl	$42949672, %edx
+	ja	.L1
+.L6:
+	imull	$-1030792151, %edi, %edi
+	xorl	%eax, %eax
+	addl	$85899344, %edi
+	rorl	$4, %edi
+	cmpl	$10737419, %edi
+	setb	%al
+	addl	$28, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+int function(int x, int y)
+{
+ switch (y) {
+  case 2:
+   if ((x % 4 == 0 && x % 100 != 0) || x % 400 == 0) {
+    return 29;
+   } else {
+    return 28;
+   }
+  case 4:
+  case 6:
+  case 9:
+  case 11:
+   return 30;
+  default:
+   return 31;
+ }
+}
+INFO:root:current LLM prompt size: 985
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int function(int index) {
+    if (index > 11) {
+        return 31;
+    }
+
+    switch (index) {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+            return 30;
+        case 11:
+            // Additional logic for case 11
+            if (index & 3) {
+                int result = -1030792151 * index;
+                result += 85899344;
+                result >>= 2;
+                if (result > 42949672) {
+                    return 30;
+                }
+            } else {
+                int result = -1030792151 * index;
+                result += 85899344;
+                result >>= 4;
+                if (result < 10737419) {
+                    return 0;
+                }
+                return result + 28;
+            }
+            break;
+    }
+    return 31; // Default return for safety
+}
+
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 31}
+hyp: {'returnv': 30}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': 31}
+hyp: {'returnv': 30}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': 30}
+hyp: {'returnv': 31}
+INFO:root:Local error rate: 30.0%
+INFO:root:CASE 110 failed
+INFO:root:x86 code :
+.globl g3
+.type g3, @function
+g3:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	$4, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int g3 () { return 4; }
+INFO:root:current LLM prompt size: 559
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int g3() {
+    return 4;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 111 succeeded
+INFO:root:x86 code :
+.globl SER_GetChar
+.type SER_GetChar, @function
+SER_GetChar:
+.LFB17:
+	.cfi_startproc
+	endbr64
+	movl	$-1, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <sys/stat.h>
+
+#include <string.h>
+
+#include <errno.h>
+
+int SER_GetChar (void) {
+
+  return (-1);
+}
+INFO:root:current LLM prompt size: 563
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int SER_GetChar() {
+    return -1;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 112 succeeded
+INFO:root:x86 code :
+.globl factorial
+.type factorial, @function
+factorial:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	$1, %r8d
+	testl	%edi, %edi
+	jle	.L1
+	movslq	%edi, %rdx
+	leal	-1(%rdi), %ecx
+	movl	$1, %r8d
+	leaq	-1(%rdx), %rax
+	movq	%rax, %rsi
+	subq	%rcx, %rsi
+	movq	%rsi, %rcx
+	jmp	.L4
+	.p2align 4,,10
+	.p2align 3
+.L6:
+	subq	$1, %rax
+.L4:
+	imulq	%rdx, %r8
+	movq	%rax, %rdx
+	cmpq	%rcx, %rax
+	jne	.L6
+.L1:
+	movq	%r8, %rax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+long
+factorial( int n )
+{
+ if( n <= 0 )
+  return 1;
+ else
+  return n * factorial( n - 1 );
+}
+INFO:root:current LLM prompt size: 743
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+#include <stdint.h>
+
+uint64_t factorial(int n) {
+    if (n <= 1) {
+        return 1;
+    }
+    uint64_t result = 1;
+    for (int i = n; i > 1; i--) {
+        result *= i;
+    }
+    return result;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 113 succeeded
+INFO:root:x86 code :
+.globl isnum
+.type isnum, @function
+isnum:
+.LFB41:
+	.cfi_startproc
+	endbr64
+	movzbl	(%rdi), %eax
+	testb	%al, %al
+	je	.L4
+	addq	$1, %rdi
+	jmp	.L3
+	.p2align 4,,10
+	.p2align 3
+.L8:
+	movzbl	(%rdi), %eax
+	addq	$1, %rdi
+	testb	%al, %al
+	je	.L4
+.L3:
+	subl	$48, %eax
+	cmpb	$9, %al
+	jbe	.L8
+	xorl	%eax, %eax
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L4:
+	movl	$1, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <time.h>
+
+#include <stdlib.h>
+
+#include <limits.h>
+
+#include <ctype.h>
+
+int isnum(char *c) {
+ int i = 0;
+
+ while( *(c + i) != '\0' ) {
+  if ( !(*(c + i) >= 48 && *(c + i) <= 57) )
+   break;
+  else
+   i++;
+ }
+ if ( *(c + i) == '\0' )
+  return 1;
+ else
+  return 0;
+}
+INFO:root:current LLM prompt size: 715
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int isnum(const char *str) {
+    while (*str) {
+        if (*str < '0' || *str > '9') {
+            return 0; // Not a number
+        }
+        str++;
+    }
+    return 1; // Is a number
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 114 succeeded
+INFO:root:x86 code :
+.globl my_str_cmp
+.type my_str_cmp, @function
+my_str_cmp:
+.LFB23:
+	.cfi_startproc
+	endbr64
+	movzbl	(%rdi), %edx
+	movzbl	(%rsi), %ecx
+	movl	$1, %eax
+	cmpb	%dl, %cl
+	je	.L2
+	jmp	.L3
+	.p2align 4,,10
+	.p2align 3
+.L16:
+	testb	%cl, %cl
+	je	.L15
+	movzbl	(%rdi,%rax), %edx
+	addq	$1, %rax
+	movzbl	-1(%rsi,%rax), %ecx
+	cmpb	%cl, %dl
+	jne	.L3
+.L2:
+	testb	%dl, %dl
+	jne	.L16
+.L4:
+	xorl	%eax, %eax
+	testb	%cl, %cl
+	sete	%al
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L3:
+	xorl	%eax, %eax
+	testb	%dl, %dl
+	je	.L4
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L15:
+	xorl	%eax, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+int my_str_cmp (const char s1[], const char s2[])
+{
+    int i = 0;
+    int are_equal = 0;
+
+    while ( s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0' ) {
+        ++i;
+    }
+
+    if ( s1[i] == '\0' && s2[i] == '\0' ) {
+        are_equal = 1;
+    }
+
+    return are_equal;
+}
+INFO:root:current LLM prompt size: 816
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+#include <stdbool.h>
+
+int my_str_cmp(const char *str1, const char *str2) {
+    int index = 0;
+    unsigned char char1, char2;
+
+    while (true) {
+        char1 = str1[index];
+        char2 = str2[index];
+
+        if (char1 != char2) {
+            return 0; // Strings are not equal
+        }
+
+        if (char1 == '\0') {
+            return 1; // Strings are equal
+        }
+
+        index++;
+    }
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 115 succeeded
+INFO:root:x86 code :
+.globl mini18n_set_log
+.type mini18n_set_log, @function
+mini18n_set_log:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	xorl	%eax, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+
+
+
+int mini18n_set_log(const char * filename) {
+# 172 "/scratch/repos/new/home/jordi_armengol_estape/c-scraper/outputs/2022-01-22/02-19-57/repos/EmulatorArchive/yabause-rr/refs/heads/master/src/windows/mini18n/mini18n.c"
+ return 0;
+}
+INFO:root:current LLM prompt size: 569
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+void mini18n_set_log() {
+    // This function does nothing and returns immediately.
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'filename': 'hjsryzwcwalquucyccnoqnziwaxpk', 'returnv': 0}
+hyp: {'filename': 'hjsryzwcwalquucyccnoqnziwaxpk', 'returnv': 559964704}
+WARNING:root:input 1 mismatched!
+ref: {'filename': 'asjcnavh', 'returnv': 0}
+hyp: {'filename': 'asjcnavh', 'returnv': 585129968}
+WARNING:root:input 2 mismatched!
+ref: {'filename': 'xbthgxjuchvyuahcwtoloyrzyszq', 'returnv': 0}
+hyp: {'filename': 'xbthgxjuchvyuahcwtoloyrzyszq', 'returnv': 1138778368}
+WARNING:root:input 3 mismatched!
+ref: {'filename': 'ychcog', 'returnv': 0}
+hyp: {'filename': 'ychcog', 'returnv': 1440767984}
+WARNING:root:input 4 mismatched!
+ref: {'filename': 'koafqeqzsohplygprzuhszzembsbx', 'returnv': 0}
+hyp: {'filename': 'koafqeqzsohplygprzuhszzembsbx', 'returnv': 912286240}
+WARNING:root:input 5 mismatched!
+ref: {'filename': 'xlosqodbevacbvieud', 'returnv': 0}
+hyp: {'filename': 'xlosqodbevacbvieud', 'returnv': 887120128}
+WARNING:root:input 6 mismatched!
+ref: {'filename': 'nlprjvvlkcgktknuti', 'returnv': 0}
+hyp: {'filename': 'nlprjvvlkcgktknuti', 'returnv': 1021337856}
+WARNING:root:input 7 mismatched!
+ref: {'filename': 'lepvudiqfhdtzdsyntj', 'returnv': 0}
+hyp: {'filename': 'lepvudiqfhdtzdsyntj', 'returnv': 1314939136}
+WARNING:root:input 8 mismatched!
+ref: {'filename': 'oqwtbckcjecuhqr', 'returnv': 0}
+hyp: {'filename': 'oqwtbckcjecuhqr', 'returnv': 836788656}
+WARNING:root:input 9 mismatched!
+ref: {'filename': 'toiyvlxezk', 'returnv': 0}
+hyp: {'filename': 'toiyvlxezk', 'returnv': 1189109744}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 116 failed
+INFO:root:x86 code :
+.globl cut
+.type cut, @function
+cut:
+.LFB39:
+	.cfi_startproc
+	endbr64
+	movl	%edi, %eax
+	andl	$1, %edi
+	shrl	%eax
+	cmpl	$1, %edi
+	sbbl	$-1, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <stdbool.h>
+
+#include <time.h>
+
+unsigned int cut( unsigned int length ) {
+ if (length % 2 == 0)
+  return length/2;
+ else
+  return length/2 + 1;
+}
+INFO:root:current LLM prompt size: 590
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int cut(int n) {
+    return (n >> 1) - (n & 1);
+}
+
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 130}
+hyp: {'returnv': 128}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': 319}
+hyp: {'returnv': 317}
+WARNING:root:input 5 mismatched!
+ref: {'returnv': 286}
+hyp: {'returnv': 284}
+WARNING:root:input 8 mismatched!
+ref: {'returnv': 169}
+hyp: {'returnv': 167}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': 469}
+hyp: {'returnv': 467}
+INFO:root:Local error rate: 50.0%
+INFO:root:CASE 117 failed
+INFO:root:x86 code :
+.globl lowbit
+.type lowbit, @function
+lowbit:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	%edi, %eax
+	negl	%eax
+	andl	%edi, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int lowbit(int x) {
+    return x & (-x);
+}
+INFO:root:current LLM prompt size: 574
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int lowbit(int n) {
+    return n & -n;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 118 succeeded
+INFO:root:x86 code :
+.globl magic
+.type magic, @function
+magic:
+.LFB39:
+	.cfi_startproc
+	endbr64
+	movl	%edi, %eax
+	cmpl	$1, %edi
+	jle	.L6
+	cmpl	$1, %esi
+	jg	.L4
+	jmp	.L6
+	.p2align 4,,10
+	.p2align 3
+.L10:
+	cmpl	$1, %eax
+	je	.L9
+.L4:
+	cmpl	%esi, %eax
+	jge	.L3
+	movl	%eax, %edx
+	movl	%esi, %eax
+	movl	%edx, %esi
+.L3:
+	cltd
+	idivl	%esi
+	testl	%edx, %edx
+	je	.L10
+.L6:
+	xorl	%eax, %eax
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L9:
+	movl	%esi, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdbool.h>
+
+#include <stdlib.h>
+
+#include <limits.h>
+
+#include <assert.h>
+
+int magic(int a, int b) {
+
+ if (a < 2 || b < 2) return 0;
+ int r;
+ while (1) {
+  if (b > a) {
+   r = a;
+   a = b;
+   b = r;
+  }
+  r = a%b;
+  a /= b;
+  if (r) return 0;
+  else if (a == 1) return b;
+ }
+}
+INFO:root:current LLM prompt size: 742
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int magic(int a, int b) {
+    if (a <= 1) {
+        return 0;
+    }
+    if (b <= 1) {
+        return a;
+    }
+    
+    while (a > 1) {
+        if (a < b) {
+            int temp = a;
+            a = b;
+            b = temp;
+        }
+        a = a / b;
+    }
+    
+    return b;
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 68}
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 72}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 61}
+WARNING:root:input 4 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 8}
+WARNING:root:input 5 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 29}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 3}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 2}
+WARNING:root:input 8 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 124}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 2}
+INFO:root:Local error rate: 90.0%
+INFO:root:CASE 119 failed
+INFO:root:x86 code :
+.globl do_642
+.type do_642, @function
+do_642:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	$642, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int do_642() { return 642; }
+INFO:root:current LLM prompt size: 562
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int do_642() {
+    return 642;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 120 succeeded
+INFO:root:x86 code :
+.globl color_char_to_attr
+.type color_char_to_attr, @function
+color_char_to_attr:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	subl	$66, %edi
+	movl	$-1, %eax
+	cmpb	$55, %dil
+	ja	.L1
+	movzbl	%dil, %edi
+	leaq	CSWTCH.1(%rip), %rax
+	movsbl	(%rax,%rdi), %eax
+.L1:
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int color_char_to_attr(char c)
+{
+ switch (c)
+ {
+ case 'd':
+  return (0);
+ case 'w':
+  return (1);
+ case 's':
+  return (2);
+ case 'o':
+  return (3);
+ case 'r':
+  return (4);
+ case 'g':
+  return (5);
+ case 'b':
+  return (6);
+ case 'u':
+  return (7);
+
+ case 'D':
+  return (8);
+ case 'W':
+  return (9);
+ case 'v':
+  return (10);
+ case 'y':
+  return (11);
+ case 'R':
+  return (12);
+ case 'G':
+  return (13);
+ case 'B':
+  return (14);
+ case 'U':
+  return (15);
+ }
+
+ return ( -1);
+}
+INFO:root:current LLM prompt size: 633
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int color_char_to_attr(unsigned char c) {
+    c -= 66; // Subtract 66 from the input character
+    int result = -1; // Initialize result to -1
+    if (c > 55) {
+        return result; // If c is greater than 55, return -1
+    }
+    result = (int)(unsigned char)c; // Convert c to an unsigned char and assign to result
+    return (int)CSWTCH[result]; // Return the value from the CSWTCH array at index result
+}
+
+WARNING:root:CASE 121 failed to compile the decompiled code!
+WARNING:root:ret.stderr: disassembled.c: In function 'color_char_to_attr':
+disassembled.c:9:17: error: 'CSWTCH' undeclared (first use in this function)
+    9 |     return (int)CSWTCH[result]; // Return the value from the CSWTCH array at index result
+      |                 ^~~~~~
+disassembled.c:9:17: note: each undeclared identifier is reported only once for each function it appears in
+
+WARNING:root:ret.stdout: 
+INFO:root:x86 code :
+.globl fortranflush_
+.type fortranflush_, @function
+fortranflush_:
+.LFB39:
+	.cfi_startproc
+	endbr64
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+void fortranflush_(int* rank){}
+INFO:root:current LLM prompt size: 554
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+void fortranflush_() {
+    // This function does nothing and simply returns.
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 122 succeeded
+INFO:root:x86 code :
+.globl do_053
+.type do_053, @function
+do_053:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	$53, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int do_053() { return 53; }
+INFO:root:current LLM prompt size: 562
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int do_053() {
+    return 53;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 123 succeeded
+INFO:root:x86 code :
+.globl same_coordinate
+.type same_coordinate, @function
+same_coordinate:
+.LFB39:
+	.cfi_startproc
+	endbr64
+	testl	%edx, %edx
+	jle	.L4
+	leal	-1(%rdx), %ecx
+	xorl	%eax, %eax
+	jmp	.L3
+	.p2align 4,,10
+	.p2align 3
+.L8:
+	leaq	1(%rax), %rdx
+	cmpq	%rcx, %rax
+	je	.L4
+	movq	%rdx, %rax
+.L3:
+	movl	(%rsi,%rax,4), %edx
+	cmpl	%edx, (%rdi,%rax,4)
+	je	.L8
+	xorl	%eax, %eax
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L4:
+	movl	$1, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <math.h>
+
+int same_coordinate(int* coor1, int* coor2, int d)
+{
+    int i;
+    for(i = 0; i < d; i++)
+ if(coor1[i] != coor2[i])
+     return 0;
+    return 1;
+}
+INFO:root:current LLM prompt size: 729
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int same_coordinate(int* arr1, int* arr2, int length) {
+    if (length <= 0) {
+        return 1;
+    }
+    
+    int index = -1;
+    int i = 0;
+
+    while (1) {
+        index++;
+        if (index >= length) {
+            break;
+        }
+        
+        if (arr1[index] == arr2[index]) {
+            continue;
+        } else {
+            return 0;
+        }
+    }
+    
+    return 1;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 124 succeeded
+INFO:root:x86 code :
+.globl oakley_get_defaultlifetime
+.type oakley_get_defaultlifetime, @function
+oakley_get_defaultlifetime:
+.LFB53:
+	.cfi_startproc
+	endbr64
+	movl	$28800, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <sys/types.h>
+
+#include <sys/param.h>
+
+#include <sys/socket.h>
+
+#include <netinet/in.h>
+
+#include <stdlib.h>
+
+#include <stdio.h>
+
+#include <string.h>
+
+#include <errno.h>
+
+int
+oakley_get_defaultlifetime()
+{
+ return 28800;
+}
+INFO:root:current LLM prompt size: 570
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int oakley_get_defaultlifetime() {
+    return 28800;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 125 succeeded
+INFO:root:x86 code :
+.globl buffer_overflow
+.type buffer_overflow, @function
+buffer_overflow:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	subq	$56, %rsp
+	.cfi_def_cfa_offset 64
+	movq	%fs:40, %rax
+	movq	%rax, 40(%rsp)
+	xorl	%eax, %eax
+	movl	400(%rsp), %eax
+	movq	40(%rsp), %rdx
+	xorq	%fs:40, %rdx
+	jne	.L5
+	addq	$56, %rsp
+	.cfi_remember_state
+	.cfi_def_cfa_offset 8
+	ret
+.L5:
+	.cfi_restore_state
+	call	__stack_chk_fail@PLT
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int buffer_overflow() { int x[10]={0}; return x[100]; }
+INFO:root:current LLM prompt size: 686
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void __stack_chk_fail(void) {
+    fprintf(stderr, "Stack smashing detected\n");
+    exit(EXIT_FAILURE);
+}
+
+void buffer_overflow() {
+    // Local variables and buffer would be declared here
+    // Example: char buffer[50];
+
+    // Simulating the stack protection mechanism
+    unsigned long canary = *((unsigned long *)0x40); // Example address for canary
+    unsigned long local_canary = 0; // This would be set to the canary value at function entry
+
+    // Check for stack corruption
+    if (canary != local_canary) {
+        __stack_chk_fail();
+    }
+
+    // Function logic would go here
+
+    return;
+}
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 126
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 1 in case 126
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 2 in case 126
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 3 in case 126
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 4 in case 126
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 5 in case 126
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 6 in case 126
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 7 in case 126
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 8 in case 126
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 9 in case 126
+                        stdout: 
+                        stderr: 
+                    
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 126 failed
+INFO:root:x86 code :
+.globl month
+.type month, @function
+month:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	8(%rdi), %eax
+	leal	(%rax,%rax,4), %edx
+	movl	12(%rdi), %eax
+	leal	(%rax,%rdx,2), %eax
+	leal	-21(%rax), %edx
+	cmpl	$11, %edx
+	jbe	.L3
+	cmpl	$11, %eax
+	jle	.L3
+	subl	$41, %eax
+	cmpl	$12, %eax
+	setbe	%al
+	movzbl	%al, %eax
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L3:
+	movl	$1, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int month(int *n)
+{int month;
+int flag=0;
+month=n[2]*10+n[3];
+if( (month<12) ||(month>=21 &&month<=32)||(month>=41 && month<=53))
+{flag=1;}
+return flag;
+}
+INFO:root:current LLM prompt size: 704
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int month(int* data) {
+    int value1 = data[2]; // 8(%rdi)
+    int value2 = value1 * 5; // leal (%rax,%rax,4), %edx
+    int value3 = data[3]; // 12(%rdi)
+    int result = value3 + value2 * 2; // leal (%rax,%rdx,2), %eax
+    result -= 21; // leal -21(%rax), %edx
+
+    if (result <= 11) {
+        return 1;
+    }
+    if (result <= value3) {
+        return 1;
+    }
+    result -= 41; // subl $41, %eax
+    return (result <= 12) ? 1 : 0; // setbe %al and return
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 127 succeeded
+INFO:root:x86 code :
+.globl readc_utf8
+.type readc_utf8, @function
+readc_utf8:
+.LFB52:
+	.cfi_startproc
+	endbr64
+	pushq	%r14
+	.cfi_def_cfa_offset 16
+	.cfi_offset 14, -16
+	movq	%rsi, %r14
+	pushq	%r13
+	.cfi_def_cfa_offset 24
+	.cfi_offset 13, -24
+	pushq	%r12
+	.cfi_def_cfa_offset 32
+	.cfi_offset 12, -32
+	pushq	%rbp
+	.cfi_def_cfa_offset 40
+	.cfi_offset 6, -40
+	xorl	%ebp, %ebp
+	pushq	%rbx
+	.cfi_def_cfa_offset 48
+	.cfi_offset 3, -48
+	movl	%edi, %ebx
+	subq	$16, %rsp
+	.cfi_def_cfa_offset 64
+	movq	%fs:40, %rax
+	movq	%rax, 8(%rsp)
+	xorl	%eax, %eax
+	leaq	7(%rsp), %r13
+.L2:
+	movl	%eax, %r12d
+	.p2align 4,,10
+	.p2align 3
+.L15:
+	movl	$1, %edx
+	movq	%r13, %rsi
+	movl	%ebx, %edi
+	call	read@PLT
+	testl	%eax, %eax
+	je	.L22
+	cmpl	$-1, %eax
+	je	.L17
+	movzbl	7(%rsp), %eax
+	movl	%eax, %edx
+	andl	$-4, %edx
+	cmpb	$-4, %dl
+	je	.L23
+	movl	%eax, %edx
+	andl	$-8, %edx
+	cmpb	$-8, %dl
+	je	.L24
+	movl	%eax, %edx
+	andl	$-16, %edx
+	cmpb	$-16, %dl
+	je	.L25
+	movl	%eax, %edx
+	andl	$-32, %edx
+	cmpb	$-32, %dl
+	je	.L26
+	movl	%eax, %edx
+	andl	$-64, %edx
+	cmpb	$-64, %dl
+	je	.L27
+	testb	%al, %al
+	js	.L28
+	movzbl	%al, %ebp
+.L12:
+	leal	-1(%r12), %eax
+	testl	%r12d, %r12d
+	jne	.L2
+	movl	%ebp, (%r14)
+	movl	$1, %eax
+.L1:
+	movq	8(%rsp), %rcx
+	xorq	%fs:40, %rcx
+	jne	.L29
+	addq	$16, %rsp
+	.cfi_remember_state
+	.cfi_def_cfa_offset 48
+	popq	%rbx
+	.cfi_def_cfa_offset 40
+	popq	%rbp
+	.cfi_def_cfa_offset 32
+	popq	%r12
+	.cfi_def_cfa_offset 24
+	popq	%r13
+	.cfi_def_cfa_offset 16
+	popq	%r14
+	.cfi_def_cfa_offset 8
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L23:
+	.cfi_restore_state
+	movl	%eax, %ebp
+	movl	$4, %r12d
+	andl	$1, %ebp
+	jmp	.L15
+	.p2align 4,,10
+	.p2align 3
+.L24:
+	movl	%eax, %ebp
+	movl	$3, %r12d
+	andl	$3, %ebp
+	jmp	.L15
+	.p2align 4,,10
+	.p2align 3
+.L25:
+	movl	%eax, %ebp
+	movl	$2, %r12d
+	andl	$7, %ebp
+	jmp	.L15
+	.p2align 4,,10
+	.p2align 3
+.L26:
+	movl	%eax, %ebp
+	movl	$1, %r12d
+	andl	$15, %ebp
+	jmp	.L15
+	.p2align 4,,10
+	.p2align 3
+.L27:
+	movl	%eax, %ebp
+	xorl	%r12d, %r12d
+	andl	$31, %ebp
+	jmp	.L15
+	.p2align 4,,10
+	.p2align 3
+.L28:
+	sall	$6, %ebp
+	andl	$63, %eax
+	orl	%eax, %ebp
+	jmp	.L12
+	.p2align 4,,10
+	.p2align 3
+.L22:
+	movl	$-1, (%r14)
+	movl	$1, %eax
+	jmp	.L1
+	.p2align 4,,10
+	.p2align 3
+.L17:
+	xorl	%eax, %eax
+	jmp	.L1
+.L29:
+	call	__stack_chk_fail@PLT
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <ctype.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <unistd.h>
+
+int readc_utf8(int fd, int *res)
+{
+    unsigned int n = 0;
+    int expect = 1;
+
+    while (expect--) {
+        unsigned char ch;
+        int len;
+
+        if ((len = read(fd, &ch, 1)) == 0) {
+            *res = EOF;
+            return 1;
+        }
+
+        if (len == -1)
+            return 0;
+
+        if ((ch & 0b11111100) == 0b11111100) {
+            n = ch & 0b00000001;
+            expect = 5;
+        }
+        else if ((ch & 0b11111000) == 0b11111000) {
+            n = ch & 0b00000011;
+            expect = 4;
+        }
+        else if ((ch & 0b11110000) == 0b11110000) {
+            n = ch & 0b00000111;
+            expect = 3;
+        }
+        else if ((ch & 0b11100000) == 0b11100000) {
+            n = ch & 0b00001111;
+            expect = 2;
+        }
+        else if ((ch & 0b11000000) == 0b11000000) {
+            n = ch & 0b00011111;
+            expect = 1;
+        }
+        else if ((ch & 0b10000000) == 0b10000000) {
+            n <<= 6;
+            n |= ch & 0b00111111;
+        }
+        else {
+            n = ch;
+        }
+    }
+
+    *res = (int)n;
+    return 1;
+}
+INFO:root:current LLM prompt size: 1720
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+#include <stdint.h>
+
+int readc_utf8(int fd, int *result) {
+    int bytesRead = 0;
+    int state = 0;
+    uint8_t byte;
+
+    while (1) {
+        bytesRead = read(fd, &byte, 1);
+        if (bytesRead <= 0) {
+            *result = -1;
+            return 1; // Error or end of input
+        }
+
+        // Check the number of bytes in the UTF-8 character
+        if ((byte & 0x80) == 0) {
+            // 1-byte character
+            *result = byte;
+            return 1;
+        } else if ((byte & 0xE0) == 0xC0) {
+            // 2-byte character
+            state = 1;
+            *result = byte & 0x1F;
+        } else if ((byte & 0xF0) == 0xE0) {
+            // 3-byte character
+            state = 2;
+            *result = byte & 0x0F;
+        } else if ((byte & 0xF8) == 0xF0) {
+            // 4-byte character
+            state = 3;
+            *result = byte & 0x07;
+        } else {
+            // Invalid byte
+            *result = -1;
+            return 1;
+        }
+
+        // Read continuation bytes
+        for (int i = 0; i < state; i++) {
+            bytesRead = read(fd, &byte, 1);
+            if (bytesRead <= 0) {
+                *result = -1;
+                return 1; // Error or end of input
+            }
+            if ((byte & 0xC0) != 0x80) {
+                // Invalid continuation byte
+                *result = -1;
+                return 1;
+            }
+            *result = (*result << 6) | (byte & 0x3F);
+        }
+
+        return 1; // Successfully read a UTF-8 character
+    }
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'EOF': -1, 'res': [52, 17, 93, 99, 106, 18, 48, 18, 24, 70, 77, 108, 17, 7, 108, 63, 125, 52, 9, 72, 100, 119, 25, 84, 119, 71, 92, 48, 18, 102, 116, 126], 'returnv': 0}
+hyp: {'EOF': -1, 'res': [-1, 17, 93, 99, 106, 18, 48, 18, 24, 70, 77, 108, 17, 7, 108, 63, 125, 52, 9, 72, 100, 119, 25, 84, 119, 71, 92, 48, 18, 102, 116, 126], 'returnv': 1}
+WARNING:root:input 1 mismatched!
+ref: {'EOF': -1, 'res': [38, 78, 10, 95, 63, 18, 71, 13, 113, 5, 76, 121, 108, 68, 58, 94, 89, 4, 1, 63, 59, 45, 43, 105, 87, 56, 118, 95, 76, 108, 78, 117], 'returnv': 0}
+hyp: {'EOF': -1, 'res': [-1, 78, 10, 95, 63, 18, 71, 13, 113, 5, 76, 121, 108, 68, 58, 94, 89, 4, 1, 63, 59, 45, 43, 105, 87, 56, 118, 95, 76, 108, 78, 117], 'returnv': 1}
+WARNING:root:input 2 mismatched!
+ref: {'EOF': -1, 'res': [82, 109, 70, 36, 85, 17, 58, 98, 112, 53, 38, 125, 93, 122, 116, 40, 61, 60, 79, 34, 4, 42, 15, 74, 48, 77, 43, 33, 4, 16, 84, 23], 'returnv': 0}
+hyp: {'EOF': -1, 'res': [-1, 109, 70, 36, 85, 17, 58, 98, 112, 53, 38, 125, 93, 122, 116, 40, 61, 60, 79, 34, 4, 42, 15, 74, 48, 77, 43, 33, 4, 16, 84, 23], 'returnv': 1}
+WARNING:root:input 3 mismatched!
+ref: {'EOF': -1, 'res': [31, 31, 67, 42, 40, 45, 100, 78, 50, 51, 59, 100, 93, 16, 78, 32, 35, 82, 83, 119, 86, 1, 88, 15, 124, 37, 107, 59, 14, 122, 31, 75], 'returnv': 0}
+hyp: {'EOF': -1, 'res': [-1, 31, 67, 42, 40, 45, 100, 78, 50, 51, 59, 100, 93, 16, 78, 32, 35, 82, 83, 119, 86, 1, 88, 15, 124, 37, 107, 59, 14, 122, 31, 75], 'returnv': 1}
+WARNING:root:input 4 mismatched!
+ref: {'EOF': -1, 'res': [98, 53, 46, 38, 54, 44, 89, 82, 18, 23, 8, 0, 58, 48, 3, 110, 63, 23, 57, 60, 74, 95, 103, 15, 98, 84, 86, 119, 67, 13, 45, 49], 'returnv': 0}
+hyp: {'EOF': -1, 'res': [-1, 53, 46, 38, 54, 44, 89, 82, 18, 23, 8, 0, 58, 48, 3, 110, 63, 23, 57, 60, 74, 95, 103, 15, 98, 84, 86, 119, 67, 13, 45, 49], 'returnv': 1}
+WARNING:root:input 5 mismatched!
+ref: {'EOF': -1, 'res': [67, 20, 84, 118, 63, 96, 44, 14, 75, 77, 107, 120, 121, 32, 108, 87, 67, 111, 52, 51, 48, 3, 56, 68, 36, 1, 13, 98, 13, 17, 43, 126], 'returnv': 0}
+hyp: {'EOF': -1, 'res': [-1, 20, 84, 118, 63, 96, 44, 14, 75, 77, 107, 120, 121, 32, 108, 87, 67, 111, 52, 51, 48, 3, 56, 68, 36, 1, 13, 98, 13, 17, 43, 126], 'returnv': 1}
+WARNING:root:input 6 mismatched!
+ref: {'EOF': -1, 'res': [67, 122, 66, 87, 72, 108, 80, 125, 36, 66, 91, 126, 71, 124, 70, 16, 32, 9, 5, 36, 38, 26, 89, 64, 90, 76, 121, 27, 96, 116, 58, 17], 'returnv': 0}
+hyp: {'EOF': -1, 'res': [-1, 122, 66, 87, 72, 108, 80, 125, 36, 66, 91, 126, 71, 124, 70, 16, 32, 9, 5, 36, 38, 26, 89, 64, 90, 76, 121, 27, 96, 116, 58, 17], 'returnv': 1}
+WARNING:root:input 7 mismatched!
+ref: {'EOF': -1, 'res': [96, 3, 10, 32, 61, 41, 60, 10, 91, 78, 7, 9, 77, 10, 0, 110, 89, 25, 63, 126, 103, 57, 10, 50, 0, 69, 80, 34, 73, 124, 35, 99], 'returnv': 0}
+hyp: {'EOF': -1, 'res': [-1, 3, 10, 32, 61, 41, 60, 10, 91, 78, 7, 9, 77, 10, 0, 110, 89, 25, 63, 126, 103, 57, 10, 50, 0, 69, 80, 34, 73, 124, 35, 99], 'returnv': 1}
+WARNING:root:input 8 mismatched!
+ref: {'EOF': -1, 'res': [112, 78, 21, 8, 36, 29, 112, 80, 59, 4, 75, 39, 90, 21, 31, 118, 83, 97, 46, 24, 67, 14, 123, 83, 24, 114, 106, 83, 30, 24, 98, 38], 'returnv': 0}
+hyp: {'EOF': -1, 'res': [-1, 78, 21, 8, 36, 29, 112, 80, 59, 4, 75, 39, 90, 21, 31, 118, 83, 97, 46, 24, 67, 14, 123, 83, 24, 114, 106, 83, 30, 24, 98, 38], 'returnv': 1}
+WARNING:root:input 9 mismatched!
+ref: {'EOF': -1, 'res': [13, 27, 121, 90, 111, 95, 66, 56, 126, 79, 126, 68, 6, 111, 12, 60, 100, 14, 1, 28, 47, 54, 104, 26, 5, 71, 21, 22, 125, 120, 101, 120], 'returnv': 0}
+hyp: {'EOF': -1, 'res': [-1, 27, 121, 90, 111, 95, 66, 56, 126, 79, 126, 68, 6, 111, 12, 60, 100, 14, 1, 28, 47, 54, 104, 26, 5, 71, 21, 22, 125, 120, 101, 120], 'returnv': 1}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 128 failed
+INFO:root:x86 code :
+.globl maximum
+.type maximum, @function
+maximum:
+.LFB50:
+	.cfi_startproc
+	endbr64
+	cmpl	%esi, %edi
+	movl	%esi, %eax
+	cmovge	%edi, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+int maximum(int a, int b) {
+    if (a < b) {
+        return b;
+    } else {
+        return a;
+    }
+}
+INFO:root:current LLM prompt size: 575
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int maximum(int a, int b) {
+    return (b >= a) ? b : a;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 129 succeeded
+INFO:root:x86 code :
+.globl v2
+.type v2, @function
+v2:
+.LFB23:
+	.cfi_startproc
+	endbr64
+	leal	1(%rdi), %eax
+	imull	%eax, %edi
+	movl	%edi, %eax
+	shrl	$31, %eax
+	addl	%edi, %eax
+	sarl	%eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+int v2(int n){
+ return n*(n+1)/2;
+}
+INFO:root:current LLM prompt size: 604
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int v2(int n) {
+    n = n + 1; // leal 1(%rdi), %eax
+    n = n * n; // imull %eax, %edi
+    int result = n; // movl %edi, %eax
+    result = result >> 31; // shrl $31, %eax
+    result += n; // addl %edi, %eax
+    result = result >> 1; // sarl %eax
+    return result; // ret
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'returnv': 4656}
+hyp: {'returnv': 4704}
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 4278}
+hyp: {'returnv': 4324}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': 3570}
+hyp: {'returnv': 3612}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': 465}
+hyp: {'returnv': 480}
+WARNING:root:input 4 mismatched!
+ref: {'returnv': 120}
+hyp: {'returnv': 128}
+WARNING:root:input 5 mismatched!
+ref: {'returnv': 946}
+hyp: {'returnv': 968}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': 903}
+hyp: {'returnv': 924}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': 6670}
+hyp: {'returnv': 6728}
+WARNING:root:input 8 mismatched!
+ref: {'returnv': 4753}
+hyp: {'returnv': 4802}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': 666}
+hyp: {'returnv': 684}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 130 failed
+INFO:root:x86 code :
+.globl sign
+.type sign, @function
+sign:
+.LFB24:
+	.cfi_startproc
+	endbr64
+	xorl	%eax, %eax
+	testl	%edi, %edi
+	movl	$-1, %edx
+	setne	%al
+	cmovs	%edx, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <sys/cdefs.h>
+
+#include <curses.h>
+
+#include <signal.h>
+
+#include <unistd.h>
+
+int
+sign(int n)
+{
+ if (n < 0)
+  return -1;
+ else if (n > 0)
+  return 1;
+ else
+  return 0;
+}
+INFO:root:current LLM prompt size: 592
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int sign(int n) {
+    if (n > 0) {
+        return 1;
+    } else if (n < 0) {
+        return -1;
+    } else {
+        return 0;
+    }
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 131 succeeded
+INFO:root:x86 code :
+.globl imm_deref
+.type imm_deref, @function
+imm_deref:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	testq	%rdi, %rdi
+	je	.L3
+	xorl	%eax, %eax
+	cmpl	$4, (%rdi)
+	setg	%al
+	sall	$2, %eax
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L3:
+	xorl	%eax, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int imm_deref(int *p)
+{
+  if (p && *p > 4) return 4;
+  else return 0;
+}
+INFO:root:current LLM prompt size: 636
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int imm_deref(int *ptr) {
+    if (ptr == NULL) {
+        return 0;
+    }
+    return (*(ptr) > 4) ? 1 : 0;
+}
+
+WARNING:root:CASE 132 failed to compile the decompiled code!
+WARNING:root:ret.stderr: disassembled.c: In function 'imm_deref':
+disassembled.c:3:16: error: 'NULL' undeclared (first use in this function)
+    3 |     if (ptr == NULL) {
+      |                ^~~~
+disassembled.c:1:1: note: 'NULL' is defined in header '<stddef.h>'; did you forget to '#include <stddef.h>'?
+  +++ |+#include <stddef.h>
+    1 | 
+disassembled.c:3:16: note: each undeclared identifier is reported only once for each function it appears in
+    3 |     if (ptr == NULL) {
+      |                ^~~~
+
+WARNING:root:ret.stdout: 
+INFO:root:x86 code :
+.globl f2
+.type f2, @function
+f2:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	$2147483647, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <limits.h>
+
+int f2()
+{
+  return (int)(float)(2147483647);
+}
+INFO:root:current LLM prompt size: 562
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int f2() {
+    return 2147483647;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 133 succeeded
+INFO:root:x86 code :
+.globl do_472
+.type do_472, @function
+do_472:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	$472, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int do_472() { return 472; }
+INFO:root:current LLM prompt size: 562
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int do_472() {
+    return 472;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 134 succeeded
+INFO:root:x86 code :
+.globl hell1
+.type hell1, @function
+hell1:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	$1, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int hell1() { return 1; }
+INFO:root:current LLM prompt size: 559
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int hell1() {
+    return 1;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 135 succeeded
+INFO:root:x86 code :
+.globl swap5
+.type swap5, @function
+swap5:
+.LFB39:
+	.cfi_startproc
+	endbr64
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+void swap5 (int * a, int * b)
+{
+  int k = a;
+  a = b;
+  b = k;
+}
+INFO:root:current LLM prompt size: 550
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+void swap5() {
+    // This function does nothing and simply returns.
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 136 succeeded
+INFO:root:x86 code :
+.globl power
+.type power, @function
+power:
+.LFB39:
+	.cfi_startproc
+	endbr64
+	movl	$1, %eax
+	testl	%esi, %esi
+	je	.L4
+	.p2align 4,,10
+	.p2align 3
+.L3:
+	imull	%edi, %eax
+	subl	$1, %esi
+	jne	.L3
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L4:
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+unsigned int power(int x, unsigned int k)
+{
+    return k == 0 ? 1 : x * power(x, k - 1);
+}
+INFO:root:current LLM prompt size: 635
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int power(int base, int exp) {
+    int result = 1;
+    if (exp == 0) {
+        return result;
+    }
+    while (exp > 0) {
+        result *= base;
+        exp--;
+    }
+    return result;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 137 succeeded
+INFO:root:x86 code :
+.globl is_device_mounted
+.type is_device_mounted, @function
+is_device_mounted:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	xorl	%eax, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int is_device_mounted(const char *path)
+{
+# 331 "/scratch/repos/new/home/jordi_armengol_estape/c-scraper/outputs/2022-01-22/02-19-57/repos/luisbg/befstools/refs/heads/master/src/device_info.c"
+    (void) path;
+    return 0;
+}
+INFO:root:current LLM prompt size: 566
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int is_device_mounted() {
+    return 0; // Indicates that the device is not mounted
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 138 succeeded
+INFO:root:x86 code :
+.globl zeta
+.type zeta, @function
+zeta:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movapd	%xmm0, %xmm1
+	movsd	.LC0(%rip), %xmm0
+	subsd	%xmm1, %xmm0
+	addsd	%xmm0, %xmm0
+	addsd	%xmm1, %xmm0
+	ret
+	.cfi_endproc
+.LC0: 	.long	0
+
+INFO:root:ref C code :
+
+double zeta(double phi) {
+  return((1.0)*phi + (2.0)*(1.0-phi));
+}
+INFO:root:current LLM prompt size: 618
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+double zeta(double x) {
+    return 2 * (0.0 - x) + x;
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'returnv': -46.8121616177}
+hyp: {'returnv': -48.8121616177}
+WARNING:root:input 1 mismatched!
+ref: {'returnv': -43.0668793282}
+hyp: {'returnv': -45.0668793282}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': -24.1958608933}
+hyp: {'returnv': -26.1958608933}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': -78.8855821412}
+hyp: {'returnv': -80.8855821412}
+WARNING:root:input 4 mismatched!
+ref: {'returnv': -88.5560104668}
+hyp: {'returnv': -90.5560104668}
+WARNING:root:input 5 mismatched!
+ref: {'returnv': -11.7948362267}
+hyp: {'returnv': -13.7948362267}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': -41.113133806}
+hyp: {'returnv': -43.113133806}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': -42.2071196293}
+hyp: {'returnv': -44.2071196293}
+WARNING:root:input 8 mismatched!
+ref: {'returnv': -47.5177353255}
+hyp: {'returnv': -49.5177353255}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': -55.5915298571}
+hyp: {'returnv': -57.5915298571}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 139 failed
+INFO:root:x86 code :
+.globl check_header
+.type check_header, @function
+check_header:
+.LFB50:
+	.cfi_startproc
+	endbr64
+	movzbl	(%rsi), %eax
+	cmpb	%al, (%rdi)
+	sete	%al
+	movzbl	%al, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+int check_header(char *header, char *firstline) {
+    if (*header == *firstline)
+        return 1;
+    else {
+        return 0;
+    }
+}
+INFO:root:current LLM prompt size: 588
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+#include <stdint.h>
+
+int check_header(uint8_t *header, uint8_t *data) {
+    return (*header == *data);
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 140 succeeded
+INFO:root:x86 code :
+.globl ti_sinh_start
+.type ti_sinh_start, @function
+ti_sinh_start:
+.LFB27:
+	.cfi_startproc
+	endbr64
+	xorl	%eax, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <math.h>
+
+#include <assert.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+int ti_sinh_start(double const *options) { (void)options; return 0; }
+INFO:root:current LLM prompt size: 566
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+void ti_sinh_start() {
+    return;
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'options': [63.1664629532, 53.8432270291, 6.48958563204, 82.3780599705, 7.86720313195, 3.60690076621, 71.4442128238, 90.1457109628, 50.0953836783, 18.9550651736, 59.8197567057, 21.0440622698, 58.1956301899, 40.0060312095, 30.6763760093, 82.6307541147, 6.84077298235, 56.6857428277, 68.4175838525, 44.3474278673, 16.5436115215, 84.5942141899, 80.7243510944, 9.81804908777, 63.4862792986, 32.700041319, 30.4205673438, 55.8821808035, 22.1453112749, 43.5142463016, 11.9850186977, 0.311385900722], 'returnv': 0}
+hyp: {'options': [63.1664629532, 53.8432270291, 6.48958563204, 82.3780599705, 7.86720313195, 3.60690076621, 71.4442128238, 90.1457109628, 50.0953836783, 18.9550651736, 59.8197567057, 21.0440622698, 58.1956301899, 40.0060312095, 30.6763760093, 82.6307541147, 6.84077298235, 56.6857428277, 68.4175838525, 44.3474278673, 16.5436115215, 84.5942141899, 80.7243510944, 9.81804908777, 63.4862792986, 32.700041319, 30.4205673438, 55.8821808035, 22.1453112749, 43.5142463016, 11.9850186977, 0.311385900722], 'returnv': 1491099088}
+WARNING:root:input 1 mismatched!
+ref: {'options': [48.7438014786, 84.6590007197, 62.5406240241, 62.2698221249, 28.7954145576, 1.91212155389, 15.6369375404, 32.2966404702, 92.5688516807, 11.1814067844, 31.2253103522, 75.2409702995, 89.2611867795, 81.8943618205, 74.7127959521, 3.55764552413, 22.4907376402, 82.5060482874, 14.3248321739, 75.08249484, 61.5635244153, 12.423978839, 76.1051896752, 53.411980438, 84.2713187884, 99.8431049617, 56.414407569, 13.2702094662, 87.2300665248, 15.4839198725, 82.7360223394, 6.79404322601], 'returnv': 0}
+hyp: {'options': [48.7438014786, 84.6590007197, 62.5406240241, 62.2698221249, 28.7954145576, 1.91212155389, 15.6369375404, 32.2966404702, 92.5688516807, 11.1814067844, 31.2253103522, 75.2409702995, 89.2611867795, 81.8943618205, 74.7127959521, 3.55764552413, 22.4907376402, 82.5060482874, 14.3248321739, 75.08249484, 61.5635244153, 12.423978839, 76.1051896752, 53.411980438, 84.2713187884, 99.8431049617, 56.414407569, 13.2702094662, 87.2300665248, 15.4839198725, 82.7360223394, 6.79404322601], 'returnv': 1130388944}
+WARNING:root:input 2 mismatched!
+ref: {'options': [23.1934236912, 97.0069112645, 93.7115278708, 63.9995413953, 21.0826670454, 70.2432967862, 90.6252711733, 52.6796066205, 44.2074384975, 62.8755377618, 18.6629000683, 9.42595635854, 41.9511027508, 12.9782759037, 62.5789623019, 60.4717359823, 25.8967375903, 30.0327887276, 22.9215512832, 17.6567062793, 96.4687421319, 44.8195730397, 72.9979907564, 5.5209058319, 2.72242138504, 40.5228133396, 13.8305880064, 45.4775571504, 83.0060384843, 91.8364344258, 7.04587554214, 23.9920014743], 'returnv': 0}
+hyp: {'options': [23.1934236912, 97.0069112645, 93.7115278708, 63.9995413953, 21.0826670454, 70.2432967862, 90.6252711733, 52.6796066205, 44.2074384975, 62.8755377618, 18.6629000683, 9.42595635854, 41.9511027508, 12.9782759037, 62.5789623019, 60.4717359823, 25.8967375903, 30.0327887276, 22.9215512832, 17.6567062793, 96.4687421319, 44.8195730397, 72.9979907564, 5.5209058319, 2.72242138504, 40.5228133396, 13.8305880064, 45.4775571504, 83.0060384843, 91.8364344258, 7.04587554214, 23.9920014743], 'returnv': 1021337040}
+WARNING:root:input 3 mismatched!
+ref: {'options': [26.6361699833, 36.4387736626, 72.1005098501, 12.5063702728, 31.9924440288, 46.4852420452, 14.0633701944, 75.3128707144, 35.386354907, 63.7524932036, 80.1236600671, 58.0789295777, 32.1580264746, 64.9811293582, 7.95432803052, 27.9612769801, 27.0106516319, 95.2739172993, 51.7513197222, 37.6907364671, 32.7061115778, 51.2035293357, 90.004020896, 42.2055575158, 14.5686825268, 36.3213893785, 52.5136510606, 45.4016631215, 59.4638080884, 45.9729655659, 74.2704228312, 56.3515327316], 'returnv': 0}
+hyp: {'options': [26.6361699833, 36.4387736626, 72.1005098501, 12.5063702728, 31.9924440288, 46.4852420452, 14.0633701944, 75.3128707144, 35.386354907, 63.7524932036, 80.1236600671, 58.0789295777, 32.1580264746, 64.9811293582, 7.95432803052, 27.9612769801, 27.0106516319, 95.2739172993, 51.7513197222, 37.6907364671, 32.7061115778, 51.2035293357, 90.004020896, 42.2055575158, 14.5686825268, 36.3213893785, 52.5136510606, 45.4016631215, 59.4638080884, 45.9729655659, 74.2704228312, 56.3515327316], 'returnv': 1524653520}
+WARNING:root:input 4 mismatched!
+ref: {'options': [86.6199526854, 78.3308392659, 74.425723442, 25.7040766374, 53.3488154749, 51.8345962019, 64.1739072294, 97.0062059685, 81.7241791886, 78.5697991045, 3.26054125, 61.9952672074, 93.054701242, 99.2927522262, 55.8704694515, 46.1022481897, 88.9374803551, 44.9344931678, 93.6154129307, 31.3148204574, 23.995590476, 4.09242625371, 60.822928918, 9.60494486935, 69.4761977829, 37.6523360145, 50.154728803, 34.6050762743, 14.1778854464, 17.7602272272, 94.5682293086, 14.6345738059], 'returnv': 0}
+hyp: {'options': [86.6199526854, 78.3308392659, 74.425723442, 25.7040766374, 53.3488154749, 51.8345962019, 64.1739072294, 97.0062059685, 81.7241791886, 78.5697991045, 3.26054125, 61.9952672074, 93.054701242, 99.2927522262, 55.8704694515, 46.1022481897, 88.9374803551, 44.9344931678, 93.6154129307, 31.3148204574, 23.995590476, 4.09242625371, 60.822928918, 9.60494486935, 69.4761977829, 37.6523360145, 50.154728803, 34.6050762743, 14.1778854464, 17.7602272272, 94.5682293086, 14.6345738059], 'returnv': 1482710480}
+WARNING:root:input 5 mismatched!
+ref: {'options': [88.2683268045, 44.3813955601, 92.9617319212, 95.312655536, 98.1680469375, 14.9670370494, 48.3548783769, 27.5370715913, 44.44598022, 95.8981375147, 41.494618401, 25.5085794287, 94.5052266139, 23.3439198042, 35.6899553689, 64.208992178, 93.0951237485, 13.8683798959, 92.7729142556, 5.31130786645, 91.7843213816, 76.2035957166, 60.2592161892, 10.4439268455, 32.326162695, 78.4069647564, 73.3106910273, 26.4240872347, 50.24678482, 71.4740887915, 83.8595194078, 56.4085440333], 'returnv': 0}
+hyp: {'options': [88.2683268045, 44.3813955601, 92.9617319212, 95.312655536, 98.1680469375, 14.9670370494, 48.3548783769, 27.5370715913, 44.44598022, 95.8981375147, 41.494618401, 25.5085794287, 94.5052266139, 23.3439198042, 35.6899553689, 64.208992178, 93.0951237485, 13.8683798959, 92.7729142556, 5.31130786645, 91.7843213816, 76.2035957166, 60.2592161892, 10.4439268455, 32.326162695, 78.4069647564, 73.3106910273, 26.4240872347, 50.24678482, 71.4740887915, 83.8595194078, 56.4085440333], 'returnv': 845176272}
+WARNING:root:input 6 mismatched!
+ref: {'options': [25.3849621246, 90.9676813862, 37.802994371, 99.7269151747, 73.2192570469, 46.5818536774, 79.855640653, 26.4411316506, 86.2334368337, 80.3425777941, 30.0104447606, 77.0407399731, 14.193965401, 48.1117289643, 92.5760733219, 70.1769059145, 51.2831453103, 73.83460864, 15.3872366929, 79.0282702686, 90.9533914548, 80.9479903175, 77.6793305004, 1.0361655497, 56.6710341052, 45.1350250565, 55.4518238348, 33.2299646756, 50.6385388221, 55.9957160978, 60.8439739145, 99.3618444259], 'returnv': 0}
+hyp: {'options': [25.3849621246, 90.9676813862, 37.802994371, 99.7269151747, 73.2192570469, 46.5818536774, 79.855640653, 26.4411316506, 86.2334368337, 80.3425777941, 30.0104447606, 77.0407399731, 14.193965401, 48.1117289643, 92.5760733219, 70.1769059145, 51.2831453103, 73.83460864, 15.3872366929, 79.0282702686, 90.9533914548, 80.9479903175, 77.6793305004, 1.0361655497, 56.6710341052, 45.1350250565, 55.4518238348, 33.2299646756, 50.6385388221, 55.9957160978, 60.8439739145, 99.3618444259], 'returnv': 761290192}
+WARNING:root:input 7 mismatched!
+ref: {'options': [56.3113747165, 31.7890789488, 91.2218157196, 94.2114704838, 76.2958295397, 72.8852636575, 39.7304574881, 47.3609227125, 52.8875029305, 68.3843752915, 96.2546864537, 61.1163716447, 89.1187305198, 99.3925729097, 57.571673068, 0.188985541003, 57.5215454508, 63.8010484008, 88.8809415505, 54.1707399284, 60.5446897786, 64.4581373917, 55.161856902, 66.0592225509, 66.4873332396, 26.0968096164, 38.7698626421, 60.8623824553, 41.8910447, 50.1511770591, 38.5033742048, 5.14156920314], 'returnv': 0}
+hyp: {'options': [56.3113747165, 31.7890789488, 91.2218157196, 94.2114704838, 76.2958295397, 72.8852636575, 39.7304574881, 47.3609227125, 52.8875029305, 68.3843752915, 96.2546864537, 61.1163716447, 89.1187305198, 99.3925729097, 57.571673068, 0.188985541003, 57.5215454508, 63.8010484008, 88.8809415505, 54.1707399284, 60.5446897786, 64.4581373917, 55.161856902, 66.0592225509, 66.4873332396, 26.0968096164, 38.7698626421, 60.8623824553, 41.8910447, 50.1511770591, 38.5033742048, 5.14156920314], 'returnv': 1432378832}
+WARNING:root:input 8 mismatched!
+ref: {'options': [99.3881477041, 90.9540554304, 28.8722749745, 73.2643839461, 51.8808385646, 75.3724326147, 81.8056754369, 68.8773192525, 98.2316729557, 91.1494165031, 83.5530239236, 35.6632243934, 3.30368891984, 16.9108555976, 95.8658923354, 99.5054130263, 48.1364871919, 38.3960557927, 17.5343734907, 90.1193459377, 75.2992603929, 51.2232342211, 8.09642157002, 3.96414942097, 60.063696914, 41.7115674523, 5.49275248573, 66.4946514326, 12.708571742, 89.7265021762, 33.2767581798, 89.3873640082], 'returnv': 0}
+hyp: {'options': [99.3881477041, 90.9540554304, 28.8722749745, 73.2643839461, 51.8808385646, 75.3724326147, 81.8056754369, 68.8773192525, 98.2316729557, 91.1494165031, 83.5530239236, 35.6632243934, 3.30368891984, 16.9108555976, 95.8658923354, 99.5054130263, 48.1364871919, 38.3960557927, 17.5343734907, 90.1193459377, 75.2992603929, 51.2232342211, 8.09642157002, 3.96414942097, 60.063696914, 41.7115674523, 5.49275248573, 66.4946514326, 12.708571742, 89.7265021762, 33.2767581798, 89.3873640082], 'returnv': 702569936}
+WARNING:root:input 9 mismatched!
+ref: {'options': [64.1753600457, 63.3587827761, 7.51836265434, 46.8073423089, 15.4605562372, 70.3002729673, 87.8308190101, 51.7076112597, 71.9264477245, 84.7577865065, 11.3525390915, 94.8824413277, 45.7489833326, 64.1621456463, 25.7689393098, 48.8392293284, 84.3129800872, 7.6928368544, 6.32000694389, 0.84894150516, 59.0363845227, 90.2997697425, 45.7821331399, 11.5374946641, 48.2908225238, 68.3806252668, 82.6553245951, 61.0069545002, 82.4081357661, 27.0226241346, 89.2556716998, 79.8712610227], 'returnv': 0}
+hyp: {'options': [64.1753600457, 63.3587827761, 7.51836265434, 46.8073423089, 15.4605562372, 70.3002729673, 87.8308190101, 51.7076112597, 71.9264477245, 84.7577865065, 11.3525390915, 94.8824413277, 45.7489833326, 64.1621456463, 25.7689393098, 48.8392293284, 84.3129800872, 7.6928368544, 6.32000694389, 0.84894150516, 59.0363845227, 90.2997697425, 45.7821331399, 11.5374946641, 48.2908225238, 68.3806252668, 82.6553245951, 61.0069545002, 82.4081357661, 27.0226241346, 89.2556716998, 79.8712610227], 'returnv': 1298161104}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 141 failed
+INFO:root:x86 code :
+.globl getChar
+.type getChar, @function
+getChar:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	$110, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+char getChar(){
+    char ch;
+    ch='m';
+    return (ch+1);
+}
+INFO:root:current LLM prompt size: 559
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int getChar() {
+    return 110;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 142 succeeded
+INFO:root:x86 code :
+.globl do_908
+.type do_908, @function
+do_908:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	$908, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int do_908() { return 908; }
+INFO:root:current LLM prompt size: 562
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int do_908() {
+    return 908;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 143 succeeded
+INFO:root:x86 code :
+.globl cal
+.type cal, @function
+cal:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	leal	(%rdi,%rsi), %eax
+	imull	%esi, %edi
+	leal	(%rdi,%rax,2), %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int
+cal (int a, int b)
+{
+
+  int sum = a + b;
+  int sum1 = a * b;
+
+
+  return (a + b + sum + sum1);
+}
+INFO:root:current LLM prompt size: 585
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int cal(int rdi, int rsi) {
+    int eax = rdi + rsi;
+    rdi *= rsi;
+    return rdi + 2 * eax;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 144 succeeded
+INFO:root:x86 code :
+.globl put_len_utf8
+.type put_len_utf8, @function
+put_len_utf8:
+.LFB52:
+	.cfi_startproc
+	endbr64
+	movl	$1, %eax
+	cmpl	$127, %edi
+	jbe	.L1
+	movl	$2, %eax
+	cmpl	$2047, %edi
+	jbe	.L1
+	movl	$3, %eax
+	cmpl	$65535, %edi
+	jbe	.L1
+	movl	$4, %eax
+	cmpl	$2097151, %edi
+	jbe	.L1
+	movl	$5, %eax
+	cmpl	$67108863, %edi
+	jbe	.L1
+	movl	%edi, %eax
+	sarl	$31, %eax
+	notl	%eax
+	andl	$6, %eax
+.L1:
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <ctype.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <unistd.h>
+
+int put_len_utf8(int _ch)
+{
+    unsigned int ch = (unsigned int)_ch;
+    int len = 0;
+
+    if (ch <= 0x7F)
+        len = 1;
+    else if (ch <= 0x07FF)
+        len = 2;
+    else if (ch <= 0xFFFF)
+        len = 3;
+    else if (ch <= 0x01FFFFF)
+        len = 4;
+    else if (ch <= 0x03FFFFFF)
+        len = 5;
+    else if (ch <= 0x7FFFFFFF)
+        len = 6;
+
+    return len;
+}
+INFO:root:current LLM prompt size: 718
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int put_len_utf8(int codepoint) {
+    if (codepoint <= 127) {
+        return 1;
+    }
+    if (codepoint <= 2047) {
+        return 2;
+    }
+    if (codepoint <= 65535) {
+        return 3;
+    }
+    if (codepoint <= 2097151) {
+        return 4;
+    }
+    if (codepoint <= 67108863) {
+        return 5;
+    }
+    return (codepoint >> 31) ^ 6; // This line handles the case for codepoints greater than 67108863
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 145 succeeded
+INFO:root:x86 code :
+.globl b
+.type b, @function
+b:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	xorl	%eax, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int b() {return 0;}
+INFO:root:current LLM prompt size: 557
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int b() {
+    return 0;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 146 succeeded
+INFO:root:x86 code :
+.globl ft_isdigit
+.type ft_isdigit, @function
+ft_isdigit:
+.LFB11:
+	.cfi_startproc
+	endbr64
+	subl	$48, %edi
+	xorl	%eax, %eax
+	cmpl	$9, %edi
+	setbe	%al
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <string.h>
+
+int ft_isdigit(int c)
+{
+ if (c >= (int)'0' && c <= (int)'9')
+  return (1);
+ else
+  return (0);
+}
+INFO:root:current LLM prompt size: 587
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int ft_isdigit(int c) {
+    c -= 48; // Subtract 48 from the input character
+    return (c <= 9) ? 1 : 0; // Return 1 if c is between 0 and 9, otherwise return 0
+}
+
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 1}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 1}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 1}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 1}
+INFO:root:Local error rate: 40.0%
+INFO:root:CASE 147 failed
+INFO:root:x86 code :
+.globl cr_has_byte_in_string
+.type cr_has_byte_in_string, @function
+cr_has_byte_in_string:
+.LFB39:
+	.cfi_startproc
+	endbr64
+	.p2align 4,,10
+	.p2align 3
+.L3:
+	movzbl	(%rsi), %eax
+	addq	$1, %rsi
+	cmpb	%dil, %al
+	je	.L4
+	testb	%al, %al
+	jne	.L3
+	xorl	%eax, %eax
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L4:
+	movl	$1, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+int cr_has_byte_in_string(char byte, char *arg) {
+  int c;
+  c = -1;
+  while (0 != c) {
+    c = (int)*arg++;
+    if ((char)c == byte) {
+      return 1;
+    }
+  }
+  return 0;
+}
+INFO:root:current LLM prompt size: 670
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+#include <stdbool.h>
+
+bool cr_has_byte_in_string(const char *str, char byte) {
+    while (*str) {
+        if (*str == byte) {
+            return true;
+        }
+        str++;
+    }
+    return false;
+}
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 148
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 1 in case 148
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 2 in case 148
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 3 in case 148
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 4 in case 148
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 5 in case 148
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 6 in case 148
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 7 in case 148
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 8 in case 148
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 9 in case 148
+                        stdout: 
+                        stderr: 
+                    
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 148 failed
+INFO:root:x86 code :
+.globl mem_setoptions
+.type mem_setoptions, @function
+mem_setoptions:
+.LFB27:
+	.cfi_startproc
+	endbr64
+	xorl	%eax, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <stddef.h>  /* apparently needed to define size_t */
+
+int mem_setoptions(int options)
+{
+
+  options = 0;
+  return(options);
+}
+INFO:root:current LLM prompt size: 563
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+void mem_setoptions() {
+    // This function does nothing and returns immediately.
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 34}
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 2}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 100}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 27}
+WARNING:root:input 4 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 39}
+WARNING:root:input 5 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 28}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 8}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 30}
+WARNING:root:input 8 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 34}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 82}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 149 failed
+INFO:root:x86 code :
+.globl evaluation_avg
+.type evaluation_avg, @function
+evaluation_avg:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pxor	%xmm2, %xmm2
+	leal	1(%rdi), %eax
+	pxor	%xmm3, %xmm3
+	cvtsi2ssl	%edi, %xmm2
+	cvtsi2ssl	%eax, %xmm3
+	mulss	%xmm1, %xmm2
+	divss	%xmm3, %xmm0
+	divss	%xmm3, %xmm2
+	addss	%xmm2, %xmm0
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+
+
+
+
+
+
+
+
+
+float evaluation_avg(float new_val, float old_val, int i)
+{
+    return old_val * i / (i + 1) + new_val / (i + 1);
+}
+INFO:root:current LLM prompt size: 657
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+float evaluation_avg(int n) {
+    float sum = 0.0f;
+    int count = n + 1;
+    sum += (float)n * (float)n; // Assuming xmm1 contains n
+    return sum / count;
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'returnv': 33.417579650878906}
+hyp: {'returnv': 101.00971221923828}
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 93.84039306640625}
+hyp: {'returnv': 65.01492309570312}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': 96.72713470458984}
+hyp: {'returnv': 32.02941131591797}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': 25.14470672607422}
+hyp: {'returnv': 72.01351165771484}
+WARNING:root:input 4 mismatched!
+ref: {'returnv': 58.480186462402344}
+hyp: {'returnv': 49.01960754394531}
+WARNING:root:input 5 mismatched!
+ref: {'returnv': 55.718605041503906}
+hyp: {'returnv': 39.024391174316406}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': 65.00006103515625}
+hyp: {'returnv': 8.100000381469727}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': 89.02442932128906}
+hyp: {'returnv': 27.034482955932617}
+WARNING:root:input 8 mismatched!
+ref: {'returnv': 53.352867126464844}
+hyp: {'returnv': 49.01960754394531}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': 80.59648895263672}
+hyp: {'returnv': 52.01852035522461}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 150 failed
+INFO:root:x86 code :
+.globl fun
+.type fun, @function
+fun:
+.LFB23:
+	.cfi_startproc
+	endbr64
+	movl	(%rsi), %eax
+	addl	%edi, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+int fun(int x, int *p)
+{
+    return x + *p;
+}
+INFO:root:current LLM prompt size: 566
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int fun(int a, int *b) {
+    return a + *b;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 151 succeeded
+INFO:root:x86 code :
+.globl sgsXPC_SetCurrentDirectory
+.type sgsXPC_SetCurrentDirectory, @function
+sgsXPC_SetCurrentDirectory:
+.LFB16:
+	.cfi_startproc
+	endbr64
+	xorl	%eax, %eax
+	jmp	chdir@PLT
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdlib.h>
+
+#include <errno.h>
+
+int sgsXPC_SetCurrentDirectory( char* path )
+{
+# 235 "/scratch/repos/new/home/jordi_armengol_estape/c-scraper/outputs/2022-01-22/02-19-57/repos/snake5/sgscript/refs/heads/apidev/src/sgs_xpc.c"
+ return chdir( path );
+
+
+}
+INFO:root:current LLM prompt size: 581
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+#include <unistd.h>
+
+void sgsXPC_SetCurrentDirectory() {
+    chdir(""); // The function seems to call chdir without any arguments, which is not typical.
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 152 succeeded
+INFO:root:x86 code :
+.globl fname_last
+.type fname_last, @function
+fname_last:
+.LFB63:
+	.cfi_startproc
+	endbr64
+	movzbl	(%rdi), %eax
+	movq	%rdi, %r8
+	testb	%al, %al
+	je	.L1
+	.p2align 4,,10
+	.p2align 3
+.L4:
+	addq	$1, %rdi
+	cmpb	$47, %al
+	movzbl	(%rdi), %eax
+	cmove	%rdi, %r8
+	testb	%al, %al
+	jne	.L4
+.L1:
+	movq	%r8, %rax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <assert.h>
+
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <fcntl.h>
+
+#include <unistd.h>
+
+char *fname_last (char *ptr) {
+  char *s = ptr;
+  while (*ptr) {
+    if (*ptr++ == '/') {
+      s = ptr;
+    }
+  }
+  return s;
+}
+INFO:root:current LLM prompt size: 676
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+char* fname_last(char* str) {
+    char* last = str;
+    while (*str) {
+        if (*str == '/') {
+            last = str + 1;
+        }
+        str++;
+    }
+    return last;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 153 succeeded
+INFO:root:x86 code :
+.globl do_sum
+.type do_sum, @function
+do_sum:
+.LFB23:
+	.cfi_startproc
+	endbr64
+	testl	%edi, %edi
+	jle	.L8
+	leal	-1(%rdi), %eax
+	cmpl	$17, %eax
+	jbe	.L9
+	movl	%edi, %edx
+	movdqa	.LC0(%rip), %xmm1
+	xorl	%eax, %eax
+	pxor	%xmm0, %xmm0
+	movdqa	.LC1(%rip), %xmm3
+	shrl	$2, %edx
+	.p2align 4,,10
+	.p2align 3
+.L4:
+	movdqa	%xmm1, %xmm2
+	addl	$1, %eax
+	paddd	%xmm3, %xmm1
+	paddd	%xmm2, %xmm0
+	cmpl	%edx, %eax
+	jne	.L4
+	movdqa	%xmm0, %xmm1
+	movl	%edi, %edx
+	psrldq	$8, %xmm1
+	andl	$-4, %edx
+	paddd	%xmm1, %xmm0
+	movdqa	%xmm0, %xmm1
+	psrldq	$4, %xmm1
+	paddd	%xmm1, %xmm0
+	movd	%xmm0, %eax
+	testb	$3, %dil
+	je	.L13
+	.p2align 4,,10
+	.p2align 3
+.L7:
+	addl	%edx, %eax
+	addl	$1, %edx
+	cmpl	%edx, %edi
+	jg	.L7
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L13:
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L8:
+	xorl	%eax, %eax
+	ret
+.L9:
+	xorl	%eax, %eax
+	xorl	%edx, %edx
+	jmp	.L7
+	.cfi_endproc
+.LC0: 	.long	0
+.LC1: 	.long	4
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+int do_sum(int n)
+{
+    int i, sum;
+    sum = 0;
+    for(i=0;i<n;++i) {
+ sum += i;
+    }
+    return sum;
+
+}
+INFO:root:current LLM prompt size: 1010
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int do_sum(int n) {
+    if (n <= 0) {
+        return 0;
+    }
+    if (n <= 17) {
+        return 0; // This case corresponds to the behavior in the assembly code.
+    }
+
+    int sum = 0;
+    int count = 0;
+    int step = 4; // The value from .LC1 in the assembly code
+
+    for (int i = 0; i < (n - 1) / 4; i++) {
+        sum += step;
+        count += 1;
+    }
+
+    // Handle the remaining elements if n is not a multiple of 4
+    int remainder = n % 4;
+    if (remainder > 0) {
+        for (int i = count; i < n; i++) {
+            sum += i;
+        }
+    }
+
+    return sum;
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'returnv': 990}
+hyp: {'returnv': 979}
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 5050}
+hyp: {'returnv': 4850}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': 190}
+hyp: {'returnv': 16}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': 5671}
+hyp: {'returnv': 5450}
+WARNING:root:input 5 mismatched!
+ref: {'returnv': 3916}
+hyp: {'returnv': 3773}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': 6}
+hyp: {'returnv': 0}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': 2415}
+hyp: {'returnv': 2347}
+WARNING:root:input 8 mismatched!
+ref: {'returnv': 2211}
+hyp: {'returnv': 2155}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': 1081}
+hyp: {'returnv': 1070}
+INFO:root:Local error rate: 90.0%
+INFO:root:CASE 154 failed
+INFO:root:x86 code :
+.globl Heap_initialize
+.type Heap_initialize, @function
+Heap_initialize:
+.LFB50:
+	.cfi_startproc
+	endbr64
+	xorl	%eax, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <memory.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <stdio.h>
+
+int Heap_initialize()
+{
+ return 0;
+}
+INFO:root:current LLM prompt size: 560
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+void Heap_initialize() {
+    // This function does nothing and returns immediately.
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 20808}
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 15842}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 13969}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 12984}
+WARNING:root:input 4 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 13050}
+WARNING:root:input 5 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 13121}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 13287}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 14371}
+WARNING:root:input 8 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 14055}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 13601}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 155 failed
+INFO:root:x86 code :
+.globl ZopfliGetDistExtraBits
+.type ZopfliGetDistExtraBits, @function
+ZopfliGetDistExtraBits:
+.LFB39:
+	.cfi_startproc
+	endbr64
+	xorl	%eax, %eax
+	cmpl	$4, %edi
+	jle	.L1
+	movl	$1, %eax
+	cmpl	$8, %edi
+	jle	.L1
+	movl	$2, %eax
+	cmpl	$16, %edi
+	jle	.L1
+	movl	$3, %eax
+	cmpl	$32, %edi
+	jle	.L1
+	movl	$4, %eax
+	cmpl	$64, %edi
+	jle	.L1
+	movl	$5, %eax
+	cmpl	$128, %edi
+	jle	.L1
+	movl	$6, %eax
+	cmpl	$256, %edi
+	jle	.L1
+	movl	$7, %eax
+	cmpl	$512, %edi
+	jle	.L1
+	movl	$8, %eax
+	cmpl	$1024, %edi
+	jle	.L1
+	movl	$9, %eax
+	cmpl	$2048, %edi
+	jle	.L1
+	movl	$10, %eax
+	cmpl	$4096, %edi
+	jle	.L1
+	movl	$11, %eax
+	cmpl	$8192, %edi
+	jle	.L1
+	xorl	%eax, %eax
+	cmpl	$16384, %edi
+	setg	%al
+	addl	$12, %eax
+.L1:
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <assert.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+int ZopfliGetDistExtraBits(int dist) {
+  if (dist < 5) return 0;
+  else if (dist < 9) return 1;
+  else if (dist < 17) return 2;
+  else if (dist < 33) return 3;
+  else if (dist < 65) return 4;
+  else if (dist < 129) return 5;
+  else if (dist < 257) return 6;
+  else if (dist < 513) return 7;
+  else if (dist < 1025) return 8;
+  else if (dist < 2049) return 9;
+  else if (dist < 4097) return 10;
+  else if (dist < 8193) return 11;
+  else if (dist < 16385) return 12;
+  else return 13;
+}
+INFO:root:current LLM prompt size: 899
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int ZopfliGetDistExtraBits(int dist) {
+    if (dist <= 4) {
+        return 0;
+    }
+    if (dist <= 8) {
+        return 1;
+    }
+    if (dist <= 16) {
+        return 2;
+    }
+    if (dist <= 32) {
+        return 3;
+    }
+    if (dist <= 64) {
+        return 4;
+    }
+    if (dist <= 128) {
+        return 5;
+    }
+    if (dist <= 256) {
+        return 6;
+    }
+    if (dist <= 512) {
+        return 7;
+    }
+    if (dist <= 1024) {
+        return 8;
+    }
+    if (dist <= 2048) {
+        return 9;
+    }
+    if (dist <= 4096) {
+        return 10;
+    }
+    if (dist <= 8192) {
+        return 11;
+    }
+    return (dist > 16384) ? 12 : 0;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 156 succeeded
+INFO:root:x86 code :
+.globl testAll
+.type testAll, @function
+testAll:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	xorl	%eax, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <assert.h>
+
+int testAll(void){
+
+ return 0;
+}
+INFO:root:current LLM prompt size: 560
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+void testAll() {
+    // This function does nothing and returns immediately.
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 28601}
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 19211}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 15169}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 13805}
+WARNING:root:input 4 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 13170}
+WARNING:root:input 5 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 13540}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 13173}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 13401}
+WARNING:root:input 8 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 13503}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 13021}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 157 failed
+INFO:root:x86 code :
+.globl mpp_recv_double
+.type mpp_recv_double, @function
+mpp_recv_double:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+
+
+
+
+void mpp_recv_double(double* data, int size, int from_pe)
+{
+
+
+
+
+}
+INFO:root:current LLM prompt size: 555
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+void mpp_recv_double() {
+    // This function currently does nothing and returns immediately.
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 158 succeeded
+INFO:root:x86 code :
+.globl alaw2linear
+.type alaw2linear, @function
+alaw2linear:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	xorl	$85, %edi
+	movzbl	%dil, %edx
+	movl	%edx, %ecx
+	shrl	$4, %edx
+	sall	$4, %ecx
+	movzbl	%cl, %ecx
+	leal	8(%rcx), %eax
+	andl	$7, %edx
+	je	.L5
+	leal	264(%rcx), %eax
+	leal	-1(%rdx), %ecx
+	movl	%eax, %esi
+	sall	%cl, %eax
+	cmpl	$1, %edx
+	cmove	%esi, %eax
+.L5:
+	movl	%eax, %edx
+	negl	%edx
+	testb	%dil, %dil
+	cmovns	%edx, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int
+alaw2linear(
+            unsigned char a_val)
+{
+ int t;
+ int seg;
+
+ a_val ^= 0x55;
+
+ t = (a_val & (0xf)) << 4;
+ seg = ((unsigned)a_val & (0x70)) >> (4);
+ switch (seg) {
+        case 0:
+            t += 8;
+            break;
+        case 1:
+            t += 0x108;
+            break;
+        default:
+            t += 0x108;
+            t <<= seg - 1;
+ }
+ return ((a_val & (0x80)) ? t : -t);
+}
+INFO:root:current LLM prompt size: 739
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int alaw2linear(unsigned char a) {
+    int sign = (a & 0x80) ? -1 : 1; // Determine the sign
+    a ^= 0x55; // Complement the A-law value
+
+    int exponent = (a >> 4) & 0x03; // Extract exponent
+    int mantissa = a & 0x0F; // Extract mantissa
+
+    int linear = (mantissa << 4) + 8; // Calculate linear value
+
+    if (exponent > 0) {
+        linear <<= (exponent + 1); // Scale by exponent
+    }
+
+    linear *= sign; // Apply sign
+    return linear;
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'returnv': -528}
+hyp: {'returnv': 64}
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 7808}
+hyp: {'returnv': -928}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': -4992}
+hyp: {'returnv': 224}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': -28160}
+hyp: {'returnv': 2944}
+WARNING:root:input 4 mismatched!
+ref: {'returnv': 360}
+hyp: {'returnv': -416}
+WARNING:root:input 5 mismatched!
+ref: {'returnv': -8064}
+hyp: {'returnv': 992}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': 8064}
+hyp: {'returnv': -992}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': 2368}
+hyp: {'returnv': -40}
+WARNING:root:input 8 mismatched!
+ref: {'returnv': -29184}
+hyp: {'returnv': 3200}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': -14080}
+hyp: {'returnv': 1472}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 159 failed
+INFO:root:x86 code :
+.globl BGBDT_MsImaAdpcm_MonoSamplesFromBlockSize
+.type BGBDT_MsImaAdpcm_MonoSamplesFromBlockSize, @function
+BGBDT_MsImaAdpcm_MonoSamplesFromBlockSize:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	leal	-8(%rdi,%rdi), %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int BGBDT_MsImaAdpcm_MonoSamplesFromBlockSize(int sz)
+{
+ return((sz-4)*2);
+}
+INFO:root:current LLM prompt size: 602
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int BGBDT_MsImaAdpcm_MonoSamplesFromBlockSize(int blockSize) {
+    return blockSize * 2 - 8;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 160 succeeded
+INFO:root:x86 code :
+.globl f89
+.type f89, @function
+f89:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	%edi, %eax
+	movl	%esi, %ecx
+	rorl	%cl, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+unsigned int
+f89 (unsigned int x, unsigned int y)
+{
+  return (x << (8 * sizeof (unsigned int) - y)) + (x >> y);
+}
+INFO:root:current LLM prompt size: 578
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int f89(int a, int b) {
+    return (a >> b) | (a << (32 - b));
+}
+
+WARNING:root:input 9 mismatched!
+ref: {'returnv': 1832}
+hyp: {'returnv': 916}
+INFO:root:Local error rate: 10.0%
+INFO:root:CASE 161 failed
+INFO:root:x86 code :
+.globl months_to_days
+.type months_to_days, @function
+months_to_days:
+.LFB23:
+	.cfi_startproc
+	endbr64
+	subl	$1, %edi
+	movl	$334, %eax
+	cmpl	$10, %edi
+	ja	.L1
+	leaq	CSWTCH.1(%rip), %rax
+	movl	(%rax,%rdi,4), %eax
+.L1:
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+int months_to_days(int n)
+{
+    switch(n)
+    {
+        case 1:
+            return 0;
+        case 2:
+            return 31;
+        case 3:
+            return 59;
+        case 4:
+            return 90;
+        case 5:
+            return 120;
+        case 6:
+            return 151;
+        case 7:
+            return 181;
+        case 8:
+            return 212;
+        case 9:
+            return 243;
+        case 10:
+            return 273;
+        case 11:
+            return 304;
+        case 12:
+        default:
+            return 334;
+    }
+}
+INFO:root:current LLM prompt size: 618
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int months_to_days(int month) {
+    month--; // Adjust for zero-based index
+    if (month > 10) {
+        return 334; // Default value if month is greater than 10
+    }
+    int days_in_months[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31}; // Days in each month
+    return days_in_months[month];
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 162 succeeded
+INFO:root:x86 code :
+.globl bic
+.type bic, @function
+bic:
+.LFB23:
+	.cfi_startproc
+	endbr64
+	notl	%esi
+	movl	%esi, %eax
+	andl	%edi, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+int bic(int x, int m)
+{
+    return x & ~m;
+}
+INFO:root:current LLM prompt size: 571
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int bic(int x, int y) {
+    return (~y) & x;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 163 succeeded
+INFO:root:x86 code :
+.globl fs_unlink
+.type fs_unlink, @function
+fs_unlink:
+.LFB23:
+	.cfi_startproc
+	endbr64
+	xorl	%eax, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <errno.h>
+
+#include <stdbool.h>
+
+#include <stddef.h>
+
+#include <stdio.h>
+
+int fs_unlink (const char *path)
+{
+   return 0;
+}
+INFO:root:current LLM prompt size: 563
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int fs_unlink() {
+    return 0;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 164 succeeded
+INFO:root:x86 code :
+.globl func
+.type func, @function
+func:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	$1, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int func() {
+    return 1;
+}
+INFO:root:current LLM prompt size: 556
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int func() {
+    return 1;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 165 succeeded
+INFO:root:x86 code :
+.globl getoct
+.type getoct, @function
+getoct:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	testl	%esi, %esi
+	je	.L5
+	leal	-1(%rsi), %eax
+	xorl	%r8d, %r8d
+	leaq	1(%rdi,%rax), %rcx
+	jmp	.L4
+	.p2align 4,,10
+	.p2align 3
+.L15:
+	cmpb	$32, %al
+	je	.L3
+	leal	-48(%rax), %edx
+	cmpb	$7, %dl
+	ja	.L6
+	leal	-48(%rax,%r8,8), %r8d
+.L3:
+	cmpq	%rcx, %rdi
+	je	.L1
+.L4:
+	movsbl	(%rdi), %eax
+	addq	$1, %rdi
+	testb	%al, %al
+	jne	.L15
+.L1:
+	movl	%r8d, %eax
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L6:
+	movl	$-1, %r8d
+	movl	%r8d, %eax
+	ret
+.L5:
+	xorl	%r8d, %r8d
+	jmp	.L1
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+
+
+
+
+
+int getoct (char *p,int width)
+{
+  int result = 0;
+  char c;
+
+  while (width--)
+    {
+      c = *p++;
+      if (c == 0)
+        break;
+      if (c == ' ')
+        continue;
+      if (c < '0' || c > '7')
+        return -1;
+      result = result * 8 + (c - '0');
+    }
+  return result;
+}
+INFO:root:current LLM prompt size: 836
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int getoct(const char *str) {
+    if (str == NULL) {
+        return 0;
+    }
+    
+    int count = 0;
+    int index = 0;
+    char ch;
+
+    while ((ch = str[index]) != '\0') {
+        if (ch == ' ') {
+            break;
+        }
+        
+        int digit = ch - '0';
+        if (digit < 0 || digit > 7) {
+            return -1; // Invalid octal digit
+        }
+        
+        count = count * 8 + digit;
+        index++;
+    }
+    
+    return count;
+}
+
+WARNING:root:CASE 166 failed to compile the decompiled code!
+WARNING:root:ret.stderr: disassembled.c: In function 'getoct':
+disassembled.c:3:16: error: 'NULL' undeclared (first use in this function)
+    3 |     if (str == NULL) {
+      |                ^~~~
+disassembled.c:1:1: note: 'NULL' is defined in header '<stddef.h>'; did you forget to '#include <stddef.h>'?
+  +++ |+#include <stddef.h>
+    1 | 
+disassembled.c:3:16: note: each undeclared identifier is reported only once for each function it appears in
+    3 |     if (str == NULL) {
+      |                ^~~~
+
+WARNING:root:ret.stdout: 
+INFO:root:x86 code :
+.globl qsort_intcmp
+.type qsort_intcmp, @function
+qsort_intcmp:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	(%rdi), %eax
+	subl	(%rsi), %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int qsort_intcmp(const int *a, const int *b) {
+  return *a - *b;
+}
+INFO:root:current LLM prompt size: 576
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int qsort_intcmp(const int *a, const int *b) {
+    return *a - *b;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 167 succeeded
+INFO:root:x86 code :
+.globl fact
+.type fact, @function
+fact:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	$1, %eax
+	cmpl	$1, %edi
+	jbe	.L4
+	movl	$2, %edx
+	.p2align 4,,10
+	.p2align 3
+.L3:
+	imull	%edx, %eax
+	addl	$1, %edx
+	cmpl	%edi, %edx
+	jbe	.L3
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L4:
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int fact(int n)
+{
+  unsigned factor, total;
+  total = 1;
+  factor = 2;
+  while (factor <= n) {
+    total = total * factor;
+    factor = factor + 1;
+  }
+  return total;
+}
+INFO:root:current LLM prompt size: 653
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int fact(int n) {
+    if (n <= 1) {
+        return 1;
+    }
+    int result = 1;
+    for (int i = 2; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 168 succeeded
+INFO:root:x86 code :
+.globl parse_motion_command
+.type parse_motion_command, @function
+parse_motion_command:
+.LFB64:
+	.cfi_startproc
+	endbr64
+	xorl	%eax, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <assert.h>
+
+#include <errno.h>
+
+#include <netdb.h>
+
+#include <netinet/in.h>
+
+#include <signal.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <strings.h>
+
+#include <sys/select.h>
+
+#include <sys/socket.h>
+
+#include <sys/types.h>
+
+#include <unistd.h>
+
+int parse_motion_command(char *cmd, int *gid, int *pid, int *row, int *col) {
+  int outcome = 0;
+  return outcome;
+}
+INFO:root:current LLM prompt size: 563
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+void parse_motion_command() {
+    // This function does nothing and returns immediately.
+    return;
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'cmd': 'izjoq', 'col': [44, 93, 20, 86, 100, 1, 16, 47, 72, 3, 88, 84, 126, 36, 6, 40, 24, 11, 40, 55, 1, 6, 83, 10, 62, 66, 124, 108, 76, 91, 67, 112], 'gid': [90, 82, 31, 6, 95, 49, 38, 12, 107, 120, 9, 64, 44, 28, 15, 42, 121, 11, 105, 82, 56, 88, 63, 84, 108, 21, 47, 91, 48, 74, 65, 21], 'pid': [75, 95, 106, 78, 62, 124, 92, 89, 42, 59, 61, 73, 56, 18, 31, 95, 109, 45, 0, 84, 97, 9, 92, 55, 84, 81, 95, 114, 90, 110, 56, 21], 'returnv': 0, 'row': [109, 119, 22, 82, 29, 95, 105, 46, 67, 28, 22, 2, 122, 111, 69, 78, 92, 65, 62, 37, 97, 41, 98, 46, 33, 56, 71, 33, 89, 1, 107, 28]}
+hyp: {'cmd': 'izjoq', 'col': [44, 93, 20, 86, 100, 1, 16, 47, 72, 3, 88, 84, 126, 36, 6, 40, 24, 11, 40, 55, 1, 6, 83, 10, 62, 66, 124, 108, 76, 91, 67, 112], 'gid': [90, 82, 31, 6, 95, 49, 38, 12, 107, 120, 9, 64, 44, 28, 15, 42, 121, 11, 105, 82, 56, 88, 63, 84, 108, 21, 47, 91, 48, 74, 65, 21], 'pid': [75, 95, 106, 78, 62, 124, 92, 89, 42, 59, 61, 73, 56, 18, 31, 95, 109, 45, 0, 84, 97, 9, 92, 55, 84, 81, 95, 114, 90, 110, 56, 21], 'returnv': 828400176, 'row': [109, 119, 22, 82, 29, 95, 105, 46, 67, 28, 22, 2, 122, 111, 69, 78, 92, 65, 62, 37, 97, 41, 98, 46, 33, 56, 71, 33, 89, 1, 107, 28]}
+WARNING:root:input 1 mismatched!
+ref: {'cmd': 'bkkco', 'col': [48, 59, 70, 57, 45, 87, 13, 96, 80, 58, 47, 37, 65, 5, 7, 98, 57, 23, 4, 79, 22, 17, 104, 74, 106, 115, 45, 8, 16, 29, 102, 49], 'gid': [82, 25, 112, 24, 93, 26, 44, 84, 13, 47, 42, 78, 64, 13, 90, 57, 51, 98, 28, 27, 47, 8, 66, 92, 106, 48, 28, 43, 3, 101, 49, 55], 'pid': [74, 80, 117, 106, 54, 81, 105, 120, 99, 31, 37, 111, 111, 116, 23, 88, 75, 43, 20, 45, 61, 104, 117, 82, 93, 122, 83, 94, 11, 115, 126, 79], 'returnv': 0, 'row': [1, 16, 30, 90, 73, 45, 65, 44, 15, 36, 31, 16, 101, 94, 25, 53, 108, 55, 79, 55, 78, 36, 17, 26, 72, 67, 83, 68, 69, 81, 71, 78]}
+hyp: {'cmd': 'bkkco', 'col': [48, 59, 70, 57, 45, 87, 13, 96, 80, 58, 47, 37, 65, 5, 7, 98, 57, 23, 4, 79, 22, 17, 104, 74, 106, 115, 45, 8, 16, 29, 102, 49], 'gid': [82, 25, 112, 24, 93, 26, 44, 84, 13, 47, 42, 78, 64, 13, 90, 57, 51, 98, 28, 27, 47, 8, 66, 92, 106, 48, 28, 43, 3, 101, 49, 55], 'pid': [74, 80, 117, 106, 54, 81, 105, 120, 99, 31, 37, 111, 111, 116, 23, 88, 75, 43, 20, 45, 61, 104, 117, 82, 93, 122, 83, 94, 11, 115, 126, 79], 'returnv': 794845744, 'row': [1, 16, 30, 90, 73, 45, 65, 44, 15, 36, 31, 16, 101, 94, 25, 53, 108, 55, 79, 55, 78, 36, 17, 26, 72, 67, 83, 68, 69, 81, 71, 78]}
+WARNING:root:input 2 mismatched!
+ref: {'cmd': 'ktywldcoroaotgh', 'col': [117, 116, 56, 44, 10, 71, 91, 29, 66, 118, 65, 32, 106, 52, 67, 119, 57, 120, 119, 27, 80, 64, 104, 64, 47, 2, 48, 21, 104, 99, 121, 95], 'gid': [68, 80, 18, 63, 105, 104, 111, 78, 112, 82, 83, 16, 68, 43, 106, 75, 119, 32, 116, 37, 2, 122, 9, 12, 28, 30, 28, 111, 65, 123, 124, 61], 'pid': [4, 31, 97, 26, 75, 13, 58, 72, 63, 93, 77, 57, 7, 5, 33, 29, 47, 9, 1, 80, 11, 63, 15, 122, 115, 49, 49, 46, 94, 92, 12, 124], 'returnv': 0, 'row': [105, 28, 51, 126, 55, 16, 22, 69, 113, 58, 104, 8, 2, 41, 47, 90, 13, 22, 54, 62, 75, 6, 55, 104, 81, 17, 87, 40, 92, 90, 78, 49]}
+hyp: {'cmd': 'ktywldcoroaotgh', 'col': [117, 116, 56, 44, 10, 71, 91, 29, 66, 118, 65, 32, 106, 52, 67, 119, 57, 120, 119, 27, 80, 64, 104, 64, 47, 2, 48, 21, 104, 99, 121, 95], 'gid': [68, 80, 18, 63, 105, 104, 111, 78, 112, 82, 83, 16, 68, 43, 106, 75, 119, 32, 116, 37, 2, 122, 9, 12, 28, 30, 28, 111, 65, 123, 124, 61], 'pid': [4, 31, 97, 26, 75, 13, 58, 72, 63, 93, 77, 57, 7, 5, 33, 29, 47, 9, 1, 80, 11, 63, 15, 122, 115, 49, 49, 46, 94, 92, 12, 124], 'returnv': 1289773040, 'row': [105, 28, 51, 126, 55, 16, 22, 69, 113, 58, 104, 8, 2, 41, 47, 90, 13, 22, 54, 62, 75, 6, 55, 104, 81, 17, 87, 40, 92, 90, 78, 49]}
+WARNING:root:input 3 mismatched!
+ref: {'cmd': 'kllqfrpuftznxneavnxmuwvyuos', 'col': [108, 46, 57, 28, 94, 119, 51, 20, 114, 120, 30, 83, 41, 42, 104, 45, 112, 26, 29, 85, 59, 44, 67, 112, 1, 58, 35, 35, 54, 87, 18, 87], 'gid': [94, 96, 101, 21, 74, 90, 31, 43, 80, 1, 118, 89, 93, 82, 53, 108, 114, 25, 4, 45, 119, 101, 0, 33, 122, 5, 103, 93, 37, 114, 29, 115], 'pid': [70, 76, 22, 72, 106, 83, 49, 89, 53, 119, 22, 108, 118, 84, 26, 26, 17, 92, 54, 40, 14, 11, 109, 65, 80, 90, 2, 87, 77, 42, 20, 33], 'returnv': 0, 'row': [90, 123, 18, 79, 38, 120, 92, 13, 7, 29, 45, 102, 70, 15, 54, 15, 97, 30, 14, 50, 17, 16, 42, 20, 36, 24, 42, 77, 113, 70, 22, 6]}
+hyp: {'cmd': 'kllqfrpuftznxneavnxmuwvyuos', 'col': [108, 46, 57, 28, 94, 119, 51, 20, 114, 120, 30, 83, 41, 42, 104, 45, 112, 26, 29, 85, 59, 44, 67, 112, 1, 58, 35, 35, 54, 87, 18, 87], 'gid': [94, 96, 101, 21, 74, 90, 31, 43, 80, 1, 118, 89, 93, 82, 53, 108, 114, 25, 4, 45, 119, 101, 0, 33, 122, 5, 103, 93, 37, 114, 29, 115], 'pid': [70, 76, 22, 72, 106, 83, 49, 89, 53, 119, 22, 108, 118, 84, 26, 26, 17, 92, 54, 40, 14, 11, 109, 65, 80, 90, 2, 87, 77, 42, 20, 33], 'returnv': 492855968, 'row': [90, 123, 18, 79, 38, 120, 92, 13, 7, 29, 45, 102, 70, 15, 54, 15, 97, 30, 14, 50, 17, 16, 42, 20, 36, 24, 42, 77, 113, 70, 22, 6]}
+WARNING:root:input 4 mismatched!
+ref: {'cmd': 'so', 'col': [104, 69, 124, 51, 92, 62, 67, 106, 80, 78, 83, 54, 11, 116, 3, 110, 104, 107, 42, 30, 93, 62, 46, 75, 24, 80, 66, 91, 119, 26, 39, 113], 'gid': [102, 23, 81, 33, 114, 31, 119, 79, 122, 29, 63, 0, 121, 79, 43, 87, 60, 29, 114, 75, 27, 44, 118, 68, 55, 40, 120, 24, 64, 118, 61, 53], 'pid': [75, 118, 95, 71, 105, 27, 97, 19, 3, 113, 111, 61, 67, 90, 102, 9, 96, 4, 52, 5, 44, 46, 77, 8, 58, 76, 63, 68, 33, 63, 5, 52], 'returnv': 0, 'row': [124, 14, 91, 70, 112, 3, 80, 55, 2, 106, 7, 90, 24, 77, 71, 10, 46, 22, 45, 113, 8, 22, 70, 126, 61, 30, 12, 9, 99, 110, 62, 124]}
+hyp: {'cmd': 'so', 'col': [104, 69, 124, 51, 92, 62, 67, 106, 80, 78, 83, 54, 11, 116, 3, 110, 104, 107, 42, 30, 93, 62, 46, 75, 24, 80, 66, 91, 119, 26, 39, 113], 'gid': [102, 23, 81, 33, 114, 31, 119, 79, 122, 29, 63, 0, 121, 79, 43, 87, 60, 29, 114, 75, 27, 44, 118, 68, 55, 40, 120, 24, 64, 118, 61, 53], 'pid': [75, 118, 95, 71, 105, 27, 97, 19, 3, 113, 111, 61, 67, 90, 102, 9, 96, 4, 52, 5, 44, 46, 77, 8, 58, 76, 63, 68, 33, 63, 5, 52], 'returnv': 1180721712, 'row': [124, 14, 91, 70, 112, 3, 80, 55, 2, 106, 7, 90, 24, 77, 71, 10, 46, 22, 45, 113, 8, 22, 70, 126, 61, 30, 12, 9, 99, 110, 62, 124]}
+WARNING:root:input 5 mismatched!
+ref: {'cmd': 'sorzxqwdbqzgpcdgfmfxzoup', 'col': [31, 104, 108, 116, 7, 17, 13, 47, 78, 88, 31, 60, 69, 30, 54, 90, 62, 21, 9, 54, 96, 52, 104, 64, 17, 59, 11, 89, 55, 14, 125, 112], 'gid': [37, 7, 68, 0, 68, 81, 53, 112, 88, 116, 91, 69, 119, 19, 8, 84, 83, 24, 63, 28, 3, 41, 20, 14, 56, 69, 41, 51, 48, 7, 52, 61], 'pid': [111, 32, 122, 58, 109, 113, 72, 66, 6, 70, 93, 28, 9, 44, 123, 58, 69, 60, 40, 43, 89, 72, 95, 80, 76, 120, 44, 121, 75, 104, 46, 70], 'returnv': 0, 'row': [27, 103, 21, 93, 0, 88, 20, 74, 93, 12, 62, 11, 83, 19, 52, 108, 26, 87, 89, 22, 87, 122, 1, 51, 48, 35, 48, 57, 103, 121, 20, 37]}
+hyp: {'cmd': 'sorzxqwdbqzgpcdgfmfxzoup', 'col': [31, 104, 108, 116, 7, 17, 13, 47, 78, 88, 31, 60, 69, 30, 54, 90, 62, 21, 9, 54, 96, 52, 104, 64, 17, 59, 11, 89, 55, 14, 125, 112], 'gid': [37, 7, 68, 0, 68, 81, 53, 112, 88, 116, 91, 69, 119, 19, 8, 84, 83, 24, 63, 28, 3, 41, 20, 14, 56, 69, 41, 51, 48, 7, 52, 61], 'pid': [111, 32, 122, 58, 109, 113, 72, 66, 6, 70, 93, 28, 9, 44, 123, 58, 69, 60, 40, 43, 89, 72, 95, 80, 76, 120, 44, 121, 75, 104, 46, 70], 'returnv': 1088447136, 'row': [27, 103, 21, 93, 0, 88, 20, 74, 93, 12, 62, 11, 83, 19, 52, 108, 26, 87, 89, 22, 87, 122, 1, 51, 48, 35, 48, 57, 103, 121, 20, 37]}
+WARNING:root:input 6 mismatched!
+ref: {'cmd': 'jfjfyplfgdtsldhabcfctwdiuiutnoy', 'col': [95, 34, 24, 36, 57, 111, 71, 14, 64, 80, 108, 36, 80, 90, 80, 100, 51, 112, 46, 42, 67, 112, 35, 99, 95, 0, 6, 93, 26, 12, 5, 91], 'gid': [99, 83, 109, 63, 113, 47, 87, 15, 31, 45, 65, 27, 53, 126, 112, 71, 101, 58, 67, 29, 82, 36, 48, 36, 51, 35, 88, 59, 98, 103, 88, 113], 'pid': [92, 54, 78, 121, 102, 47, 27, 57, 92, 77, 5, 4, 96, 24, 110, 107, 122, 106, 64, 59, 126, 69, 73, 29, 91, 62, 2, 89, 14, 20, 2, 111], 'returnv': 0, 'row': [77, 14, 41, 10, 49, 34, 1, 79, 12, 92, 12, 62, 44, 35, 30, 42, 17, 126, 112, 103, 19, 52, 126, 47, 10, 84, 71, 3, 50, 24, 10, 56]}
+hyp: {'cmd': 'jfjfyplfgdtsldhabcfctwdiuiutnoy', 'col': [95, 34, 24, 36, 57, 111, 71, 14, 64, 80, 108, 36, 80, 90, 80, 100, 51, 112, 46, 42, 67, 112, 35, 99, 95, 0, 6, 93, 26, 12, 5, 91], 'gid': [99, 83, 109, 63, 113, 47, 87, 15, 31, 45, 65, 27, 53, 126, 112, 71, 101, 58, 67, 29, 82, 36, 48, 36, 51, 35, 88, 59, 98, 103, 88, 113], 'pid': [92, 54, 78, 121, 102, 47, 27, 57, 92, 77, 5, 4, 96, 24, 110, 107, 122, 106, 64, 59, 126, 69, 73, 29, 91, 62, 2, 89, 14, 20, 2, 111], 'returnv': 1138777552, 'row': [77, 14, 41, 10, 49, 34, 1, 79, 12, 92, 12, 62, 44, 35, 30, 42, 17, 126, 112, 103, 19, 52, 126, 47, 10, 84, 71, 3, 50, 24, 10, 56]}
+WARNING:root:input 7 mismatched!
+ref: {'cmd': 'ibrotsaomdeooipwvzwskx', 'col': [31, 102, 29, 60, 14, 80, 90, 22, 122, 101, 97, 50, 108, 97, 111, 106, 22, 41, 114, 86, 6, 15, 48, 100, 37, 54, 68, 108, 35, 111, 113, 121], 'gid': [55, 65, 103, 38, 14, 13, 29, 41, 95, 29, 112, 125, 40, 13, 87, 106, 110, 14, 63, 85, 25, 90, 122, 55, 4, 80, 33, 116, 53, 50, 33, 30], 'pid': [117, 103, 70, 96, 96, 36, 0, 83, 71, 111, 1, 15, 43, 83, 7, 10, 69, 28, 119, 15, 101, 101, 47, 44, 125, 117, 17, 87, 78, 46, 78, 92], 'returnv': 0, 'row': [103, 45, 114, 18, 28, 87, 70, 54, 92, 72, 89, 74, 72, 3, 54, 48, 116, 25, 23, 23, 27, 83, 58, 115, 115, 112, 57, 49, 92, 81, 45, 55]}
+hyp: {'cmd': 'ibrotsaomdeooipwvzwskx', 'col': [31, 102, 29, 60, 14, 80, 90, 22, 122, 101, 97, 50, 108, 97, 111, 106, 22, 41, 114, 86, 6, 15, 48, 100, 37, 54, 68, 108, 35, 111, 113, 121], 'gid': [55, 65, 103, 38, 14, 13, 29, 41, 95, 29, 112, 125, 40, 13, 87, 106, 110, 14, 63, 85, 25, 90, 122, 55, 4, 80, 33, 116, 53, 50, 33, 30], 'pid': [117, 103, 70, 96, 96, 36, 0, 83, 71, 111, 1, 15, 43, 83, 7, 10, 69, 28, 119, 15, 101, 101, 47, 44, 125, 117, 17, 87, 78, 46, 78, 92], 'returnv': 945840384, 'row': [103, 45, 114, 18, 28, 87, 70, 54, 92, 72, 89, 74, 72, 3, 54, 48, 116, 25, 23, 23, 27, 83, 58, 115, 115, 112, 57, 49, 92, 81, 45, 55]}
+WARNING:root:input 8 mismatched!
+ref: {'cmd': 'jmlqetfwprekoaorfilgqqrthvu', 'col': [65, 99, 76, 59, 31, 55, 85, 73, 14, 40, 59, 45, 45, 116, 104, 110, 87, 18, 51, 2, 5, 84, 59, 71, 99, 107, 8, 120, 9, 78, 70, 101], 'gid': [1, 86, 94, 60, 87, 58, 96, 55, 81, 87, 118, 70, 106, 63, 83, 29, 61, 46, 58, 5, 92, 125, 54, 14, 49, 47, 124, 124, 49, 45, 102, 88], 'pid': [66, 86, 90, 13, 24, 61, 29, 18, 111, 118, 40, 60, 30, 70, 22, 37, 34, 61, 110, 80, 5, 10, 79, 75, 119, 91, 45, 122, 99, 63, 26, 17], 'returnv': 0, 'row': [56, 66, 51, 13, 6, 85, 47, 47, 32, 91, 67, 107, 63, 52, 50, 55, 114, 0, 101, 66, 36, 57, 46, 50, 48, 32, 31, 15, 125, 63, 46, 23]}
+hyp: {'cmd': 'jmlqetfwprekoaorfilgqqrthvu', 'col': [65, 99, 76, 59, 31, 55, 85, 73, 14, 40, 59, 45, 45, 116, 104, 110, 87, 18, 51, 2, 5, 84, 59, 71, 99, 107, 8, 120, 9, 78, 70, 101], 'gid': [1, 86, 94, 60, 87, 58, 96, 55, 81, 87, 118, 70, 106, 63, 83, 29, 61, 46, 58, 5, 92, 125, 54, 14, 49, 47, 124, 124, 49, 45, 102, 88], 'pid': [66, 86, 90, 13, 24, 61, 29, 18, 111, 118, 40, 60, 30, 70, 22, 37, 34, 61, 110, 80, 5, 10, 79, 75, 119, 91, 45, 122, 99, 63, 26, 17], 'returnv': 543187616, 'row': [56, 66, 51, 13, 6, 85, 47, 47, 32, 91, 67, 107, 63, 52, 50, 55, 114, 0, 101, 66, 36, 57, 46, 50, 48, 32, 31, 15, 125, 63, 46, 23]}
+WARNING:root:input 9 mismatched!
+ref: {'cmd': 'oiqczymvzvvtnngdv', 'col': [10, 102, 12, 23, 72, 73, 64, 62, 32, 33, 83, 107, 110, 68, 6, 80, 12, 15, 75, 87, 111, 39, 49, 85, 76, 122, 125, 53, 16, 44, 22, 40], 'gid': [12, 93, 95, 50, 121, 23, 33, 101, 65, 55, 88, 119, 37, 42, 26, 91, 26, 10, 45, 11, 4, 62, 15, 70, 117, 29, 14, 104, 79, 54, 86, 31], 'pid': [124, 87, 65, 109, 70, 12, 66, 4, 69, 19, 3, 32, 96, 2, 105, 113, 39, 95, 5, 125, 47, 103, 17, 106, 104, 112, 28, 75, 64, 113, 18, 88], 'returnv': 0, 'row': [2, 8, 99, 107, 33, 65, 97, 97, 28, 53, 35, 102, 62, 7, 47, 17, 0, 20, 108, 122, 14, 111, 30, 81, 90, 63, 37, 32, 12, 84, 82, 55]}
+hyp: {'cmd': 'oiqczymvzvvtnngdv', 'col': [10, 102, 12, 23, 72, 73, 64, 62, 32, 33, 83, 107, 110, 68, 6, 80, 12, 15, 75, 87, 111, 39, 49, 85, 76, 122, 125, 53, 16, 44, 22, 40], 'gid': [12, 93, 95, 50, 121, 23, 33, 101, 65, 55, 88, 119, 37, 42, 26, 91, 26, 10, 45, 11, 4, 62, 15, 70, 117, 29, 14, 104, 79, 54, 86, 31], 'pid': [124, 87, 65, 109, 70, 12, 66, 4, 69, 19, 3, 32, 96, 2, 105, 113, 39, 95, 5, 125, 47, 103, 17, 106, 104, 112, 28, 75, 64, 113, 18, 88], 'returnv': 878731520, 'row': [2, 8, 99, 107, 33, 65, 97, 97, 28, 53, 35, 102, 62, 7, 47, 17, 0, 20, 108, 122, 14, 111, 30, 81, 90, 63, 37, 32, 12, 84, 82, 55]}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 169 failed
+INFO:root:x86 code :
+.globl heater_position_to_sensor_position
+.type heater_position_to_sensor_position, @function
+heater_position_to_sensor_position:
+.LFB39:
+	.cfi_startproc
+	endbr64
+	movslq	%edi, %rax
+	movl	%edi, %edx
+	imulq	$1717986919, %rax, %rax
+	sarl	$31, %edx
+	sarq	$33, %rax
+	subl	%edx, %eax
+	leal	0(,%rax,4), %edx
+	subl	%edx, %eax
+	leal	(%rdi,%rdi,4), %edx
+	leal	(%rdx,%rax,8), %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <math.h>
+
+#include <assert.h>
+
+#include <time.h>
+
+#include <limits.h>
+
+int heater_position_to_sensor_position(int i)
+{
+ int k = i/5;
+ int ret = 5*i - 24 * k;
+ return ret;
+}
+INFO:root:current LLM prompt size: 677
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+long heater_position_to_sensor_position(int heater_position) {
+    long temp = (long)heater_position * 1717986919;
+    int sign = heater_position >> 31;
+    long result = temp >> 33;
+    result -= sign;
+    result *= 4;
+    result -= (heater_position + heater_position * 4);
+    return result + (sign * 8);
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'returnv': 23}
+hyp: {'returnv': -183}
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 8}
+hyp: {'returnv': -168}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': 29}
+hyp: {'returnv': -509}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': 42}
+hyp: {'returnv': -482}
+WARNING:root:input 4 mismatched!
+ref: {'returnv': 29}
+hyp: {'returnv': -409}
+WARNING:root:input 5 mismatched!
+ref: {'returnv': 20}
+hyp: {'returnv': -120}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': 24}
+hyp: {'returnv': -204}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': 23}
+hyp: {'returnv': -383}
+WARNING:root:input 8 mismatched!
+ref: {'returnv': 20}
+hyp: {'returnv': -220}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': 18}
+hyp: {'returnv': -378}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 170 failed
+INFO:root:x86 code :
+.globl Decrement
+.type Decrement, @function
+Decrement:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	leal	-1(%rdi), %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int Decrement(int a)
+{
+    return --a;
+}
+INFO:root:current LLM prompt size: 563
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int Decrement(int n) {
+    return n - 1;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 171 succeeded
+INFO:root:x86 code :
+.globl equal_strings
+.type equal_strings, @function
+equal_strings:
+.LFB50:
+	.cfi_startproc
+	endbr64
+	xorl	%eax, %eax
+	jmp	.L2
+	.p2align 4,,10
+	.p2align 3
+.L11:
+	testb	%cl, %cl
+	je	.L4
+	addq	$1, %rax
+	cmpb	%cl, %dl
+	jne	.L6
+.L2:
+	movzbl	(%rdi,%rax), %edx
+	movzbl	(%rsi,%rax), %ecx
+	testb	%dl, %dl
+	jne	.L11
+.L4:
+	xorl	%eax, %eax
+	cmpb	%cl, %dl
+	sete	%al
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L6:
+	xorl	%eax, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <math.h>
+
+#include <string.h>
+
+int equal_strings(char *s1, char *s2)
+{
+
+
+ while (*s1 && *s2)
+  if (*s1++ != *s2++)
+   return (0);
+
+ if (*s1 != *s2)
+  return (0);
+ else
+  return (1);
+}
+INFO:root:current LLM prompt size: 729
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+#include <stdbool.h>
+
+bool equal_strings(const char *str1, const char *str2) {
+    size_t index = 0;
+    char ch1, ch2;
+
+    while (true) {
+        ch1 = str1[index];
+        ch2 = str2[index];
+
+        if (ch1 == '\0' || ch2 == '\0') {
+            return ch1 == ch2; // Both must be '\0' to be equal
+        }
+
+        if (ch1 != ch2) {
+            return false; // Characters are not equal
+        }
+
+        index++;
+    }
+}
+
+WARNING:root:CASE 172 failed to compile the decompiled code!
+WARNING:root:ret.stderr: disassembled.c: In function 'equal_strings':
+disassembled.c:5:5: error: unknown type name 'size_t'
+    5 |     size_t index = 0;
+      |     ^~~~~~
+disassembled.c:3:1: note: 'size_t' is defined in header '<stddef.h>'; did you forget to '#include <stddef.h>'?
+    2 | #include <stdbool.h>
+  +++ |+#include <stddef.h>
+    3 | 
+
+WARNING:root:ret.stdout: 
+INFO:root:x86 code :
+.globl fun_2_in_release_so
+.type fun_2_in_release_so, @function
+fun_2_in_release_so:
+.LFB23:
+	.cfi_startproc
+	endbr64
+	leal	20(%rdi,%rsi), %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+int fun_2_in_release_so(int x, int y)
+{
+ return 20 + x + y;
+}
+INFO:root:current LLM prompt size: 577
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int fun_2_in_release_so(int rdi, int rsi) {
+    return rdi + rsi + 20;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 173 succeeded
+INFO:root:x86 code :
+.globl factorial
+.type factorial, @function
+factorial:
+.LFB23:
+	.cfi_startproc
+	endbr64
+	cmpl	$1, %edi
+	jle	.L4
+	addl	$1, %edi
+	movl	$1, %r8d
+	movl	$2, %eax
+	.p2align 4,,10
+	.p2align 3
+.L3:
+	imull	%eax, %r8d
+	addl	$1, %eax
+	cmpl	%edi, %eax
+	jne	.L3
+	movl	%r8d, %eax
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L4:
+	movl	$1, %r8d
+	movl	%r8d, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+int factorial(int n){
+    int i,f;
+    f = 1;
+    for(i=2;i<=n;i++){
+        f *= i;
+    }
+    return f;
+}
+INFO:root:current LLM prompt size: 700
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int factorial(int n) {
+    if (n <= 1) {
+        return 1;
+    }
+    int result = 1;
+    for (int i = 2; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 174 succeeded
+INFO:root:x86 code :
+.globl truncate
+.type truncate, @function
+truncate:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	cvttsd2sil	%xmm0, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int truncate(double x) {
+  int y = (int)x;
+  return y;
+}
+INFO:root:current LLM prompt size: 561
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int truncate(double x) {
+    return (int)x; // Convert double to int by truncating
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 175 succeeded
+INFO:root:x86 code :
+.globl base2int
+.type base2int, @function
+base2int:
+.LFB50:
+	.cfi_startproc
+	endbr64
+	subl	$65, %edi
+	movl	$4, %eax
+	cmpb	$19, %dil
+	ja	.L1
+	movzbl	%dil, %edi
+	leaq	CSWTCH.1(%rip), %rax
+	movl	(%rax,%rdi,4), %eax
+.L1:
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+int base2int(char b){
+  switch(b){
+    case 'A':
+      return(0);
+    case 'C':
+      return(1);
+    case 'G':
+      return(2);
+    case 'T':
+      return(3);
+    default:
+      return(4);
+  }
+}
+INFO:root:current LLM prompt size: 630
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int base2int(unsigned char input) {
+    input -= 65; // Subtract 65 from the input
+    if (input > 19) {
+        return 4; // If input is greater than 19, return 4
+    }
+    return lookup_table[input]; // Assuming lookup_table is defined elsewhere
+}
+
+WARNING:root:CASE 176 failed to compile the decompiled code!
+WARNING:root:ret.stderr: disassembled.c: In function 'base2int':
+disassembled.c:7:12: error: 'lookup_table' undeclared (first use in this function)
+    7 |     return lookup_table[input]; // Assuming lookup_table is defined elsewhere
+      |            ^~~~~~~~~~~~
+disassembled.c:7:12: note: each undeclared identifier is reported only once for each function it appears in
+
+WARNING:root:ret.stdout: 
+INFO:root:x86 code :
+.globl sub_double
+.type sub_double, @function
+sub_double:
+.LFB40:
+	.cfi_startproc
+	endbr64
+	subsd	%xmm1, %xmm0
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <sys/types.h>
+
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdint.h>
+
+double sub_double(double arg1, double arg2) { return arg1 - arg2; }
+INFO:root:current LLM prompt size: 561
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+double sub_double(double a, double b) {
+    return a - b;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 177 succeeded
+INFO:root:x86 code :
+.globl weak
+.type weak, @function
+weak:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	$30, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int weak (void)
+{
+  return 30;
+}
+INFO:root:current LLM prompt size: 556
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int weak() {
+    return 30;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 178 succeeded
+INFO:root:x86 code :
+.globl bic
+.type bic, @function
+bic:
+.LFB23:
+	.cfi_startproc
+	endbr64
+	notl	%esi
+	movl	%esi, %eax
+	andl	%edi, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <assert.h>
+
+int bic(int x, int m) {
+    return x & (~m);
+}
+INFO:root:current LLM prompt size: 571
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int bic(int a, int b) {
+    return (~b) & a;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 179 succeeded
+INFO:root:x86 code :
+.globl fact
+.type fact, @function
+fact:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	$1, %eax
+	testl	%edi, %edi
+	jle	.L1
+	.p2align 4,,10
+	.p2align 3
+.L2:
+	imull	%edi, %eax
+	subl	$1, %edi
+	jne	.L2
+.L1:
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int fact (int n) {
+  if (n < 1) {
+    return 1;
+  } else {
+    return n * fact(n-1);
+  }
+}
+INFO:root:current LLM prompt size: 617
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int fact(int n) {
+    int result = 1;
+    if (n <= 0) {
+        return result;
+    }
+    while (n > 0) {
+        result *= n;
+        n--;
+    }
+    return result;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 180 succeeded
+INFO:root:x86 code :
+.globl f
+.type f, @function
+f:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	leal	(%rdi,%rdi), %eax
+	testl	%edi, %edi
+	cmovle	%edi, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int f(int x) {
+  const int i = x;
+  if (x > 0) {
+    x = x + i;
+  }
+  return x;
+}
+INFO:root:current LLM prompt size: 580
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int f(int n) {
+    int result = n + n; // equivalent to leal (%rdi, %rdi), %eax
+    if (n <= 0) {
+        return n; // equivalent to testl %edi, %edi and cmovle %edi, %eax
+    }
+    return result;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 181 succeeded
+INFO:root:x86 code :
+.globl foo4
+.type foo4, @function
+foo4:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	leal	1(%rdi), %eax
+	cmpw	$10, %di
+	movl	$1, %edx
+	cmovle	%edx, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+__attribute__((noinline, noclone)) short foo4 (short arg){ short ret = 1; if (arg + 1 < 12 || arg + 1 > ((!0) ? ((1 << (sizeof (short) * 8 - 1)) - 1) : ((1 << (sizeof (short) * 8)) - 1)) + 1) return ret; arg = arg + 1; ret = (char)arg; return arg; }
+INFO:root:current LLM prompt size: 591
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int foo4(int n) {
+    if (n <= 10) {
+        return 1;
+    }
+    return n + 1;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 182 succeeded
+INFO:root:x86 code :
+.globl my_get_el
+.type my_get_el, @function
+my_get_el:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movzbl	(%rsi), %edx
+	testb	%dl, %dl
+	je	.L4
+	xorl	%eax, %eax
+	jmp	.L3
+	.p2align 4,,10
+	.p2align 3
+.L7:
+	addq	$1, %rax
+	movzbl	(%rsi,%rax), %edx
+	testb	%dl, %dl
+	je	.L4
+.L3:
+	movl	%eax, %r8d
+	cmpb	%dl, %dil
+	jne	.L7
+	movl	%r8d, %eax
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L4:
+	movl	$-1, %r8d
+	movl	%r8d, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int my_get_el(char c, char *base)
+{
+  int lp;
+
+  lp = 0;
+  while (base[lp] != '\0')
+    {
+      if (c == base[lp])
+        return (lp);
+      ++lp;
+    }
+  return (-1);
+}
+INFO:root:current LLM prompt size: 737
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int my_get_el(const char *str, char target) {
+    int index = 0;
+
+    // Check the first character
+    if (str[index] == '\0') {
+        return -1; // Return -1 if the string is empty
+    }
+
+    // Loop through the string
+    while (str[index] != '\0') {
+        if (str[index] == target) {
+            return index; // Return the index if the target character is found
+        }
+        index++;
+    }
+
+    return -1; // Return -1 if the target character is not found
+}
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 183
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 1 in case 183
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 2 in case 183
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 3 in case 183
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 4 in case 183
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 5 in case 183
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 6 in case 183
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 7 in case 183
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 8 in case 183
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 9 in case 183
+                        stdout: 
+                        stderr: 
+                    
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 183 failed
+INFO:root:x86 code :
+.globl proc_false
+.type proc_false, @function
+proc_false:
+.LFB50:
+	.cfi_startproc
+	endbr64
+	xorl	%eax, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stddef.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+int proc_false(void)
+{
+  return 0;
+}
+INFO:root:current LLM prompt size: 560
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int proc_false() {
+    return 0;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 184 succeeded
+INFO:root:x86 code :
+.globl double_plus
+.type double_plus, @function
+double_plus:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	addsd	%xmm1, %xmm0
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdarg.h>
+
+double double_plus(double x, double y, int index) {
+    return x + y;
+}
+INFO:root:current LLM prompt size: 561
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+double double_plus(double a, double b) {
+    return a + b;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 185 succeeded
+INFO:root:x86 code :
+.globl half
+.type half, @function
+half:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	%edi, %eax
+	shrl	$31, %eax
+	addl	%edi, %eax
+	sarl	%eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int half (int x) {
+ return x / 2;
+}
+INFO:root:current LLM prompt size: 580
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int half(int x) {
+    return (x >> 31) + x >> 1;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 186 succeeded
+INFO:root:x86 code :
+.globl TLAString_toDouble
+.type TLAString_toDouble, @function
+TLAString_toDouble:
+.LFB23:
+	.cfi_startproc
+	endbr64
+	movzbl	(%rdi), %ecx
+	leal	-43(%rcx), %edx
+	movsbl	%cl, %eax
+	andl	$253, %edx
+	jne	.L2
+	movsbl	1(%rdi), %eax
+	addq	$1, %rdi
+.L2:
+	pxor	%xmm0, %xmm0
+	testb	%al, %al
+	je	.L3
+	cmpb	$46, %al
+	je	.L3
+	movsd	.LC2(%rip), %xmm4
+	movss	.LC3(%rip), %xmm3
+	.p2align 4,,10
+	.p2align 3
+.L4:
+	pxor	%xmm1, %xmm1
+	movapd	%xmm0, %xmm2
+	pxor	%xmm0, %xmm0
+	addq	$1, %rdi
+	cvtsi2ssl	%eax, %xmm1
+	mulsd	%xmm4, %xmm2
+	movsbl	(%rdi), %eax
+	subss	%xmm3, %xmm1
+	cvtss2sd	%xmm1, %xmm0
+	addsd	%xmm2, %xmm0
+	testb	%al, %al
+	je	.L3
+	cmpb	$46, %al
+	jne	.L4
+.L25:
+	movsbl	1(%rdi), %eax
+	leaq	1(%rdi), %rdx
+	testb	%al, %al
+	je	.L6
+	movss	.LC1(%rip), %xmm4
+	movss	.LC3(%rip), %xmm3
+	movaps	%xmm4, %xmm2
+	.p2align 4,,10
+	.p2align 3
+.L7:
+	pxor	%xmm1, %xmm1
+	addq	$1, %rdx
+	cvtsi2ssl	%eax, %xmm1
+	movsbl	(%rdx), %eax
+	subss	%xmm3, %xmm1
+	divss	%xmm2, %xmm1
+	mulss	%xmm4, %xmm2
+	cvtss2sd	%xmm1, %xmm1
+	addsd	%xmm1, %xmm0
+	testb	%al, %al
+	jne	.L7
+.L6:
+	cmpb	$45, %cl
+	je	.L28
+.L1:
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L3:
+	cmpb	$46, %al
+	je	.L25
+	cmpb	$45, %cl
+	jne	.L1
+.L28:
+	xorpd	.LC4(%rip), %xmm0
+	ret
+	.cfi_endproc
+.LC4: 	.long	0
+.LC2: 	.long	0
+.LC3: 	.long	1111490560
+.LC1: 	.long	1092616192
+
+INFO:root:ref C code :
+#include <stdio.h>	//FILE*
+
+#include <time.h>	//clock_t, clock()
+
+double TLAString_toDouble(const char* string){
+ const char sign= (*string);
+ double value = 0;
+ if(sign=='-' || sign=='+') string++;
+
+ while((*string)!='\0' && (*string)!='.'){
+  value = (value * 10.0f) + ((*string) - 48.0f);
+  string++;
+ }
+
+ if((*string)=='.'){
+  float factorDivisor = 10.0f;
+  string++;
+  while((*string)!='\0'){
+   value += (((*string) - 48.0f) / factorDivisor);
+   factorDivisor *= 10.0f;
+   string++;
+  }
+ }
+
+ if(sign=='-') value = -value;
+
+ return value;
+}
+INFO:root:current LLM prompt size: 1227
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+#include <stdbool.h>
+
+double TLAString_toDouble(const char *str) {
+    int i = 0;
+    bool isNegative = false;
+    double result = 0.0;
+    double decimalPlace = 1.0;
+    bool isDecimal = false;
+
+    // Check for negative sign
+    if (str[i] == '-') {
+        isNegative = true;
+        i++;
+    }
+
+    // Process the string
+    while (str[i] != '\0') {
+        char currentChar = str[i];
+
+        // Check for decimal point
+        if (currentChar == '.') {
+            isDecimal = true;
+            i++;
+            continue;
+        }
+
+        // Convert character to digit
+        if (currentChar < '0' || currentChar > '9') {
+            break; // Invalid character
+        }
+
+        int digit = currentChar - '0';
+
+        if (isDecimal) {
+            decimalPlace *= 0.1;
+            result += digit * decimalPlace;
+        } else {
+            result = result * 10.0 + digit;
+        }
+
+        i++;
+    }
+
+    // Apply negative sign if needed
+    if (isNegative) {
+        result = -result;
+    }
+
+    return result;
+}
+
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 6.847745703179758e+17, 'string': 'nixcitwfgzwnxbdrc'}
+hyp: {'returnv': 0.0, 'string': 'nixcitwfgzwnxbdrc'}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': 7.087733925621895e+30, 'string': 'qcvvrsnqtuqreekmgfhzbwikcxdosj'}
+hyp: {'returnv': 0.0, 'string': 'qcvvrsnqtuqreekmgfhzbwikcxdosj'}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': 5.835588916068034e+21, 'string': 'cslbednqkqbmoslcihogk'}
+hyp: {'returnv': 0.0, 'string': 'cslbednqkqbmoslcihogk'}
+WARNING:root:input 4 mismatched!
+ref: {'returnv': 6690.0, 'string': 'kyl'}
+hyp: {'returnv': 0.0, 'string': 'kyl'}
+WARNING:root:input 5 mismatched!
+ref: {'returnv': 7.640703957353091e+26, 'string': 'uspkzhxvcjahoxoytzfdxpocvz'}
+hyp: {'returnv': 0.0, 'string': 'uspkzhxvcjahoxoytzfdxpocvz'}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': 5.957414060455792e+31, 'string': 'elbspryvfjjvdefoqfybcaoerkotquq'}
+hyp: {'returnv': 0.0, 'string': 'elbspryvfjjvdefoqfybcaoerkotquq'}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': 5.736818973595581e+18, 'string': 'btccredwijzbanfqxh'}
+hyp: {'returnv': 0.0, 'string': 'btccredwijzbanfqxh'}
+WARNING:root:input 8 mismatched!
+ref: {'returnv': 6783564.0, 'string': 'ndjalp'}
+hyp: {'returnv': 0.0, 'string': 'ndjalp'}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': 81878220272.0, 'string': 'zwvwqqormn'}
+hyp: {'returnv': 0.0, 'string': 'zwvwqqormn'}
+INFO:root:Local error rate: 90.0%
+INFO:root:CASE 187 failed
+INFO:root:x86 code :
+.globl prch
+.type prch, @function
+prch:
+.LFB54:
+	.cfi_startproc
+	endbr64
+	cmpb	$32, %dil
+	movl	$46, %eax
+	cmovnb	%edi, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdlib.h>
+
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdarg.h>
+
+#include <syslog.h>
+
+#include <ctype.h>
+
+#include <iconv.h>
+
+#include <errno.h>
+
+char prch(char ch) {
+    if ((unsigned char) ch >= ' ')
+        return ch;
+    return '.';
+}
+INFO:root:current LLM prompt size: 580
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int prch(char c) {
+    if (c < 32) {
+        return 46;
+    }
+    return c;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 188 succeeded
+INFO:root:x86 code :
+.globl mul8bit
+.type mul8bit, @function
+mul8bit:
+.LFB39:
+	.cfi_startproc
+	endbr64
+	imull	%esi, %edi
+	leal	128(%rdi), %esi
+	movl	%esi, %eax
+	sarl	$8, %eax
+	addl	%esi, %eax
+	sarl	$8, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdlib.h>
+
+#include <stdio.h>
+
+int mul8bit(int a, int b)
+{
+   int t = a * b + 128;
+   return((t + (t >> 8)) >> 8);
+}
+INFO:root:current LLM prompt size: 610
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int mul8bit(int a, int b) {
+    int result = a * b;
+    result = (result + 128) >> 8; // equivalent to (result + 128) / 256
+    result += (result + 128) >> 8; // equivalent to (result + 128) / 256 again
+    return result;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 189 succeeded
+INFO:root:x86 code :
+.globl owHasOverDrive
+.type owHasOverDrive, @function
+owHasOverDrive:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	$1, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int owHasOverDrive(int portnum)
+{
+   portnum = 0;
+   return 1;
+}
+INFO:root:current LLM prompt size: 565
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int owHasOverDrive() {
+    return 1;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 190 succeeded
+INFO:root:x86 code :
+.globl dns_v_abi
+.type dns_v_abi, @function
+dns_v_abi:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	movl	$538314248, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int dns_v_abi(void) {
+ return 0x20160608;
+}
+INFO:root:current LLM prompt size: 567
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int dns_v_abi() {
+    return 538314248;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 191 succeeded
+INFO:root:x86 code :
+.globl have_north_neighbor
+.type have_north_neighbor, @function
+have_north_neighbor:
+.LFB50:
+	.cfi_startproc
+	endbr64
+	testl	%edi, %edi
+	setne	%al
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <stdbool.h>
+
+#include <assert.h>
+
+bool have_north_neighbor (unsigned int ypos)
+{
+    if (ypos == 0)
+        return false;
+    else
+        return true;
+}
+INFO:root:current LLM prompt size: 571
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int have_north_neighbor(int n) {
+    return n != 0;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 192 succeeded
+INFO:root:x86 code :
+.globl add
+.type add, @function
+add:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	leal	2(%rdi,%rsi), %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int add(int a, int b)
+{
+ return a + b + 2;
+}
+INFO:root:current LLM prompt size: 562
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int add(int a, int b) {
+    return a + b + 2;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 193 succeeded
+INFO:root:x86 code :
+.globl get_mod
+.type get_mod, @function
+get_mod:
+.LFB23:
+	.cfi_startproc
+	endbr64
+	movsbl	(%rdi), %eax
+	testb	%al, %al
+	je	.L4
+	movl	$1, %edx
+	.p2align 4,,10
+	.p2align 3
+.L3:
+	subl	$64, %eax
+	addq	$1, %rdi
+	imull	%eax, %edx
+	movsbl	(%rdi), %eax
+	testb	%al, %al
+	jne	.L3
+	movslq	%edx, %rax
+	movl	%edx, %ecx
+	imulq	$-1370734243, %rax, %rax
+	sarl	$31, %ecx
+	shrq	$32, %rax
+	addl	%edx, %eax
+	sarl	$5, %eax
+	subl	%ecx, %eax
+	imull	$47, %eax, %eax
+	subl	%eax, %edx
+	movl	%edx, %eax
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L4:
+	movl	$1, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <assert.h>
+
+int get_mod(char *p)
+{
+ int mul=1;
+ while (*p != '\0')
+  mul *= ((*p++) - 'A' + 1);
+
+ return mul % 47;
+}
+INFO:root:current LLM prompt size: 799
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int get_mod(char *arr) {
+    if (arr[0] == 0) {
+        return 1;
+    }
+    
+    int result = 1;
+    int i = 0;
+    
+    while (arr[i] != 0) {
+        result *= (arr[i] - 64);
+        i++;
+    }
+    
+    long long temp = result;
+    temp *= -1370734243;
+    
+    int sign = (temp >> 31) & 1;
+    temp >>= 32;
+    result += result;
+    result >>= 5;
+    result -= sign;
+    result *= 47;
+    result = result - result;
+    
+    return result;
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'p': 'stxftscluqsiyuqwazxvynz', 'returnv': 34}
+hyp: {'p': 'stxftscluqsiyuqwazxvynz', 'returnv': 0}
+WARNING:root:input 1 mismatched!
+ref: {'p': 'ztsxivrmjit', 'returnv': 40}
+hyp: {'p': 'ztsxivrmjit', 'returnv': 0}
+WARNING:root:input 2 mismatched!
+ref: {'p': 'chobioxuneynj', 'returnv': 3}
+hyp: {'p': 'chobioxuneynj', 'returnv': 0}
+WARNING:root:input 4 mismatched!
+ref: {'p': 'blhrkwgsh', 'returnv': 27}
+hyp: {'p': 'blhrkwgsh', 'returnv': 0}
+WARNING:root:input 6 mismatched!
+ref: {'p': 'jvebewdrlnyqvacrttq', 'returnv': -33}
+hyp: {'p': 'jvebewdrlnyqvacrttq', 'returnv': 0}
+WARNING:root:input 7 mismatched!
+ref: {'p': 'ythlrlobts', 'returnv': 11}
+hyp: {'p': 'ythlrlobts', 'returnv': 0}
+WARNING:root:input 8 mismatched!
+ref: {'p': 'mymfitif', 'returnv': 17}
+hyp: {'p': 'mymfitif', 'returnv': 0}
+WARNING:root:input 9 mismatched!
+ref: {'p': 'xrornjwhhebk', 'returnv': 35}
+hyp: {'p': 'xrornjwhhebk', 'returnv': 0}
+INFO:root:Local error rate: 80.0%
+INFO:root:CASE 194 failed
+INFO:root:x86 code :
+.globl aleph_Name
+.type aleph_Name, @function
+aleph_Name:
+.LFB34:
+	.cfi_startproc
+	endbr64
+	leaq	.LC0(%rip), %rax
+	ret
+	.cfi_endproc
+.LC0: 	.string	"ALEPH16"
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stddef.h>
+
+#include <string.h>
+
+char* aleph_Name(void) {
+ return "ALEPH16";
+}
+INFO:root:current LLM prompt size: 579
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+const char* aleph_Name() {
+    return "ALEPH16";
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 195 succeeded
+INFO:root:x86 code :
+.globl isInTable
+.type isInTable, @function
+isInTable:
+.LFB16:
+	.cfi_startproc
+	endbr64
+	testl	%edx, %edx
+	jle	.L4
+	movl	$1, %eax
+	.p2align 4,,10
+	.p2align 3
+.L3:
+	movl	-4(%rsi,%rax,4), %ecx
+	cmpl	%eax, %edx
+	setg	%r9b
+	cmpl	%edi, %ecx
+	setne	%r8b
+	addq	$1, %rax
+	testb	%r8b, %r9b
+	jne	.L3
+	xorl	%eax, %eax
+	cmpl	%edi, %ecx
+	sete	%al
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L4:
+	xorl	%eax, %eax
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <time.h>
+
+#include <stdlib.h>
+
+int isInTable(int nombre, int * tab, int nb)
+{
+    int i=0;
+    int retour =0;
+    while (i < nb && !retour)
+    {
+        if(tab[i] == nombre) retour=1;
+        i++;
+    }
+    return retour;
+}
+INFO:root:current LLM prompt size: 728
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+#include <stdbool.h>
+
+bool isInTable(int *table, int size, int value) {
+    if (size <= 0) {
+        return false;
+    }
+    
+    for (int i = 0; i < size; i++) {
+        if (table[i] == value) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 196
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 1 in case 196
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 2 in case 196
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 3 in case 196
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 4 in case 196
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 5 in case 196
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 6 in case 196
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 7 in case 196
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 8 in case 196
+                        stdout: 
+                        stderr: 
+                    
+WARNING:root:WARNING: code failed to execute for input 9 in case 196
+                        stdout: 
+                        stderr: 
+                    
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 196 failed
+INFO:root:x86 code :
+.globl updateSeriesTitle
+.type updateSeriesTitle, @function
+updateSeriesTitle:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+void updateSeriesTitle(unsigned int seriesID, char *title)
+{
+
+
+ return;
+}
+INFO:root:current LLM prompt size: 553
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+void updateSeriesTitle() {
+    // This function currently does nothing.
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 197 succeeded
+INFO:root:x86 code :
+.globl fibonacci
+.type fibonacci, @function
+fibonacci:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	leal	-1(%rdi), %edx
+	movl	$1, %eax
+	cmpl	$1, %edi
+	jle	.L4
+	movl	$1, %ecx
+	.p2align 4,,10
+	.p2align 3
+.L3:
+	movl	%eax, %esi
+	addl	%ecx, %eax
+	movl	%esi, %ecx
+	subl	$1, %edx
+	jne	.L3
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L4:
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int fibonacci(int n) {
+  int a = 1;
+  int b = 1;
+
+  while (n-- > 1) {
+    int t = a;
+    a = b;
+    b += t;
+  }
+
+  return b;
+}
+INFO:root:current LLM prompt size: 676
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int fibonacci(int n) {
+    if (n <= 1) {
+        return 1;
+    }
+    int a = 1, b = 1;
+    for (int i = 2; i <= n; i++) {
+        int temp = a;
+        a = a + b;
+        b = temp;
+    }
+    return a;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 198 succeeded
+INFO:root:x86 code :
+.globl apply_binary_operation_on_byte
+.type apply_binary_operation_on_byte, @function
+apply_binary_operation_on_byte:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	testl	%edx, %edx
+	je	.L33
+	cmpl	$1, %edx
+	je	.L34
+	movl	$63, %eax
+	cmpl	$2, %edx
+	je	.L35
+.L1:
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L33:
+	cmpl	$49, %edi
+	je	.L31
+	movl	$48, %eax
+	cmpl	$49, %esi
+	jne	.L1
+.L31:
+	movl	$49, %eax
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L35:
+	cmpl	$48, %edi
+	jne	.L13
+	movl	$49, %eax
+	cmpl	$49, %esi
+	je	.L1
+.L13:
+	cmpl	$49, %edi
+	jne	.L11
+	cmpl	$48, %esi
+	je	.L31
+.L11:
+	movl	$48, %eax
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L34:
+	cmpl	$49, %edi
+	jne	.L11
+	cmpl	$49, %esi
+	je	.L31
+	jmp	.L11
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int apply_binary_operation_on_byte(int tbit, int kbit, int operation)
+{
+ if (operation == 0x00) {
+  return ((tbit == '1') || (kbit == '1')) ? '1' : '0';
+ }
+ else
+ if (operation == 0x01) {
+  return ((tbit == '1') && (kbit == '1')) ? '1' : '0';
+ }
+ else
+ if (operation == 0x02) {
+  return (((tbit == '0') && (kbit == '1'))
+    || ((tbit == '1') && (kbit == '0'))) ? '1' : '0';
+ }
+
+ return '?';
+}
+INFO:root:current LLM prompt size: 848
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int apply_binary_operation_on_byte(int a, int b, int operation) {
+    if (operation == 0) {
+        return 0; // No operation
+    }
+    if (operation == 1) {
+        if (a == 49 && b == 49) {
+            return 49; // '1' + '1' = '1'
+        }
+        return 48; // Default case
+    }
+    if (operation == 2) {
+        if (a == 48 && b == 49) {
+            return 49; // '0' + '1' = '1'
+        }
+        if (a == 49 && b == 48) {
+            return 49; // '1' + '0' = '1'
+        }
+        return 48; // Default case
+    }
+    return 0; // No operation
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'returnv': 63}
+hyp: {'returnv': 0}
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 63}
+hyp: {'returnv': 0}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': 63}
+hyp: {'returnv': 0}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': 63}
+hyp: {'returnv': 0}
+WARNING:root:input 4 mismatched!
+ref: {'returnv': 63}
+hyp: {'returnv': 0}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': 63}
+hyp: {'returnv': 0}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': 63}
+hyp: {'returnv': 0}
+WARNING:root:input 8 mismatched!
+ref: {'returnv': 63}
+hyp: {'returnv': 0}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': 63}
+hyp: {'returnv': 0}
+INFO:root:Local error rate: 90.0%
+INFO:root:CASE 199 failed
+INFO:root:Done
+INFO:root:Passed cases: [100, 101, 103, 104, 106, 107, 108, 109, 111, 112, 113, 114, 115, 118, 120, 122, 123, 124, 125, 127, 129, 131, 133, 134, 135, 136, 137, 138, 140, 142, 143, 144, 145, 146, 151, 152, 153, 156, 158, 160, 162, 163, 164, 165, 167, 168, 171, 173, 174, 175, 177, 178, 179, 180, 181, 182, 184, 185, 186, 188, 189, 190, 191, 192, 193, 195, 197, 198]
+INFO:root:Failed cases: [102, 105, 110, 116, 117, 119, 121, 126, 128, 130, 132, 139, 141, 147, 148, 149, 150, 154, 155, 157, 159, 161, 166, 169, 170, 172, 176, 183, 187, 194, 196, 199]
+INFO:root:Pass rate: 68.0%

@@ -1,0 +1,6986 @@
+INFO:root:x86 code :
+.globl gcd
+.type gcd, @function
+gcd:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -20(%rbp)
+	movl	%esi, -24(%rbp)
+	cmpl	$0, -20(%rbp)
+	jns	.L2
+	negl	-20(%rbp)
+.L2:
+	cmpl	$0, -24(%rbp)
+	jns	.L3
+	negl	-24(%rbp)
+.L3:
+	movl	-24(%rbp), %eax
+	cmpl	-20(%rbp), %eax
+	jle	.L5
+	movl	-20(%rbp), %eax
+	movl	%eax, -8(%rbp)
+	movl	-24(%rbp), %eax
+	movl	%eax, -20(%rbp)
+	movl	-8(%rbp), %eax
+	movl	%eax, -24(%rbp)
+	jmp	.L5
+.L6:
+	movl	-20(%rbp), %eax
+	cltd
+	idivl	-24(%rbp)
+	movl	%edx, -4(%rbp)
+	movl	-24(%rbp), %eax
+	movl	%eax, -20(%rbp)
+	movl	-4(%rbp), %eax
+	movl	%eax, -24(%rbp)
+.L5:
+	cmpl	$0, -24(%rbp)
+	jne	.L6
+	movl	-20(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int gcd(int a,int b) {
+    int r;
+
+    if(a<0) {
+        a=-a;
+    }
+    if(b<0) {
+        b=-b;
+    }
+
+    if(b>a) {
+        int tmp=a;
+        a=b;
+        b=tmp;
+    }
+# 36 "/scratch/repos/new/home/jordi_armengol_estape/c-scraper/outputs/2022-01-22/02-19-57/repos/yigezhe/algorithm-summary/refs/heads/master/math/gcd/gcd_idea2_way2.c"
+    while (b != 0) {
+        r = a % b;
+        a = b;
+        b = r;
+    }
+    return a;
+}
+INFO:root:current LLM prompt size: 448
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int gcd(int a, int b) {
+    // Ensure a and b are non-negative
+    if (a < 0) {
+        a = -a;
+    }
+    if (b < 0) {
+        b = -b;
+    }
+
+    // Swap a and b if b is greater than a
+    if (b > a) {
+        int temp = a;
+        a = b;
+        b = temp;
+    }
+
+    // Compute the GCD using the Euclidean algorithm
+    while (b != 0) {
+        int remainder = a % b;
+        a = b;
+        b = remainder;
+    }
+
+    return a;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 100 succeeded
+INFO:root:x86 code :
+.globl MungeHexDigit
+.type MungeHexDigit, @function
+MungeHexDigit:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -24(%rbp)
+	movb	$-1, -2(%rbp)
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %eax
+	movb	%al, -1(%rbp)
+	cmpb	$47, -1(%rbp)
+	jle	.L2
+	cmpb	$57, -1(%rbp)
+	jg	.L2
+	movzbl	-1(%rbp), %eax
+	subl	$48, %eax
+	movb	%al, -2(%rbp)
+	jmp	.L3
+.L2:
+	cmpb	$64, -1(%rbp)
+	jle	.L4
+	cmpb	$70, -1(%rbp)
+	jg	.L4
+	movzbl	-1(%rbp), %eax
+	subl	$55, %eax
+	movb	%al, -2(%rbp)
+	jmp	.L3
+.L4:
+	cmpb	$96, -1(%rbp)
+	jle	.L3
+	cmpb	$70, -1(%rbp)
+	jg	.L3
+	movzbl	-1(%rbp), %eax
+	subl	$87, %eax
+	movb	%al, -2(%rbp)
+.L3:
+	movzbl	-2(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+
+
+
+
+char MungeHexDigit(char* one_hexdigit)
+{
+ char r = -1;
+ char c = *one_hexdigit;
+ if (c >= '0' && c <= '9')
+ {
+  r = c - '0';
+ }
+ else if (c >= 'A' && c <= 'F')
+ {
+  r = c - 'A' + 10;
+ }
+ else if (c >= 'a' && c <= 'F')
+ {
+  r = c - 'a' + 10;
+ }
+
+ return r;
+}
+INFO:root:current LLM prompt size: 454
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int MungeHexDigit(char *input) {
+    char result = -1;
+    char c = *input;
+    if (c >= '0' && c <= '9') {
+        result = c - '0';
+    } else if (c >= 'A' && c <= 'F') {
+        result = c - 'A' + 10;
+    } else if (c >= 'a' && c <= 'f') {
+        result = c - 'a' + 10;
+    }
+    return (int)result;
+}
+
+WARNING:root:input 1 mismatched!
+ref: {'one_hexdigit': 'fsajoobzufkdnrusbhoet', 'returnv': -1}
+hyp: {'one_hexdigit': 'fsajoobzufkdnrusbhoet', 'returnv': 15}
+WARNING:root:input 3 mismatched!
+ref: {'one_hexdigit': 'agbtsoejrfuuirpqikltqzoajffrkye', 'returnv': -1}
+hyp: {'one_hexdigit': 'agbtsoejrfuuirpqikltqzoajffrkye', 'returnv': 10}
+INFO:root:Local error rate: 20.0%
+INFO:root:CASE 101 failed
+INFO:root:x86 code :
+.globl mmr_diverse
+.type mmr_diverse, @function
+mmr_diverse:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	%edx, -12(%rbp)
+	movl	$0, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int mmr_diverse (int q_no, int number_of_preresults, int number_of_results) {
+
+
+    return 0;
+}
+INFO:root:current LLM prompt size: 192
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int mmr_diverse(int arg1, int arg2, int arg3) {
+    return 0;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 102 succeeded
+INFO:root:x86 code :
+.globl rgb2Int
+.type rgb2Int, @function
+rgb2Int:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -20(%rbp)
+	movl	%esi, -24(%rbp)
+	movl	%edx, -28(%rbp)
+	movl	-20(%rbp), %eax
+	sall	$16, %eax
+	andl	$16711680, %eax
+	movl	%eax, -12(%rbp)
+	movl	-24(%rbp), %eax
+	sall	$8, %eax
+	andl	$65535, %eax
+	movl	%eax, -8(%rbp)
+	movl	-28(%rbp), %eax
+	movzbl	%al, %eax
+	movl	%eax, -4(%rbp)
+	movl	-12(%rbp), %edx
+	movl	-8(%rbp), %eax
+	orl	%eax, %edx
+	movl	-4(%rbp), %eax
+	orl	%edx, %eax
+	orl	$-16777216, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdlib.h>
+
+#include <stdio.h>
+
+#include <math.h>
+
+int rgb2Int(const int r, const int g, const int b) {
+ int tr = (r << 16) & 0x00FF0000;
+ int tg = (g << 8) & 0x0000FF00;
+ int tb = b & 0x000000FF;
+
+ return 0xFF000000 | tr | tg | tb;
+}
+INFO:root:current LLM prompt size: 364
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int rgb2Int(int r, int g, int b) {
+    int red = (r << 16) & 0x00FF0000;
+    int green = (g << 8) & 0x0000FF00;
+    int blue = b & 0x000000FF;
+    return 0xFF000000 | red | green | blue;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 103 succeeded
+INFO:root:x86 code :
+.globl min
+.type min, @function
+min:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-4(%rbp), %eax
+	cmpl	-8(%rbp), %eax
+	jge	.L2
+	movl	-4(%rbp), %eax
+	jmp	.L3
+.L2:
+	movl	-8(%rbp), %eax
+.L3:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int min(int valor1, int valor2)
+{
+ if(valor1 < valor2)
+  return valor1;
+ else
+  return valor2;
+}
+INFO:root:current LLM prompt size: 225
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int min(int a, int b) {
+    if (a >= b) {
+        return b;
+    } else {
+        return a;
+    }
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 104 succeeded
+INFO:root:x86 code :
+.globl spook_log_deinit
+.type spook_log_deinit, @function
+spook_log_deinit:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	$0, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <unistd.h>
+
+#include <stdarg.h>
+
+#include <time.h>
+
+#include <pthread.h>
+
+int spook_log_deinit()
+{
+
+
+
+    return 0;
+}
+INFO:root:current LLM prompt size: 153
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+void spook_log_deinit(void) {
+    // Function prologue
+    // Save the base pointer and set the stack pointer as the new base pointer
+    pushq %rbp;
+    movq %rsp, %rbp;
+
+    // Set the return value to 0
+    movl $0, %eax;
+
+    // Function epilogue
+    // Restore the base pointer and return
+    popq %rbp;
+    ret;
+}
+
+WARNING:root:CASE 105 failed to compile the decompiled code!
+WARNING:root:ret.stderr: disassembled.c: In function 'spook_log_deinit':
+disassembled.c:5:5: error: 'pushq' undeclared (first use in this function)
+    5 |     pushq %rbp;
+      |     ^~~~~
+disassembled.c:5:5: note: each undeclared identifier is reported only once for each function it appears in
+disassembled.c:5:12: error: 'rbp' undeclared (first use in this function)
+    5 |     pushq %rbp;
+      |            ^~~
+disassembled.c:6:5: error: 'movq' undeclared (first use in this function)
+    6 |     movq %rsp, %rbp;
+      |     ^~~~
+disassembled.c:6:11: error: 'rsp' undeclared (first use in this function)
+    6 |     movq %rsp, %rbp;
+      |           ^~~
+disassembled.c:6:16: error: expected expression before '%' token
+    6 |     movq %rsp, %rbp;
+      |                ^
+disassembled.c:9:5: error: unknown type name 'movl'
+    9 |     movl $0, %eax;
+      |     ^~~~
+disassembled.c:9:14: error: expected identifier or '(' before '%' token
+    9 |     movl $0, %eax;
+      |              ^
+disassembled.c:13:5: error: 'popq' undeclared (first use in this function)
+   13 |     popq %rbp;
+      |     ^~~~
+disassembled.c:14:5: error: 'ret' undeclared (first use in this function)
+   14 |     ret;
+      |     ^~~
+
+WARNING:root:ret.stdout: 
+INFO:root:x86 code :
+.globl PicoGetHashTableSize
+.type PicoGetHashTableSize, @function
+PicoGetHashTableSize:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	$7919, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int PicoGetHashTableSize( void ){
+ return 7919;
+}
+INFO:root:current LLM prompt size: 157
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int PicoGetHashTableSize() {
+    return 7919;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 106 succeeded
+INFO:root:x86 code :
+.globl f7c
+.type f7c, @function
+f7c:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -8(%rbp)
+	movq	$0, -8(%rbp)
+	movl	$1, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int f7c(int *p) {
+
+  p = (void*) 0;
+  return 1;
+}
+INFO:root:current LLM prompt size: 175
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int f7c(long long int n) {
+    long long int x = 0;
+    return 1;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 107 succeeded
+INFO:root:x86 code :
+.globl game_of_life
+.type game_of_life, @function
+game_of_life:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -8(%rbp)
+	movl	%esi, -12(%rbp)
+	movl	%edx, -16(%rbp)
+	movl	%ecx, -20(%rbp)
+	movq	%r8, -32(%rbp)
+	nop
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+void game_of_life(int** board, int N, int M, int steps, int** final_board) {
+}
+INFO:root:current LLM prompt size: 206
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+void game_of_life(void* arg1, int arg2, int arg3, int arg4, void* arg5) {
+    // The function does not have any implementation in the provided assembly code.
+    // It appears to be a function declaration or a stub function that does not perform any specific operations.
+    // The function takes five parameters:
+    // - arg1: a pointer to some data or object
+    // - arg2: an integer
+    // - arg3: an integer
+    // - arg4: an integer
+    // - arg5: a pointer to some data or object
+    // The function does not return any value.
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 108 succeeded
+INFO:root:x86 code :
+.globl doubleSize
+.type doubleSize, @function
+doubleSize:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$96, %rsp
+	movq	%fs:40, %rax
+	movq	%rax, -8(%rbp)
+	xorl	%eax, %eax
+	movl	$8, %eax
+	movq	-8(%rbp), %rdx
+	xorq	%fs:40, %rdx
+	je	.L3
+	call	__stack_chk_fail@PLT
+.L3:
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int doubleSize() {
+ double doubArray[10];
+ double * doubPtr1;
+ double * doubPtr2;
+
+ return (long)(doubArray+1)+(~(long)doubArray+1);
+}
+INFO:root:current LLM prompt size: 230
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int doubleSize() {
+    unsigned long long int canary = __builtin_frame_address(0);
+    unsigned long long int saved_canary = *((unsigned long long int*)(canary + 40));
+
+    int size = 8;
+
+    if (saved_canary != *((unsigned long long int*)(canary + 40))) {
+        __stack_chk_fail();
+    }
+
+    return size;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 109 succeeded
+INFO:root:x86 code :
+.globl function
+.type function, @function
+function:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	cmpl	$11, -8(%rbp)
+	ja	.L2
+	movl	-8(%rbp), %eax
+	leaq	0(,%rax,4), %rdx
+	leaq	.L4(%rip), %rax
+	movl	(%rdx,%rax), %eax
+	cltq
+	leaq	.L4(%rip), %rdx
+	addq	%rdx, %rax
+	notrack jmp	*%rax
+	.section	.rodata
+	.align 4
+	.align 4
+.L4:
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L5-.L4
+	.long	.L2-.L4
+	.long	.L3-.L4
+	.long	.L2-.L4
+	.long	.L3-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L3-.L4
+	.long	.L2-.L4
+	.long	.L3-.L4
+	.text
+.L5:
+	movl	-4(%rbp), %eax
+	andl	$3, %eax
+	testl	%eax, %eax
+	jne	.L6
+	movl	-4(%rbp), %edx
+	movslq	%edx, %rax
+	imulq	$1374389535, %rax, %rax
+	shrq	$32, %rax
+	movl	%eax, %ecx
+	sarl	$5, %ecx
+	movl	%edx, %eax
+	sarl	$31, %eax
+	subl	%eax, %ecx
+	movl	%ecx, %eax
+	imull	$100, %eax, %eax
+	subl	%eax, %edx
+	movl	%edx, %eax
+	testl	%eax, %eax
+	jne	.L7
+.L6:
+	movl	-4(%rbp), %edx
+	movslq	%edx, %rax
+	imulq	$1374389535, %rax, %rax
+	shrq	$32, %rax
+	movl	%eax, %ecx
+	sarl	$7, %ecx
+	movl	%edx, %eax
+	sarl	$31, %eax
+	subl	%eax, %ecx
+	movl	%ecx, %eax
+	imull	$400, %eax, %eax
+	subl	%eax, %edx
+	movl	%edx, %eax
+	testl	%eax, %eax
+	jne	.L8
+.L7:
+	movl	$29, %eax
+	jmp	.L9
+.L8:
+	movl	$28, %eax
+	jmp	.L9
+.L3:
+	movl	$30, %eax
+	jmp	.L9
+.L2:
+	movl	$31, %eax
+.L9:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+int function(int x, int y)
+{
+ switch (y) {
+  case 2:
+   if ((x % 4 == 0 && x % 100 != 0) || x % 400 == 0) {
+    return 29;
+   } else {
+    return 28;
+   }
+  case 4:
+  case 6:
+  case 9:
+  case 11:
+   return 30;
+  default:
+   return 31;
+ }
+}
+INFO:root:current LLM prompt size: 796
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int function(int a, int b) {
+    switch (b) {
+        case 2:
+        case 3:
+        case 6:
+        case 9:
+        case 11:
+            return 30;
+        case 4:
+        case 7:
+        case 10:
+            if (a % 4 == 0) {
+                int x = a / 100;
+                int y = a - x * 100;
+                if (y == 0) {
+                    return 29;
+                }
+            }
+            return 28;
+        default:
+            return 31;
+    }
+}
+
+WARNING:root:input 8 mismatched!
+ref: {'returnv': 31}
+hyp: {'returnv': 28}
+INFO:root:Local error rate: 10.0%
+INFO:root:CASE 110 failed
+INFO:root:x86 code :
+.globl g3
+.type g3, @function
+g3:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	$4, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int g3 () { return 4; }
+INFO:root:current LLM prompt size: 147
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int g3() {
+    return 4;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 111 succeeded
+INFO:root:x86 code :
+.globl SER_GetChar
+.type SER_GetChar, @function
+SER_GetChar:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	$-1, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <sys/stat.h>
+
+#include <string.h>
+
+#include <errno.h>
+
+int SER_GetChar (void) {
+
+  return (-1);
+}
+INFO:root:current LLM prompt size: 151
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int SER_GetChar() {
+    // Push the base pointer onto the stack
+    // and update the stack pointer to the current frame pointer
+    pushq %rbp;
+    movq %rsp, %rbp;
+
+    // Set the return value to -1
+    movl $-1, %eax;
+
+    // Restore the base pointer from the stack
+    // and return from the function
+    popq %rbp;
+    ret;
+}
+
+WARNING:root:CASE 112 failed to compile the decompiled code!
+WARNING:root:ret.stderr: disassembled.c: In function 'SER_GetChar':
+disassembled.c:5:5: error: 'pushq' undeclared (first use in this function)
+    5 |     pushq %rbp;
+      |     ^~~~~
+disassembled.c:5:5: note: each undeclared identifier is reported only once for each function it appears in
+disassembled.c:5:12: error: 'rbp' undeclared (first use in this function)
+    5 |     pushq %rbp;
+      |            ^~~
+disassembled.c:6:5: error: 'movq' undeclared (first use in this function)
+    6 |     movq %rsp, %rbp;
+      |     ^~~~
+disassembled.c:6:11: error: 'rsp' undeclared (first use in this function)
+    6 |     movq %rsp, %rbp;
+      |           ^~~
+disassembled.c:6:16: error: expected expression before '%' token
+    6 |     movq %rsp, %rbp;
+      |                ^
+disassembled.c:9:5: error: unknown type name 'movl'
+    9 |     movl $-1, %eax;
+      |     ^~~~
+disassembled.c:9:11: error: expected '=', ',', ';', 'asm' or '__attribute__' before '-' token
+    9 |     movl $-1, %eax;
+      |           ^
+disassembled.c:13:5: error: 'popq' undeclared (first use in this function)
+   13 |     popq %rbp;
+      |     ^~~~
+disassembled.c:14:5: error: 'ret' undeclared (first use in this function)
+   14 |     ret;
+      |     ^~~
+
+WARNING:root:ret.stdout: 
+INFO:root:x86 code :
+.globl factorial
+.type factorial, @function
+factorial:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	pushq	%rbx
+	subq	$24, %rsp
+	.cfi_offset 3, -24
+	movl	%edi, -20(%rbp)
+	cmpl	$0, -20(%rbp)
+	jg	.L2
+	movl	$1, %eax
+	jmp	.L3
+.L2:
+	movl	-20(%rbp), %eax
+	movslq	%eax, %rbx
+	movl	-20(%rbp), %eax
+	subl	$1, %eax
+	movl	%eax, %edi
+	call	factorial
+	imulq	%rbx, %rax
+.L3:
+	addq	$24, %rsp
+	popq	%rbx
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+long
+factorial( int n )
+{
+ if( n <= 0 )
+  return 1;
+ else
+  return n * factorial( n - 1 );
+}
+INFO:root:current LLM prompt size: 298
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int factorial(int n) {
+    if (n <= 0) {
+        return 1;
+    } else {
+        return n * factorial(n - 1);
+    }
+}
+
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 6404118670120845312}
+hyp: {'returnv': 0}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': 1096907932701818880}
+hyp: {'returnv': 0}
+INFO:root:Local error rate: 20.0%
+INFO:root:CASE 113 failed
+INFO:root:x86 code :
+.globl isnum
+.type isnum, @function
+isnum:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -24(%rbp)
+	movl	$0, -4(%rbp)
+	jmp	.L2
+.L4:
+	movl	-4(%rbp), %eax
+	movslq	%eax, %rdx
+	movq	-24(%rbp), %rax
+	addq	%rdx, %rax
+	movzbl	(%rax), %eax
+	cmpb	$47, %al
+	jle	.L3
+	movl	-4(%rbp), %eax
+	movslq	%eax, %rdx
+	movq	-24(%rbp), %rax
+	addq	%rdx, %rax
+	movzbl	(%rax), %eax
+	cmpb	$57, %al
+	jg	.L3
+	addl	$1, -4(%rbp)
+.L2:
+	movl	-4(%rbp), %eax
+	movslq	%eax, %rdx
+	movq	-24(%rbp), %rax
+	addq	%rdx, %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	jne	.L4
+.L3:
+	movl	-4(%rbp), %eax
+	movslq	%eax, %rdx
+	movq	-24(%rbp), %rax
+	addq	%rdx, %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	jne	.L5
+	movl	$1, %eax
+	jmp	.L6
+.L5:
+	movl	$0, %eax
+.L6:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <time.h>
+
+#include <stdlib.h>
+
+#include <limits.h>
+
+#include <ctype.h>
+
+int isnum(char *c) {
+ int i = 0;
+
+ while( *(c + i) != '\0' ) {
+  if ( !(*(c + i) >= 48 && *(c + i) <= 57) )
+   break;
+  else
+   i++;
+ }
+ if ( *(c + i) == '\0' )
+  return 1;
+ else
+  return 0;
+}
+INFO:root:current LLM prompt size: 502
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int isnum(char *str) {
+    int i = 0;
+    while (str[i] != '\0') {
+        if (str[i] <= '/' || str[i] > '9') {
+            break;
+        }
+        i++;
+    }
+    if (str[i] != '\0') {
+        return 0;
+    } else {
+        return 1;
+    }
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 114 succeeded
+INFO:root:x86 code :
+.globl my_str_cmp
+.type my_str_cmp, @function
+my_str_cmp:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -24(%rbp)
+	movq	%rsi, -32(%rbp)
+	movl	$0, -8(%rbp)
+	movl	$0, -4(%rbp)
+	jmp	.L2
+.L4:
+	addl	$1, -8(%rbp)
+.L2:
+	movl	-8(%rbp), %eax
+	movslq	%eax, %rdx
+	movq	-24(%rbp), %rax
+	addq	%rdx, %rax
+	movzbl	(%rax), %edx
+	movl	-8(%rbp), %eax
+	movslq	%eax, %rcx
+	movq	-32(%rbp), %rax
+	addq	%rcx, %rax
+	movzbl	(%rax), %eax
+	cmpb	%al, %dl
+	jne	.L3
+	movl	-8(%rbp), %eax
+	movslq	%eax, %rdx
+	movq	-24(%rbp), %rax
+	addq	%rdx, %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	je	.L3
+	movl	-8(%rbp), %eax
+	movslq	%eax, %rdx
+	movq	-32(%rbp), %rax
+	addq	%rdx, %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	jne	.L4
+.L3:
+	movl	-8(%rbp), %eax
+	movslq	%eax, %rdx
+	movq	-24(%rbp), %rax
+	addq	%rdx, %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	jne	.L5
+	movl	-8(%rbp), %eax
+	movslq	%eax, %rdx
+	movq	-32(%rbp), %rax
+	addq	%rdx, %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	jne	.L5
+	movl	$1, -4(%rbp)
+.L5:
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+int my_str_cmp (const char s1[], const char s2[])
+{
+    int i = 0;
+    int are_equal = 0;
+
+    while ( s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0' ) {
+        ++i;
+    }
+
+    if ( s1[i] == '\0' && s2[i] == '\0' ) {
+        are_equal = 1;
+    }
+
+    return are_equal;
+}
+INFO:root:current LLM prompt size: 651
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int my_str_cmp(const char *str1, const char *str2) {
+    int i = 0;
+    int result = 0;
+
+    while (1) {
+        // Increment the index
+        i++;
+
+        // Compare the characters at the current index
+        if (str1[i] != str2[i]) {
+            break;
+        }
+
+        // If both strings have a null terminator at the current index, they are equal
+        if (str1[i] == '\0' && str2[i] == '\0') {
+            result = 1;
+            break;
+        }
+
+        // If both strings have a non-null character at the current index, continue the loop
+        if (str1[i] != '\0' && str2[i] != '\0') {
+            continue;
+        }
+    }
+
+    return result;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 115 succeeded
+INFO:root:x86 code :
+.globl mini18n_set_log
+.type mini18n_set_log, @function
+mini18n_set_log:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -8(%rbp)
+	movl	$0, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+
+
+
+int mini18n_set_log(const char * filename) {
+# 172 "/scratch/repos/new/home/jordi_armengol_estape/c-scraper/outputs/2022-01-22/02-19-57/repos/EmulatorArchive/yabause-rr/refs/heads/master/src/windows/mini18n/mini18n.c"
+ return 0;
+}
+INFO:root:current LLM prompt size: 169
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+void mini18n_set_log(void* arg) {
+    // Function prologue
+    // Save the base pointer and set the new base pointer to the current stack pointer
+    pushq %rbp
+    movq %rsp, %rbp
+
+    // Store the argument passed to the function in the local variable at -8(%rbp)
+    movq %rdi, -8(%rbp)
+
+    // Set the return value (eax) to 0
+    movl $0, %eax
+
+    // Function epilogue
+    // Restore the base pointer and return
+    popq %rbp
+    ret
+}
+
+WARNING:root:CASE 116 failed to compile the decompiled code!
+WARNING:root:ret.stderr: disassembled.c: In function 'mini18n_set_log':
+disassembled.c:5:5: error: 'pushq' undeclared (first use in this function)
+    5 |     pushq %rbp
+      |     ^~~~~
+disassembled.c:5:5: note: each undeclared identifier is reported only once for each function it appears in
+disassembled.c:5:12: error: 'rbp' undeclared (first use in this function)
+    5 |     pushq %rbp
+      |            ^~~
+disassembled.c:5:15: error: expected ';' before 'movq'
+    5 |     pushq %rbp
+      |               ^
+      |               ;
+    6 |     movq %rsp, %rbp
+      |     ~~~~       
+
+WARNING:root:ret.stdout: 
+INFO:root:x86 code :
+.globl cut
+.type cut, @function
+cut:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	andl	$1, %eax
+	testl	%eax, %eax
+	jne	.L2
+	movl	-4(%rbp), %eax
+	shrl	%eax
+	jmp	.L3
+.L2:
+	movl	-4(%rbp), %eax
+	shrl	%eax
+	addl	$1, %eax
+.L3:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <stdbool.h>
+
+#include <time.h>
+
+unsigned int cut( unsigned int length ) {
+ if (length % 2 == 0)
+  return length/2;
+ else
+  return length/2 + 1;
+}
+INFO:root:current LLM prompt size: 240
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int cut(int n) {
+    if (n % 2 == 0) {
+        return n / 2;
+    } else {
+        return n / 2 + 1;
+    }
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 117 succeeded
+INFO:root:x86 code :
+.globl lowbit
+.type lowbit, @function
+lowbit:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	negl	%eax
+	andl	-4(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int lowbit(int x) {
+    return x & (-x);
+}
+INFO:root:current LLM prompt size: 180
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int lowbit(int n) {
+    return n & (-n);
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 118 succeeded
+INFO:root:x86 code :
+.globl magic
+.type magic, @function
+magic:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -20(%rbp)
+	movl	%esi, -24(%rbp)
+	cmpl	$1, -20(%rbp)
+	jle	.L2
+	cmpl	$1, -24(%rbp)
+	jg	.L3
+.L2:
+	movl	$0, %eax
+	jmp	.L4
+.L3:
+	movl	-24(%rbp), %eax
+	cmpl	-20(%rbp), %eax
+	jle	.L5
+	movl	-20(%rbp), %eax
+	movl	%eax, -4(%rbp)
+	movl	-24(%rbp), %eax
+	movl	%eax, -20(%rbp)
+	movl	-4(%rbp), %eax
+	movl	%eax, -24(%rbp)
+.L5:
+	movl	-20(%rbp), %eax
+	cltd
+	idivl	-24(%rbp)
+	movl	%edx, -4(%rbp)
+	movl	-20(%rbp), %eax
+	cltd
+	idivl	-24(%rbp)
+	movl	%eax, -20(%rbp)
+	cmpl	$0, -4(%rbp)
+	je	.L6
+	movl	$0, %eax
+	jmp	.L4
+.L6:
+	cmpl	$1, -20(%rbp)
+	jne	.L3
+	movl	-24(%rbp), %eax
+.L4:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdbool.h>
+
+#include <stdlib.h>
+
+#include <limits.h>
+
+#include <assert.h>
+
+int magic(int a, int b) {
+
+ if (a < 2 || b < 2) return 0;
+ int r;
+ while (1) {
+  if (b > a) {
+   r = a;
+   a = b;
+   b = r;
+  }
+  r = a%b;
+  a /= b;
+  if (r) return 0;
+  else if (a == 1) return b;
+ }
+}
+INFO:root:current LLM prompt size: 464
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int magic(int a, int b) {
+    if (a <= 1 || b <= 1) {
+        return 0;
+    }
+
+    while (b <= a) {
+        int temp = a;
+        a = b;
+        b = temp;
+    }
+
+    a = a / b;
+    int remainder = a % b;
+
+    if (remainder == 0) {
+        if (a == 1) {
+            return b;
+        } else {
+            return 0;
+        }
+    } else {
+        return 0;
+    }
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 119 succeeded
+INFO:root:x86 code :
+.globl do_642
+.type do_642, @function
+do_642:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	$642, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int do_642() { return 642; }
+INFO:root:current LLM prompt size: 150
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int do_642() {
+    return 642;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 120 succeeded
+INFO:root:x86 code :
+.globl color_char_to_attr
+.type color_char_to_attr, @function
+color_char_to_attr:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, %eax
+	movb	%al, -4(%rbp)
+	movsbl	-4(%rbp), %eax
+	subl	$66, %eax
+	cmpl	$55, %eax
+	ja	.L2
+	movl	%eax, %eax
+	leaq	0(,%rax,4), %rdx
+	leaq	.L4(%rip), %rax
+	movl	(%rdx,%rax), %eax
+	cltq
+	leaq	.L4(%rip), %rdx
+	addq	%rdx, %rax
+	notrack jmp	*%rax
+	.section	.rodata
+	.align 4
+	.align 4
+.L4:
+	.long	.L19-.L4
+	.long	.L2-.L4
+	.long	.L18-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L17-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L16-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L15-.L4
+	.long	.L2-.L4
+	.long	.L14-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L13-.L4
+	.long	.L2-.L4
+	.long	.L12-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L11-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L10-.L4
+	.long	.L2-.L4
+	.long	.L2-.L4
+	.long	.L9-.L4
+	.long	.L8-.L4
+	.long	.L2-.L4
+	.long	.L7-.L4
+	.long	.L6-.L4
+	.long	.L5-.L4
+	.long	.L2-.L4
+	.long	.L3-.L4
+	.text
+.L12:
+	movl	$0, %eax
+	jmp	.L20
+.L5:
+	movl	$1, %eax
+	jmp	.L20
+.L8:
+	movl	$2, %eax
+	jmp	.L20
+.L10:
+	movl	$3, %eax
+	jmp	.L20
+.L9:
+	movl	$4, %eax
+	jmp	.L20
+.L11:
+	movl	$5, %eax
+	jmp	.L20
+.L13:
+	movl	$6, %eax
+	jmp	.L20
+.L7:
+	movl	$7, %eax
+	jmp	.L20
+.L18:
+	movl	$8, %eax
+	jmp	.L20
+.L14:
+	movl	$9, %eax
+	jmp	.L20
+.L6:
+	movl	$10, %eax
+	jmp	.L20
+.L3:
+	movl	$11, %eax
+	jmp	.L20
+.L16:
+	movl	$12, %eax
+	jmp	.L20
+.L17:
+	movl	$13, %eax
+	jmp	.L20
+.L19:
+	movl	$14, %eax
+	jmp	.L20
+.L15:
+	movl	$15, %eax
+	jmp	.L20
+.L2:
+	movl	$-1, %eax
+.L20:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int color_char_to_attr(char c)
+{
+ switch (c)
+ {
+ case 'd':
+  return (0);
+ case 'w':
+  return (1);
+ case 's':
+  return (2);
+ case 'o':
+  return (3);
+ case 'r':
+  return (4);
+ case 'g':
+  return (5);
+ case 'b':
+  return (6);
+ case 'u':
+  return (7);
+
+ case 'D':
+  return (8);
+ case 'W':
+  return (9);
+ case 'v':
+  return (10);
+ case 'y':
+  return (11);
+ case 'R':
+  return (12);
+ case 'G':
+  return (13);
+ case 'B':
+  return (14);
+ case 'U':
+  return (15);
+ }
+
+ return ( -1);
+}
+INFO:root:current LLM prompt size: 1115
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int color_char_to_attr(char c) {
+    switch (c - 'B') {
+        case 0:  return 0;
+        case 2:  return 8;
+        case 5:  return 13;
+        case 9:  return 3;
+        case 10: return 4;
+        case 11: return 5;
+        case 13: return 6;
+        case 7:  return 7;
+        case 18: return 1;
+        case 14: return 9;
+        case 6:  return 10;
+        case 3:  return 11;
+        case 16: return 12;
+        case 17: return 13;
+        case 19: return 14;
+        case 15: return 15;
+        default: return -1;
+    }
+}
+
+WARNING:root:input 4 mismatched!
+ref: {'returnv': -1}
+hyp: {'returnv': 5}
+INFO:root:Local error rate: 10.0%
+INFO:root:CASE 121 failed
+INFO:root:x86 code :
+.globl fortranflush_
+.type fortranflush_, @function
+fortranflush_:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -8(%rbp)
+	nop
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+void fortranflush_(int* rank){}
+INFO:root:current LLM prompt size: 158
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+void fortranflush_(void* arg) {
+    // Save the base pointer
+    __builtin_eh_return_data_regno(6);
+
+    // Move the stack pointer to the base pointer
+    __builtin_eh_return_data_regno(7);
+
+    // Restore the base pointer
+    __builtin_eh_return_data_regno(6);
+
+    // Return
+    __builtin_eh_return();
+}
+
+WARNING:root:CASE 122 failed to compile the decompiled code!
+WARNING:root:ret.stderr: disassembled.c: In function 'fortranflush_':
+disassembled.c:13:5: error: too few arguments to function '__builtin_eh_return'
+   13 |     __builtin_eh_return();
+      |     ^~~~~~~~~~~~~~~~~~~
+
+WARNING:root:ret.stdout: 
+INFO:root:x86 code :
+.globl do_053
+.type do_053, @function
+do_053:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	$53, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int do_053() { return 53; }
+INFO:root:current LLM prompt size: 150
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int do_053() {
+    return 53;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 123 succeeded
+INFO:root:x86 code :
+.globl same_coordinate
+.type same_coordinate, @function
+same_coordinate:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -24(%rbp)
+	movq	%rsi, -32(%rbp)
+	movl	%edx, -36(%rbp)
+	movl	$0, -4(%rbp)
+	jmp	.L2
+.L5:
+	movl	-4(%rbp), %eax
+	cltq
+	leaq	0(,%rax,4), %rdx
+	movq	-24(%rbp), %rax
+	addq	%rdx, %rax
+	movl	(%rax), %edx
+	movl	-4(%rbp), %eax
+	cltq
+	leaq	0(,%rax,4), %rcx
+	movq	-32(%rbp), %rax
+	addq	%rcx, %rax
+	movl	(%rax), %eax
+	cmpl	%eax, %edx
+	je	.L3
+	movl	$0, %eax
+	jmp	.L4
+.L3:
+	addl	$1, -4(%rbp)
+.L2:
+	movl	-4(%rbp), %eax
+	cmpl	-36(%rbp), %eax
+	jl	.L5
+	movl	$1, %eax
+.L4:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <math.h>
+
+int same_coordinate(int* coor1, int* coor2, int d)
+{
+    int i;
+    for(i = 0; i < d; i++)
+ if(coor1[i] != coor2[i])
+     return 0;
+    return 1;
+}
+INFO:root:current LLM prompt size: 411
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int same_coordinate(int* x, int* y, int n) {
+    int i = 0;
+    while (i < n) {
+        if (x[i] != y[i]) {
+            return 0;
+        }
+        i++;
+    }
+    return 1;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 124 succeeded
+INFO:root:x86 code :
+.globl oakley_get_defaultlifetime
+.type oakley_get_defaultlifetime, @function
+oakley_get_defaultlifetime:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	$28800, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <sys/types.h>
+
+#include <sys/param.h>
+
+#include <sys/socket.h>
+
+#include <netinet/in.h>
+
+#include <stdlib.h>
+
+#include <stdio.h>
+
+#include <string.h>
+
+#include <errno.h>
+
+int
+oakley_get_defaultlifetime()
+{
+ return 28800;
+}
+INFO:root:current LLM prompt size: 158
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int oakley_get_defaultlifetime() {
+    return 28800;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 125 succeeded
+INFO:root:x86 code :
+.globl buffer_overflow
+.type buffer_overflow, @function
+buffer_overflow:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$48, %rsp
+	movq	%fs:40, %rax
+	movq	%rax, -8(%rbp)
+	xorl	%eax, %eax
+	movq	$0, -48(%rbp)
+	movq	$0, -40(%rbp)
+	movq	$0, -32(%rbp)
+	movq	$0, -24(%rbp)
+	movq	$0, -16(%rbp)
+	movl	352(%rbp), %eax
+	movq	-8(%rbp), %rdx
+	xorq	%fs:40, %rdx
+	je	.L3
+	call	__stack_chk_fail@PLT
+.L3:
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int buffer_overflow() { int x[10]={0}; return x[100]; }
+INFO:root:current LLM prompt size: 292
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 529 "
+INFO:anthropic._base_client:Retrying request to /v1/messages in 0.822589 seconds
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+#include <stdint.h>
+
+void buffer_overflow() {
+    uint64_t canary = __builtin_frame_address(0)[1];
+    uint64_t local_vars[5] = {0};
+
+    int32_t index = 352;
+    if (canary != __builtin_frame_address(0)[1]) {
+        __stack_chk_fail();
+    }
+
+    return;
+}
+
+WARNING:root:CASE 126 failed to compile the decompiled code!
+WARNING:root:ret.stderr: disassembled.c: In function 'buffer_overflow':
+disassembled.c:5:49: warning: dereferencing 'void *' pointer
+    5 |     uint64_t canary = __builtin_frame_address(0)[1];
+      |                                                 ^
+disassembled.c:5:23: error: void value not ignored as it ought to be
+    5 |     uint64_t canary = __builtin_frame_address(0)[1];
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~
+disassembled.c:9:45: warning: dereferencing 'void *' pointer
+    9 |     if (canary != __builtin_frame_address(0)[1]) {
+      |                                             ^
+disassembled.c:9:45: error: void value not ignored as it ought to be
+    9 |     if (canary != __builtin_frame_address(0)[1]) {
+      |                   ~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+disassembled.c:10:9: warning: implicit declaration of function '__stack_chk_fail' [-Wimplicit-function-declaration]
+   10 |         __stack_chk_fail();
+      |         ^~~~~~~~~~~~~~~~
+
+WARNING:root:ret.stdout: 
+INFO:root:x86 code :
+.globl month
+.type month, @function
+month:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -24(%rbp)
+	movl	$0, -8(%rbp)
+	movq	-24(%rbp), %rax
+	addq	$8, %rax
+	movl	(%rax), %edx
+	movl	%edx, %eax
+	sall	$2, %eax
+	addl	%edx, %eax
+	addl	%eax, %eax
+	movl	%eax, %edx
+	movq	-24(%rbp), %rax
+	addq	$12, %rax
+	movl	(%rax), %eax
+	addl	%edx, %eax
+	movl	%eax, -4(%rbp)
+	cmpl	$11, -4(%rbp)
+	jle	.L2
+	cmpl	$20, -4(%rbp)
+	jle	.L3
+	cmpl	$32, -4(%rbp)
+	jle	.L2
+.L3:
+	cmpl	$40, -4(%rbp)
+	jle	.L4
+	cmpl	$53, -4(%rbp)
+	jg	.L4
+.L2:
+	movl	$1, -8(%rbp)
+.L4:
+	movl	-8(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int month(int *n)
+{int month;
+int flag=0;
+month=n[2]*10+n[3];
+if( (month<12) ||(month>=21 &&month<=32)||(month>=41 && month<=53))
+{flag=1;}
+return flag;
+}
+INFO:root:current LLM prompt size: 409
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 529 "
+INFO:anthropic._base_client:Retrying request to /v1/messages in 0.875576 seconds
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int month(struct date_t* date) {
+    int result = 0;
+    int day = *(date->day);
+    int month = *(date->month);
+    int year = *(date->year);
+    int total_days = (month * 31) + (month * 2) + day + year;
+    if (total_days <= 11 || (total_days > 20 && total_days <= 32)) {
+        result = 1;
+    } else if (total_days > 40 && total_days <= 53) {
+        result = 1;
+    }
+    return result;
+}
+
+WARNING:root:CASE 127 failed to compile the decompiled code!
+WARNING:root:ret.stderr: disassembled.c:2:18: warning: 'struct date_t' declared inside parameter list will not be visible outside of this definition or declaration
+    2 | int month(struct date_t* date) {
+      |                  ^~~~~~
+disassembled.c: In function 'month':
+disassembled.c:4:21: error: invalid use of undefined type 'struct date_t'
+    4 |     int day = *(date->day);
+      |                     ^~
+disassembled.c:5:23: error: invalid use of undefined type 'struct date_t'
+    5 |     int month = *(date->month);
+      |                       ^~
+disassembled.c:6:22: error: invalid use of undefined type 'struct date_t'
+    6 |     int year = *(date->year);
+      |                      ^~
+
+WARNING:root:ret.stdout: 
+INFO:root:x86 code :
+.globl readc_utf8
+.type readc_utf8, @function
+readc_utf8:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$48, %rsp
+	movl	%edi, -36(%rbp)
+	movq	%rsi, -48(%rbp)
+	movq	%fs:40, %rax
+	movq	%rax, -8(%rbp)
+	xorl	%eax, %eax
+	movl	$0, -20(%rbp)
+	movl	$1, -16(%rbp)
+	jmp	.L2
+.L14:
+	leaq	-21(%rbp), %rcx
+	movl	-36(%rbp), %eax
+	movl	$1, %edx
+	movq	%rcx, %rsi
+	movl	%eax, %edi
+	call	read@PLT
+	movl	%eax, -12(%rbp)
+	cmpl	$0, -12(%rbp)
+	jne	.L3
+	movq	-48(%rbp), %rax
+	movl	$-1, (%rax)
+	movl	$1, %eax
+	jmp	.L13
+.L3:
+	cmpl	$-1, -12(%rbp)
+	jne	.L5
+	movl	$0, %eax
+	jmp	.L13
+.L5:
+	movzbl	-21(%rbp), %eax
+	movzbl	%al, %eax
+	andl	$252, %eax
+	cmpl	$252, %eax
+	jne	.L6
+	movzbl	-21(%rbp), %eax
+	movzbl	%al, %eax
+	andl	$1, %eax
+	movl	%eax, -20(%rbp)
+	movl	$5, -16(%rbp)
+	jmp	.L2
+.L6:
+	movzbl	-21(%rbp), %eax
+	movzbl	%al, %eax
+	andl	$248, %eax
+	cmpl	$248, %eax
+	jne	.L8
+	movzbl	-21(%rbp), %eax
+	movzbl	%al, %eax
+	andl	$3, %eax
+	movl	%eax, -20(%rbp)
+	movl	$4, -16(%rbp)
+	jmp	.L2
+.L8:
+	movzbl	-21(%rbp), %eax
+	movzbl	%al, %eax
+	andl	$240, %eax
+	cmpl	$240, %eax
+	jne	.L9
+	movzbl	-21(%rbp), %eax
+	movzbl	%al, %eax
+	andl	$7, %eax
+	movl	%eax, -20(%rbp)
+	movl	$3, -16(%rbp)
+	jmp	.L2
+.L9:
+	movzbl	-21(%rbp), %eax
+	movzbl	%al, %eax
+	andl	$224, %eax
+	cmpl	$224, %eax
+	jne	.L10
+	movzbl	-21(%rbp), %eax
+	movzbl	%al, %eax
+	andl	$15, %eax
+	movl	%eax, -20(%rbp)
+	movl	$2, -16(%rbp)
+	jmp	.L2
+.L10:
+	movzbl	-21(%rbp), %eax
+	movzbl	%al, %eax
+	andl	$192, %eax
+	cmpl	$192, %eax
+	jne	.L11
+	movzbl	-21(%rbp), %eax
+	movzbl	%al, %eax
+	andl	$31, %eax
+	movl	%eax, -20(%rbp)
+	movl	$1, -16(%rbp)
+	jmp	.L2
+.L11:
+	movzbl	-21(%rbp), %eax
+	testb	%al, %al
+	jns	.L12
+	sall	$6, -20(%rbp)
+	movzbl	-21(%rbp), %eax
+	movzbl	%al, %eax
+	andl	$63, %eax
+	orl	%eax, -20(%rbp)
+	jmp	.L2
+.L12:
+	movzbl	-21(%rbp), %eax
+	movzbl	%al, %eax
+	movl	%eax, -20(%rbp)
+.L2:
+	movl	-16(%rbp), %eax
+	leal	-1(%rax), %edx
+	movl	%edx, -16(%rbp)
+	testl	%eax, %eax
+	jne	.L14
+	movl	-20(%rbp), %edx
+	movq	-48(%rbp), %rax
+	movl	%edx, (%rax)
+	movl	$1, %eax
+.L13:
+	movq	-8(%rbp), %rcx
+	xorq	%fs:40, %rcx
+	je	.L15
+	call	__stack_chk_fail@PLT
+.L15:
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <ctype.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <unistd.h>
+
+int readc_utf8(int fd, int *res)
+{
+    unsigned int n = 0;
+    int expect = 1;
+
+    while (expect--) {
+        unsigned char ch;
+        int len;
+
+        if ((len = read(fd, &ch, 1)) == 0) {
+            *res = EOF;
+            return 1;
+        }
+
+        if (len == -1)
+            return 0;
+
+        if ((ch & 0b11111100) == 0b11111100) {
+            n = ch & 0b00000001;
+            expect = 5;
+        }
+        else if ((ch & 0b11111000) == 0b11111000) {
+            n = ch & 0b00000011;
+            expect = 4;
+        }
+        else if ((ch & 0b11110000) == 0b11110000) {
+            n = ch & 0b00000111;
+            expect = 3;
+        }
+        else if ((ch & 0b11100000) == 0b11100000) {
+            n = ch & 0b00001111;
+            expect = 2;
+        }
+        else if ((ch & 0b11000000) == 0b11000000) {
+            n = ch & 0b00011111;
+            expect = 1;
+        }
+        else if ((ch & 0b10000000) == 0b10000000) {
+            n <<= 6;
+            n |= ch & 0b00111111;
+        }
+        else {
+            n = ch;
+        }
+    }
+
+    *res = (int)n;
+    return 1;
+}
+INFO:root:current LLM prompt size: 1240
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int readc_utf8(int fd, int *c) {
+    unsigned char buf;
+    int n = 0;
+    int state = 1;
+
+    while (1) {
+        if (read(fd, &buf, 1) != 1) {
+            *c = -1;
+            return 1;
+        }
+
+        if (buf == -1) {
+            return 0;
+        }
+
+        if ((buf & 0xFC) == 0xFC) {
+            n = 1;
+            state = 5;
+        } else if ((buf & 0xF8) == 0xF8) {
+            n = 3;
+            state = 4;
+        } else if ((buf & 0xF0) == 0xF0) {
+            n = 2;
+            state = 3;
+        } else if ((buf & 0xE0) == 0xE0) {
+            n = 1;
+            state = 2;
+        } else if ((buf & 0xC0) == 0xC0) {
+            n = 0;
+            state = 1;
+        } else if (buf & 0x80) {
+            n <<= 6;
+            n |= (buf & 0x3F);
+        } else {
+            n = buf;
+        }
+
+        if (--state == 0) {
+            *c = n;
+            return 1;
+        }
+    }
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'EOF': -1, 'res': [52, 17, 93, 99, 106, 18, 48, 18, 24, 70, 77, 108, 17, 7, 108, 63, 125, 52, 9, 72, 100, 119, 25, 84, 119, 71, 92, 48, 18, 102, 116, 126], 'returnv': 0}
+hyp: {'EOF': -1, 'res': [-1, 17, 93, 99, 106, 18, 48, 18, 24, 70, 77, 108, 17, 7, 108, 63, 125, 52, 9, 72, 100, 119, 25, 84, 119, 71, 92, 48, 18, 102, 116, 126], 'returnv': 1}
+WARNING:root:input 1 mismatched!
+ref: {'EOF': -1, 'res': [38, 78, 10, 95, 63, 18, 71, 13, 113, 5, 76, 121, 108, 68, 58, 94, 89, 4, 1, 63, 59, 45, 43, 105, 87, 56, 118, 95, 76, 108, 78, 117], 'returnv': 0}
+hyp: {'EOF': -1, 'res': [-1, 78, 10, 95, 63, 18, 71, 13, 113, 5, 76, 121, 108, 68, 58, 94, 89, 4, 1, 63, 59, 45, 43, 105, 87, 56, 118, 95, 76, 108, 78, 117], 'returnv': 1}
+WARNING:root:input 2 mismatched!
+ref: {'EOF': -1, 'res': [82, 109, 70, 36, 85, 17, 58, 98, 112, 53, 38, 125, 93, 122, 116, 40, 61, 60, 79, 34, 4, 42, 15, 74, 48, 77, 43, 33, 4, 16, 84, 23], 'returnv': 0}
+hyp: {'EOF': -1, 'res': [-1, 109, 70, 36, 85, 17, 58, 98, 112, 53, 38, 125, 93, 122, 116, 40, 61, 60, 79, 34, 4, 42, 15, 74, 48, 77, 43, 33, 4, 16, 84, 23], 'returnv': 1}
+WARNING:root:input 3 mismatched!
+ref: {'EOF': -1, 'res': [31, 31, 67, 42, 40, 45, 100, 78, 50, 51, 59, 100, 93, 16, 78, 32, 35, 82, 83, 119, 86, 1, 88, 15, 124, 37, 107, 59, 14, 122, 31, 75], 'returnv': 0}
+hyp: {'EOF': -1, 'res': [-1, 31, 67, 42, 40, 45, 100, 78, 50, 51, 59, 100, 93, 16, 78, 32, 35, 82, 83, 119, 86, 1, 88, 15, 124, 37, 107, 59, 14, 122, 31, 75], 'returnv': 1}
+WARNING:root:input 4 mismatched!
+ref: {'EOF': -1, 'res': [98, 53, 46, 38, 54, 44, 89, 82, 18, 23, 8, 0, 58, 48, 3, 110, 63, 23, 57, 60, 74, 95, 103, 15, 98, 84, 86, 119, 67, 13, 45, 49], 'returnv': 0}
+hyp: {'EOF': -1, 'res': [-1, 53, 46, 38, 54, 44, 89, 82, 18, 23, 8, 0, 58, 48, 3, 110, 63, 23, 57, 60, 74, 95, 103, 15, 98, 84, 86, 119, 67, 13, 45, 49], 'returnv': 1}
+WARNING:root:input 5 mismatched!
+ref: {'EOF': -1, 'res': [67, 20, 84, 118, 63, 96, 44, 14, 75, 77, 107, 120, 121, 32, 108, 87, 67, 111, 52, 51, 48, 3, 56, 68, 36, 1, 13, 98, 13, 17, 43, 126], 'returnv': 0}
+hyp: {'EOF': -1, 'res': [-1, 20, 84, 118, 63, 96, 44, 14, 75, 77, 107, 120, 121, 32, 108, 87, 67, 111, 52, 51, 48, 3, 56, 68, 36, 1, 13, 98, 13, 17, 43, 126], 'returnv': 1}
+WARNING:root:input 6 mismatched!
+ref: {'EOF': -1, 'res': [67, 122, 66, 87, 72, 108, 80, 125, 36, 66, 91, 126, 71, 124, 70, 16, 32, 9, 5, 36, 38, 26, 89, 64, 90, 76, 121, 27, 96, 116, 58, 17], 'returnv': 0}
+hyp: {'EOF': -1, 'res': [-1, 122, 66, 87, 72, 108, 80, 125, 36, 66, 91, 126, 71, 124, 70, 16, 32, 9, 5, 36, 38, 26, 89, 64, 90, 76, 121, 27, 96, 116, 58, 17], 'returnv': 1}
+WARNING:root:input 7 mismatched!
+ref: {'EOF': -1, 'res': [96, 3, 10, 32, 61, 41, 60, 10, 91, 78, 7, 9, 77, 10, 0, 110, 89, 25, 63, 126, 103, 57, 10, 50, 0, 69, 80, 34, 73, 124, 35, 99], 'returnv': 0}
+hyp: {'EOF': -1, 'res': [-1, 3, 10, 32, 61, 41, 60, 10, 91, 78, 7, 9, 77, 10, 0, 110, 89, 25, 63, 126, 103, 57, 10, 50, 0, 69, 80, 34, 73, 124, 35, 99], 'returnv': 1}
+WARNING:root:input 8 mismatched!
+ref: {'EOF': -1, 'res': [112, 78, 21, 8, 36, 29, 112, 80, 59, 4, 75, 39, 90, 21, 31, 118, 83, 97, 46, 24, 67, 14, 123, 83, 24, 114, 106, 83, 30, 24, 98, 38], 'returnv': 0}
+hyp: {'EOF': -1, 'res': [-1, 78, 21, 8, 36, 29, 112, 80, 59, 4, 75, 39, 90, 21, 31, 118, 83, 97, 46, 24, 67, 14, 123, 83, 24, 114, 106, 83, 30, 24, 98, 38], 'returnv': 1}
+WARNING:root:input 9 mismatched!
+ref: {'EOF': -1, 'res': [13, 27, 121, 90, 111, 95, 66, 56, 126, 79, 126, 68, 6, 111, 12, 60, 100, 14, 1, 28, 47, 54, 104, 26, 5, 71, 21, 22, 125, 120, 101, 120], 'returnv': 0}
+hyp: {'EOF': -1, 'res': [-1, 27, 121, 90, 111, 95, 66, 56, 126, 79, 126, 68, 6, 111, 12, 60, 100, 14, 1, 28, 47, 54, 104, 26, 5, 71, 21, 22, 125, 120, 101, 120], 'returnv': 1}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 128 failed
+INFO:root:x86 code :
+.globl maximum
+.type maximum, @function
+maximum:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-4(%rbp), %eax
+	cmpl	-8(%rbp), %eax
+	jge	.L2
+	movl	-8(%rbp), %eax
+	jmp	.L3
+.L2:
+	movl	-4(%rbp), %eax
+.L3:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+int maximum(int a, int b) {
+    if (a < b) {
+        return b;
+    } else {
+        return a;
+    }
+}
+INFO:root:current LLM prompt size: 225
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int maximum(int a, int b) {
+    if (a >= b) {
+        return a;
+    } else {
+        return b;
+    }
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 129 succeeded
+INFO:root:x86 code :
+.globl v2
+.type v2, @function
+v2:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	addl	$1, %eax
+	imull	-4(%rbp), %eax
+	movl	%eax, %edx
+	shrl	$31, %edx
+	addl	%edx, %eax
+	sarl	%eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+int v2(int n){
+ return n*(n+1)/2;
+}
+INFO:root:current LLM prompt size: 216
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int v2(int n) {
+    int result = (n + 1) * n;
+    result = (result + (result >> 31)) >> 1;
+    return result;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 130 succeeded
+INFO:root:x86 code :
+.globl sign
+.type sign, @function
+sign:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	cmpl	$0, -4(%rbp)
+	jns	.L2
+	movl	$-1, %eax
+	jmp	.L3
+.L2:
+	cmpl	$0, -4(%rbp)
+	jle	.L4
+	movl	$1, %eax
+	jmp	.L3
+.L4:
+	movl	$0, %eax
+.L3:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <sys/cdefs.h>
+
+#include <curses.h>
+
+#include <signal.h>
+
+#include <unistd.h>
+
+int
+sign(int n)
+{
+ if (n < 0)
+  return -1;
+ else if (n > 0)
+  return 1;
+ else
+  return 0;
+}
+INFO:root:current LLM prompt size: 232
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int sign(int n) {
+    if (n < 0) {
+        return -1;
+    } else if (n > 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 131 succeeded
+INFO:root:x86 code :
+.globl imm_deref
+.type imm_deref, @function
+imm_deref:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -8(%rbp)
+	cmpq	$0, -8(%rbp)
+	je	.L2
+	movq	-8(%rbp), %rax
+	movl	(%rax), %eax
+	cmpl	$4, %eax
+	jle	.L2
+	movl	$4, %eax
+	jmp	.L3
+.L2:
+	movl	$0, %eax
+.L3:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int imm_deref(int *p)
+{
+  if (p && *p > 4) return 4;
+  else return 0;
+}
+INFO:root:current LLM prompt size: 239
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int imm_deref(int *ptr) {
+    if (ptr == NULL) {
+        return 0;
+    }
+    if (*ptr <= 4) {
+        return *ptr;
+    }
+    return 4;
+}
+
+WARNING:root:CASE 132 failed to compile the decompiled code!
+WARNING:root:ret.stderr: disassembled.c: In function 'imm_deref':
+disassembled.c:3:16: error: 'NULL' undeclared (first use in this function)
+    3 |     if (ptr == NULL) {
+      |                ^~~~
+disassembled.c:1:1: note: 'NULL' is defined in header '<stddef.h>'; did you forget to '#include <stddef.h>'?
+  +++ |+#include <stddef.h>
+    1 | 
+disassembled.c:3:16: note: each undeclared identifier is reported only once for each function it appears in
+    3 |     if (ptr == NULL) {
+      |                ^~~~
+
+WARNING:root:ret.stdout: 
+INFO:root:x86 code :
+.globl f2
+.type f2, @function
+f2:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	$2147483647, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <limits.h>
+
+int f2()
+{
+  return (int)(float)(2147483647);
+}
+INFO:root:current LLM prompt size: 150
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int f2() {
+    return 2147483647;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 133 succeeded
+INFO:root:x86 code :
+.globl do_472
+.type do_472, @function
+do_472:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	$472, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int do_472() { return 472; }
+INFO:root:current LLM prompt size: 150
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 529 "
+INFO:anthropic._base_client:Retrying request to /v1/messages in 0.779409 seconds
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int do_472() {
+    return 472;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 134 succeeded
+INFO:root:x86 code :
+.globl hell1
+.type hell1, @function
+hell1:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	$1, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int hell1() { return 1; }
+INFO:root:current LLM prompt size: 147
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int hell1() {
+    return 1;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 135 succeeded
+INFO:root:x86 code :
+.globl swap5
+.type swap5, @function
+swap5:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -24(%rbp)
+	movq	%rsi, -32(%rbp)
+	movq	-24(%rbp), %rax
+	movl	%eax, -4(%rbp)
+	movq	-32(%rbp), %rax
+	movq	%rax, -24(%rbp)
+	movl	-4(%rbp), %eax
+	cltq
+	movq	%rax, -32(%rbp)
+	nop
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+void swap5 (int * a, int * b)
+{
+  int k = a;
+  a = b;
+  b = k;
+}
+INFO:root:current LLM prompt size: 243
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+void swap5(long long *a, long long *b) {
+    long long temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'a': [74, 125, 4, 29, 101, 95, 14, 37, 105, 58, 82, 10, 109, 103, 88, 4, 87, 23, 33, 72, 125, 119, 61, 9, 118, 55, 108, 47, 105, 24, 118, 82], 'b': [30, 25, 73, 64, 91, 35, 102, 41, 87, 53, 57, 55, 67, 73, 5, 4, 14, 100, 99, 119, 36, 71, 2, 64, 43, 117, 71, 81, 125, 6, 107, 107]}
+hyp: {'a': [30, 25, 4, 29, 101, 95, 14, 37, 105, 58, 82, 10, 109, 103, 88, 4, 87, 23, 33, 72, 125, 119, 61, 9, 118, 55, 108, 47, 105, 24, 118, 82], 'b': [74, 125, 73, 64, 91, 35, 102, 41, 87, 53, 57, 55, 67, 73, 5, 4, 14, 100, 99, 119, 36, 71, 2, 64, 43, 117, 71, 81, 125, 6, 107, 107]}
+WARNING:root:input 1 mismatched!
+ref: {'a': [74, 119, 63, 30, 58, 37, 44, 10, 84, 25, 122, 63, 81, 37, 36, 32, 125, 85, 25, 6, 28, 27, 114, 86, 39, 8, 99, 2, 105, 126, 83, 37], 'b': [101, 62, 23, 18, 40, 50, 9, 5, 42, 62, 14, 119, 32, 89, 47, 65, 94, 5, 38, 21, 83, 73, 7, 118, 111, 40, 126, 15, 40, 113, 51, 80]}
+hyp: {'a': [101, 62, 63, 30, 58, 37, 44, 10, 84, 25, 122, 63, 81, 37, 36, 32, 125, 85, 25, 6, 28, 27, 114, 86, 39, 8, 99, 2, 105, 126, 83, 37], 'b': [74, 119, 23, 18, 40, 50, 9, 5, 42, 62, 14, 119, 32, 89, 47, 65, 94, 5, 38, 21, 83, 73, 7, 118, 111, 40, 126, 15, 40, 113, 51, 80]}
+WARNING:root:input 2 mismatched!
+ref: {'a': [100, 89, 58, 67, 16, 126, 42, 106, 69, 86, 102, 36, 100, 81, 100, 31, 58, 92, 32, 30, 50, 21, 92, 12, 28, 65, 72, 120, 126, 10, 6, 41], 'b': [100, 121, 18, 84, 51, 31, 121, 122, 2, 32, 25, 39, 99, 113, 18, 68, 88, 17, 93, 44, 70, 92, 109, 4, 45, 7, 48, 21, 123, 56, 21, 24]}
+hyp: {'a': [100, 121, 58, 67, 16, 126, 42, 106, 69, 86, 102, 36, 100, 81, 100, 31, 58, 92, 32, 30, 50, 21, 92, 12, 28, 65, 72, 120, 126, 10, 6, 41], 'b': [100, 89, 18, 84, 51, 31, 121, 122, 2, 32, 25, 39, 99, 113, 18, 68, 88, 17, 93, 44, 70, 92, 109, 4, 45, 7, 48, 21, 123, 56, 21, 24]}
+WARNING:root:input 3 mismatched!
+ref: {'a': [11, 15, 59, 32, 4, 73, 71, 38, 106, 75, 8, 102, 37, 26, 100, 37, 36, 55, 9, 123, 103, 44, 85, 89, 104, 121, 54, 66, 62, 41, 113, 105], 'b': [117, 34, 68, 96, 9, 96, 24, 16, 80, 28, 60, 94, 62, 72, 125, 2, 55, 47, 54, 103, 76, 19, 30, 102, 22, 120, 122, 86, 7, 45, 125, 100]}
+hyp: {'a': [117, 34, 59, 32, 4, 73, 71, 38, 106, 75, 8, 102, 37, 26, 100, 37, 36, 55, 9, 123, 103, 44, 85, 89, 104, 121, 54, 66, 62, 41, 113, 105], 'b': [11, 15, 68, 96, 9, 96, 24, 16, 80, 28, 60, 94, 62, 72, 125, 2, 55, 47, 54, 103, 76, 19, 30, 102, 22, 120, 122, 86, 7, 45, 125, 100]}
+WARNING:root:input 4 mismatched!
+ref: {'a': [76, 61, 76, 29, 40, 100, 125, 83, 112, 111, 59, 83, 68, 94, 7, 24, 80, 36, 110, 110, 26, 119, 1, 120, 126, 33, 61, 52, 46, 47, 40, 123], 'b': [113, 9, 71, 4, 68, 40, 65, 41, 78, 97, 98, 38, 90, 47, 52, 115, 43, 4, 20, 101, 72, 45, 113, 88, 95, 123, 48, 68, 123, 30, 90, 69]}
+hyp: {'a': [113, 9, 76, 29, 40, 100, 125, 83, 112, 111, 59, 83, 68, 94, 7, 24, 80, 36, 110, 110, 26, 119, 1, 120, 126, 33, 61, 52, 46, 47, 40, 123], 'b': [76, 61, 71, 4, 68, 40, 65, 41, 78, 97, 98, 38, 90, 47, 52, 115, 43, 4, 20, 101, 72, 45, 113, 88, 95, 123, 48, 68, 123, 30, 90, 69]}
+WARNING:root:input 5 mismatched!
+ref: {'a': [23, 58, 125, 61, 24, 86, 8, 68, 89, 90, 19, 36, 57, 71, 98, 102, 59, 70, 45, 10, 1, 113, 61, 41, 1, 5, 111, 81, 20, 18, 62, 91], 'b': [73, 113, 32, 39, 102, 99, 13, 22, 35, 57, 54, 51, 94, 94, 22, 90, 48, 95, 54, 15, 89, 1, 63, 43, 35, 1, 11, 27, 102, 66, 33, 18]}
+hyp: {'a': [73, 113, 125, 61, 24, 86, 8, 68, 89, 90, 19, 36, 57, 71, 98, 102, 59, 70, 45, 10, 1, 113, 61, 41, 1, 5, 111, 81, 20, 18, 62, 91], 'b': [23, 58, 32, 39, 102, 99, 13, 22, 35, 57, 54, 51, 94, 94, 22, 90, 48, 95, 54, 15, 89, 1, 63, 43, 35, 1, 11, 27, 102, 66, 33, 18]}
+WARNING:root:input 6 mismatched!
+ref: {'a': [28, 89, 73, 59, 24, 115, 115, 40, 67, 106, 102, 47, 119, 119, 37, 7, 107, 92, 77, 45, 116, 40, 102, 33, 11, 90, 41, 4, 13, 14, 3, 28], 'b': [106, 35, 95, 61, 62, 48, 84, 14, 90, 6, 16, 108, 42, 9, 107, 66, 75, 88, 62, 24, 7, 13, 110, 62, 43, 107, 42, 50, 1, 104, 66, 34]}
+hyp: {'a': [106, 35, 73, 59, 24, 115, 115, 40, 67, 106, 102, 47, 119, 119, 37, 7, 107, 92, 77, 45, 116, 40, 102, 33, 11, 90, 41, 4, 13, 14, 3, 28], 'b': [28, 89, 95, 61, 62, 48, 84, 14, 90, 6, 16, 108, 42, 9, 107, 66, 75, 88, 62, 24, 7, 13, 110, 62, 43, 107, 42, 50, 1, 104, 66, 34]}
+WARNING:root:input 7 mismatched!
+ref: {'a': [28, 0, 44, 32, 91, 96, 59, 25, 52, 124, 110, 77, 71, 86, 124, 76, 65, 66, 1, 58, 13, 11, 52, 108, 82, 1, 80, 112, 39, 57, 52, 124], 'b': [40, 9, 87, 20, 117, 54, 123, 37, 103, 13, 100, 28, 32, 93, 66, 41, 87, 102, 10, 95, 4, 43, 97, 103, 109, 4, 18, 5, 26, 91, 17, 85]}
+hyp: {'a': [40, 9, 44, 32, 91, 96, 59, 25, 52, 124, 110, 77, 71, 86, 124, 76, 65, 66, 1, 58, 13, 11, 52, 108, 82, 1, 80, 112, 39, 57, 52, 124], 'b': [28, 0, 87, 20, 117, 54, 123, 37, 103, 13, 100, 28, 32, 93, 66, 41, 87, 102, 10, 95, 4, 43, 97, 103, 109, 4, 18, 5, 26, 91, 17, 85]}
+WARNING:root:input 8 mismatched!
+ref: {'a': [8, 10, 1, 115, 102, 47, 84, 82, 122, 73, 105, 40, 21, 13, 58, 25, 66, 4, 22, 61, 16, 52, 112, 17, 81, 89, 45, 106, 114, 54, 29, 54], 'b': [123, 70, 46, 111, 126, 52, 53, 48, 98, 40, 110, 39, 66, 13, 120, 120, 102, 107, 18, 19, 78, 74, 110, 112, 102, 25, 100, 90, 103, 118, 119, 1]}
+hyp: {'a': [123, 70, 1, 115, 102, 47, 84, 82, 122, 73, 105, 40, 21, 13, 58, 25, 66, 4, 22, 61, 16, 52, 112, 17, 81, 89, 45, 106, 114, 54, 29, 54], 'b': [8, 10, 46, 111, 126, 52, 53, 48, 98, 40, 110, 39, 66, 13, 120, 120, 102, 107, 18, 19, 78, 74, 110, 112, 102, 25, 100, 90, 103, 118, 119, 1]}
+WARNING:root:input 9 mismatched!
+ref: {'a': [102, 38, 89, 8, 97, 38, 46, 34, 8, 39, 96, 60, 119, 28, 48, 119, 3, 0, 16, 67, 53, 83, 41, 104, 97, 34, 57, 68, 20, 63, 99, 25], 'b': [90, 99, 21, 99, 105, 81, 100, 84, 60, 119, 71, 54, 115, 66, 124, 93, 44, 11, 62, 83, 51, 73, 70, 92, 56, 4, 66, 86, 116, 19, 77, 100]}
+hyp: {'a': [90, 99, 89, 8, 97, 38, 46, 34, 8, 39, 96, 60, 119, 28, 48, 119, 3, 0, 16, 67, 53, 83, 41, 104, 97, 34, 57, 68, 20, 63, 99, 25], 'b': [102, 38, 21, 99, 105, 81, 100, 84, 60, 119, 71, 54, 115, 66, 124, 93, 44, 11, 62, 83, 51, 73, 70, 92, 56, 4, 66, 86, 116, 19, 77, 100]}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 136 failed
+INFO:root:x86 code :
+.globl power
+.type power, @function
+power:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$16, %rsp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	cmpl	$0, -8(%rbp)
+	je	.L2
+	movl	-8(%rbp), %eax
+	leal	-1(%rax), %edx
+	movl	-4(%rbp), %eax
+	movl	%edx, %esi
+	movl	%eax, %edi
+	call	power
+	movl	-4(%rbp), %edx
+	imull	%edx, %eax
+	jmp	.L4
+.L2:
+	movl	$1, %eax
+.L4:
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+unsigned int power(int x, unsigned int k)
+{
+    return k == 0 ? 1 : x * power(x, k - 1);
+}
+INFO:root:current LLM prompt size: 282
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int power(int base, int exponent) {
+    if (exponent == 0) {
+        return 1;
+    }
+    int result = power(base, exponent - 1);
+    return base * result;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 137 succeeded
+INFO:root:x86 code :
+.globl is_device_mounted
+.type is_device_mounted, @function
+is_device_mounted:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -8(%rbp)
+	movl	$0, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int is_device_mounted(const char *path)
+{
+# 331 "/scratch/repos/new/home/jordi_armengol_estape/c-scraper/outputs/2022-01-22/02-19-57/repos/luisbg/befstools/refs/heads/master/src/device_info.c"
+    (void) path;
+    return 0;
+}
+INFO:root:current LLM prompt size: 166
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int is_device_mounted(char *device_path) {
+    // The assembly code simply returns 0, indicating that the device is not mounted
+    return 0;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 138 succeeded
+INFO:root:x86 code :
+.globl zeta
+.type zeta, @function
+zeta:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movsd	%xmm0, -8(%rbp)
+	movsd	.LC0(%rip), %xmm0
+	subsd	-8(%rbp), %xmm0
+	addsd	%xmm0, %xmm0
+	addsd	-8(%rbp), %xmm0
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LC0: 	.long	0
+
+INFO:root:ref C code :
+
+double zeta(double phi) {
+  return((1.0)*phi + (2.0)*(1.0-phi));
+}
+INFO:root:current LLM prompt size: 211
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+double zeta(double x) {
+    double temp = x;
+    double result = 2.0 * (x - temp) + temp;
+    return result;
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'returnv': -46.8121616177}
+hyp: {'returnv': 48.8121616177}
+WARNING:root:input 1 mismatched!
+ref: {'returnv': -43.0668793282}
+hyp: {'returnv': 45.0668793282}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': -24.1958608933}
+hyp: {'returnv': 26.1958608933}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': -78.8855821412}
+hyp: {'returnv': 80.8855821412}
+WARNING:root:input 4 mismatched!
+ref: {'returnv': -88.5560104668}
+hyp: {'returnv': 90.5560104668}
+WARNING:root:input 5 mismatched!
+ref: {'returnv': -11.7948362267}
+hyp: {'returnv': 13.7948362267}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': -41.113133806}
+hyp: {'returnv': 43.113133806}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': -42.2071196293}
+hyp: {'returnv': 44.2071196293}
+WARNING:root:input 8 mismatched!
+ref: {'returnv': -47.5177353255}
+hyp: {'returnv': 49.5177353255}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': -55.5915298571}
+hyp: {'returnv': 57.5915298571}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 139 failed
+INFO:root:x86 code :
+.globl check_header
+.type check_header, @function
+check_header:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %edx
+	movq	-16(%rbp), %rax
+	movzbl	(%rax), %eax
+	cmpb	%al, %dl
+	jne	.L2
+	movl	$1, %eax
+	jmp	.L3
+.L2:
+	movl	$0, %eax
+.L3:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+int check_header(char *header, char *firstline) {
+    if (*header == *firstline)
+        return 1;
+    else {
+        return 0;
+    }
+}
+INFO:root:current LLM prompt size: 254
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int check_header(const char* header1, const char* header2) {
+    if (header1[0] == header2[0]) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 140 succeeded
+INFO:root:x86 code :
+.globl ti_sinh_start
+.type ti_sinh_start, @function
+ti_sinh_start:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -8(%rbp)
+	movl	$0, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <math.h>
+
+#include <assert.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+int ti_sinh_start(double const *options) { (void)options; return 0; }
+INFO:root:current LLM prompt size: 166
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int ti_sinh_start(void *arg) {
+    // Function prologue
+    pushq %rbp
+    movq %rsp, %rbp
+
+    // Save the argument in the stack
+    movq %rdi, -8(%rbp)
+
+    // Set the return value to 0
+    movl $0, %eax
+
+    // Function epilogue
+    popq %rbp
+    ret
+}
+
+WARNING:root:CASE 141 failed to compile the decompiled code!
+WARNING:root:ret.stderr: disassembled.c: In function 'ti_sinh_start':
+disassembled.c:4:5: error: 'pushq' undeclared (first use in this function)
+    4 |     pushq %rbp
+      |     ^~~~~
+disassembled.c:4:5: note: each undeclared identifier is reported only once for each function it appears in
+disassembled.c:4:12: error: 'rbp' undeclared (first use in this function)
+    4 |     pushq %rbp
+      |            ^~~
+disassembled.c:4:15: error: expected ';' before 'movq'
+    4 |     pushq %rbp
+      |               ^
+      |               ;
+    5 |     movq %rsp, %rbp
+      |     ~~~~       
+
+WARNING:root:ret.stdout: 
+INFO:root:x86 code :
+.globl getChar
+.type getChar, @function
+getChar:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movb	$109, -1(%rbp)
+	movzbl	-1(%rbp), %eax
+	addl	$1, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+char getChar(){
+    char ch;
+    ch='m';
+    return (ch+1);
+}
+INFO:root:current LLM prompt size: 172
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+char getChar() {
+    char c = 'm';
+    return c + 1;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 142 succeeded
+INFO:root:x86 code :
+.globl do_908
+.type do_908, @function
+do_908:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	$908, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int do_908() { return 908; }
+INFO:root:current LLM prompt size: 150
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int do_908() {
+    return 908;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 143 succeeded
+INFO:root:x86 code :
+.globl cal
+.type cal, @function
+cal:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -20(%rbp)
+	movl	%esi, -24(%rbp)
+	movl	-20(%rbp), %edx
+	movl	-24(%rbp), %eax
+	addl	%edx, %eax
+	movl	%eax, -8(%rbp)
+	movl	-20(%rbp), %eax
+	imull	-24(%rbp), %eax
+	movl	%eax, -4(%rbp)
+	movl	-20(%rbp), %edx
+	movl	-24(%rbp), %eax
+	addl	%eax, %edx
+	movl	-8(%rbp), %eax
+	addl	%eax, %edx
+	movl	-4(%rbp), %eax
+	addl	%edx, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int
+cal (int a, int b)
+{
+
+  int sum = a + b;
+  int sum1 = a * b;
+
+
+  return (a + b + sum + sum1);
+}
+INFO:root:current LLM prompt size: 315
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int cal(int a, int b) {
+    int sum = a + b;
+    int product = a * b;
+    int result = a + b + sum + product;
+    return result;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 144 succeeded
+INFO:root:x86 code :
+.globl put_len_utf8
+.type put_len_utf8, @function
+put_len_utf8:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -20(%rbp)
+	movl	-20(%rbp), %eax
+	movl	%eax, -4(%rbp)
+	movl	$0, -8(%rbp)
+	cmpl	$127, -4(%rbp)
+	ja	.L2
+	movl	$1, -8(%rbp)
+	jmp	.L3
+.L2:
+	cmpl	$2047, -4(%rbp)
+	ja	.L4
+	movl	$2, -8(%rbp)
+	jmp	.L3
+.L4:
+	cmpl	$65535, -4(%rbp)
+	ja	.L5
+	movl	$3, -8(%rbp)
+	jmp	.L3
+.L5:
+	cmpl	$2097151, -4(%rbp)
+	ja	.L6
+	movl	$4, -8(%rbp)
+	jmp	.L3
+.L6:
+	cmpl	$67108863, -4(%rbp)
+	ja	.L7
+	movl	$5, -8(%rbp)
+	jmp	.L3
+.L7:
+	movl	-4(%rbp), %eax
+	testl	%eax, %eax
+	js	.L3
+	movl	$6, -8(%rbp)
+.L3:
+	movl	-8(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <ctype.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <unistd.h>
+
+int put_len_utf8(int _ch)
+{
+    unsigned int ch = (unsigned int)_ch;
+    int len = 0;
+
+    if (ch <= 0x7F)
+        len = 1;
+    else if (ch <= 0x07FF)
+        len = 2;
+    else if (ch <= 0xFFFF)
+        len = 3;
+    else if (ch <= 0x01FFFFF)
+        len = 4;
+    else if (ch <= 0x03FFFFFF)
+        len = 5;
+    else if (ch <= 0x7FFFFFFF)
+        len = 6;
+
+    return len;
+}
+INFO:root:current LLM prompt size: 446
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int put_len_utf8(int c) {
+    int len = 0;
+    if (c <= 127) {
+        len = 1;
+    } else if (c <= 2047) {
+        len = 2;
+    } else if (c <= 65535) {
+        len = 3;
+    } else if (c <= 2097151) {
+        len = 4;
+    } else if (c <= 67108863) {
+        len = 5;
+    } else if (c >= 0) {
+        len = 6;
+    }
+    return len;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 145 succeeded
+INFO:root:x86 code :
+.globl b
+.type b, @function
+b:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	$0, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int b() {return 0;}
+INFO:root:current LLM prompt size: 144
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int b() {
+    return 0;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 146 succeeded
+INFO:root:x86 code :
+.globl ft_isdigit
+.type ft_isdigit, @function
+ft_isdigit:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	cmpl	$47, -4(%rbp)
+	jle	.L2
+	cmpl	$57, -4(%rbp)
+	jg	.L2
+	movl	$1, %eax
+	jmp	.L3
+.L2:
+	movl	$0, %eax
+.L3:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <string.h>
+
+int ft_isdigit(int c)
+{
+ if (c >= (int)'0' && c <= (int)'9')
+  return (1);
+ else
+  return (0);
+}
+INFO:root:current LLM prompt size: 219
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int ft_isdigit(int c) {
+    if (c >= 48 && c <= 57) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 147 succeeded
+INFO:root:x86 code :
+.globl cr_has_byte_in_string
+.type cr_has_byte_in_string, @function
+cr_has_byte_in_string:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, %eax
+	movq	%rsi, -32(%rbp)
+	movb	%al, -20(%rbp)
+	movl	$-1, -4(%rbp)
+	jmp	.L2
+.L4:
+	movq	-32(%rbp), %rax
+	leaq	1(%rax), %rdx
+	movq	%rdx, -32(%rbp)
+	movzbl	(%rax), %eax
+	movsbl	%al, %eax
+	movl	%eax, -4(%rbp)
+	movl	-4(%rbp), %eax
+	cmpb	%al, -20(%rbp)
+	jne	.L2
+	movl	$1, %eax
+	jmp	.L3
+.L2:
+	cmpl	$0, -4(%rbp)
+	jne	.L4
+	movl	$0, %eax
+.L3:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+int cr_has_byte_in_string(char byte, char *arg) {
+  int c;
+  c = -1;
+  while (0 != c) {
+    c = (int)*arg++;
+    if ((char)c == byte) {
+      return 1;
+    }
+  }
+  return 0;
+}
+INFO:root:current LLM prompt size: 351
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int cr_has_byte_in_string(int byte, const char* str) {
+    int found = -1;
+    while (1) {
+        found = *str++;
+        if (found == byte) {
+            return 1;
+        }
+        if (found == 0) {
+            return 0;
+        }
+    }
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 148 succeeded
+INFO:root:x86 code :
+.globl mem_setoptions
+.type mem_setoptions, @function
+mem_setoptions:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	$0, -4(%rbp)
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <stddef.h>  /* apparently needed to define size_t */
+
+int mem_setoptions(int options)
+{
+
+  options = 0;
+  return(options);
+}
+INFO:root:current LLM prompt size: 177
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+void mem_setoptions(int options) {
+    options = 0;
+    return;
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 34}
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 2}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 100}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 27}
+WARNING:root:input 4 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 39}
+WARNING:root:input 5 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 28}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 8}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 30}
+WARNING:root:input 8 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 34}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': 0}
+hyp: {'returnv': 82}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 149 failed
+INFO:root:x86 code :
+.globl evaluation_avg
+.type evaluation_avg, @function
+evaluation_avg:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movss	%xmm0, -4(%rbp)
+	movss	%xmm1, -8(%rbp)
+	movl	%edi, -12(%rbp)
+	cvtsi2ssl	-12(%rbp), %xmm0
+	mulss	-8(%rbp), %xmm0
+	movl	-12(%rbp), %eax
+	addl	$1, %eax
+	cvtsi2ssl	%eax, %xmm1
+	divss	%xmm1, %xmm0
+	movaps	%xmm0, %xmm1
+	movl	-12(%rbp), %eax
+	addl	$1, %eax
+	cvtsi2ssl	%eax, %xmm2
+	movss	-4(%rbp), %xmm0
+	divss	%xmm2, %xmm0
+	addss	%xmm1, %xmm0
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+
+
+
+
+
+
+
+
+
+float evaluation_avg(float new_val, float old_val, int i)
+{
+    return old_val * i / (i + 1) + new_val / (i + 1);
+}
+INFO:root:current LLM prompt size: 331
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+float evaluation_avg(float weight, float bias, int n) {
+    float num = weight * (float)n;
+    float den = (float)(n + 1);
+    float result = num / den;
+    result += bias / (float)(n + 1);
+    return result;
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'returnv': 33.417579650878906}
+hyp: {'returnv': 58.01254653930664}
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 93.84039306640625}
+hyp: {'returnv': 47.984806060791016}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': 96.72713470458984}
+hyp: {'returnv': 36.544715881347656}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': 25.14470672607422}
+hyp: {'returnv': 38.53103256225586}
+WARNING:root:input 4 mismatched!
+ref: {'returnv': 58.480186462402344}
+hyp: {'returnv': 92.62017059326172}
+WARNING:root:input 5 mismatched!
+ref: {'returnv': 55.718605041503906}
+hyp: {'returnv': 54.7413215637207}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': 65.00006103515625}
+hyp: {'returnv': 67.08639526367188}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': 89.02442932128906}
+hyp: {'returnv': 79.95211791992188}
+WARNING:root:input 8 mismatched!
+ref: {'returnv': 53.352867126464844}
+hyp: {'returnv': 39.96037673950195}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': 80.59648895263672}
+hyp: {'returnv': 85.359130859375}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 150 failed
+INFO:root:x86 code :
+.globl fun
+.type fun, @function
+fun:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	-16(%rbp), %rax
+	movl	(%rax), %edx
+	movl	-4(%rbp), %eax
+	addl	%edx, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+int fun(int x, int *p)
+{
+    return x + *p;
+}
+INFO:root:current LLM prompt size: 202
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int fun(int a, int* b) {
+    return a + *b;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 151 succeeded
+INFO:root:x86 code :
+.globl sgsXPC_SetCurrentDirectory
+.type sgsXPC_SetCurrentDirectory, @function
+sgsXPC_SetCurrentDirectory:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$16, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	-8(%rbp), %rax
+	movq	%rax, %rdi
+	movl	$0, %eax
+	call	chdir@PLT
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdlib.h>
+
+#include <errno.h>
+
+int sgsXPC_SetCurrentDirectory( char* path )
+{
+# 235 "/scratch/repos/new/home/jordi_armengol_estape/c-scraper/outputs/2022-01-22/02-19-57/repos/snake5/sgscript/refs/heads/apidev/src/sgs_xpc.c"
+ return chdir( path );
+
+
+}
+INFO:root:current LLM prompt size: 209
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int sgsXPC_SetCurrentDirectory(const char* path) {
+    // Save the base pointer
+    pushq %rbp
+    // Set the stack pointer as the new base pointer
+    movq %rsp, %rbp
+    // Allocate 16 bytes on the stack
+    subq $16, %rsp
+    // Store the first argument (path) on the stack
+    movq %rdi, -8(%rbp)
+    // Load the first argument (path) into %rdi for the chdir() call
+    movq -8(%rbp), %rax
+    movq %rax, %rdi
+    // Set the return value register %eax to 0
+    movl $0, %eax
+    // Call the chdir() function
+    call chdir@PLT
+    // Restore the base pointer
+    leave
+    // Return from the function
+    ret
+}
+
+WARNING:root:CASE 152 failed to compile the decompiled code!
+WARNING:root:ret.stderr: disassembled.c: In function 'sgsXPC_SetCurrentDirectory':
+disassembled.c:4:5: error: 'pushq' undeclared (first use in this function)
+    4 |     pushq %rbp
+      |     ^~~~~
+disassembled.c:4:5: note: each undeclared identifier is reported only once for each function it appears in
+disassembled.c:4:12: error: 'rbp' undeclared (first use in this function)
+    4 |     pushq %rbp
+      |            ^~~
+disassembled.c:4:15: error: expected ';' before 'movq'
+    4 |     pushq %rbp
+      |               ^
+      |               ;
+    5 |     // Set the stack pointer as the new base pointer
+    6 |     movq %rsp, %rbp
+      |     ~~~~       
+disassembled.c:17:15: error: stray '@' in program
+   17 |     call chdir@PLT
+      |               ^
+
+WARNING:root:ret.stdout: 
+INFO:root:x86 code :
+.globl fname_last
+.type fname_last, @function
+fname_last:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -24(%rbp)
+	movq	-24(%rbp), %rax
+	movq	%rax, -8(%rbp)
+	jmp	.L2
+.L3:
+	movq	-24(%rbp), %rax
+	leaq	1(%rax), %rdx
+	movq	%rdx, -24(%rbp)
+	movzbl	(%rax), %eax
+	cmpb	$47, %al
+	jne	.L2
+	movq	-24(%rbp), %rax
+	movq	%rax, -8(%rbp)
+.L2:
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	jne	.L3
+	movq	-8(%rbp), %rax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <assert.h>
+
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <fcntl.h>
+
+#include <unistd.h>
+
+char *fname_last (char *ptr) {
+  char *s = ptr;
+  while (*ptr) {
+    if (*ptr++ == '/') {
+      s = ptr;
+    }
+  }
+  return s;
+}
+INFO:root:current LLM prompt size: 323
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+char* fname_last(char* str) {
+    char* last = str;
+    while (*str != '\0') {
+        if (*str == '/') {
+            last = str + 1;
+        }
+        str++;
+    }
+    return last;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 153 succeeded
+INFO:root:x86 code :
+.globl do_sum
+.type do_sum, @function
+do_sum:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -20(%rbp)
+	movl	$0, -4(%rbp)
+	movl	$0, -8(%rbp)
+	jmp	.L2
+.L3:
+	movl	-8(%rbp), %eax
+	addl	%eax, -4(%rbp)
+	addl	$1, -8(%rbp)
+.L2:
+	movl	-8(%rbp), %eax
+	cmpl	-20(%rbp), %eax
+	jl	.L3
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+int do_sum(int n)
+{
+    int i, sum;
+    sum = 0;
+    for(i=0;i<n;++i) {
+ sum += i;
+    }
+    return sum;
+
+}
+INFO:root:current LLM prompt size: 264
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int do_sum(int n) {
+    int sum = 0;
+    int i = 0;
+    
+    while (i < n) {
+        sum += i;
+        i++;
+    }
+    
+    return sum;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 154 succeeded
+INFO:root:x86 code :
+.globl Heap_initialize
+.type Heap_initialize, @function
+Heap_initialize:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	$0, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <memory.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <stdio.h>
+
+int Heap_initialize()
+{
+ return 0;
+}
+INFO:root:current LLM prompt size: 147
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+void Heap_initialize() {
+    // Function prologue
+    // Save the base pointer and set the stack pointer as the new base pointer
+    pushq %rbp;
+    movq %rsp, %rbp;
+
+    // Set the return value (eax) to 0
+    movl $0, %eax;
+
+    // Function epilogue
+    // Restore the base pointer and return
+    popq %rbp;
+    ret;
+}
+
+WARNING:root:CASE 155 failed to compile the decompiled code!
+WARNING:root:ret.stderr: disassembled.c: In function 'Heap_initialize':
+disassembled.c:5:5: error: 'pushq' undeclared (first use in this function)
+    5 |     pushq %rbp;
+      |     ^~~~~
+disassembled.c:5:5: note: each undeclared identifier is reported only once for each function it appears in
+disassembled.c:5:12: error: 'rbp' undeclared (first use in this function)
+    5 |     pushq %rbp;
+      |            ^~~
+disassembled.c:6:5: error: 'movq' undeclared (first use in this function)
+    6 |     movq %rsp, %rbp;
+      |     ^~~~
+disassembled.c:6:11: error: 'rsp' undeclared (first use in this function)
+    6 |     movq %rsp, %rbp;
+      |           ^~~
+disassembled.c:6:16: error: expected expression before '%' token
+    6 |     movq %rsp, %rbp;
+      |                ^
+disassembled.c:9:5: error: unknown type name 'movl'
+    9 |     movl $0, %eax;
+      |     ^~~~
+disassembled.c:9:14: error: expected identifier or '(' before '%' token
+    9 |     movl $0, %eax;
+      |              ^
+disassembled.c:13:5: error: 'popq' undeclared (first use in this function)
+   13 |     popq %rbp;
+      |     ^~~~
+disassembled.c:14:5: error: 'ret' undeclared (first use in this function)
+   14 |     ret;
+      |     ^~~
+
+WARNING:root:ret.stdout: 
+INFO:root:x86 code :
+.globl ZopfliGetDistExtraBits
+.type ZopfliGetDistExtraBits, @function
+ZopfliGetDistExtraBits:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	cmpl	$4, -4(%rbp)
+	jg	.L2
+	movl	$0, %eax
+	jmp	.L3
+.L2:
+	cmpl	$8, -4(%rbp)
+	jg	.L4
+	movl	$1, %eax
+	jmp	.L3
+.L4:
+	cmpl	$16, -4(%rbp)
+	jg	.L5
+	movl	$2, %eax
+	jmp	.L3
+.L5:
+	cmpl	$32, -4(%rbp)
+	jg	.L6
+	movl	$3, %eax
+	jmp	.L3
+.L6:
+	cmpl	$64, -4(%rbp)
+	jg	.L7
+	movl	$4, %eax
+	jmp	.L3
+.L7:
+	cmpl	$128, -4(%rbp)
+	jg	.L8
+	movl	$5, %eax
+	jmp	.L3
+.L8:
+	cmpl	$256, -4(%rbp)
+	jg	.L9
+	movl	$6, %eax
+	jmp	.L3
+.L9:
+	cmpl	$512, -4(%rbp)
+	jg	.L10
+	movl	$7, %eax
+	jmp	.L3
+.L10:
+	cmpl	$1024, -4(%rbp)
+	jg	.L11
+	movl	$8, %eax
+	jmp	.L3
+.L11:
+	cmpl	$2048, -4(%rbp)
+	jg	.L12
+	movl	$9, %eax
+	jmp	.L3
+.L12:
+	cmpl	$4096, -4(%rbp)
+	jg	.L13
+	movl	$10, %eax
+	jmp	.L3
+.L13:
+	cmpl	$8192, -4(%rbp)
+	jg	.L14
+	movl	$11, %eax
+	jmp	.L3
+.L14:
+	cmpl	$16384, -4(%rbp)
+	jg	.L15
+	movl	$12, %eax
+	jmp	.L3
+.L15:
+	movl	$13, %eax
+.L3:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <assert.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+int ZopfliGetDistExtraBits(int dist) {
+  if (dist < 5) return 0;
+  else if (dist < 9) return 1;
+  else if (dist < 17) return 2;
+  else if (dist < 33) return 3;
+  else if (dist < 65) return 4;
+  else if (dist < 129) return 5;
+  else if (dist < 257) return 6;
+  else if (dist < 513) return 7;
+  else if (dist < 1025) return 8;
+  else if (dist < 2049) return 9;
+  else if (dist < 4097) return 10;
+  else if (dist < 8193) return 11;
+  else if (dist < 16385) return 12;
+  else return 13;
+}
+INFO:root:current LLM prompt size: 653
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int ZopfliGetDistExtraBits(int distance) {
+    if (distance <= 4) {
+        return 0;
+    } else if (distance <= 8) {
+        return 1;
+    } else if (distance <= 16) {
+        return 2;
+    } else if (distance <= 32) {
+        return 3;
+    } else if (distance <= 64) {
+        return 4;
+    } else if (distance <= 128) {
+        return 5;
+    } else if (distance <= 256) {
+        return 6;
+    } else if (distance <= 512) {
+        return 7;
+    } else if (distance <= 1024) {
+        return 8;
+    } else if (distance <= 2048) {
+        return 9;
+    } else if (distance <= 4096) {
+        return 10;
+    } else if (distance <= 8192) {
+        return 11;
+    } else if (distance <= 16384) {
+        return 12;
+    } else {
+        return 13;
+    }
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 156 succeeded
+INFO:root:x86 code :
+.globl testAll
+.type testAll, @function
+testAll:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	$0, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <assert.h>
+
+int testAll(void){
+
+ return 0;
+}
+INFO:root:current LLM prompt size: 147
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int testAll() {
+    return 0;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 157 succeeded
+INFO:root:x86 code :
+.globl mpp_recv_double
+.type mpp_recv_double, @function
+mpp_recv_double:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -8(%rbp)
+	movl	%esi, -12(%rbp)
+	movl	%edx, -16(%rbp)
+	nop
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+
+
+
+
+void mpp_recv_double(double* data, int size, int from_pe)
+{
+
+
+
+
+}
+INFO:root:current LLM prompt size: 183
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+double mpp_recv_double(void* arg1, int arg2, int arg3) {
+    // Function prologue
+    pushq %rbp
+    movq %rsp, %rbp
+
+    // Save function arguments
+    movq %rdi, -8(%rbp)
+    movl %esi, -12(%rbp)
+    movl %edx, -16(%rbp)
+
+    // Function epilogue
+    nop
+    popq %rbp
+    ret
+}
+
+WARNING:root:CASE 158 failed to compile the decompiled code!
+WARNING:root:ret.stderr: disassembled.c: In function 'mpp_recv_double':
+disassembled.c:4:5: error: 'pushq' undeclared (first use in this function)
+    4 |     pushq %rbp
+      |     ^~~~~
+disassembled.c:4:5: note: each undeclared identifier is reported only once for each function it appears in
+disassembled.c:4:12: error: 'rbp' undeclared (first use in this function)
+    4 |     pushq %rbp
+      |            ^~~
+disassembled.c:4:15: error: expected ';' before 'movq'
+    4 |     pushq %rbp
+      |               ^
+      |               ;
+    5 |     movq %rsp, %rbp
+      |     ~~~~       
+
+WARNING:root:ret.stdout: 
+INFO:root:x86 code :
+.globl alaw2linear
+.type alaw2linear, @function
+alaw2linear:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, %eax
+	movb	%al, -20(%rbp)
+	xorb	$85, -20(%rbp)
+	movzbl	-20(%rbp), %eax
+	sall	$4, %eax
+	andl	$255, %eax
+	movl	%eax, -8(%rbp)
+	movzbl	-20(%rbp), %eax
+	shrl	$4, %eax
+	andl	$7, %eax
+	movl	%eax, -4(%rbp)
+	cmpl	$0, -4(%rbp)
+	je	.L2
+	cmpl	$1, -4(%rbp)
+	je	.L3
+	jmp	.L9
+.L2:
+	addl	$8, -8(%rbp)
+	jmp	.L5
+.L3:
+	addl	$264, -8(%rbp)
+	jmp	.L5
+.L9:
+	addl	$264, -8(%rbp)
+	movl	-4(%rbp), %eax
+	subl	$1, %eax
+	movl	%eax, %ecx
+	sall	%cl, -8(%rbp)
+.L5:
+	movzbl	-20(%rbp), %eax
+	testb	%al, %al
+	js	.L6
+	movl	-8(%rbp), %eax
+	negl	%eax
+	jmp	.L8
+.L6:
+	movl	-8(%rbp), %eax
+.L8:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int
+alaw2linear(
+            unsigned char a_val)
+{
+ int t;
+ int seg;
+
+ a_val ^= 0x55;
+
+ t = (a_val & (0xf)) << 4;
+ seg = ((unsigned)a_val & (0x70)) >> (4);
+ switch (seg) {
+        case 0:
+            t += 8;
+            break;
+        case 1:
+            t += 0x108;
+            break;
+        default:
+            t += 0x108;
+            t <<= seg - 1;
+ }
+ return ((a_val & (0x80)) ? t : -t);
+}
+INFO:root:current LLM prompt size: 476
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int alaw2linear(int input) {
+    unsigned char alaw_value = (unsigned char)input;
+    alaw_value ^= 0x55;
+    int segment = (alaw_value & 0xF0) >> 4;
+    int step = alaw_value & 0x0F;
+
+    if (segment == 0) {
+        step += 8;
+    } else if (segment == 1) {
+        step += 264;
+    } else {
+        step += 264;
+        step <<= (segment - 1);
+    }
+
+    int result = (step << 2);
+    if (alaw_value & 0x80) {
+        result = -result;
+    }
+
+    return result;
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'returnv': -528}
+hyp: {'returnv': 2112}
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 7808}
+hyp: {'returnv': -4554752}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': -4992}
+hyp: {'returnv': 17088}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': -28160}
+hyp: {'returnv': 70400}
+WARNING:root:input 4 mismatched!
+ref: {'returnv': 360}
+hyp: {'returnv': -276480}
+WARNING:root:input 5 mismatched!
+ref: {'returnv': -8064}
+hyp: {'returnv': 17856}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': 8064}
+hyp: {'returnv': -4571136}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': 2368}
+hyp: {'returnv': -2179072}
+WARNING:root:input 8 mismatched!
+ref: {'returnv': -29184}
+hyp: {'returnv': 70656}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': -14080}
+hyp: {'returnv': 35200}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 159 failed
+INFO:root:x86 code :
+.globl BGBDT_MsImaAdpcm_MonoSamplesFromBlockSize
+.type BGBDT_MsImaAdpcm_MonoSamplesFromBlockSize, @function
+BGBDT_MsImaAdpcm_MonoSamplesFromBlockSize:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	subl	$4, %eax
+	addl	%eax, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int BGBDT_MsImaAdpcm_MonoSamplesFromBlockSize(int sz)
+{
+ return((sz-4)*2);
+}
+INFO:root:current LLM prompt size: 216
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int BGBDT_MsImaAdpcm_MonoSamplesFromBlockSize(int blockSize) {
+    return (blockSize - 4) * 2;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 160 succeeded
+INFO:root:x86 code :
+.globl f89
+.type f89, @function
+f89:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	$32, %eax
+	subl	-8(%rbp), %eax
+	movl	-4(%rbp), %edx
+	movl	%edx, %esi
+	movl	%eax, %ecx
+	sall	%cl, %esi
+	movl	-8(%rbp), %eax
+	movl	-4(%rbp), %edx
+	movl	%eax, %ecx
+	shrl	%cl, %edx
+	movl	%edx, %eax
+	addl	%esi, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+unsigned int
+f89 (unsigned int x, unsigned int y)
+{
+  return (x << (8 * sizeof (unsigned int) - y)) + (x >> y);
+}
+INFO:root:current LLM prompt size: 282
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int f89(int a, int b) {
+    int shift1 = 32 - b;
+    int shifted_a = a << shift1;
+    int shift2 = b;
+    int shifted_b = a >> shift2;
+    return shifted_a + shifted_b;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 161 succeeded
+INFO:root:x86 code :
+.globl months_to_days
+.type months_to_days, @function
+months_to_days:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	cmpl	$11, -4(%rbp)
+	ja	.L2
+	movl	-4(%rbp), %eax
+	leaq	0(,%rax,4), %rdx
+	leaq	.L4(%rip), %rax
+	movl	(%rdx,%rax), %eax
+	cltq
+	leaq	.L4(%rip), %rdx
+	addq	%rdx, %rax
+	notrack jmp	*%rax
+	.section	.rodata
+	.align 4
+	.align 4
+.L4:
+	.long	.L2-.L4
+	.long	.L14-.L4
+	.long	.L13-.L4
+	.long	.L12-.L4
+	.long	.L11-.L4
+	.long	.L10-.L4
+	.long	.L9-.L4
+	.long	.L8-.L4
+	.long	.L7-.L4
+	.long	.L6-.L4
+	.long	.L5-.L4
+	.long	.L3-.L4
+	.text
+.L14:
+	movl	$0, %eax
+	jmp	.L15
+.L13:
+	movl	$31, %eax
+	jmp	.L15
+.L12:
+	movl	$59, %eax
+	jmp	.L15
+.L11:
+	movl	$90, %eax
+	jmp	.L15
+.L10:
+	movl	$120, %eax
+	jmp	.L15
+.L9:
+	movl	$151, %eax
+	jmp	.L15
+.L8:
+	movl	$181, %eax
+	jmp	.L15
+.L7:
+	movl	$212, %eax
+	jmp	.L15
+.L6:
+	movl	$243, %eax
+	jmp	.L15
+.L5:
+	movl	$273, %eax
+	jmp	.L15
+.L3:
+	movl	$304, %eax
+	jmp	.L15
+.L2:
+	movl	$334, %eax
+.L15:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+int months_to_days(int n)
+{
+    switch(n)
+    {
+        case 1:
+            return 0;
+        case 2:
+            return 31;
+        case 3:
+            return 59;
+        case 4:
+            return 90;
+        case 5:
+            return 120;
+        case 6:
+            return 151;
+        case 7:
+            return 181;
+        case 8:
+            return 212;
+        case 9:
+            return 243;
+        case 10:
+            return 273;
+        case 11:
+            return 304;
+        case 12:
+        default:
+            return 334;
+    }
+}
+INFO:root:current LLM prompt size: 600
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int months_to_days(int month) {
+    if (month > 11) {
+        return 334;
+    }
+
+    switch (month) {
+        case 0:
+            return 0;
+        case 1:
+            return 31;
+        case 2:
+            return 59;
+        case 3:
+            return 90;
+        case 4:
+            return 120;
+        case 5:
+            return 151;
+        case 6:
+            return 181;
+        case 7:
+            return 212;
+        case 8:
+            return 243;
+        case 9:
+            return 273;
+        case 10:
+            return 304;
+        case 11:
+            return 334;
+    }
+
+    return 0;
+}
+
+WARNING:root:input 2 mismatched!
+ref: {'returnv': 31}
+hyp: {'returnv': 59}
+INFO:root:Local error rate: 10.0%
+INFO:root:CASE 162 failed
+INFO:root:x86 code :
+.globl bic
+.type bic, @function
+bic:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-8(%rbp), %eax
+	notl	%eax
+	andl	-4(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+int bic(int x, int m)
+{
+    return x & ~m;
+}
+INFO:root:current LLM prompt size: 189
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int bic(int a, int b) {
+    return a & ~b;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 163 succeeded
+INFO:root:x86 code :
+.globl fs_unlink
+.type fs_unlink, @function
+fs_unlink:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -8(%rbp)
+	movl	$0, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <errno.h>
+
+#include <stdbool.h>
+
+#include <stddef.h>
+
+#include <stdio.h>
+
+int fs_unlink (const char *path)
+{
+   return 0;
+}
+INFO:root:current LLM prompt size: 163
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int fs_unlink(char *path) {
+    return 0;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 164 succeeded
+INFO:root:x86 code :
+.globl func
+.type func, @function
+func:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	$1, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int func() {
+    return 1;
+}
+INFO:root:current LLM prompt size: 144
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int func() {
+    return 1;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 165 succeeded
+INFO:root:x86 code :
+.globl getoct
+.type getoct, @function
+getoct:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -24(%rbp)
+	movl	%esi, -28(%rbp)
+	movl	$0, -4(%rbp)
+	jmp	.L2
+.L9:
+	movq	-24(%rbp), %rax
+	leaq	1(%rax), %rdx
+	movq	%rdx, -24(%rbp)
+	movzbl	(%rax), %eax
+	movb	%al, -5(%rbp)
+	cmpb	$0, -5(%rbp)
+	je	.L10
+	cmpb	$32, -5(%rbp)
+	jne	.L5
+	jmp	.L2
+.L5:
+	cmpb	$47, -5(%rbp)
+	jle	.L6
+	cmpb	$55, -5(%rbp)
+	jle	.L7
+.L6:
+	movl	$-1, %eax
+	jmp	.L8
+.L7:
+	movl	-4(%rbp), %eax
+	leal	0(,%rax,8), %edx
+	movsbl	-5(%rbp), %eax
+	subl	$48, %eax
+	addl	%edx, %eax
+	movl	%eax, -4(%rbp)
+.L2:
+	movl	-28(%rbp), %eax
+	leal	-1(%rax), %edx
+	movl	%edx, -28(%rbp)
+	testl	%eax, %eax
+	jne	.L9
+	jmp	.L4
+.L10:
+	nop
+.L4:
+	movl	-4(%rbp), %eax
+.L8:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+
+
+
+
+
+int getoct (char *p,int width)
+{
+  int result = 0;
+  char c;
+
+  while (width--)
+    {
+      c = *p++;
+      if (c == 0)
+        break;
+      if (c == ' ')
+        continue;
+      if (c < '0' || c > '7')
+        return -1;
+      result = result * 8 + (c - '0');
+    }
+  return result;
+}
+INFO:root:current LLM prompt size: 503
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int getoct(char *str, int len) {
+    int result = 0;
+    while (len > 0) {
+        char c = *str++;
+        if (c == 0) {
+            break;
+        }
+        if (c == ' ') {
+            continue;
+        }
+        if (c >= '0' && c <= '7') {
+            result = (result * 8) + (c - '0');
+        } else {
+            return -1;
+        }
+        len--;
+    }
+    return result;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 166 succeeded
+INFO:root:x86 code :
+.globl qsort_intcmp
+.type qsort_intcmp, @function
+qsort_intcmp:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	-8(%rbp), %rax
+	movl	(%rax), %edx
+	movq	-16(%rbp), %rax
+	movl	(%rax), %eax
+	subl	%eax, %edx
+	movl	%edx, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int qsort_intcmp(const int *a, const int *b) {
+  return *a - *b;
+}
+INFO:root:current LLM prompt size: 230
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int qsort_intcmp(const void *a, const void *b) {
+    int x = *(int *)a;
+    int y = *(int *)b;
+    return x - y;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 167 succeeded
+INFO:root:x86 code :
+.globl fact
+.type fact, @function
+fact:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -20(%rbp)
+	movl	$1, -4(%rbp)
+	movl	$2, -8(%rbp)
+	jmp	.L2
+.L3:
+	movl	-4(%rbp), %eax
+	imull	-8(%rbp), %eax
+	movl	%eax, -4(%rbp)
+	addl	$1, -8(%rbp)
+.L2:
+	movl	-20(%rbp), %eax
+	cmpl	%eax, -8(%rbp)
+	jbe	.L3
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int fact(int n)
+{
+  unsigned factor, total;
+  total = 1;
+  factor = 2;
+  while (factor <= n) {
+    total = total * factor;
+    factor = factor + 1;
+  }
+  return total;
+}
+INFO:root:current LLM prompt size: 273
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 529 "
+INFO:anthropic._base_client:Retrying request to /v1/messages in 0.786983 seconds
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int fact(int n) {
+    int result = 1;
+    for (int i = 2; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 168 succeeded
+INFO:root:x86 code :
+.globl parse_motion_command
+.type parse_motion_command, @function
+parse_motion_command:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -24(%rbp)
+	movq	%rsi, -32(%rbp)
+	movq	%rdx, -40(%rbp)
+	movq	%rcx, -48(%rbp)
+	movq	%r8, -56(%rbp)
+	movl	$0, -4(%rbp)
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <assert.h>
+
+#include <errno.h>
+
+#include <netdb.h>
+
+#include <netinet/in.h>
+
+#include <signal.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <strings.h>
+
+#include <sys/select.h>
+
+#include <sys/socket.h>
+
+#include <sys/types.h>
+
+#include <unistd.h>
+
+int parse_motion_command(char *cmd, int *gid, int *pid, int *row, int *col) {
+  int outcome = 0;
+  return outcome;
+}
+INFO:root:current LLM prompt size: 230
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int parse_motion_command(void* rdi, void* rsi, void* rdx, void* rcx, void* r8) {
+    int local_4 = 0;
+    return local_4;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 169 succeeded
+INFO:root:x86 code :
+.globl heater_position_to_sensor_position
+.type heater_position_to_sensor_position, @function
+heater_position_to_sensor_position:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -20(%rbp)
+	movl	-20(%rbp), %eax
+	movslq	%eax, %rdx
+	imulq	$1717986919, %rdx, %rdx
+	shrq	$32, %rdx
+	sarl	%edx
+	sarl	$31, %eax
+	subl	%eax, %edx
+	movl	%edx, %eax
+	movl	%eax, -8(%rbp)
+	movl	-20(%rbp), %edx
+	movl	%edx, %eax
+	sall	$2, %eax
+	leal	(%rax,%rdx), %ecx
+	movl	-8(%rbp), %edx
+	movl	%edx, %eax
+	sall	$2, %edx
+	subl	%edx, %eax
+	sall	$3, %eax
+	addl	%ecx, %eax
+	movl	%eax, -4(%rbp)
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <math.h>
+
+#include <assert.h>
+
+#include <time.h>
+
+#include <limits.h>
+
+int heater_position_to_sensor_position(int i)
+{
+ int k = i/5;
+ int ret = 5*i - 24 * k;
+ return ret;
+}
+INFO:root:current LLM prompt size: 380
+INFO:anthropic._base_client:Retrying request to /v1/messages in 0.942331 seconds
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int heater_position_to_sensor_position(int heater_position) {
+    int sensor_position;
+    int temp1 = heater_position;
+    int temp2 = (temp1 * 1717986919) >> 32;
+    int temp3 = temp2 >> 1;
+    int temp4 = temp1 >> 31;
+    sensor_position = temp3 - temp4;
+    sensor_position = (((heater_position * 5) + heater_position) << 3) + sensor_position;
+    return sensor_position;
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'returnv': 23}
+hyp: {'returnv': 429498806}
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 8}
+hyp: {'returnv': 1932}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': 29}
+hyp: {'returnv': 858999303}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': 42}
+hyp: {'returnv': -858987953}
+WARNING:root:input 4 mismatched!
+ref: {'returnv': 29}
+hyp: {'returnv': -429492045}
+WARNING:root:input 5 mismatched!
+ref: {'returnv': 20}
+hyp: {'returnv': 429498082}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': 24}
+hyp: {'returnv': 429499048}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': 23}
+hyp: {'returnv': 858997854}
+WARNING:root:input 8 mismatched!
+ref: {'returnv': 20}
+hyp: {'returnv': -429494218}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': 18}
+hyp: {'returnv': 4347}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 170 failed
+INFO:root:x86 code :
+.globl Decrement
+.type Decrement, @function
+Decrement:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	subl	$1, -4(%rbp)
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int Decrement(int a)
+{
+    return --a;
+}
+INFO:root:current LLM prompt size: 174
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int Decrement(int n) {
+    n = n - 1;
+    return n;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 171 succeeded
+INFO:root:x86 code :
+.globl equal_strings
+.type equal_strings, @function
+equal_strings:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	jmp	.L2
+.L5:
+	movq	-8(%rbp), %rax
+	leaq	1(%rax), %rdx
+	movq	%rdx, -8(%rbp)
+	movzbl	(%rax), %ecx
+	movq	-16(%rbp), %rax
+	leaq	1(%rax), %rdx
+	movq	%rdx, -16(%rbp)
+	movzbl	(%rax), %eax
+	cmpb	%al, %cl
+	je	.L2
+	movl	$0, %eax
+	jmp	.L3
+.L2:
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	je	.L4
+	movq	-16(%rbp), %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	jne	.L5
+.L4:
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %edx
+	movq	-16(%rbp), %rax
+	movzbl	(%rax), %eax
+	cmpb	%al, %dl
+	je	.L6
+	movl	$0, %eax
+	jmp	.L3
+.L6:
+	movl	$1, %eax
+.L3:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <math.h>
+
+#include <string.h>
+
+int equal_strings(char *s1, char *s2)
+{
+
+
+ while (*s1 && *s2)
+  if (*s1++ != *s2++)
+   return (0);
+
+ if (*s1 != *s2)
+  return (0);
+ else
+  return (1);
+}
+INFO:root:current LLM prompt size: 468
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int equal_strings(char* str1, char* str2) {
+    while (1) {
+        char c1 = *str1++;
+        char c2 = *str2++;
+        if (c1 != c2) {
+            return 0;
+        }
+        if (c1 == '\0' && c2 == '\0') {
+            return 1;
+        }
+    }
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 172 succeeded
+INFO:root:x86 code :
+.globl fun_2_in_release_so
+.type fun_2_in_release_so, @function
+fun_2_in_release_so:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-4(%rbp), %eax
+	leal	20(%rax), %edx
+	movl	-8(%rbp), %eax
+	addl	%edx, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+int fun_2_in_release_so(int x, int y)
+{
+ return 20 + x + y;
+}
+INFO:root:current LLM prompt size: 218
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int fun_2_in_release_so(int arg1, int arg2) {
+    int local_var1 = arg1;
+    int local_var2 = arg2;
+    return local_var1 + 20 + local_var2;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 173 succeeded
+INFO:root:x86 code :
+.globl factorial
+.type factorial, @function
+factorial:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -20(%rbp)
+	movl	$1, -4(%rbp)
+	movl	$2, -8(%rbp)
+	jmp	.L2
+.L3:
+	movl	-4(%rbp), %eax
+	imull	-8(%rbp), %eax
+	movl	%eax, -4(%rbp)
+	addl	$1, -8(%rbp)
+.L2:
+	movl	-8(%rbp), %eax
+	cmpl	-20(%rbp), %eax
+	jle	.L3
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+int factorial(int n){
+    int i,f;
+    f = 1;
+    for(i=2;i<=n;i++){
+        f *= i;
+    }
+    return f;
+}
+INFO:root:current LLM prompt size: 274
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int factorial(int n) {
+    int result = 1;
+    for (int i = 2; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 174 succeeded
+INFO:root:x86 code :
+.globl truncate
+.type truncate, @function
+truncate:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	cvttsd2sil	%xmm0, %eax
+	movl	%eax, -4(%rbp)
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int truncate(double x) {
+  int y = (int)x;
+  return y;
+}
+INFO:root:current LLM prompt size: 199
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int truncate(double x) {
+    int result;
+    result = (int)x;
+    return result;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 175 succeeded
+INFO:root:x86 code :
+.globl base2int
+.type base2int, @function
+base2int:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, %eax
+	movb	%al, -4(%rbp)
+	movsbl	-4(%rbp), %eax
+	cmpl	$84, %eax
+	je	.L2
+	cmpl	$84, %eax
+	jg	.L3
+	cmpl	$71, %eax
+	je	.L4
+	cmpl	$71, %eax
+	jg	.L3
+	cmpl	$65, %eax
+	je	.L5
+	cmpl	$67, %eax
+	je	.L6
+	jmp	.L3
+.L5:
+	movl	$0, %eax
+	jmp	.L7
+.L6:
+	movl	$1, %eax
+	jmp	.L7
+.L4:
+	movl	$2, %eax
+	jmp	.L7
+.L2:
+	movl	$3, %eax
+	jmp	.L7
+.L3:
+	movl	$4, %eax
+.L7:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+int base2int(char b){
+  switch(b){
+    case 'A':
+      return(0);
+    case 'C':
+      return(1);
+    case 'G':
+      return(2);
+    case 'T':
+      return(3);
+    default:
+      return(4);
+  }
+}
+INFO:root:current LLM prompt size: 358
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int base2int(char c) {
+    switch (c) {
+        case 'A':
+            return 0;
+        case 'C':
+            return 1;
+        case 'G':
+            return 2;
+        case 'T':
+            return 3;
+        default:
+            return 4;
+    }
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 176 succeeded
+INFO:root:x86 code :
+.globl sub_double
+.type sub_double, @function
+sub_double:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movsd	%xmm0, -8(%rbp)
+	movsd	%xmm1, -16(%rbp)
+	movsd	-8(%rbp), %xmm0
+	subsd	-16(%rbp), %xmm0
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <sys/types.h>
+
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdint.h>
+
+double sub_double(double arg1, double arg2) { return arg1 - arg2; }
+INFO:root:current LLM prompt size: 190
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+double sub_double(double a, double b) {
+    return a - b;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 177 succeeded
+INFO:root:x86 code :
+.globl weak
+.type weak, @function
+weak:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	$30, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int weak (void)
+{
+  return 30;
+}
+INFO:root:current LLM prompt size: 144
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int weak() {
+    return 30;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 178 succeeded
+INFO:root:x86 code :
+.globl bic
+.type bic, @function
+bic:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-8(%rbp), %eax
+	notl	%eax
+	andl	-4(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <assert.h>
+
+int bic(int x, int m) {
+    return x & (~m);
+}
+INFO:root:current LLM prompt size: 189
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int bic(int a, int b) {
+    return a & ~b;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 179 succeeded
+INFO:root:x86 code :
+.globl fact
+.type fact, @function
+fact:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$16, %rsp
+	movl	%edi, -4(%rbp)
+	cmpl	$0, -4(%rbp)
+	jg	.L2
+	movl	$1, %eax
+	jmp	.L3
+.L2:
+	movl	-4(%rbp), %eax
+	subl	$1, %eax
+	movl	%eax, %edi
+	call	fact
+	imull	-4(%rbp), %eax
+.L3:
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int fact (int n) {
+  if (n < 1) {
+    return 1;
+  } else {
+    return n * fact(n-1);
+  }
+}
+INFO:root:current LLM prompt size: 237
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int fact(int n) {
+    if (n <= 0) {
+        return 1;
+    } else {
+        return n * fact(n - 1);
+    }
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 180 succeeded
+INFO:root:x86 code :
+.globl f
+.type f, @function
+f:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -20(%rbp)
+	movl	-20(%rbp), %eax
+	movl	%eax, -4(%rbp)
+	cmpl	$0, -20(%rbp)
+	jle	.L2
+	movl	-4(%rbp), %eax
+	addl	%eax, -20(%rbp)
+.L2:
+	movl	-20(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int f(int x) {
+  const int i = x;
+  if (x > 0) {
+    x = x + i;
+  }
+  return x;
+}
+INFO:root:current LLM prompt size: 228
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int f(int n) {
+    int result = n;
+    if (n > 0) {
+        result += n;
+    }
+    return result;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 181 succeeded
+INFO:root:x86 code :
+.globl foo4
+.type foo4, @function
+foo4:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, %eax
+	movw	%ax, -20(%rbp)
+	movw	$1, -2(%rbp)
+	cmpw	$10, -20(%rbp)
+	jg	.L2
+	movzwl	-2(%rbp), %eax
+	jmp	.L3
+.L2:
+	movzwl	-20(%rbp), %eax
+	addl	$1, %eax
+	movw	%ax, -20(%rbp)
+	movzwl	-20(%rbp), %eax
+	cbtw
+	movw	%ax, -2(%rbp)
+	movzwl	-20(%rbp), %eax
+.L3:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+__attribute__((noinline, noclone)) short foo4 (short arg){ short ret = 1; if (arg + 1 < 12 || arg + 1 > ((!0) ? ((1 << (sizeof (short) * 8 - 1)) - 1) : ((1 << (sizeof (short) * 8)) - 1)) + 1) return ret; arg = arg + 1; ret = (char)arg; return arg; }
+INFO:root:current LLM prompt size: 291
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+short foo4(short n) {
+    short temp = (short)n;
+    short result = 1;
+    if (temp <= 10) {
+        return result;
+    } else {
+        temp++;
+        result = (short)temp;
+        return result;
+    }
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 182 succeeded
+INFO:root:x86 code :
+.globl my_get_el
+.type my_get_el, @function
+my_get_el:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, %eax
+	movq	%rsi, -32(%rbp)
+	movb	%al, -20(%rbp)
+	movl	$0, -4(%rbp)
+	jmp	.L2
+.L5:
+	movl	-4(%rbp), %eax
+	movslq	%eax, %rdx
+	movq	-32(%rbp), %rax
+	addq	%rdx, %rax
+	movzbl	(%rax), %eax
+	cmpb	%al, -20(%rbp)
+	jne	.L3
+	movl	-4(%rbp), %eax
+	jmp	.L4
+.L3:
+	addl	$1, -4(%rbp)
+.L2:
+	movl	-4(%rbp), %eax
+	movslq	%eax, %rdx
+	movq	-32(%rbp), %rax
+	addq	%rdx, %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	jne	.L5
+	movl	$-1, %eax
+.L4:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int my_get_el(char c, char *base)
+{
+  int lp;
+
+  lp = 0;
+  while (base[lp] != '\0')
+    {
+      if (c == base[lp])
+        return (lp);
+      ++lp;
+    }
+  return (-1);
+}
+INFO:root:current LLM prompt size: 389
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int my_get_el(char c, char *str) {
+    int i = 0;
+    while (str[i] != '\0') {
+        if (str[i] == c) {
+            return i;
+        }
+        i++;
+    }
+    return -1;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 183 succeeded
+INFO:root:x86 code :
+.globl proc_false
+.type proc_false, @function
+proc_false:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	$0, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stddef.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+int proc_false(void)
+{
+  return 0;
+}
+INFO:root:current LLM prompt size: 147
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int proc_false() {
+    return 0;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 184 succeeded
+INFO:root:x86 code :
+.globl double_plus
+.type double_plus, @function
+double_plus:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movsd	%xmm0, -8(%rbp)
+	movsd	%xmm1, -16(%rbp)
+	movl	%edi, -20(%rbp)
+	movsd	-8(%rbp), %xmm0
+	addsd	-16(%rbp), %xmm0
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdarg.h>
+
+double double_plus(double x, double y, int index) {
+    return x + y;
+}
+INFO:root:current LLM prompt size: 202
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+double double_plus(double a, double b, int c) {
+    return a + b;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 185 succeeded
+INFO:root:x86 code :
+.globl half
+.type half, @function
+half:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	movl	%eax, %edx
+	shrl	$31, %edx
+	addl	%edx, %eax
+	sarl	%eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int half (int x) {
+ return x / 2;
+}
+INFO:root:current LLM prompt size: 192
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int half(int n) {
+    int result = n;
+    result = (result + (result >> 31)) >> 1;
+    return result;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 186 succeeded
+INFO:root:x86 code :
+.globl TLAString_toDouble
+.type TLAString_toDouble, @function
+TLAString_toDouble:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -24(%rbp)
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %eax
+	movb	%al, -13(%rbp)
+	pxor	%xmm0, %xmm0
+	movsd	%xmm0, -8(%rbp)
+	cmpb	$45, -13(%rbp)
+	je	.L2
+	cmpb	$43, -13(%rbp)
+	jne	.L4
+.L2:
+	addq	$1, -24(%rbp)
+	jmp	.L4
+.L6:
+	movsd	-8(%rbp), %xmm1
+	movsd	.LC1(%rip), %xmm0
+	mulsd	%xmm0, %xmm1
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %eax
+	movsbl	%al, %eax
+	cvtsi2ssl	%eax, %xmm0
+	movss	.LC2(%rip), %xmm2
+	subss	%xmm2, %xmm0
+	cvtss2sd	%xmm0, %xmm0
+	addsd	%xmm1, %xmm0
+	movsd	%xmm0, -8(%rbp)
+	addq	$1, -24(%rbp)
+.L4:
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	je	.L5
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %eax
+	cmpb	$46, %al
+	jne	.L6
+.L5:
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %eax
+	cmpb	$46, %al
+	jne	.L7
+	movss	.LC3(%rip), %xmm0
+	movss	%xmm0, -12(%rbp)
+	addq	$1, -24(%rbp)
+	jmp	.L8
+.L9:
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %eax
+	movsbl	%al, %eax
+	cvtsi2ssl	%eax, %xmm0
+	movss	.LC2(%rip), %xmm1
+	subss	%xmm1, %xmm0
+	divss	-12(%rbp), %xmm0
+	cvtss2sd	%xmm0, %xmm0
+	movsd	-8(%rbp), %xmm1
+	addsd	%xmm1, %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movss	-12(%rbp), %xmm1
+	movss	.LC3(%rip), %xmm0
+	mulss	%xmm1, %xmm0
+	movss	%xmm0, -12(%rbp)
+	addq	$1, -24(%rbp)
+.L8:
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	jne	.L9
+.L7:
+	cmpb	$45, -13(%rbp)
+	jne	.L10
+	movsd	-8(%rbp), %xmm0
+	movq	.LC4(%rip), %xmm1
+	xorpd	%xmm1, %xmm0
+	movsd	%xmm0, -8(%rbp)
+.L10:
+	movsd	-8(%rbp), %xmm0
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LC4: 	.long	0
+.LC2: 	.long	1111490560
+.LC3: 	.long	1092616192
+.LC1: 	.long	0
+
+INFO:root:ref C code :
+#include <stdio.h>	//FILE*
+
+#include <time.h>	//clock_t, clock()
+
+double TLAString_toDouble(const char* string){
+ const char sign= (*string);
+ double value = 0;
+ if(sign=='-' || sign=='+') string++;
+
+ while((*string)!='\0' && (*string)!='.'){
+  value = (value * 10.0f) + ((*string) - 48.0f);
+  string++;
+ }
+
+ if((*string)=='.'){
+  float factorDivisor = 10.0f;
+  string++;
+  while((*string)!='\0'){
+   value += (((*string) - 48.0f) / factorDivisor);
+   factorDivisor *= 10.0f;
+   string++;
+  }
+ }
+
+ if(sign=='-') value = -value;
+
+ return value;
+}
+INFO:root:current LLM prompt size: 975
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+double TLAString_toDouble(char* str) {
+    char sign = str[0];
+    double result = 0.0;
+
+    if (sign == '-' || sign == '+') {
+        str++;
+    }
+
+    while (*str != '\0' && *str != '.') {
+        result = result * 10.0 + (*str - '0');
+        str++;
+    }
+
+    if (*str == '.') {
+        str++;
+        double decimal_place = 0.1;
+        while (*str != '\0') {
+            result += (*str - '0') * decimal_place;
+            decimal_place *= 0.1;
+            str++;
+        }
+    }
+
+    if (sign == '-') {
+        result = -result;
+    }
+
+    return result;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 187 succeeded
+INFO:root:x86 code :
+.globl prch
+.type prch, @function
+prch:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, %eax
+	movb	%al, -4(%rbp)
+	movzbl	-4(%rbp), %eax
+	cmpb	$31, %al
+	jbe	.L2
+	movzbl	-4(%rbp), %eax
+	jmp	.L3
+.L2:
+	movl	$46, %eax
+.L3:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdlib.h>
+
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdarg.h>
+
+#include <syslog.h>
+
+#include <ctype.h>
+
+#include <iconv.h>
+
+#include <errno.h>
+
+char prch(char ch) {
+    if ((unsigned char) ch >= ' ')
+        return ch;
+    return '.';
+}
+INFO:root:current LLM prompt size: 222
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int prch(int c) {
+    char ch = (char)c;
+    if (ch <= 31) {
+        return 46; // Return '.' if the input character is a control character
+    } else {
+        return (int)ch; // Return the input character as is
+    }
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 188 succeeded
+INFO:root:x86 code :
+.globl mul8bit
+.type mul8bit, @function
+mul8bit:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -20(%rbp)
+	movl	%esi, -24(%rbp)
+	movl	-20(%rbp), %eax
+	imull	-24(%rbp), %eax
+	subl	$-128, %eax
+	movl	%eax, -4(%rbp)
+	movl	-4(%rbp), %eax
+	sarl	$8, %eax
+	movl	%eax, %edx
+	movl	-4(%rbp), %eax
+	addl	%edx, %eax
+	sarl	$8, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdlib.h>
+
+#include <stdio.h>
+
+int mul8bit(int a, int b)
+{
+   int t = a * b + 128;
+   return((t + (t >> 8)) >> 8);
+}
+INFO:root:current LLM prompt size: 271
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int mul8bit(int a, int b) {
+    int result = a * b;
+    result += 128;
+    result >>= 8;
+    result += (result & 0xFF);
+    result >>= 8;
+    return result;
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'returnv': 5}
+hyp: {'returnv': 0}
+WARNING:root:input 1 mismatched!
+ref: {'returnv': 7}
+hyp: {'returnv': 0}
+WARNING:root:input 2 mismatched!
+ref: {'returnv': 10}
+hyp: {'returnv': 0}
+WARNING:root:input 3 mismatched!
+ref: {'returnv': 33}
+hyp: {'returnv': 0}
+WARNING:root:input 4 mismatched!
+ref: {'returnv': 2}
+hyp: {'returnv': 0}
+WARNING:root:input 6 mismatched!
+ref: {'returnv': 24}
+hyp: {'returnv': 0}
+WARNING:root:input 7 mismatched!
+ref: {'returnv': 41}
+hyp: {'returnv': 0}
+WARNING:root:input 9 mismatched!
+ref: {'returnv': 20}
+hyp: {'returnv': 0}
+INFO:root:Local error rate: 80.0%
+INFO:root:CASE 189 failed
+INFO:root:x86 code :
+.globl owHasOverDrive
+.type owHasOverDrive, @function
+owHasOverDrive:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	$0, -4(%rbp)
+	movl	$1, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int owHasOverDrive(int portnum)
+{
+   portnum = 0;
+   return 1;
+}
+INFO:root:current LLM prompt size: 177
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int owHasOverDrive(int param) {
+    int local_var = 0;
+    return 1;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 190 succeeded
+INFO:root:x86 code :
+.globl dns_v_abi
+.type dns_v_abi, @function
+dns_v_abi:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	$538314248, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int dns_v_abi(void) {
+ return 0x20160608;
+}
+INFO:root:current LLM prompt size: 155
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int dns_v_abi() {
+    return 538314248;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 191 succeeded
+INFO:root:x86 code :
+.globl have_north_neighbor
+.type have_north_neighbor, @function
+have_north_neighbor:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	cmpl	$0, -4(%rbp)
+	jne	.L2
+	movl	$0, %eax
+	jmp	.L3
+.L2:
+	movl	$1, %eax
+.L3:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <stdbool.h>
+
+#include <assert.h>
+
+bool have_north_neighbor (unsigned int ypos)
+{
+    if (ypos == 0)
+        return false;
+    else
+        return true;
+}
+INFO:root:current LLM prompt size: 204
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int have_north_neighbor(int n) {
+    if (n != 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 192 succeeded
+INFO:root:x86 code :
+.globl add
+.type add, @function
+add:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-4(%rbp), %edx
+	movl	-8(%rbp), %eax
+	addl	%edx, %eax
+	addl	$2, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int add(int a, int b)
+{
+ return a + b + 2;
+}
+INFO:root:current LLM prompt size: 201
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int add(int a, int b) {
+    return a + b + 2;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 193 succeeded
+INFO:root:x86 code :
+.globl get_mod
+.type get_mod, @function
+get_mod:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -24(%rbp)
+	movl	$1, -4(%rbp)
+	jmp	.L2
+.L3:
+	movq	-24(%rbp), %rax
+	leaq	1(%rax), %rdx
+	movq	%rdx, -24(%rbp)
+	movzbl	(%rax), %eax
+	movsbl	%al, %eax
+	leal	-64(%rax), %edx
+	movl	-4(%rbp), %eax
+	imull	%edx, %eax
+	movl	%eax, -4(%rbp)
+.L2:
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	jne	.L3
+	movl	-4(%rbp), %eax
+	movslq	%eax, %rdx
+	imulq	$-1370734243, %rdx, %rdx
+	shrq	$32, %rdx
+	addl	%eax, %edx
+	movl	%edx, %ecx
+	sarl	$5, %ecx
+	cltd
+	subl	%edx, %ecx
+	movl	%ecx, %edx
+	imull	$47, %edx, %edx
+	subl	%edx, %eax
+	movl	%eax, %edx
+	movl	%edx, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <assert.h>
+
+int get_mod(char *p)
+{
+ int mul=1;
+ while (*p != '\0')
+  mul *= ((*p++) - 'A' + 1);
+
+ return mul % 47;
+}
+INFO:root:current LLM prompt size: 453
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int get_mod(char* str) {
+    int result = 1;
+    while (*str != '\0') {
+        str++;
+        int c = *str;
+        result = result * (c - 64);
+    }
+    int temp = result;
+    result = (temp + (temp * -1370734243) >> 32) * 47;
+    return temp - result;
+}
+
+WARNING:root:input 0 mismatched!
+ref: {'p': 'stxftscluqsiyuqwazxvynz', 'returnv': 34}
+hyp: {'p': 'stxftscluqsiyuqwazxvynz', 'returnv': -1535115264}
+WARNING:root:input 1 mismatched!
+ref: {'p': 'ztsxivrmjit', 'returnv': 40}
+hyp: {'p': 'ztsxivrmjit', 'returnv': 2007433216}
+WARNING:root:input 2 mismatched!
+ref: {'p': 'chobioxuneynj', 'returnv': 3}
+hyp: {'p': 'chobioxuneynj', 'returnv': 605487104}
+WARNING:root:input 3 mismatched!
+ref: {'p': 'mdozpajyzqc', 'returnv': 0}
+hyp: {'p': 'mdozpajyzqc', 'returnv': 1387102208}
+WARNING:root:input 4 mismatched!
+ref: {'p': 'blhrkwgsh', 'returnv': 27}
+hyp: {'p': 'blhrkwgsh', 'returnv': 443908096}
+WARNING:root:input 5 mismatched!
+ref: {'p': 'goba', 'returnv': 0}
+hyp: {'p': 'goba', 'returnv': 219373440}
+WARNING:root:input 6 mismatched!
+ref: {'p': 'jvebewdrlnyqvacrttq', 'returnv': -33}
+hyp: {'p': 'jvebewdrlnyqvacrttq', 'returnv': 210763776}
+WARNING:root:input 7 mismatched!
+ref: {'p': 'ythlrlobts', 'returnv': 11}
+hyp: {'p': 'ythlrlobts', 'returnv': 13107200}
+WARNING:root:input 8 mismatched!
+ref: {'p': 'mymfitif', 'returnv': 17}
+hyp: {'p': 'mymfitif', 'returnv': -1073486848}
+WARNING:root:input 9 mismatched!
+ref: {'p': 'xrornjwhhebk', 'returnv': 35}
+hyp: {'p': 'xrornjwhhebk', 'returnv': 23724032}
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 194 failed
+INFO:root:x86 code :
+.globl aleph_Name
+.type aleph_Name, @function
+aleph_Name:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	leaq	.LC0(%rip), %rax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LC0: 	.string	"ALEPH16"
+
+INFO:root:ref C code :
+#include <stdio.h>
+
+#include <stddef.h>
+
+#include <string.h>
+
+char* aleph_Name(void) {
+ return "ALEPH16";
+}
+INFO:root:current LLM prompt size: 167
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+const char* aleph_Name() {
+    return "ALEPH16";
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 195 succeeded
+INFO:root:x86 code :
+.globl isInTable
+.type isInTable, @function
+isInTable:
+.LFB6:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -20(%rbp)
+	movq	%rsi, -32(%rbp)
+	movl	%edx, -24(%rbp)
+	movl	$0, -8(%rbp)
+	movl	$0, -4(%rbp)
+	jmp	.L2
+.L5:
+	movl	-8(%rbp), %eax
+	cltq
+	leaq	0(,%rax,4), %rdx
+	movq	-32(%rbp), %rax
+	addq	%rdx, %rax
+	movl	(%rax), %eax
+	cmpl	%eax, -20(%rbp)
+	jne	.L3
+	movl	$1, -4(%rbp)
+.L3:
+	addl	$1, -8(%rbp)
+.L2:
+	movl	-8(%rbp), %eax
+	cmpl	-24(%rbp), %eax
+	jge	.L4
+	cmpl	$0, -4(%rbp)
+	je	.L5
+.L4:
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+#include <time.h>
+
+#include <stdlib.h>
+
+int isInTable(int nombre, int * tab, int nb)
+{
+    int i=0;
+    int retour =0;
+    while (i < nb && !retour)
+    {
+        if(tab[i] == nombre) retour=1;
+        i++;
+    }
+    return retour;
+}
+INFO:root:current LLM prompt size: 382
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int isInTable(int key, int* table, int size) {
+    int i = 0;
+    int found = 0;
+
+    while (i < size) {
+        if (table[i] == key) {
+            found = 1;
+            break;
+        }
+        i++;
+    }
+
+    return found;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 196 succeeded
+INFO:root:x86 code :
+.globl updateSeriesTitle
+.type updateSeriesTitle, @function
+updateSeriesTitle:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movq	%rsi, -16(%rbp)
+	nop
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+void updateSeriesTitle(unsigned int seriesID, char *title)
+{
+
+
+ return;
+}
+INFO:root:current LLM prompt size: 169
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+void updateSeriesTitle(int arg1, char* arg2) {
+    // Function prologue
+    pushq %rbp
+    movq %rsp, %rbp
+
+    // Store function arguments
+    movl %edi, -4(%rbp)  // Store arg1 in local variable
+    movq %rsi, -16(%rbp) // Store arg2 in local variable
+
+    // Function epilogue
+    nop
+    popq %rbp
+    ret
+}
+
+WARNING:root:CASE 197 failed to compile the decompiled code!
+WARNING:root:ret.stderr: disassembled.c: In function 'updateSeriesTitle':
+disassembled.c:4:5: error: 'pushq' undeclared (first use in this function)
+    4 |     pushq %rbp
+      |     ^~~~~
+disassembled.c:4:5: note: each undeclared identifier is reported only once for each function it appears in
+disassembled.c:4:12: error: 'rbp' undeclared (first use in this function)
+    4 |     pushq %rbp
+      |            ^~~
+disassembled.c:4:15: error: expected ';' before 'movq'
+    4 |     pushq %rbp
+      |               ^
+      |               ;
+    5 |     movq %rsp, %rbp
+      |     ~~~~       
+
+WARNING:root:ret.stdout: 
+INFO:root:x86 code :
+.globl fibonacci
+.type fibonacci, @function
+fibonacci:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -20(%rbp)
+	movl	$1, -12(%rbp)
+	movl	$1, -8(%rbp)
+	jmp	.L2
+.L3:
+	movl	-12(%rbp), %eax
+	movl	%eax, -4(%rbp)
+	movl	-8(%rbp), %eax
+	movl	%eax, -12(%rbp)
+	movl	-4(%rbp), %eax
+	addl	%eax, -8(%rbp)
+.L2:
+	movl	-20(%rbp), %eax
+	leal	-1(%rax), %edx
+	movl	%edx, -20(%rbp)
+	cmpl	$1, %eax
+	jg	.L3
+	movl	-8(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int fibonacci(int n) {
+  int a = 1;
+  int b = 1;
+
+  while (n-- > 1) {
+    int t = a;
+    a = b;
+    b += t;
+  }
+
+  return b;
+}
+INFO:root:current LLM prompt size: 319
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+int fibonacci(int n) {
+    int a = 1, b = 1;
+    while (n > 1) {
+        int temp = a;
+        a = b;
+        b = b + temp;
+        n--;
+    }
+    return b;
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 198 succeeded
+INFO:root:x86 code :
+.globl apply_binary_operation_on_byte
+.type apply_binary_operation_on_byte, @function
+apply_binary_operation_on_byte:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	%edx, -12(%rbp)
+	cmpl	$0, -12(%rbp)
+	jne	.L2
+	cmpl	$49, -4(%rbp)
+	je	.L3
+	cmpl	$49, -8(%rbp)
+	jne	.L4
+.L3:
+	movl	$49, %eax
+	jmp	.L6
+.L4:
+	movl	$48, %eax
+	jmp	.L6
+.L2:
+	cmpl	$1, -12(%rbp)
+	jne	.L7
+	cmpl	$49, -4(%rbp)
+	jne	.L8
+	cmpl	$49, -8(%rbp)
+	jne	.L8
+	movl	$49, %eax
+	jmp	.L6
+.L8:
+	movl	$48, %eax
+	jmp	.L6
+.L7:
+	cmpl	$2, -12(%rbp)
+	jne	.L10
+	cmpl	$48, -4(%rbp)
+	jne	.L11
+	cmpl	$49, -8(%rbp)
+	je	.L12
+.L11:
+	cmpl	$49, -4(%rbp)
+	jne	.L13
+	cmpl	$48, -8(%rbp)
+	jne	.L13
+.L12:
+	movl	$49, %eax
+	jmp	.L6
+.L13:
+	movl	$48, %eax
+	jmp	.L6
+.L10:
+	movl	$63, %eax
+.L6:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
+
+INFO:root:ref C code :
+
+int apply_binary_operation_on_byte(int tbit, int kbit, int operation)
+{
+ if (operation == 0x00) {
+  return ((tbit == '1') || (kbit == '1')) ? '1' : '0';
+ }
+ else
+ if (operation == 0x01) {
+  return ((tbit == '1') && (kbit == '1')) ? '1' : '0';
+ }
+ else
+ if (operation == 0x02) {
+  return (((tbit == '0') && (kbit == '1'))
+    || ((tbit == '1') && (kbit == '0'))) ? '1' : '0';
+ }
+
+ return '?';
+}
+INFO:root:current LLM prompt size: 510
+INFO:httpx:HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO:root:disassembled C code :
+
+char apply_binary_operation_on_byte(char a, char b, int operation) {
+    if (operation == 0) {
+        if (a == '1') {
+            return '1';
+        } else if (b == '1') {
+            return '1';
+        } else {
+            return '0';
+        }
+    } else if (operation == 1) {
+        if (a == '1' && b == '1') {
+            return '1';
+        } else {
+            return '0';
+        }
+    } else if (operation == 2) {
+        if (a == '0' && b == '1') {
+            return '1';
+        } else if (a == '1' && b == '0') {
+            return '1';
+        } else {
+            return '0';
+        }
+    } else {
+        return '?';
+    }
+}
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 199 succeeded
+INFO:root:Done
+INFO:root:Passed cases: [100, 102, 103, 104, 106, 107, 108, 109, 111, 114, 115, 117, 118, 119, 120, 123, 124, 125, 129, 130, 131, 133, 134, 135, 137, 138, 140, 142, 143, 144, 145, 146, 147, 148, 151, 153, 154, 156, 157, 160, 161, 163, 164, 165, 166, 167, 168, 169, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 190, 191, 192, 193, 195, 196, 198, 199]
+INFO:root:Failed cases: [101, 105, 110, 112, 113, 116, 121, 122, 126, 127, 128, 132, 136, 139, 141, 149, 150, 152, 155, 158, 159, 162, 170, 189, 194, 197]
+INFO:root:Pass rate: 74.0%
