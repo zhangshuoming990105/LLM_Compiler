@@ -10,6 +10,7 @@ from prompts import (
     compiler_short_prompts,
     decompiler_prompts,
     code_translator_prompts,
+    emnlp_baseline_prompts,
 )
 from config import (
     AVAILABLE_MODELS,
@@ -157,7 +158,7 @@ class Chat:
 
 
 class Compiler(Chat):
-    def __init__(self, model="mixtral-8x7b-instruct", use_short_prompt=False):
+    def __init__(self, model="mixtral-8x7b-instruct", use_short_prompt=False, use_emnlp_prompt=False):
         super().__init__(model)
         self.full_prompt = (
             compiler_prompts["general"]
@@ -176,6 +177,10 @@ class Compiler(Chat):
             + compiler_short_prompts["code_format"]
             + compiler_short_prompts["code_example"]
         )
+        if use_emnlp_prompt:
+            self.simplified_prompt = emnlp_baseline_prompts["general"]
+            self.use_short_prompt = True
+            use_short_prompt = True
         if use_short_prompt:
             self.system_prompt = self.simplified_prompt
             self.use_short_prompt = True

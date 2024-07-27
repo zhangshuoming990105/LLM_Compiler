@@ -55,8 +55,8 @@ def human_eval():
         i += 1
 
 
-def c_compiler(model="gpt-4o", begin_id=0, end_id=100, use_short_prompt=False):
-    compiler = Compiler(model, use_short_prompt=use_short_prompt)
+def c_compiler(model="gpt-4o", begin_id=0, end_id=100, use_short_prompt=False, use_emnlp_prompt=False):
+    compiler = Compiler(model, use_short_prompt=use_short_prompt,use_emnlp_prompt=use_emnlp_prompt)
     # ds = load_dataset("jordiae/exebench")["train_real_simple_io"]
     ds = load_dataset("mistral0105/exebench_io_validated_full_cleaned")["train"]
     # select validate example to a new dataset, by checking compile status and execution status
@@ -408,9 +408,15 @@ if __name__ == "__main__":
         logging.basicConfig(level=logging.INFO)
     logging.info("log file created!")
     logging.info("Start time: " + str(datetime.datetime.now()))
+    # EMNLP additional experiments
+    # GPT-4o
+    # Claude-3.5-sonnet-20240620
+    c_compiler(model="claude-3-5-sonnet-20240620",begin_id=0, end_id=100, use_emnlp_prompt=True)
+    
+    
     # c_compiler(model="claude-3-haiku-20240307",begin_id=0, end_id=1, use_short_prompt=True)
     # python_c_translator(model="claude-3-haiku-20240307")
 
-    python_compiler("claude-3-5-sonnet-20240620")
+    # python_compiler("claude-3-5-sonnet-20240620")
     logging.info("End time: " + str(datetime.datetime.now()))
     # workspace_clear(sandbox_dir, log_dir)
