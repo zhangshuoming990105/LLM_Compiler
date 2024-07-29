@@ -70,6 +70,8 @@ def c_compiler(model="gpt-4o", begin_id=0, end_id=100, use_short_prompt=False, u
         if case_id < begin_id:
             case_id += 1
             continue
+        if case_id >= end_id:
+                break
         try:
             id = 0
             x86_id = None
@@ -411,7 +413,7 @@ if __name__ == "__main__":
     # EMNLP additional experiments
     # GPT-4o
     # Claude-3.5-sonnet-20240620
-    c_compiler(model="claude-3-5-sonnet-20240620",begin_id=0, end_id=100, use_emnlp_prompt=True)
+    c_compiler(model="claude-3-5-sonnet-20240620",begin_id=100, end_id=200, use_emnlp_prompt=True)
     
     
     # c_compiler(model="claude-3-haiku-20240307",begin_id=0, end_id=1, use_short_prompt=True)

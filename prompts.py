@@ -1,8 +1,19 @@
 # This file contains the prompts for the AI model to generate the x86 assembly code from the input C code.
 
 emnlp_baseline_prompts = {
-    "general": """[INST]compile the following C code into x86 assembly.[/INST]""",
+    "general": """[INST]compile the following C code into x86_64 assembly.
+use AT&T syntax in the assembly.
+make sure the output assembly is within "```x86" and "```" tags.
+[/INST]""",
 }
+
+# emnlp_baseline_prompts = {
+#     "general": """[INST]compile the following C code into x86 assembly.
+# the system architecture is x86_64. please make sure use AT&T syntax in the assembly.
+# input code will be inside "```c" and "```" tags.
+# make sure the output assembly is within "```x86" and "```" tags.
+# [/INST]""",
+# }
 
 compiler_short_prompts = {
     "general": """[INST]you are a helpful AI assistant, you will think carefully and follow the instructions to assist the user.[/INST]""",
