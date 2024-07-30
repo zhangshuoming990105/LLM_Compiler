@@ -17,6 +17,7 @@ from config import (
     YOUR_API_KEY,
     GPT_AVAILABLE_MODELS,
     ANTHROPIC_AVAILABLE_MODELS,
+    DEEPSEEK_MODELS,
 )
 
 
@@ -81,6 +82,7 @@ class Chat:
             model not in AVAILABLE_MODELS
             and model not in GPT_AVAILABLE_MODELS
             and model not in ANTHROPIC_AVAILABLE_MODELS
+            and model not in DEEPSEEK_MODELS
         ):
             logging.error(f"Model {model} is not available!")
             exit(1)
@@ -90,10 +92,13 @@ class Chat:
             api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai"
         )
         self.claude_client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+        self.deepseek_client = OpenAI(api_key="sk-de942e3222de415cb5636482c0b6a378", base_url="https://api.deepseek.com")
         if self.model in GPT_AVAILABLE_MODELS:
             self.client = self.gpt_client
         elif self.model in ANTHROPIC_AVAILABLE_MODELS:
             self.client = self.claude_client
+        elif self.model in DEEPSEEK_MODELS:
+            self.client = self.deepseek_client
         else:
             self.client = self.pplx_client
         self.system_prompt = compiler_prompts["general"]

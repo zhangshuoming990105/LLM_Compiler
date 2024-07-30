@@ -1,0 +1,4270 @@
+INFO:root:log file created!
+INFO:root:Start time: 2024-07-30 14:26:45.376154
+INFO:root:LLM default prompt size: 44
+INFO:root:C code :
+
+
+
+double linear_interp(double x,double lx,double ux,double ly,double uy) {
+  return((x-lx)/(ux-lx)*(uy-ly)+ly);
+}
+INFO:root:current LLM prompt size: 89
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+    .align 8
+    x:   .double 0.0
+    lx:  .double 0.0
+    ux:  .double 0.0
+    ly:  .double 0.0
+    uy:  .double 0.0
+
+.section .text
+    .global linear_interp
+    .type linear_interp, @function
+
+linear_interp:
+    pushq   %rbp
+    movq    %rsp, %rbp
+
+    # Load arguments into xmm registers
+    movsd   %xmm0, x(%rip)
+    movsd   %xmm1, lx(%rip)
+    movsd   %xmm2, ux(%rip)
+    movsd   %xmm3, ly(%rip)
+    movsd   %xmm4, uy(%rip)
+
+    # Calculate (x - lx)
+    movsd   x(%rip), %xmm5
+    subsd   lx(%rip), %xmm5
+
+    # Calculate (ux - lx)
+    movsd   ux(%rip), %xmm6
+    subsd   lx(%rip), %xmm6
+
+    # Calculate (uy - ly)
+    movsd   uy(%rip), %xmm7
+    subsd   ly(%rip), %xmm7
+
+    # Calculate (x - lx) / (ux - lx)
+    divsd   %xmm6, %xmm5
+
+    # Calculate ((x - lx) / (ux - lx)) * (uy - ly)
+    mulsd   %xmm7, %xmm5
+
+    # Add ly to the result
+    addsd   ly(%rip), %xmm5
+
+    # Move the result to xmm0 (return value)
+    movsd   %xmm5, %xmm0
+
+    movq    %rbp, %rsp
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 0 succeeded
+INFO:root:C code :
+
+double QuinticEaseIn(double p)
+{
+    return p * p * p * p * p;
+}
+INFO:root:current LLM prompt size: 78
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+.section .text
+.globl QuinticEaseIn
+
+QuinticEaseIn:
+    pushq   %rbp
+    movq    %rsp, %rbp
+
+    // Load the parameter p into xmm0
+    movsd   %xmm0, %xmm1
+
+    // p * p
+    mulsd   %xmm0, %xmm1
+
+    // (p * p) * p
+    mulsd   %xmm0, %xmm1
+
+    // (p * p * p) * p
+    mulsd   %xmm0, %xmm1
+
+    // (p * p * p * p) * p
+    mulsd   %xmm0, %xmm1
+
+    // Result is now in xmm1, move it to xmm0 for return
+    movsd   %xmm1, %xmm0
+
+    movq    %rbp, %rsp
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 1 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int dec_lv(char x, char c, int lv)
+{
+ if (x == c)
+  --lv;
+
+ return lv;
+}
+INFO:root:current LLM prompt size: 87
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+dec_lv:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movb    %dil, -4(%rbp)
+    movb    %sil, -8(%rbp)
+    movl    %edx, -12(%rbp)
+    movb    -4(%rbp), %al
+    cmpb    -8(%rbp), %al
+    jne     .L2
+    subl    $1, -12(%rbp)
+.L2:
+    movl    -12(%rbp), %eax
+    popq    %rbp
+    ret
+
+WARNING:root:CASE 2 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/cc04SzUJ.o: in function `main':
+tmp_driver.cpp:(.text+0x33b): undefined reference to `dec_lv'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <unistd.h>
+
+#include <limits.h>
+
+#include <errno.h>
+
+#include <stdarg.h>
+
+#include <fcntl.h>
+
+#include <time.h>
+
+#include <signal.h>
+
+#include <dirent.h>
+
+#include <pwd.h>
+
+#include <sys/types.h>
+
+#include <sys/stat.h>
+
+#include <sys/wait.h>
+
+int
+prefix_of(char *special, char *s)
+{
+ for (; *special != '\0'; ++special)
+  if (*special != *s++)
+   return 0;
+ return (*s == '=' || *s == '\0');
+}
+INFO:root:current LLM prompt size: 184
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+.section .text
+.globl prefix_of
+prefix_of:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movq    %rdi, -8(%rbp)    # special
+    movq    %rsi, -16(%rbp)   # s
+
+loop_start:
+    movq    -8(%rbp), %rax
+    movzbq  (%rax), %rbx      # *special
+    cmpb    $0, %bl
+    je      loop_end          # if (*special == '\0') goto loop_end
+
+    movq    -16(%rbp), %rax
+    movzbq  (%rax), %rcx      # *s
+    cmpb    %bl, %cl
+    jne     return_0          # if (*special != *s) goto return_0
+
+    incq    -8(%rbp)          # ++special
+    incq    -16(%rbp)         # ++s
+    jmp     loop_start
+
+loop_end:
+    movq    -16(%rbp), %rax
+    movzbq  (%rax), %rcx      # *s
+    cmpb    $61, %cl          # '='
+    je      return_1
+    cmpb    $0, %cl
+    je      return_1          # if (*s == '=' || *s == '\0') goto return_1
+
+return_0:
+    movl    $0, %eax
+    jmp     end
+
+return_1:
+    movl    $1, %eax
+
+end:
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 3 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <memory.h>
+
+int* sub(int* a, int sizeA, int* b, int sizeB, int* resultSize){
+
+}
+INFO:root:current LLM prompt size: 95
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"sub.c"
+	.text
+	.globl	sub
+	.type	sub, @function
+sub:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	nop
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE0:
+	.size	sub, .-sub
+	.ident	"GCC: (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0"
+	.section	.note.GNU-stack,"",@progbits
+	.section	.note.gnu.property,"a"
+	.align 8
+	.long	 1f - 0f
+	.long	 4f - 1f
+	.long	 5
+0:
+	.string	 "GNU"
+1:
+	.align 8
+	.long	 0xc0000002
+	.long	 3f - 2f
+2:
+	.long	 0x3
+3:
+	.align 8
+4:
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 4 succeeded
+INFO:root:C code :
+
+void vec_mpy(int y[], const short x[], short scaler)
+{
+ int i;
+
+ for (i = 0; i < 150; i++)
+   y[i] += ((scaler * x[i]) >> 31);
+}
+INFO:root:current LLM prompt size: 105
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl vec_mpy
+vec_mpy:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movq    %rdi, -24(%rbp)    # y[]
+    movq    %rsi, -32(%rbp)    # x[]
+    movw    %dx, -34(%rbp)     # scaler
+    movl    $0, -4(%rbp)       # i = 0
+
+.L2:
+    cmpl    $149, -4(%rbp)
+    jg      .L3                # if i > 149, exit loop
+
+    movl    -4(%rbp), %eax
+    cltq
+    movq    -32(%rbp), %rdx
+    movswl  (%rdx,%rax,2), %ecx # ecx = x[i]
+    movswl  -34(%rbp), %edx    # edx = scaler
+    imull   %ecx, %edx         # edx = scaler * x[i]
+    sarl    $31, %edx          # edx >>= 31
+    movl    -4(%rbp), %eax
+    cltq
+    movq    -24(%rbp), %rcx
+    movl    (%rcx,%rax,4), %eax # eax = y[i]
+    addl    %edx, %eax         # eax += (scaler * x[i]) >> 31
+    movl    -4(%rbp), %edx
+    cltq
+    movq    -24(%rbp), %rcx
+    movl    %eax, (%rcx,%rax,4) # y[i] = eax
+
+    addl    $1, -4(%rbp)       # i++
+    jmp     .L2
+
+.L3:
+    popq    %rbp
+    ret
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 5
+WARNING:root:WARNING: code failed to execute for input 1 in case 5
+WARNING:root:WARNING: code failed to execute for input 2 in case 5
+WARNING:root:WARNING: code failed to execute for input 3 in case 5
+WARNING:root:WARNING: code failed to execute for input 4 in case 5
+WARNING:root:WARNING: code failed to execute for input 5 in case 5
+WARNING:root:WARNING: code failed to execute for input 6 in case 5
+WARNING:root:WARNING: code failed to execute for input 7 in case 5
+WARNING:root:WARNING: code failed to execute for input 8 in case 5
+WARNING:root:WARNING: code failed to execute for input 9 in case 5
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 5 failed
+INFO:root:C code :
+
+int sign_int(int num)
+{
+  return (( ((((num))) <= (((0)))) ? ( ((((num))) < (((0)))) ? ((-1)) : ((0)) ) : ((1)) ));
+}
+INFO:root:current LLM prompt size: 98
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl sign_int
+sign_int:
+    cmp %edi, %eax
+    setge %al
+    movzbl %al, %eax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 6 succeeded
+INFO:root:C code :
+
+int big_endian(
+    void)
+{
+    union {
+        long l;
+        char c[sizeof(long)];
+    } u;
+
+    u.l = 1;
+
+    return (u.c[sizeof(long) - 1] == 1);
+}
+INFO:root:current LLM prompt size: 105
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+    .align 8
+u:
+    .quad 0
+
+.section .text
+    .globl big_endian
+    .type big_endian, @function
+big_endian:
+    pushq %rbp
+    movq %rsp, %rbp
+
+    movq $1, u
+    movq u, %rax
+    movzbl u + 7, %ecx
+    cmpb $1, %cl
+    sete %al
+    movzbl %al, %eax
+
+    movq %rbp, %rsp
+    popq %rbp
+    ret
+
+WARNING:root:CASE 7 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/cc0WCDLJ.o: relocation R_X86_64_32S against `.data' can not be used when making a PIE object; recompile with -fPIE
+/usr/bin/ld: failed to set dynamic section sizes: bad value
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int _isatty(int fd)
+{
+  (void)fd;
+  return (1);
+}
+INFO:root:current LLM prompt size: 76
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+_isatty:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)
+    movl    $1, %eax
+    popq    %rbp
+    ret
+
+WARNING:root:CASE 8 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/cchS9QW3.o: in function `main':
+tmp_driver.cpp:(.text+0x2cd): undefined reference to `_isatty'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+extern inline int
+JKMarray_idx (const int J, const int K, const int M)
+{
+  return (((4 * J * J + 5) * J) / 3 + 2 * J * J + K * (2 * J + 1) + M);
+}
+INFO:root:current LLM prompt size: 118
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.text
+.globl JKMarray_idx
+.type JKMarray_idx, @function
+JKMarray_idx:
+    # Prologue
+    pushq   %rbp
+    movq    %rsp, %rbp
+
+    # (((4 * J * J + 5) * J) / 3 + 2 * J * J + K * (2 * J + 1) + M)
+
+    # Calculate 4 * J * J
+    movl    %edi, %eax          # eax = J
+    imull   %eax, %eax          # eax = J * J
+    leal    (%rax, %rax, 4), %eax # eax = 4 * J * J
+
+    # Add 5 to 4 * J * J
+    addl    $5, %eax            # eax = 4 * J * J + 5
+
+    # Multiply by J
+    imull   %edi, %eax          # eax = (4 * J * J + 5) * J
+
+    # Divide by 3
+    movl    %eax, %ecx          # ecx = (4 * J * J + 5) * J
+    movl    $3, %ebx            # ebx = 3
+    cdq                         # Sign extend eax into edx:eax
+    idivl   %ebx                # eax = ((4 * J * J + 5) * J) / 3
+
+    # Calculate 2 * J * J
+    movl    %edi, %ecx          # ecx = J
+    imull   %ecx, %ecx          # ecx = J * J
+    leal    (%rcx, %rcx, 2), %ecx # ecx = 2 * J * J
+
+    # Add 2 * J * J to the result
+    addl    %ecx, %eax          # eax = ((4 * J * J + 5) * J) / 3 + 2 * J * J
+
+    # Calculate K * (2 * J + 1)
+    movl    %esi, %ecx          # ecx = K
+    leal    1(%rdi, %rdi), %edx # edx = 2 * J + 1
+    imull   %edx, %ecx          # ecx = K * (2 * J + 1)
+
+    # Add K * (2 * J + 1) to the result
+    addl    %ecx, %eax          # eax = ((4 * J * J + 5) * J) / 3 + 2 * J * J + K * (2 * J + 1)
+
+    # Add M to the result
+    addl    %edx, %eax          # eax = ((4 * J * J + 5) * J) / 3 + 2 * J * J + K * (2 * J + 1) + M
+
+    # Epilogue
+    movq    %rbp, %rsp
+    popq    %rbp
+    ret
+.size JKMarray_idx, .-JKMarray_idx
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 9 failed
+INFO:root:C code :
+
+long sign_long(long num)
+{
+  return (( ((((num))) <= (((0)))) ? ( ((((num))) < (((0)))) ? ((-1)) : ((0)) ) : ((1)) ));
+}
+INFO:root:current LLM prompt size: 98
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl sign_long
+sign_long:
+    cmpq    $0, %rdi
+    jle     .L2
+    movq    $1, %rax
+    ret
+.L2:
+    cmpq    $0, %rdi
+    jge     .L3
+    movq    $-1, %rax
+    ret
+.L3:
+    movq    $0, %rax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 10 succeeded
+INFO:root:C code :
+
+int dmp_cm_edit_config(void)
+{
+ return 0;
+}
+INFO:root:current LLM prompt size: 70
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl dmp_cm_edit_config
+dmp_cm_edit_config:
+    movl    $0, %eax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 11 succeeded
+INFO:root:C code :
+
+int _cmp (int _a, int _b) {
+ int a = _a;
+ int b = _b;
+ return (a > b ? (-1) : (1));
+}
+INFO:root:current LLM prompt size: 95
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl _cmp
+_cmp:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)    # a = _a
+    movl    %esi, -8(%rbp)    # b = _b
+    movl    -4(%rbp), %eax    # move a to %eax
+    cmpl    -8(%rbp), %eax    # compare a and b
+    jle     .L2               # if a <= b, jump to .L2
+    movl    $-1, %eax         # a > b, return -1
+    jmp     .L3
+.L2:
+    movl    $1, %eax          # a <= b, return 1
+.L3:
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 12 succeeded
+INFO:root:C code :
+
+int safe(void) {
+    extern int q;
+    int lp;
+    return 0;
+}
+INFO:root:current LLM prompt size: 76
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.section .text
+	.globl safe
+safe:
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 13 succeeded
+INFO:root:C code :
+
+int HelpItem146( void )
+{
+
+ return 0;
+}
+INFO:root:current LLM prompt size: 69
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl HelpItem146
+HelpItem146:
+    xorl    %eax, %eax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 14 succeeded
+INFO:root:C code :
+
+int update_program_status(int aggregated_dump) {}
+INFO:root:current LLM prompt size: 65
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .globl update_program_status
+    .type update_program_status, @function
+update_program_status:
+    # Prologue
+    pushq   %rbp
+    movq    %rsp, %rbp
+
+    # Function body (empty in this case)
+
+    # Epilogue
+    movq    %rbp, %rsp
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 15 succeeded
+INFO:root:C code :
+#include <stdlib.h>
+
+int printArray(int arr[], int n)
+{
+    int i=1;
+    while(arr[i]==arr[0])
+    {
+        i++;
+    }
+    return i;
+}
+INFO:root:current LLM prompt size: 97
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+    # Data section can be used for static data if needed
+
+.section .text
+    .globl printArray
+    .type printArray, @function
+
+printArray:
+    # Prologue
+    pushq   %rbp
+    movq    %rsp, %rbp
+
+    # Function arguments
+    movq    %rdi, -24(%rbp)    # arr
+    movl    %esi, -28(%rbp)    # n
+
+    # Initialize i to 1
+    movl    $1, -4(%rbp)       # i = 1
+
+    # Start of while loop
+.L2:
+    # Calculate arr[i]
+    movq    -24(%rbp), %rax    # rax = arr
+    movl    -4(%rbp), %edx     # edx = i
+    movl    (%rax, %rdx, 4), %ecx  # ecx = arr[i]
+
+    # Compare arr[i] with arr[0]
+    movl    (%rax), %eax       # eax = arr[0]
+    cmpl    %eax, %ecx         # Compare arr[i] with arr[0]
+    jne     .L3                # If not equal, jump to end of loop
+
+    # Increment i
+    incl    -4(%rbp)           # i++
+
+    # Check if i < n
+    movl    -4(%rbp), %eax     # eax = i
+    cmpl    -28(%rbp), %eax    # Compare i with n
+    jl      .L2                # If i < n, continue loop
+
+.L3:
+    # Return i
+    movl    -4(%rbp), %eax     # eax = i
+
+    # Epilogue
+    movq    %rbp, %rsp
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 16 succeeded
+INFO:root:C code :
+
+int
+COLORS()
+{
+
+    return 256;
+}
+INFO:root:current LLM prompt size: 68
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+COLORS:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    $256, %eax
+    popq    %rbp
+    ret
+
+WARNING:root:CASE 17 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccOajgSe.o: in function `main':
+tmp_driver.cpp:(.text+0x298): undefined reference to `COLORS'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int bar( int x )
+{
+   return x+1;
+}
+INFO:root:current LLM prompt size: 70
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+bar:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)
+    movl    -4(%rbp), %eax
+    addl    $1, %eax
+    popq    %rbp
+    ret
+
+WARNING:root:CASE 18 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccukQ36S.o: in function `main':
+tmp_driver.cpp:(.text+0x2cd): undefined reference to `bar'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+#include <time.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <assert.h>
+
+char *skipSpaces(char *pc)
+{
+ while((*pc == ' ' || *pc == '\n' || *pc == '\t' || *pc == '\r') &&
+   *pc != '\0')
+  pc++;
+
+ return pc;
+}
+INFO:root:current LLM prompt size: 131
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+skipSpaces:
+    .LFB0:
+        .cfi_startproc
+        endbr64
+        pushq   %rbp
+        .cfi_def_cfa_offset 16
+        .cfi_offset 6, -16
+        movq    %rsp, %rbp
+        .cfi_def_cfa_register 6
+        movq    %rdi, -8(%rbp)
+.L2:
+        movq    -8(%rbp), %rax
+        movzbl  (%rax), %eax
+        testb   %al, %al
+        je      .L3
+        movq    -8(%rbp), %rax
+        movzbl  (%rax), %eax
+        cmpb    $32, %al
+        je      .L4
+        movq    -8(%rbp), %rax
+        movzbl  (%rax), %eax
+        cmpb    $10, %al
+        je      .L4
+        movq    -8(%rbp), %rax
+        movzbl  (%rax), %eax
+        cmpb    $9, %al
+        je      .L4
+        movq    -8(%rbp), %rax
+        movzbl  (%rax), %eax
+        cmpb    $13, %al
+        je      .L4
+.L3:
+        movq    -8(%rbp), %rax
+        popq    %rbp
+        .cfi_def_cfa 7, 8
+        ret
+        .cfi_endproc
+.L4:
+        addq    $1, -8(%rbp)
+        jmp     .L2
+
+WARNING:root:CASE 19 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccBu1yb1.o: in function `main':
+tmp_driver.cpp:(.text+0x373): undefined reference to `skipSpaces'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+char *init_buffer(char *buffer)
+{
+ int i;
+
+ i = 0;
+ while (buffer[i])
+  buffer[i++] = 0;
+ return (buffer);
+}
+INFO:root:current LLM prompt size: 91
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+init_buffer:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movq    %rdi, -24(%rbp)
+    movl    $0, -4(%rbp)
+    jmp     .L2
+.L3:
+    movl    -4(%rbp), %eax
+    movslq  %eax, %rdx
+    movq    -24(%rbp), %rax
+    addq    %rdx, %rax
+    movb    $0, (%rax)
+    addl    $1, -4(%rbp)
+.L2:
+    movl    -4(%rbp), %eax
+    movslq  %eax, %rdx
+    movq    -24(%rbp), %rax
+    addq    %rdx, %rax
+    movzbl  (%rax), %eax
+    testb   %al, %al
+    jne     .L3
+    movq    -24(%rbp), %rax
+    popq    %rbp
+    ret
+
+WARNING:root:CASE 20 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccurUd5D.o: in function `main':
+tmp_driver.cpp:(.text+0x373): undefined reference to `init_buffer'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int GetAnswer() {
+  return 42;
+}
+INFO:root:current LLM prompt size: 67
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl GetAnswer
+GetAnswer:
+    movl    $42, %eax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 21 succeeded
+INFO:root:C code :
+
+unsigned char padding(void)
+{
+  return 0xff;
+}
+INFO:root:current LLM prompt size: 69
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+padding:
+    movb    $0xff, %al
+    ret
+
+WARNING:root:CASE 22 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccg0ApYU.o: in function `main':
+tmp_driver.cpp:(.text+0x29a): undefined reference to `padding'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+int getPrec(char op) {
+
+    switch(op) {
+        case '+':
+        case '-':
+        return 1;
+
+        case '*':
+        case '/':
+        return 2;
+
+
+        case '(':
+        case ')':
+        return 3;
+
+        default:
+        return 0;
+    }
+}
+INFO:root:current LLM prompt size: 127
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+.section .text
+.globl getPrec
+getPrec:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movb    %dil, %al
+    cmpb    $'+', %al
+    je      .L1
+    cmpb    $'-', %al
+    je      .L1
+    cmpb    $'*', %al
+    je      .L2
+    cmpb    $'/', %al
+    je      .L2
+    cmpb    $'(', %al
+    je      .L3
+    cmpb    $')', %al
+    je      .L3
+    jmp     .L4
+.L1:
+    movl    $1, %eax
+    jmp     .L5
+.L2:
+    movl    $2, %eax
+    jmp     .L5
+.L3:
+    movl    $3, %eax
+    jmp     .L5
+.L4:
+    movl    $0, %eax
+.L5:
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 23 succeeded
+INFO:root:C code :
+#include <sys/stat.h>
+
+#include <errno.h>
+
+#include <sys/times.h>
+
+int _isatty(int file)
+{
+  return 0;
+}
+INFO:root:current LLM prompt size: 87
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl _isatty
+_isatty:
+    xor %eax, %eax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 24 succeeded
+INFO:root:C code :
+#include <stdlib.h>
+
+#include <stdio.h>
+
+#include <string.h>
+
+#include <errno.h>
+
+char flip_bit (char bit_character) {
+ if ('0' == bit_character)
+  return '1';
+ else
+  return '0';
+}
+INFO:root:current LLM prompt size: 105
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"bit_flipper.c"
+	.text
+	.globl	flip_bit
+	.type	flip_bit, @function
+flip_bit:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	cmpl	$48, -4(%rbp)
+	jne	.L2
+	movl	$49, %eax
+	jmp	.L3
+.L2:
+	movl	$48, %eax
+.L3:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE0:
+	.size	flip_bit, .-flip_bit
+	.ident	"GCC: (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0"
+	.section	.note.GNU-stack,"",@progbits
+	.section	.note.gnu.property,"a"
+	.align 8
+	.long	 1f - 0f
+	.long	 4f - 1f
+	.long	 5
+0:
+	.string	 "GNU"
+1:
+	.align 8
+	.long	 0xc0000002
+	.long	 3f - 2f
+2:
+	.long	 0x3
+3:
+	.align 8
+4:
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 25 succeeded
+INFO:root:C code :
+
+int
+foo (int a, int b)
+{
+  int t;
+
+  if (b)
+    {
+      if (a)
+ t = 3;
+      else
+ t = 5;
+
+      a = 0;
+    }
+  else
+    t = 7;
+
+  return t;
+}
+INFO:root:current LLM prompt size: 118
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.globl	foo
+	.type	foo, @function
+foo:
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	$7, -12(%rbp)
+	cmpl	$0, -8(%rbp)
+	je	.L2
+	cmpl	$0, -4(%rbp)
+	je	.L3
+	movl	$3, -12(%rbp)
+	jmp	.L4
+.L3:
+	movl	$5, -12(%rbp)
+.L4:
+	movl	$0, -4(%rbp)
+.L2:
+	movl	-12(%rbp), %eax
+	popq	%rbp
+	ret
+	.size	foo, .-foo
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 26 succeeded
+INFO:root:C code :
+#include <math.h>
+
+#include <stddef.h>
+
+double opTimes(double lhs, double rhs) { return lhs * rhs; }
+INFO:root:current LLM prompt size: 81
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.section	__TEXT,__text,regular,pure_instructions
+	.globl	_opTimes
+	.p2align	4, 0x90
+_opTimes:
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movsd	%xmm0, -8(%rbp)
+	movsd	%xmm1, -16(%rbp)
+	movsd	-8(%rbp), %xmm0
+	mulsd	-16(%rbp), %xmm0
+	popq	%rbp
+	retq
+
+WARNING:root:CASE 27 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:2: Error: character following name is not '#'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+float raw_linear_derivative_at( float y ) {
+  return 1.0;
+}
+INFO:root:current LLM prompt size: 74
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+one_float: .float 1.0
+
+.section .text
+.globl raw_linear_derivative_at
+.type raw_linear_derivative_at, @function
+raw_linear_derivative_at:
+  movss one_float(%rip), %xmm0
+  ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 28 succeeded
+INFO:root:C code :
+
+int bitCount(int x) {
+  return 2;
+}
+INFO:root:current LLM prompt size: 69
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl bitCount
+bitCount:
+    movl $2, %eax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 29 succeeded
+INFO:root:C code :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int xtoi(char *p)
+{
+ int curr;
+ int res = 0;
+
+ while (*p)
+ {
+  curr = ((*p) >= '0' && (*p) <= '9' ? (*p) - '0' : (*p) >= 'A' && (*p) <= 'F' ? (*p) - 'A' + 10 : (*p) >= 'a' && (*p) <= 'f' ? (*p) - 'a' + 10 : -1);
+  if (curr == -1) break;
+  res = res * 0x10 + curr;
+  p++;
+ }
+
+ return res;
+}
+INFO:root:current LLM prompt size: 193
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl xtoi
+xtoi:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movq    %rdi, -8(%rbp)    # char *p
+    movl    $0, -12(%rbp)     # int res = 0
+
+.L2:
+    movq    -8(%rbp), %rax
+    movzbl  (%rax), %eax
+    testb   %al, %al
+    je      .L3               # if (*p == 0) break
+
+    movq    -8(%rbp), %rax
+    movzbl  (%rax), %eax
+    movsbl  %al, %eax
+    cmpl    $48, %eax
+    jl      .L4               # if (*p < '0') goto .L4
+    cmpl    $57, %eax
+    jg      .L4               # if (*p > '9') goto .L4
+    subl    $48, %eax         # curr = *p - '0'
+    jmp     .L5
+
+.L4:
+    movq    -8(%rbp), %rax
+    movzbl  (%rax), %eax
+    movsbl  %al, %eax
+    cmpl    $65, %eax
+    jl      .L6               # if (*p < 'A') goto .L6
+    cmpl    $70, %eax
+    jg      .L6               # if (*p > 'F') goto .L6
+    subl    $55, %eax         # curr = *p - 'A' + 10
+    jmp     .L5
+
+.L6:
+    movq    -8(%rbp), %rax
+    movzbl  (%rax), %eax
+    movsbl  %al, %eax
+    cmpl    $97, %eax
+    jl      .L7               # if (*p < 'a') goto .L7
+    cmpl    $102, %eax
+    jg      .L7               # if (*p > 'f') goto .L7
+    subl    $87, %eax         # curr = *p - 'a' + 10
+    jmp     .L5
+
+.L7:
+    movl    $-1, %eax         # curr = -1
+
+.L5:
+    cmpl    $-1, %eax
+    je      .L3               # if (curr == -1) break
+
+    movl    -12(%rbp), %edx
+    sall    $4, %edx          # res = res * 0x10
+    addl    %eax, %edx        # res += curr
+    movl    %edx, -12(%rbp)
+
+    addq    $1, -8(%rbp)      # p++
+    jmp     .L2
+
+.L3:
+    movl    -12(%rbp), %eax
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 30 succeeded
+INFO:root:C code :
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <assert.h>
+
+int DummyCDInit(__attribute ((unused)) const char *cdrom_name)
+{
+
+
+
+ return 0;
+}
+INFO:root:current LLM prompt size: 93
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl DummyCDInit
+DummyCDInit:
+    # Prologue
+    pushq   %rbp
+    movq    %rsp, %rbp
+
+    # Function body
+    # The function does nothing and returns 0
+
+    # Epilogue
+    movl    $0, %eax
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 31 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <time.h>
+
+#include <stdlib.h>
+
+#include <ctype.h>
+
+int retPosVector(char letra, char alfabeto[]) {
+ int i;
+
+ for( i = 0; alfabeto[i]; i++) {
+  if(alfabeto[i] == letra) {
+   return i;
+  }
+ }
+}
+INFO:root:current LLM prompt size: 126
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+alfabeto: .asciz "abcdefghijklmnopqrstuvwxyz"
+
+.section .text
+.globl retPosVector
+.type retPosVector, @function
+retPosVector:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movq    %rdi, -8(%rbp)    # letra
+    movq    %rsi, -16(%rbp)   # alfabeto
+    movl    $0, -20(%rbp)     # i = 0
+
+loop:
+    movq    -16(%rbp), %rax   # rax = &alfabeto
+    movl    -20(%rbp), %edx   # edx = i
+    addq    %rdx, %rax        # rax = &alfabeto[i]
+    movzbl  (%rax), %eax      # eax = alfabeto[i]
+    testb   %al, %al          # test alfabeto[i]
+    je      not_found         # if (alfabeto[i] == '\0') goto not_found
+    movq    -8(%rbp), %rcx    # rcx = letra
+    cmpb    %cl, %al          # compare alfabeto[i] and letra
+    je      found            # if (alfabeto[i] == letra) goto found
+    incl    -20(%rbp)         # i++
+    jmp     loop              # goto loop
+
+found:
+    movl    -20(%rbp), %eax   # return i
+    jmp     end
+
+not_found:
+    movl    $-1, %eax         # return -1 (not found)
+
+end:
+    movq    %rbp, %rsp
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 90.0%
+INFO:root:CASE 32 failed
+INFO:root:C code :
+
+unsigned int CgosStrLen(const char *s)
+  {
+  const char *ss=s;
+  if (!s) return 0;
+  while (*s++);
+  return s-ss-1;
+  }
+INFO:root:current LLM prompt size: 100
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+CgosStrLen:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movq    %rdi, -8(%rbp)
+    movq    -8(%rbp), %rax
+    testq   %rax, %rax
+    je      .L2
+    movq    -8(%rbp), %rax
+    movq    %rax, -16(%rbp)
+.L3:
+    movq    -16(%rbp), %rax
+    movzbl  (%rax), %eax
+    testb   %al, %al
+    je      .L4
+    addq    $1, -16(%rbp)
+    jmp     .L3
+.L4:
+    movq    -16(%rbp), %rax
+    subq    -8(%rbp), %rax
+    subq    $1, %rax
+    jmp     .L5
+.L2:
+    movl    $0, %eax
+.L5:
+    popq    %rbp
+    ret
+
+WARNING:root:CASE 33 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccfILNXo.o: in function `main':
+tmp_driver.cpp:(.text+0x372): undefined reference to `CgosStrLen'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <math.h>
+
+#include <time.h>
+
+#include <omp.h>
+
+#include <unistd.h>
+
+int checkExpDesignator(char *str, int len)
+{
+ int i,n=0;
+
+ for (i=0; i<len; i++)
+ {
+  if (str[i]=='D')
+  {
+   n++;
+   str[i] = 'E';
+  }
+ }
+
+ return(n);
+}
+INFO:root:current LLM prompt size: 149
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"checkExpDesignator.c"
+	.text
+	.globl	checkExpDesignator
+	.type	checkExpDesignator, @function
+checkExpDesignator:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -24(%rbp)
+	movl	%esi, -28(%rbp)
+	movl	$0, -8(%rbp)
+	movl	$0, -4(%rbp)
+	jmp	.L2
+.L4:
+	movl	-4(%rbp), %eax
+	movslq	%eax, %rdx
+	movq	-24(%rbp), %rax
+	addq	%rdx, %rax
+	movzbl	(%rax), %eax
+	cmpb	$68, %al
+	jne	.L3
+	addl	$1, -8(%rbp)
+	movl	-4(%rbp), %eax
+	movslq	%eax, %rdx
+	movq	-24(%rbp), %rax
+	addq	%rdx, %rax
+	movb	$69, (%rax)
+.L3:
+	addl	$1, -4(%rbp)
+.L2:
+	movl	-4(%rbp), %eax
+	cmpl	-28(%rbp), %eax
+	jl	.L4
+	movl	-8(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE0:
+	.size	checkExpDesignator, .-checkExpDesignator
+	.ident	"GCC: (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0"
+	.section	.note.GNU-stack,"",@progbits
+	.section	.note.gnu.property,"a"
+	.align 8
+	.long	 1f - 0f
+	.long	 4f - 1f
+	.long	 5
+0:
+	.string	 "GNU"
+1:
+	.align 8
+	.long	 0xc0000002
+	.long	 3f - 2f
+2:
+	.long	 0x3
+3:
+	.align 8
+4:
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 34 succeeded
+INFO:root:C code :
+#include <stddef.h>
+
+#include <stdint.h>
+
+int oc_storage_config(const char *store) {
+    return -1;
+}
+INFO:root:current LLM prompt size: 81
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl oc_storage_config
+oc_storage_config:
+    movl    $-1, %eax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 35 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+int inter_mercenary_sql_init(void)
+{
+ return 0;
+}
+INFO:root:current LLM prompt size: 80
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl inter_mercenary_sql_init
+inter_mercenary_sql_init:
+    xorl    %eax, %eax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 36 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int tester(int num){
+ return num;
+}
+INFO:root:current LLM prompt size: 69
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"tester.c"
+	.text
+	.globl	tester
+	.type	tester, @function
+tester:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE0:
+	.size	tester, .-tester
+	.ident	"GCC: (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0"
+	.section	.note.GNU-stack,"",@progbits
+	.section	.note.gnu.property,"a"
+	.align 8
+	.long	 1f - 0f
+	.long	 4f - 1f
+	.long	 5
+0:
+	.string	 "GNU"
+1:
+	.align 8
+	.long	 0xc0000002
+	.long	 3f - 2f
+2:
+	.long	 0x3
+3:
+	.align 8
+4:
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 37 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int logicOr(int x, int y) {
+ if (x || y == 1) {
+  return 1;
+ }
+ else {
+  return 0;
+ }
+}
+INFO:root:current LLM prompt size: 95
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl logicOr
+logicOr:
+    # Prologue
+    push %rbp
+    mov %rsp, %rbp
+
+    # Move arguments into registers
+    mov %edi, %eax    # eax = x
+    mov %esi, %ecx    # ecx = y
+
+    # Check if x is non-zero
+    test %eax, %eax
+    jnz .Lreturn_true
+
+    # Check if y is 1
+    cmp $1, %ecx
+    je .Lreturn_true
+
+    # If neither condition is met, return 0
+    xor %eax, %eax    # eax = 0
+    jmp .Lend
+
+.Lreturn_true:
+    mov $1, %eax      # eax = 1
+
+.Lend:
+    # Epilogue
+    mov %rbp, %rsp
+    pop %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 38 succeeded
+INFO:root:C code :
+
+int f6(int c, int shamt) {
+
+
+
+
+  return c << shamt;
+}
+INFO:root:current LLM prompt size: 76
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.globl	f6
+	.type	f6, @function
+f6:
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-4(%rbp), %eax
+	movl	-8(%rbp), %ecx
+	sall	%cl, %eax
+	popq	%rbp
+	ret
+	.size	f6, .-f6
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 39 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+char cipher (char c){
+ if(c >= 65 && c<= 90){
+  c = c - 65;
+  c = 90 - c;
+ }else if( c >= 97 && c<= 122){
+  c = c-97;
+  c = 122 - c;
+ }
+ return c;
+}
+INFO:root:current LLM prompt size: 132
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.data
+    input_string: .asciz "Hello, World!"
+    output_string: .asciz "              "
+
+.text
+    .globl main
+    main:
+        leaq input_string(%rip), %rdi
+        leaq output_string(%rip), %rsi
+        movq $13, %rdx
+        call strncpy
+
+        leaq output_string(%rip), %rdi
+        call process_string
+
+        movq $0, %rax
+        ret
+
+    process_string:
+        pushq %rbp
+        movq %rsp, %rbp
+        subq $16, %rsp
+        movq %rdi, -8(%rbp)
+
+    process_loop:
+        movq -8(%rbp), %rax
+        movzbq (%rax), %rbx
+        testq %rbx, %rbx
+        je end_process
+
+        call cipher
+
+        movq -8(%rbp), %rax
+        movb %al, (%rax)
+        incq -8(%rbp)
+        jmp process_loop
+
+    end_process:
+        movq %rbp, %rsp
+        popq %rbp
+        ret
+
+    cipher:
+        pushq %rbp
+        movq %rsp, %rbp
+        subq $16, %rsp
+        movq %rdi, -8(%rbp)
+
+        movzbq -8(%rbp), %rax
+        cmpq $65, %rax
+        jl check_lower
+        cmpq $90, %rax
+        jg check_lower
+
+        subq $65, %rax
+        movq $90, %rbx
+        subq %rax, %rbx
+        movq %rbx, %rax
+        jmp end_cipher
+
+    check_lower:
+        cmpq $97, %rax
+        jl end_cipher
+        cmpq $122, %rax
+        jg end_cipher
+
+        subq $97, %rax
+        movq $122, %rbx
+        subq %rax, %rbx
+        movq %rbx, %rax
+
+    end_cipher:
+        movq %rax, %rdi
+        movq %rbp, %rsp
+        popq %rbp
+        ret
+
+WARNING:root:CASE 40 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/cc2N9gzS.o: in function `main':
+tmp_driver.cpp:(.text+0x1dc): multiple definition of `main'; /tmp/ccowpW9S.o:(.text+0x0): first defined here
+/usr/bin/ld: /tmp/cc2N9gzS.o: in function `main':
+tmp_driver.cpp:(.text+0x2d2): undefined reference to `cipher'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int
+g(int a)
+{
+ return a;
+}
+INFO:root:current LLM prompt size: 67
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+g:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, %eax
+    popq    %rbp
+    ret
+
+WARNING:root:CASE 41 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccmXJmoY.o: in function `main':
+tmp_driver.cpp:(.text+0x2cd): undefined reference to `g'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+float obdConvert_44 (unsigned int A, unsigned int B, unsigned int C, unsigned int D) {
+ return ((float)A*256.0f+(float)B)*0.0000305f;
+}
+INFO:root:current LLM prompt size: 103
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+    float_const: .float 256.0
+    float_mult: .float 0.0000305
+
+.section .text
+    .global obdConvert_44
+
+obdConvert_44:
+    # Prologue
+    pushq   %rbp
+    movq    %rsp, %rbp
+
+    # Convert A to float and store in xmm0
+    cvtsi2ss %edi, %xmm0
+
+    # Load 256.0 into xmm1
+    movss   float_const(%rip), %xmm1
+
+    # Multiply A (now in xmm0) by 256.0 (in xmm1)
+    mulss   %xmm1, %xmm0
+
+    # Convert B to float and store in xmm1
+    cvtsi2ss %esi, %xmm1
+
+    # Add B (now in xmm1) to the result of the multiplication (in xmm0)
+    addss   %xmm1, %xmm0
+
+    # Load 0.0000305 into xmm1
+    movss   float_mult(%rip), %xmm1
+
+    # Multiply the result (in xmm0) by 0.0000305 (in xmm1)
+    mulss   %xmm1, %xmm0
+
+    # Epilogue
+    movq    %rbp, %rsp
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 42 succeeded
+INFO:root:C code :
+
+double check_double() { return 0; }
+INFO:root:current LLM prompt size: 66
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+.section .text
+.globl check_double
+check_double:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    fldz
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 43 succeeded
+INFO:root:C code :
+
+int ft_tolower(int c)
+{
+ if (c <= 90 && c >= 65)
+  return (c + 32);
+ return (c);
+}
+INFO:root:current LLM prompt size: 89
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+ft_tolower:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)
+    movl    -4(%rbp), %eax
+    cmpl    $90, %eax
+    jg      .L2
+    cmpl    $65, %eax
+    jl      .L2
+    addl    $32, %eax
+.L2:
+    popq    %rbp
+    ret
+
+WARNING:root:CASE 44 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccJn6nFm.o: in function `main':
+tmp_driver.cpp:(.text+0x2cd): undefined reference to `ft_tolower'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+
+
+
+
+
+
+int SwapLong(int num)
+{
+ return (((num >> 0) & 0xFF) << 24) + (((num >> 8) & 0xFF) << 16) + (((num >> 16) & 0xFF) << 8) + (((num >> 24) & 0xFF) << 0);
+}
+INFO:root:current LLM prompt size: 128
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl SwapLong
+SwapLong:
+    movl    %edi, %eax          # Move the input number into %eax
+    movl    %eax, %ecx          # Copy the input number into %ecx
+    shrl    $24, %ecx           # Shift %ecx right by 24 bits
+    andl    $0xFF, %ecx         # Mask %ecx to get the first byte
+    shll    $24, %ecx           # Shift %ecx left by 24 bits
+    movl    %eax, %edx          # Copy the input number into %edx
+    shrl    $16, %edx           # Shift %edx right by 16 bits
+    andl    $0xFF, %edx         # Mask %edx to get the second byte
+    shll    $16, %edx           # Shift %edx left by 16 bits
+    orl     %edx, %ecx          # Combine the second byte with the first byte
+    movl    %eax, %edx          # Copy the input number into %edx
+    shrl    $8, %edx            # Shift %edx right by 8 bits
+    andl    $0xFF, %edx         # Mask %edx to get the third byte
+    shll    $8, %edx            # Shift %edx left by 8 bits
+    orl     %edx, %ecx          # Combine the third byte with the first and second bytes
+    movl    %eax, %edx          # Copy the input number into %edx
+    andl    $0xFF, %edx         # Mask %edx to get the fourth byte
+    orl     %edx, %ecx          # Combine the fourth byte with the first, second, and third bytes
+    movl    %ecx, %eax          # Move the result into %eax
+    ret                         # Return from the function
+
+INFO:root:Local error rate: 90.0%
+INFO:root:CASE 45 failed
+INFO:root:C code :
+#include <inttypes.h>
+
+#include <stdlib.h>
+
+#include <limits.h>
+
+#include <stdio.h>
+
+#include <string.h>
+
+#include <sqlite3.h>
+
+int Bank_int_IsValidName(const char *Name)
+{
+ if( !Name ) return 0;
+ while(*Name)
+ {
+  if( *Name == '\'' ) return 0;
+  Name ++;
+ }
+ return 1;
+}
+INFO:root:current LLM prompt size: 134
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+.section .text
+.globl Bank_int_IsValidName
+.type Bank_int_IsValidName, @function
+Bank_int_IsValidName:
+    # Prologue
+    pushq   %rbp
+    movq    %rsp, %rbp
+
+    # Check if Name is NULL
+    movq    %rdi, %rax
+    testq   %rax, %rax
+    jz      .Lreturn_false
+
+.Lloop_start:
+    # Load *Name
+    movb    (%rax), %cl
+    testb   %cl, %cl
+    jz      .Lreturn_true
+
+    # Check if *Name == '\''
+    cmpb    $39, %cl
+    je      .Lreturn_false
+
+    # Increment Name
+    incq    %rax
+    jmp     .Lloop_start
+
+.Lreturn_true:
+    # Return 1
+    movl    $1, %eax
+    jmp     .Lepilogue
+
+.Lreturn_false:
+    # Return 0
+    xorl    %eax, %eax
+
+.Lepilogue:
+    # Epilogue
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 46 succeeded
+INFO:root:C code :
+#include <assert.h>
+
+#include <errno.h>
+
+#include <fcntl.h>
+
+#include <poll.h>
+
+#include <signal.h>
+
+#include <stdarg.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <sys/mman.h>
+
+#include <sys/time.h>
+
+#include <sys/types.h>
+
+#include <sys/wait.h>
+
+#include <time.h>
+
+#include <unistd.h>
+
+int RIFSIGNALED(int status)
+{
+    return (status & 0xff) != 0;
+}
+INFO:root:current LLM prompt size: 159
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl RIFSIGNALED
+RIFSIGNALED:
+    movl %edi, %eax          # Move the first argument (status) into %eax
+    andl $0xff, %eax         # Perform bitwise AND with 0xff on the status
+    testl %eax, %eax         # Test if the result is zero
+    setne %al                # Set %al to 1 if the result is not zero, otherwise 0
+    movzbl %al, %eax         # Zero-extend %al to %eax
+    ret                      # Return from the function
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 47 succeeded
+INFO:root:C code :
+
+
+
+
+
+
+
+
+
+
+
+void TextDisplaySetBarText(int barnum, const char *str)
+{
+
+}
+INFO:root:current LLM prompt size: 73
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl TextDisplaySetBarText
+TextDisplaySetBarText:
+    # Function prologue
+    pushq   %rbp
+    movq    %rsp, %rbp
+
+    # Function arguments
+    # int barnum is in %edi (first argument)
+    # const char *str is in %rsi (second argument)
+
+    # Function body (currently empty)
+
+    # Function epilogue
+    movq    %rbp, %rsp
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 48 succeeded
+INFO:root:C code :
+
+char * getTokenTypeName(int type){
+ switch(type){
+  case 1:
+   return "<LParen>";
+  case 2:
+   return "<RParen>";
+  case 3:
+   return "<Number>";
+  case 8:
+   return "<ID>";
+  case 6:
+   return "<Plus>";
+  case 7:
+   return "<Minus>";
+  case -2:
+   return "<EOF>";
+  case -1:
+   return "<Error!>";
+  default:
+   return "<Unknown token type!>";
+ }
+}
+INFO:root:current LLM prompt size: 162
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.data
+    LParen: .asciz "<LParen>"
+    RParen: .asciz "<RParen>"
+    Number: .asciz "<Number>"
+    ID: .asciz "<ID>"
+    Plus: .asciz "<Plus>"
+    Minus: .asciz "<Minus>"
+    EOF: .asciz "<EOF>"
+    Error: .asciz "<Error!>"
+    Unknown: .asciz "<Unknown token type!>"
+
+.text
+.globl getTokenTypeName
+.type getTokenTypeName, @function
+getTokenTypeName:
+    movl %edi, %eax          # Move the type argument into %eax
+    cmpl $1, %eax            # Compare type with 1
+    je .L1                   # If equal, jump to .L1
+    cmpl $2, %eax            # Compare type with 2
+    je .L2                   # If equal, jump to .L2
+    cmpl $3, %eax            # Compare type with 3
+    je .L3                   # If equal, jump to .L3
+    cmpl $8, %eax            # Compare type with 8
+    je .L8                   # If equal, jump to .L8
+    cmpl $6, %eax            # Compare type with 6
+    je .L6                   # If equal, jump to .L6
+    cmpl $7, %eax            # Compare type with 7
+    je .L7                   # If equal, jump to .L7
+    cmpl $-2, %eax           # Compare type with -2
+    je .Lm2                  # If equal, jump to .Lm2
+    cmpl $-1, %eax           # Compare type with -1
+    je .Lm1                  # If equal, jump to .Lm1
+    jmp .Ldefault            # If none of the above, jump to default
+
+.L1:
+    leaq LParen(%rip), %rax  # Load address of LParen into %rax
+    ret                      # Return
+.L2:
+    leaq RParen(%rip), %rax  # Load address of RParen into %rax
+    ret                      # Return
+.L3:
+    leaq Number(%rip), %rax  # Load address of Number into %rax
+    ret                      # Return
+.L8:
+    leaq ID(%rip), %rax      # Load address of ID into %rax
+    ret                      # Return
+.L6:
+    leaq Plus(%rip), %rax    # Load address of Plus into %rax
+    ret                      # Return
+.L7:
+    leaq Minus(%rip), %rax   # Load address of Minus into %rax
+    ret                      # Return
+.Lm2:
+    leaq EOF(%rip), %rax     # Load address of EOF into %rax
+    ret                      # Return
+.Lm1:
+    leaq Error(%rip), %rax   # Load address of Error into %rax
+    ret                      # Return
+.Ldefault:
+    leaq Unknown(%rip), %rax # Load address of Unknown into %rax
+    ret                      # Return
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 49 succeeded
+INFO:root:C code :
+#include <math.h>
+
+#include <stdio.h>
+
+#include <errno.h>
+
+#include <stdlib.h>
+
+int mus_iclamp(int lo, int val, int hi)
+{
+    if (val > hi)
+        return(hi);
+    else
+        if (val < lo)
+            return(lo);
+        else return(val);
+}
+INFO:root:current LLM prompt size: 121
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+.section .text
+.globl mus_iclamp
+.type mus_iclamp, @function
+mus_iclamp:
+    pushq   %rbp
+    movq    %rsp, %rbp
+
+    movl    %esi, %eax        # Move val into %eax
+    cmpl    %edx, %eax        # Compare val with hi
+    jle     .L2               # If val <= hi, jump to .L2
+    movl    %edx, %eax        # Move hi into %eax
+    jmp     .L4               # Jump to .L4
+
+.L2:
+    cmpl    %edi, %eax        # Compare val with lo
+    jge     .L4               # If val >= lo, jump to .L4
+    movl    %edi, %eax        # Move lo into %eax
+
+.L4:
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 50 succeeded
+INFO:root:C code :
+
+float UI_ClampCvar( float min, float max, float value )
+{
+ if ( value < min ) return min;
+ if ( value > max ) return max;
+ return value;
+}
+INFO:root:current LLM prompt size: 95
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl UI_ClampCvar
+UI_ClampCvar:
+    # Prologue
+    pushq   %rbp
+    movq    %rsp, %rbp
+
+    # Function arguments
+    movss   %xmm0, -4(%rbp)    # min
+    movss   %xmm1, -8(%rbp)    # max
+    movss   %xmm2, -12(%rbp)   # value
+
+    # if ( value < min )
+    movss   -12(%rbp), %xmm0   # value
+    comiss  -4(%rbp), %xmm0    # value < min
+    jb      .L1                # jump if below (value < min)
+
+    # if ( value > max )
+    movss   -12(%rbp), %xmm0   # value
+    comiss  -8(%rbp), %xmm0    # value > max
+    ja      .L2                # jump if above (value > max)
+
+    # return value
+    movss   -12(%rbp), %xmm0   # value
+    jmp     .L3                # jump to epilogue
+
+.L1:
+    # return min
+    movss   -4(%rbp), %xmm0    # min
+    jmp     .L3                # jump to epilogue
+
+.L2:
+    # return max
+    movss   -8(%rbp), %xmm0    # max
+
+.L3:
+    # Epilogue
+    movq    %rbp, %rsp
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 51 succeeded
+INFO:root:C code :
+
+short USBSTK5505_GPIO_init()
+{
+    return 0;
+}
+INFO:root:current LLM prompt size: 72
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .text
+.global USBSTK5505_GPIO_init
+USBSTK5505_GPIO_init:
+    xorw %ax, %ax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 52 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <math.h>
+
+#include <stdlib.h>
+
+#include <unistd.h>
+
+#include <stdarg.h>
+
+#include <string.h>
+
+double H (double x) {
+   if (x >= 0) return 1.;
+   else return 0.;
+}
+INFO:root:current LLM prompt size: 111
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.section	.rodata
+.LC0:
+	.string	"%lf"
+	.text
+	.globl	H
+	.type	H, @function
+H:
+.LFB0:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	xorpd	%xmm1, %xmm1
+	ucomisd	%xmm1, %xmm0
+	jbe	.L2
+	movsd	.LC1(%rip), %xmm0
+	jmp	.L3
+.L2:
+	xorpd	%xmm0, %xmm0
+.L3:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE0:
+	.size	H, .-H
+	.section	.rodata
+.LC1:
+	.long	0
+	.long	1072693248
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 53 succeeded
+INFO:root:C code :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int LZ4_versionNumber (void) { return (1 *100*100 + 6 *100 + 0); }
+INFO:root:current LLM prompt size: 84
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl LZ4_versionNumber
+LZ4_versionNumber:
+    movl    $10600, %eax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 54 succeeded
+INFO:root:C code :
+
+int foo(int time, int n) {
+#pragma omp parallel for default(shared) schedule(dynamic, 1) reduction(+ : time)
+  for (int i = 1; i < n; ++i);
+  return 0;
+}
+INFO:root:current LLM prompt size: 105
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.globl	foo
+	.type	foo, @function
+foo:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	$0, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE0:
+	.size	foo, .-foo
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 55 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int checkrange(char c1, char c2)
+{
+
+ if (('a' <= c1 && c1 <= 'z') && (c1 <= c2 && c2 <= 'z'))
+  return 1;
+
+ if (('A' <= c1 && c1 <= 'Z') && (c1 <= c2 && c2 <= 'Z'))
+  return 1;
+
+ if (('0' <= c1 && c1 <= '9') && (c1 <= c2 && c2 <= '9'))
+  return 1;
+
+ return 0;
+}
+INFO:root:current LLM prompt size: 176
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+.section .text
+.globl checkrange
+
+checkrange:
+    pushq   %rbp
+    movq    %rsp, %rbp
+
+    movb    %dil, %al
+    movb    %sil, %bl
+
+    # Check if 'a' <= c1 <= 'z'
+    cmpb    $'a', %al
+    jl      .Lcheck_upper
+    cmpb    $'z', %al
+    jg      .Lcheck_upper
+
+    # Check if c1 <= c2 <= 'z'
+    cmpb    %al, %bl
+    jl      .Lcheck_upper
+    cmpb    $'z', %bl
+    jg      .Lcheck_upper
+
+    # Return 1
+    movl    $1, %eax
+    jmp     .Lend
+
+.Lcheck_upper:
+    # Check if 'A' <= c1 <= 'Z'
+    cmpb    $'A', %al
+    jl      .Lcheck_digit
+    cmpb    $'Z', %al
+    jg      .Lcheck_digit
+
+    # Check if c1 <= c2 <= 'Z'
+    cmpb    %al, %bl
+    jl      .Lcheck_digit
+    cmpb    $'Z', %bl
+    jg      .Lcheck_digit
+
+    # Return 1
+    movl    $1, %eax
+    jmp     .Lend
+
+.Lcheck_digit:
+    # Check if '0' <= c1 <= '9'
+    cmpb    $'0', %al
+    jl      .Lreturn_0
+    cmpb    $'9', %al
+    jg      .Lreturn_0
+
+    # Check if c1 <= c2 <= '9'
+    cmpb    %al, %bl
+    jl      .Lreturn_0
+    cmpb    $'9', %bl
+    jg      .Lreturn_0
+
+    # Return 1
+    movl    $1, %eax
+    jmp     .Lend
+
+.Lreturn_0:
+    movl    $0, %eax
+
+.Lend:
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 56 succeeded
+INFO:root:C code :
+#include <math.h>
+
+double
+gsl_coerce_double (const double x)
+{
+  volatile double y;
+  y = x;
+  return y;
+}
+INFO:root:current LLM prompt size: 88
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.section	.text
+	.globl	gsl_coerce_double
+	.type	gsl_coerce_double, @function
+gsl_coerce_double:
+.LFB0:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE0:
+	.size	gsl_coerce_double, .-gsl_coerce_double
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 57 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int c059(void) { return 0; }
+INFO:root:current LLM prompt size: 71
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"c059.c"
+	.text
+	.globl	c059
+	.type	c059, @function
+c059:
+.LFB0:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	$0, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE0:
+	.size	c059, .-c059
+	.ident	"GCC: (GNU) 11.1.0"
+	.section	.note.GNU-stack,"",@progbits
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 58 succeeded
+INFO:root:C code :
+#include <math.h>
+
+#include <stdlib.h>
+
+double mcdrag_rpm(double twist, double velocity)
+{
+  return (velocity/(twist/60.0)*12.0);
+}
+INFO:root:current LLM prompt size: 94
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+.section .text
+.globl mcdrag_rpm
+.type mcdrag_rpm, @function
+mcdrag_rpm:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movsd   %xmm0, -8(%rbp)    # Store twist
+    movsd   %xmm1, -16(%rbp)   # Store velocity
+    movsd   -8(%rbp), %xmm0    # Load twist into %xmm0
+    movsd   .LC0(%rip), %xmm1  # Load 60.0 into %xmm1
+    divsd   %xmm1, %xmm0       # twist / 60.0
+    movsd   -16(%rbp), %xmm1   # Load velocity into %xmm1
+    divsd   %xmm0, %xmm1       # velocity / (twist / 60.0)
+    movsd   .LC1(%rip), %xmm0  # Load 12.0 into %xmm0
+    mulsd   %xmm0, %xmm1       # (velocity / (twist / 60.0)) * 12.0
+    movsd   %xmm1, %xmm0       # Move result into %xmm0
+    leave
+    ret
+.section .rodata
+.LC0:
+    .double 60.0
+.LC1:
+    .double 12.0
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 59 succeeded
+INFO:root:C code :
+#include    <stdlib.h>  /* Include standard library header */
+
+#include    <math.h>    /* Include math library header */
+
+#include    <string.h>  /* Include string function header */
+
+#include    <ctype.h>   /* Include character function header */
+
+#include    <limits.h>  /* define LONG_MIN and LONG_MAX */
+
+int valid_serial(char *carray)
+{
+int i, code, num[10], sumo=0, sume=0, sumss=0;
+
+for(i=0;i<10;i++){
+  code = carray[i];
+  num[i] = code - 0x30;
+  if((code<0x30)||(code>0x39)){
+    return 0;
+  }
+}
+
+sumo = num[0]+num[2]+num[4];
+sumo = sumo - (sumo/10)*10;
+
+sume = num[1]+num[3]+num[5];
+sume = sume - (sume/10)*10;
+
+sumss = num[0]+num[1]+num[2]+num[3]+num[4]+num[5]+sumo+sume;
+
+if((sumo!=num[6])||(sume!=num[7])||(sumss!=(10*num[8]+num[9]))){
+  return 0;
+}
+
+return 1;
+}
+INFO:root:current LLM prompt size: 334
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+    .equ LONG_MIN, -9223372036854775808
+    .equ LONG_MAX, 9223372036854775807
+
+.section .text
+    .global valid_serial
+
+valid_serial:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $48, %rsp
+
+    movq    %rdi, -40(%rbp)  # carray
+    movl    $0, -44(%rbp)    # i
+    movl    $0, -48(%rbp)    # sumo
+    movl    $0, -52(%rbp)    # sume
+    movl    $0, -56(%rbp)    # sumss
+
+    movl    $0, -44(%rbp)    # i = 0
+    jmp     .L2
+
+.L3:
+    movl    -44(%rbp), %eax
+    cltq
+    movq    -40(%rbp), %rdx
+    addq    %rdx, %rax
+    movzbl  (%rax), %eax
+    movsbl  %al, %eax
+    movl    %eax, -60(%rbp)  # code
+
+    movl    -60(%rbp), %eax
+    subl    $48, %eax
+    movl    -44(%rbp), %edx
+    movslq  %edx, %rdx
+    movl    %eax, -32(%rbp,%rdx,4)  # num[i]
+
+    cmpl    $47, -60(%rbp)
+    jle     .L4
+    cmpl    $57, -60(%rbp)
+    jg      .L4
+
+    incl    -44(%rbp)
+
+.L2:
+    cmpl    $9, -44(%rbp)
+    jle     .L3
+
+    movl    -32(%rbp), %eax
+    addl    -24(%rbp), %eax
+    addl    -16(%rbp), %eax
+    movl    %eax, -48(%rbp)  # sumo
+
+    movl    -48(%rbp), %eax
+    movl    %eax, %edx
+    shrl    $31, %edx
+    addl    %edx, %eax
+    sarl    %eax
+    imull   $-10, %eax, %eax
+    addl    -48(%rbp), %eax
+    movl    %eax, -48(%rbp)  # sumo = sumo - (sumo/10)*10
+
+    movl    -28(%rbp), %eax
+    addl    -20(%rbp), %eax
+    addl    -12(%rbp), %eax
+    movl    %eax, -52(%rbp)  # sume
+
+    movl    -52(%rbp), %eax
+    movl    %eax, %edx
+    shrl    $31, %edx
+    addl    %edx, %eax
+    sarl    %eax
+    imull   $-10, %eax, %eax
+    addl    -52(%rbp), %eax
+    movl    %eax, -52(%rbp)  # sume = sume - (sume/10)*10
+
+    movl    -32(%rbp), %eax
+    addl    -28(%rbp), %eax
+    addl    -24(%rbp), %eax
+    addl    -20(%rbp), %eax
+    addl    -16(%rbp), %eax
+    addl    -12(%rbp), %eax
+    addl    -48(%rbp), %eax
+    addl    -52(%rbp), %eax
+    movl    %eax, -56(%rbp)  # sumss
+
+    movl    -48(%rbp), %eax
+    cmpl    -8(%rbp), %eax
+    jne     .L4
+
+    movl    -52(%rbp), %eax
+    cmpl    -4(%rbp), %eax
+    jne     .L4
+
+    movl    -56(%rbp), %eax
+    cmpl    10*(-4(%rbp)) + (-8(%rbp)), %eax
+    jne     .L4
+
+    movl    $1, %eax
+    jmp     .L5
+
+.L4:
+    movl    $0, %eax
+
+.L5:
+    leave
+    ret
+
+WARNING:root:CASE 60 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:96: Error: found '(', expected: ')'
+tmp.s:96: Error: junk `(%rbp))+(-8(%rbp))' after expression
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int f(int x) { return x - 5; }
+INFO:root:current LLM prompt size: 69
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.globl	f
+	.type	f, @function
+f:
+	subl	$5, %edi
+	movl	%edi, %eax
+	ret
+	.size	f, .-f
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 61 succeeded
+INFO:root:C code :
+#include <stdbool.h>
+
+bool timeout_reached(void)
+{
+    return false;
+}
+INFO:root:current LLM prompt size: 72
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .text
+.globl timeout_reached
+timeout_reached:
+    xor %eax, %eax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 62 succeeded
+INFO:root:C code :
+#include <string.h>
+
+char* langRomTypeMicrosolFdc() { return "Microsol Disk Controller"; }
+INFO:root:current LLM prompt size: 79
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+    .string "Microsol Disk Controller"
+.section .text
+    .globl langRomTypeMicrosolFdc
+    langRomTypeMicrosolFdc:
+        leaq    .string(%rip), %rax
+        ret
+
+WARNING:root:CASE 63 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/cc6EDGNU.o: warning: relocation against `.string' in read-only section `.text'
+/usr/bin/ld: /tmp/cc6EDGNU.o: in function `langRomTypeMicrosolFdc':
+(.text+0x3): undefined reference to `.string'
+/usr/bin/ld: warning: creating DT_TEXTREL in a PIE
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int do_386() { return 386; }
+INFO:root:current LLM prompt size: 67
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl do_386
+do_386:
+    movl $386, %eax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 64 succeeded
+INFO:root:C code :
+
+int function(int a, int b) { return a+b; }
+INFO:root:current LLM prompt size: 70
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl function
+function:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)
+    movl    %esi, -8(%rbp)
+    movl    -4(%rbp), %eax
+    addl    -8(%rbp), %eax
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 65 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+double
+UC_11_1_11
+(
+    double F_g_s_rep,
+
+    double F_g_u_d
+
+)
+{
+        return (F_g_s_rep / F_g_u_d);
+}
+INFO:root:current LLM prompt size: 111
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+.section .text
+.globl UC_11_1_11
+UC_11_1_11:
+    pushq   %rbp
+    movq    %rsp, %rbp
+
+    movsd   %xmm0, %xmm2  # Copy F_g_s_rep to %xmm2
+    divsd   %xmm1, %xmm2  # Divide %xmm2 by F_g_u_d, result in %xmm2
+    movsd   %xmm2, %xmm0  # Move result to %xmm0 (return value)
+
+    movq    %rbp, %rsp
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 66 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <sys/types.h>
+
+#include <sys/stat.h>
+
+#include <signal.h>
+
+#include <fcntl.h>
+
+#include <unistd.h>
+
+#include <stdlib.h>
+
+#include <sys/wait.h>
+
+int stop_process(int pid)
+{
+ return kill(pid, 15);
+}
+INFO:root:current LLM prompt size: 118
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+.section .text
+.globl stop_process
+stop_process:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, %edi        # Move pid into %edi
+    movl    $15, %esi         # Move signal number 15 (SIGTERM) into %esi
+    movl    $62, %eax         # Move syscall number for kill (62) into %eax
+    syscall                  # Invoke the syscall
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 20.0%
+INFO:root:CASE 67 failed
+INFO:root:C code :
+#include <string.h>
+
+int vout_finish(void)
+{
+  return 0;
+}
+INFO:root:current LLM prompt size: 73
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+vout_finish:
+    xorl    %eax, %eax
+    ret
+
+WARNING:root:CASE 68 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccHKLFTW.o: in function `main':
+tmp_driver.cpp:(.text+0x298): undefined reference to `vout_finish'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int alloc(int *p)
+{
+  int tmp = 5;
+
+
+
+  return 0;
+}
+INFO:root:current LLM prompt size: 76
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl alloc
+alloc:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    $5, -4(%rbp)
+    movl    $0, %eax
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 69 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stddef.h>
+
+#include <string.h>
+
+char* mote64_Name(void) {
+ return "MOTE64";
+}
+INFO:root:current LLM prompt size: 84
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.data
+    mote64_str: .asciz "MOTE64"
+
+.text
+    .globl mote64_Name
+    .type mote64_Name, @function
+mote64_Name:
+    leaq    mote64_str(%rip), %rax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 70 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+char *hello(void) {
+    return "hello";
+}
+INFO:root:current LLM prompt size: 72
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.data
+    hello_str: .asciz "hello"
+
+.text
+    .globl hello
+    .type hello, @function
+hello:
+    leaq    hello_str(%rip), %rax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 71 succeeded
+INFO:root:C code :
+
+
+
+
+
+int exists(const char *filename)
+{
+ return (0);
+}
+INFO:root:current LLM prompt size: 69
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl exists
+exists:
+    xorl    %eax, %eax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 72 succeeded
+INFO:root:C code :
+#include <math.h>
+
+float fast_cbrtf(float x)
+{
+   union {int ix; float x;} v;
+   v.x = x;
+   v.ix = v.ix/4 + v.ix/16;
+   v.ix = v.ix + v.ix/16;
+   v.ix = v.ix + v.ix/256;
+   v.ix = 0x2a511cd0 + v.ix;
+   return v.x;
+}
+INFO:root:current LLM prompt size: 146
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+.section .text
+.globl fast_cbrtf
+.type fast_cbrtf, @function
+
+fast_cbrtf:
+    # Prologue
+    pushq   %rbp
+    movq    %rsp, %rbp
+
+    # Load the float argument into xmm0
+    movss   (%rdi), %xmm0
+
+    # Convert float to int (store in eax)
+    cvtss2si %xmm0, %eax
+
+    # Perform the integer operations
+    movl    %eax, %ecx          # Copy eax to ecx
+    sarl    $2, %ecx            # ecx = eax / 4
+    addl    %ecx, %eax          # eax += ecx
+
+    movl    %eax, %ecx          # Copy eax to ecx
+    sarl    $4, %ecx            # ecx = eax / 16
+    addl    %ecx, %eax          # eax += ecx
+
+    movl    %eax, %ecx          # Copy eax to ecx
+    sarl    $4, %ecx            # ecx = eax / 16
+    addl    %ecx, %eax          # eax += ecx
+
+    movl    %eax, %ecx          # Copy eax to ecx
+    sarl    $8, %ecx            # ecx = eax / 256
+    addl    %ecx, %eax          # eax += ecx
+
+    addl    $0x2a511cd0, %eax   # eax += 0x2a511cd0
+
+    # Convert int back to float
+    cvtsi2ss %eax, %xmm0
+
+    # Store the result in the return register
+    movss   %xmm0, (%rdi)
+
+    # Epilogue
+    movq    %rbp, %rsp
+    popq    %rbp
+    ret
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 73
+WARNING:root:WARNING: code failed to execute for input 1 in case 73
+WARNING:root:WARNING: code failed to execute for input 2 in case 73
+WARNING:root:WARNING: code failed to execute for input 3 in case 73
+WARNING:root:WARNING: code failed to execute for input 4 in case 73
+WARNING:root:WARNING: code failed to execute for input 5 in case 73
+WARNING:root:WARNING: code failed to execute for input 6 in case 73
+WARNING:root:WARNING: code failed to execute for input 7 in case 73
+WARNING:root:WARNING: code failed to execute for input 8 in case 73
+WARNING:root:WARNING: code failed to execute for input 9 in case 73
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 73 failed
+INFO:root:C code :
+#include <stddef.h>
+
+int GO_strcmp (char *d, char *s)
+{
+ while ('\0' != *d) {
+  if (*d != *s)
+   return *d - *s;
+  d++;
+  s++;
+ }
+
+ return *d - *s;
+}
+INFO:root:current LLM prompt size: 113
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl GO_strcmp
+GO_strcmp:
+    .cfi_startproc
+    movq    %rdi, %rax        # Move pointer to d into %rax
+    movq    %rsi, %rcx        # Move pointer to s into %rcx
+
+loop:
+    movb    (%rax), %bl       # Load *d into %bl
+    testb   %bl, %bl          # Test if *d is '\0'
+    je      end               # If *d is '\0', jump to end
+
+    movb    (%rcx), %dl       # Load *s into %dl
+    cmpb    %dl, %bl          # Compare *d and *s
+    jne     diff              # If *d != *s, jump to diff
+
+    incq    %rax              # Increment d pointer
+    incq    %rcx              # Increment s pointer
+    jmp     loop              # Repeat the loop
+
+diff:
+    subb    %dl, %bl          # Calculate *d - *s
+    movsbl  %bl, %eax         # Move the result into %eax (return value)
+    ret                       # Return
+
+end:
+    movb    (%rcx), %dl       # Load *s into %dl
+    subb    %dl, %bl          # Calculate *d - *s (both are '\0' at this point)
+    movsbl  %bl, %eax         # Move the result into %eax (return value)
+    ret                       # Return
+    .cfi_endproc
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 74 succeeded
+INFO:root:C code :
+
+int
+test_01 (volatile short* x)
+{
+  return *x;
+}
+INFO:root:current LLM prompt size: 74
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+test_01:
+    movzwl  (%rdi), %eax
+    ret
+
+WARNING:root:CASE 75 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/cc0BYH5Z.o: in function `main':
+tmp_driver.cpp:(.text+0x4cd): undefined reference to `test_01'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <ctype.h>
+
+int isspec(char c)
+{
+    return (((c >= '!') && (c <= '/')) || (c >= ':' && c <= '@') || ((c >= '[') && (c <= '`')) || ((c >= '{') && (c <= 'DEL')));
+}
+INFO:root:current LLM prompt size: 131
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+.section .text
+.globl isspec
+isspec:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movb    %dil, %al
+
+    cmpb    $'!', %al
+    jl      .Lnotspec
+    cmpb    $'/', %al
+    jle     .Lspec
+
+    cmpb    $':', %al
+    jl      .Lnotspec
+    cmpb    $'@', %al
+    jle     .Lspec
+
+    cmpb    $'[', %al
+    jl      .Lnotspec
+    cmpb    $'`', %al
+    jle     .Lspec
+
+    cmpb    $'{', %al
+    jl      .Lnotspec
+    cmpb    $127, %al
+    jle     .Lspec
+
+.Lnotspec:
+    movl    $0, %eax
+    jmp     .Lend
+
+.Lspec:
+    movl    $1, %eax
+
+.Lend:
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 76 succeeded
+INFO:root:C code :
+
+int hash_val (int key)
+{
+    return key;
+}
+INFO:root:current LLM prompt size: 69
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl hash_val
+hash_val:
+    movl %edi, %eax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 77 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <stdint.h>
+
+#include <math.h>
+
+int cat_nums(char *str_out, char *str){
+
+ int i=0,j=0;
+ while(str[i]!='\0'){
+  if(str[i] >= '0' && str[i] <= '9'){
+   str_out[j++] = str[i];
+  }
+  i++;
+ }
+ str_out[j] = '\0';
+ return(j);
+}
+INFO:root:current LLM prompt size: 151
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+    str_out: .zero 100
+    str: .asciz "abc123def456ghi789"
+
+.section .text
+    .globl main
+    main:
+        # Initialize pointers
+        leaq str_out(%rip), %rdi
+        leaq str(%rip), %rsi
+
+        # Initialize counters
+        xorl %eax, %eax        # i = 0
+        xorl %ecx, %ecx        # j = 0
+
+    loop_start:
+        movb (%rsi, %rax), %dl # Load str[i] into %dl
+        testb %dl, %dl         # Check if str[i] is '\0'
+        je loop_end            # If yes, exit loop
+
+        cmpb $'0', %dl         # Compare str[i] with '0'
+        jl not_a_digit         # If less, skip
+        cmpb $'9', %dl         # Compare str[i] with '9'
+        jg not_a_digit         # If greater, skip
+
+        movb %dl, (%rdi, %rcx) # str_out[j] = str[i]
+        incl %ecx              # j++
+
+    not_a_digit:
+        incl %eax              # i++
+        jmp loop_start         # Repeat loop
+
+    loop_end:
+        movb $0, (%rdi, %rcx)   # str_out[j] = '\0'
+
+        # Print the result (for demonstration purposes)
+        movq $str_out, %rdi
+        call printf
+
+        # Exit program
+        movq $60, %rax
+        xorq %rdi, %rdi
+        syscall
+
+WARNING:root:CASE 78 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/cc76QWdd.o: in function `main':
+tmp_driver.cpp:(.text+0x2c3): multiple definition of `main'; /tmp/ccfXAw5Y.o:(.text+0x0): first defined here
+/usr/bin/ld: /tmp/ccfXAw5Y.o: relocation R_X86_64_32S against `.data' can not be used when making a PIE object; recompile with -fPIE
+/usr/bin/ld: failed to set dynamic section sizes: bad value
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdarg.h>
+
+#include <sys/types.h>
+
+#include <sys/stat.h>
+
+__attribute__ ((used))
+int _write(int file, char *ptr, int len)
+{
+# 103 "/scratch/repos/new/home/jordi_armengol_estape/c-scraper/outputs/2022-01-22/02-19-57/repos/LCRS-UCC/STM32F4Discovery-expansion/refs/heads/Working/OtharSoft/syscalls/syscalls.c"
+    return len;
+}
+INFO:root:current LLM prompt size: 166
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl _write
+_write:
+    movl %edx, %eax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 79 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int countVowels(char *str)
+{
+ int i,count=0;
+ for(i=0;str[i]!='\0';++i)
+  if('a' == str[i] ||
+     'e' == str[i] ||
+     'i' == str[i] ||
+     'o' == str[i] ||
+     'u' == str[i] ||
+     'A' == str[i] ||
+     'E' == str[i] ||
+     'I' == str[i] ||
+     'O' == str[i] ||
+     'U' == str[i] )
+   count++;
+ return count;
+}
+INFO:root:current LLM prompt size: 188
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+    # Data section can be used for defining constants or strings if needed
+
+.section .text
+    .globl countVowels
+
+countVowels:
+    # Function prologue
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movq    %rdi, -24(%rbp)    # Save the pointer to the string
+    movl    $0, -4(%rbp)       # Initialize count to 0
+    movl    $0, -8(%rbp)       # Initialize i to 0
+
+loop_start:
+    movq    -24(%rbp), %rax    # Load the string pointer
+    movl    -8(%rbp), %ecx     # Load i
+    addq    %rcx, %rax         # Calculate the address of str[i]
+    movzbl  (%rax), %edx       # Load str[i] into %edx
+    testb   %dl, %dl           # Check if str[i] is '\0'
+    je      loop_end           # If '\0', jump to loop_end
+
+    # Check if str[i] is a vowel
+    cmpl    $97, %edx          # 'a'
+    je      is_vowel
+    cmpl    $101, %edx         # 'e'
+    je      is_vowel
+    cmpl    $105, %edx         # 'i'
+    je      is_vowel
+    cmpl    $111, %edx         # 'o'
+    je      is_vowel
+    cmpl    $117, %edx         # 'u'
+    je      is_vowel
+    cmpl    $65, %edx          # 'A'
+    je      is_vowel
+    cmpl    $69, %edx          # 'E'
+    je      is_vowel
+    cmpl    $73, %edx          # 'I'
+    je      is_vowel
+    cmpl    $79, %edx          # 'O'
+    je      is_vowel
+    cmpl    $85, %edx          # 'U'
+    je      is_vowel
+    jmp     not_vowel
+
+is_vowel:
+    incl    -4(%rbp)           # Increment count
+
+not_vowel:
+    incl    -8(%rbp)           # Increment i
+    jmp     loop_start         # Repeat the loop
+
+loop_end:
+    movl    -4(%rbp), %eax     # Move count to %eax (return value)
+
+    # Function epilogue
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 80 succeeded
+INFO:root:C code :
+#include <string.h>
+
+char* langRomTypeMirroredRam1k() { return "1kB Mirrored RAM"; }
+INFO:root:current LLM prompt size: 81
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+    langRomTypeMirroredRam1k_str: .asciz "1kB Mirrored RAM"
+
+.section .text
+    .globl langRomTypeMirroredRam1k
+    .type langRomTypeMirroredRam1k, @function
+langRomTypeMirroredRam1k:
+    leaq    langRomTypeMirroredRam1k_str(%rip), %rax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 81 succeeded
+INFO:root:C code :
+
+unsigned long unsignedlong_id(unsigned long x){return x;}
+INFO:root:current LLM prompt size: 68
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl unsignedlong_id
+unsignedlong_id:
+    movq %rdi, %rax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 82 succeeded
+INFO:root:C code :
+#include <stdlib.h>
+
+void pointerExample1(int *ptr1, int *ptr2){
+ ptr1 = ptr2;
+}
+INFO:root:current LLM prompt size: 81
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl pointerExample1
+pointerExample1:
+    movq %rsi, %rdi
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 83 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int hcf_iterative(int a, int b){
+ int q, r;
+ if(a > 0 && b > 0){
+  if(a < b)
+   return hcf_iterative(b, a);
+
+  q = a / b;
+  r = a % b;
+  while(r != 0 && r != 1){
+   a = b;
+   b = r;
+   q = a / b;
+   r = a % b;
+  }
+
+  if(r == 0)
+   return b;
+  else if(r == 1)
+   return 1;
+ }
+ return -1;
+}
+INFO:root:current LLM prompt size: 185
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+.section .text
+.globl hcf_iterative
+
+hcf_iterative:
+    pushq   %rbp
+    movq    %rsp, %rbp
+
+    movl    %edi, %eax    # a
+    movl    %esi, %ecx    # b
+
+    cmpl    $0, %eax
+    jle     .Lreturn_neg1
+    cmpl    $0, %ecx
+    jle     .Lreturn_neg1
+
+    cmpl    %ecx, %eax
+    jge     .Lskip_swap
+    xchgl   %eax, %ecx
+
+.Lskip_swap:
+    movl    %eax, %edx    # a
+    movl    %ecx, %ebx    # b
+
+.Lloop_start:
+    movl    %edx, %eax
+    cltd
+    idivl   %ebx
+    movl    %edx, %esi    # r
+
+    cmpl    $0, %esi
+    je      .Lreturn_b
+    cmpl    $1, %esi
+    je      .Lreturn_1
+
+    movl    %ebx, %edx
+    movl    %esi, %ebx
+    jmp     .Lloop_start
+
+.Lreturn_b:
+    movl    %ebx, %eax
+    jmp     .Lreturn
+
+.Lreturn_1:
+    movl    $1, %eax
+    jmp     .Lreturn
+
+.Lreturn_neg1:
+    movl    $-1, %eax
+
+.Lreturn:
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 84 succeeded
+INFO:root:C code :
+
+int soma3(int a, int b, int c)
+{
+ return a+b+c;
+}
+INFO:root:current LLM prompt size: 75
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl soma3
+soma3:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)    # a
+    movl    %esi, -8(%rbp)    # b
+    movl    %edx, -12(%rbp)   # c
+    movl    -4(%rbp), %eax    # eax = a
+    addl    -8(%rbp), %eax    # eax += b
+    addl    -12(%rbp), %eax   # eax += c
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 85 succeeded
+INFO:root:C code :
+
+unsigned long int_sqrt(unsigned long x)
+{
+        unsigned long b, m, y = 0;
+
+        if (x <= 1)
+                return x;
+
+        m = 1UL << ((sizeof(long) * 8) - 2);
+        while (m != 0) {
+                b = y + m;
+                y >>= 1;
+
+                if (x >= b) {
+                        x -= b;
+                        y += m;
+                }
+                m >>= 2;
+        }
+
+        return y;
+}
+INFO:root:current LLM prompt size: 163
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl int_sqrt
+int_sqrt:
+        movq    %rdi, %rax          # %rax = x
+        cmpq    $1, %rax            # Compare x with 1
+        jbe     .Lreturn            # If x <= 1, jump to .Lreturn
+
+        movq    $0, %rcx            # y = 0
+        movq    $1, %rdx            # Initialize m
+        shl     $62, %rdx           # m = 1UL << ((sizeof(long) * 8) - 2)
+
+.Lloop:
+        testq   %rdx, %rdx          # Check if m is 0
+        jz      .Lreturn            # If m == 0, jump to .Lreturn
+
+        movq    %rcx, %rsi          # %rsi = y
+        addq    %rdx, %rsi          # %rsi = y + m (b = y + m)
+        shrq    $1, %rcx            # y >>= 1
+
+        cmpq    %rsi, %rax          # Compare x with b
+        jb      .Lskip_sub          # If x < b, jump to .Lskip_sub
+
+        subq    %rsi, %rax          # x -= b
+        addq    %rdx, %rcx          # y += m
+
+.Lskip_sub:
+        shrq    $2, %rdx            # m >>= 2
+        jmp     .Lloop              # Jump to .Lloop
+
+.Lreturn:
+        movq    %rcx, %rax          # Return y
+        ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 86 succeeded
+INFO:root:C code :
+#include <stdio.h> 
+
+int comp(int num)
+{
+    int res = 0;
+    int cnt = 0;
+
+    while (num) {
+        if (!(num & 1)) {
+            res = res | (1 << cnt);
+        }
+        ++cnt;
+        num = num >> 1;
+    }
+
+    return res;
+}
+INFO:root:current LLM prompt size: 127
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+.section .text
+.globl comp
+
+comp:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    $0, %eax        # res = 0
+    movl    $0, %ecx        # cnt = 0
+
+while_loop:
+    testl   %edi, %edi
+    jz      end_while       # if (num == 0) goto end_while
+
+    movl    %edi, %edx
+    andl    $1, %edx
+    jnz     endif           # if (num & 1) goto endif
+
+    movl    %eax, %edx
+    orl     $1, %edx
+    shll    %cl, %edx
+    orl     %edx, %eax      # res = res | (1 << cnt)
+
+endif:
+    incl    %ecx            # ++cnt
+    shrl    %edi            # num = num >> 1
+    jmp     while_loop
+
+end_while:
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 60.0%
+INFO:root:CASE 87 failed
+INFO:root:C code :
+
+int logicalShift(int x, int n) {
+ int a=(x>>31&1)<<32+~n;
+ return (x^a<<n)>>n^a;
+}
+INFO:root:current LLM prompt size: 93
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+logicalShift:
+    # x in rdi, n in rsi
+    movl    %edi, %eax        # eax = x
+    movl    %esi, %ecx        # ecx = n
+    movl    %eax, %edx        # edx = x
+    sarl    $31, %edx         # edx = x >> 31
+    andl    $1, %edx          # edx = x >> 31 & 1
+    movl    $32, %r8d         # r8d = 32
+    subl    %ecx, %r8d        # r8d = 32 - n
+    sall    %r8d, %edx        # edx = (x >> 31 & 1) << (32 - n)
+    movl    %edx, %r9d        # r9d = (x >> 31 & 1) << (32 - n)
+    sall    %cl, %r9d         # r9d = ((x >> 31 & 1) << (32 - n)) << n
+    xorl    %r9d, %eax        # eax = x ^ (((x >> 31 & 1) << (32 - n)) << n)
+    sarl    %cl, %eax         # eax = (x ^ (((x >> 31 & 1) << (32 - n)) << n)) >> n
+    xorl    %edx, %eax        # eax = ((x ^ (((x >> 31 & 1) << (32 - n)) << n)) >> n) ^ ((x >> 31 & 1) << (32 - n))
+    ret
+
+WARNING:root:CASE 88 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:11: Error: operand type mismatch for `sal'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+double light_time(double distance) {
+    double t = 0.0;
+
+
+
+    return t;
+}
+INFO:root:current LLM prompt size: 77
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+    # Constants
+    SPEED_OF_LIGHT: .double 299792.458  # km/s
+
+.section .text
+    .globl light_time
+    .type light_time, @function
+
+light_time:
+    # Prologue
+    pushq   %rbp
+    movq    %rsp, %rbp
+
+    # Function body
+    # Load the distance parameter into %xmm0
+    movsd   %xmm0, %xmm1
+
+    # Load the speed of light constant into %xmm2
+    movsd   SPEED_OF_LIGHT(%rip), %xmm2
+
+    # Calculate time = distance / speed of light
+    divsd   %xmm2, %xmm1
+
+    # Move the result into %xmm0 (return value)
+    movsd   %xmm1, %xmm0
+
+    # Epilogue
+    movq    %rbp, %rsp
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 89 failed
+INFO:root:C code :
+
+double business_sum(double in, double in2) {
+    return in + in2;
+}
+INFO:root:current LLM prompt size: 75
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+.section .text
+.globl business_sum
+.type business_sum, @function
+business_sum:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movsd   %xmm0, %xmm2
+    addsd   %xmm1, %xmm2
+    movsd   %xmm2, %xmm0
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 90 succeeded
+INFO:root:C code :
+
+int do_961() { return 961; }
+INFO:root:current LLM prompt size: 67
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl do_961
+do_961:
+    movl $961, %eax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 91 succeeded
+INFO:root:C code :
+
+
+
+
+
+int chroma_sub_implemented(int mode)
+{
+  switch (mode) {
+  case 0:
+  case 1:
+  case 3:
+    return 1;
+  case 2:
+  case 4:
+  case 5:
+  case 7:
+  case 6:
+  default:
+    return 0;
+  }
+}
+INFO:root:current LLM prompt size: 128
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl chroma_sub_implemented
+chroma_sub_implemented:
+    movl    %edi, %eax          # Move the function argument (mode) into %eax
+    cmpl    $3, %eax            # Compare mode with 3
+    jbe     .L2                 # If mode <= 3, jump to .L2
+    cmpl    $7, %eax            # Compare mode with 7
+    ja      .L3                 # If mode > 7, jump to .L3
+    cmpl    $5, %eax            # Compare mode with 5
+    je      .L3                 # If mode == 5, jump to .L3
+    cmpl    $6, %eax            # Compare mode with 6
+    je      .L3                 # If mode == 6, jump to .L3
+    cmpl    $2, %eax            # Compare mode with 2
+    je      .L3                 # If mode == 2, jump to .L3
+    cmpl    $4, %eax            # Compare mode with 4
+    je      .L3                 # If mode == 4, jump to .L3
+    jmp     .L3                 # Default case, jump to .L3
+.L2:
+    movl    $1, %eax            # Return 1
+    ret
+.L3:
+    xorl    %eax, %eax          # Return 0
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 92 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int leapyear(int year) {
+  if (year % 400 == 0)
+    return 1;
+  else if (year % 4 == 0 && year % 100 != 0)
+    return 1;
+  else
+    return 0;
+}
+INFO:root:current LLM prompt size: 117
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+.section .text
+.globl leapyear
+
+leapyear:
+    pushq   %rbp
+    movq    %rsp, %rbp
+
+    movl    %edi, %eax
+    movl    $400, %ecx
+    cdq
+    idivl   %ecx
+    testl   %edx, %edx
+    je      .L1
+
+    movl    %edi, %eax
+    movl    $4, %ecx
+    cdq
+    idivl   %ecx
+    testl   %edx, %edx
+    jne     .L2
+
+    movl    %edi, %eax
+    movl    $100, %ecx
+    cdq
+    idivl   %ecx
+    testl   %edx, %edx
+    je      .L2
+
+.L1:
+    movl    $1, %eax
+    jmp     .L3
+
+.L2:
+    movl    $0, %eax
+
+.L3:
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 93 succeeded
+INFO:root:C code :
+
+int subtract(int x, int y) {
+    return x - y;
+}
+INFO:root:current LLM prompt size: 72
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl subtract
+subtract:
+    mov %edi, %eax
+    sub %esi, %eax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 94 succeeded
+INFO:root:C code :
+#include <ctype.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <stdint.h>
+
+#include <math.h>
+
+#include <time.h>
+
+#include <fcntl.h>
+
+#include <sys/types.h>
+
+#include <errno.h>
+
+#include <limits.h>
+
+double calc_swst(unsigned short swst_dn, double pri)
+{
+
+
+     return ((double) swst_dn * 210.94e-09 + 9.0 * pri - 6.6E-6);
+}
+INFO:root:current LLM prompt size: 158
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.section .data
+    # Data section can be used for constants or static data if needed
+
+.section .text
+    .global calc_swst
+
+calc_swst:
+    # Prologue
+    pushq   %rbp
+    movq    %rsp, %rbp
+
+    # Function arguments
+    # unsigned short swst_dn is in %rdi (first argument)
+    # double pri is in %xmm0 (second argument)
+
+    # Convert swst_dn to double and store in %xmm1
+    movzwl  %di, %eax        # Move swst_dn (16 bits) to %eax and zero-extend
+    cvtsi2sd %eax, %xmm1     # Convert integer in %eax to double in %xmm1
+
+    # Multiply swst_dn by 210.94e-09
+    movsd   .LC0(%rip), %xmm2 # Move 210.94e-09 to %xmm2
+    mulsd   %xmm2, %xmm1     # Multiply %xmm1 by %xmm2, result in %xmm1
+
+    # Multiply pri by 9.0
+    movsd   .LC1(%rip), %xmm2 # Move 9.0 to %xmm2
+    mulsd   %xmm2, %xmm0     # Multiply %xmm0 by %xmm2, result in %xmm0
+
+    # Add the results of the two multiplications
+    addsd   %xmm0, %xmm1     # Add %xmm0 to %xmm1, result in %xmm1
+
+    # Subtract 6.6E-6 from the result
+    movsd   .LC2(%rip), %xmm2 # Move 6.6E-6 to %xmm2
+    subsd   %xmm2, %xmm1     # Subtract %xmm2 from %xmm1, result in %xmm1
+
+    # Move the result to %xmm0 (return value)
+    movsd   %xmm1, %xmm0
+
+    # Epilogue
+    movq    %rbp, %rsp
+    popq    %rbp
+    ret
+
+.section .rodata
+    .align 8
+.LC0:
+    .double 210.94e-09       # Constant 210.94e-09
+.LC1:
+    .double 9.0              # Constant 9.0
+.LC2:
+    .double 6.6E-6           # Constant 6.6E-6
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 95 succeeded
+INFO:root:C code :
+
+int gsl_TouchNear(void)
+{
+  return 0;
+}
+INFO:root:current LLM prompt size: 70
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+gsl_TouchNear:
+    xorl    %eax, %eax
+    ret
+
+WARNING:root:CASE 96 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccpqoVw2.o: in function `main':
+tmp_driver.cpp:(.text+0x298): undefined reference to `gsl_TouchNear'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int _link (const char *old_name, const char *new_name)
+{
+  return -1;
+}
+INFO:root:current LLM prompt size: 79
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl _link
+_link:
+    movl    $-1, %eax
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 97 succeeded
+INFO:root:C code :
+
+int quant(int n, int m)
+{
+ int i, neg;
+
+ neg = 0;
+ if (n < 0) {
+  neg++;
+  n = -n;
+ }
+
+ i = n / m;
+ if (n - m * i > m / 2)
+  i += 1;
+ i *= m;
+ if (neg)
+  i = -i;
+ return(i);
+}
+INFO:root:current LLM prompt size: 136
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.globl quant
+quant:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp
+    movl    %edi, -4(%rbp)    # n
+    movl    %esi, -8(%rbp)    # m
+    movl    $0, -12(%rbp)     # neg
+
+    cmpl    $0, -4(%rbp)      # if (n < 0)
+    jge     .L2
+    addl    $1, -12(%rbp)     # neg++
+    negl    -4(%rbp)          # n = -n
+.L2:
+    movl    -4(%rbp), %eax
+    cltd
+    idivl   -8(%rbp)          # i = n / m
+    movl    %eax, -16(%rbp)   # store i
+
+    movl    -4(%rbp), %eax
+    imull   -8(%rbp), %ecx
+    subl    %ecx, %eax        # n - m * i
+    movl    -8(%rbp), %ecx
+    shrl    $31, %ecx
+    addl    %ecx, %ecx
+    addl    %ecx, %ecx        # m / 2 (integer division)
+    cmpl    %ecx, %eax        # if (n - m * i > m / 2)
+    jle     .L3
+    addl    $1, -16(%rbp)     # i += 1
+.L3:
+    movl    -16(%rbp), %eax
+    imull   -8(%rbp), %eax    # i *= m
+    movl    %eax, -16(%rbp)
+
+    cmpl    $0, -12(%rbp)     # if (neg)
+    je      .L4
+    negl    -16(%rbp)         # i = -i
+.L4:
+    movl    -16(%rbp), %eax
+    leave
+    ret
+
+INFO:root:Local error rate: 60.0%
+INFO:root:CASE 98 failed
+INFO:root:C code :
+
+void fs_scandir(char *dir, char *name)
+{
+}
+INFO:root:current LLM prompt size: 71
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.globl fs_scandir
+	.type fs_scandir, @function
+fs_scandir:
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)  # dir
+	movq	%rsi, -16(%rbp) # name
+	popq	%rbp
+	ret
+	.size fs_scandir, .-fs_scandir
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 99 succeeded
+INFO:root:Done
+INFO:root:Passed cases: [0, 1, 3, 4, 6, 10, 11, 12, 13, 14, 15, 16, 21, 23, 24, 25, 26, 28, 29, 30, 31, 34, 35, 36, 37, 38, 39, 42, 43, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 61, 62, 64, 65, 66, 69, 70, 71, 72, 74, 76, 77, 79, 80, 81, 82, 83, 84, 85, 86, 90, 91, 92, 93, 94, 95, 97, 99]
+INFO:root:Failed cases: [2, 5, 7, 8, 9, 17, 18, 19, 20, 22, 27, 32, 33, 40, 41, 44, 45, 60, 63, 67, 68, 73, 75, 78, 87, 88, 89, 96, 98]
+INFO:root:Pass rate: 71.0%
+INFO:root:End time: 2024-07-30 14:52:03.378637

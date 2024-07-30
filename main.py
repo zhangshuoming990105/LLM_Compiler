@@ -235,12 +235,19 @@ def c_compiler(model="gpt-4o", begin_id=0, end_id=100, use_short_prompt=False, u
             local_err = 0
             local_succ = 0
             for j in range(input_count):
-                ret = subprocess.run(
-                    ["./tmp", f"input/in{j}.json", f"output/out{j}_real.json"],
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                    timeout=30,
-                )
+                try:
+                    ret = subprocess.run(
+                        ["./tmp", f"input/in{j}.json", f"output/out{j}_real.json"],
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        timeout=10,
+                    )
+                except subprocess.TimeoutExpired:
+                    logging.warning(
+                        f"WARNING: code execute timeout for input {j} in case {case_id}"
+                    )
+                    local_err += 1
+                    continue
                 if ret.returncode != 0:
                     logging.warning(
                         f"WARNING: code failed to execute for input {j} in case {case_id}"
@@ -413,7 +420,8 @@ if __name__ == "__main__":
     # EMNLP additional experiments
     # GPT-4o
     # Claude-3.5-sonnet-20240620
-    c_compiler(model="claude-3-5-sonnet-20240620",begin_id=100, end_id=200, use_emnlp_prompt=True)
+    c_compiler(model="gpt-4o",begin_id=0, end_id=100, use_emnlp_prompt=True)
+    # c_compiler(model="deepseek-coder", begin_id=0, end_id=100, use_emnlp_prompt=True)
     
     
     # c_compiler(model="claude-3-haiku-20240307",begin_id=0, end_id=1, use_short_prompt=True)
