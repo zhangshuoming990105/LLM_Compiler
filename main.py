@@ -417,13 +417,15 @@ if __name__ == "__main__":
         logging.basicConfig(level=logging.INFO)
     logging.info("log file created!")
     logging.info("Start time: " + str(datetime.datetime.now()))
-    # EMNLP additional experiments
+    # EMNLP additional experiments baselines:
+    
+    # Llama3.1
+    c_compiler(model="llama-3.1-70b-instruct", begin_id=0, end_id=100, use_short_prompt=True)
     # GPT-4o
-    # Claude-3.5-sonnet-20240620
-    c_compiler(model="gpt-4o",begin_id=0, end_id=100, use_emnlp_prompt=True)
+    # c_compiler(model="gpt-4o",begin_id=0, end_id=100, use_emnlp_prompt=True)
+    # DeepSeek-Coder
     # c_compiler(model="deepseek-coder", begin_id=0, end_id=100, use_emnlp_prompt=True)
-    
-    
+    # CLAUDE-3
     # c_compiler(model="claude-3-haiku-20240307",begin_id=0, end_id=1, use_short_prompt=True)
     # python_c_translator(model="claude-3-haiku-20240307")
 
