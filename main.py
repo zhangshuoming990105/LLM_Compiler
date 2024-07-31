@@ -419,16 +419,20 @@ if __name__ == "__main__":
     logging.info("Start time: " + str(datetime.datetime.now()))
     # EMNLP additional experiments baselines:
     
-    # Llama3.1
-    c_compiler(model="llama-3.1-70b-instruct", begin_id=0, end_id=100, use_short_prompt=True)
     # GPT-4o
     # c_compiler(model="gpt-4o",begin_id=0, end_id=100, use_emnlp_prompt=True)
     # DeepSeek-Coder
     # c_compiler(model="deepseek-coder", begin_id=0, end_id=100, use_emnlp_prompt=True)
-    # CLAUDE-3
-    # c_compiler(model="claude-3-haiku-20240307",begin_id=0, end_id=1, use_short_prompt=True)
+    # CLAUDE-3: claude-3-opus-20240229
+    # CLAUDE-3.5: claude-3-5-sonnet-20240620
+    c_compiler(model="claude-3-5-sonnet-20240620",begin_id=0, end_id=100, use_emnlp_prompt=True)
+    # Mixtral-8x7b
+    # c_compiler(model="mixtral-8x7b-instruct", begin_id=0, end_id=100, use_short_prompt=True)
+    # Llama3.1
+    # c_compiler(model="llama-3.1-70b-instruct", begin_id=0, end_id=100, use_short_prompt=True)    
+    
+    
     # python_c_translator(model="claude-3-haiku-20240307")
-
     # python_compiler("claude-3-5-sonnet-20240620")
     logging.info("End time: " + str(datetime.datetime.now()))
     # workspace_clear(sandbox_dir, log_dir)
