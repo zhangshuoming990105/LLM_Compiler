@@ -417,17 +417,21 @@ if __name__ == "__main__":
         logging.basicConfig(level=logging.INFO)
     logging.info("log file created!")
     logging.info("Start time: " + str(datetime.datetime.now()))
-    # EMNLP additional experiments baselines:
     
+    # CodeGeex4, ollama local models
+    # c_compiler(model="codestral", begin_id=200, end_id=210, use_short_prompt=True)
+    c_compiler(model="gpt-4o", begin_id=200, end_id=210, use_short_prompt=True)
+    
+    # EMNLP additional experiments baselines:
     # GPT-4o
     # c_compiler(model="gpt-4o",begin_id=0, end_id=100, use_emnlp_prompt=True)
     # DeepSeek-Coder
     # c_compiler(model="deepseek-coder", begin_id=0, end_id=100, use_emnlp_prompt=True)
     # CLAUDE-3: claude-3-opus-20240229
     # CLAUDE-3.5: claude-3-5-sonnet-20240620
-    c_compiler(model="claude-3-5-sonnet-20240620",begin_id=0, end_id=100, use_emnlp_prompt=True)
+    # c_compiler(model="claude-3-5-sonnet-20240620",begin_id=0, end_id=100, use_emnlp_prompt=True)
     # Mixtral-8x7b
-    # c_compiler(model="mixtral-8x7b-instruct", begin_id=0, end_id=100, use_short_prompt=True)
+    # c_compiler(model="mixtral-8x7b-instruct", begin_id=0, end_id=1, use_short_prompt=True)
     # Llama3.1
     # c_compiler(model="llama-3.1-70b-instruct", begin_id=0, end_id=100, use_short_prompt=True)    
     

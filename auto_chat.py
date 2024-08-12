@@ -1,6 +1,6 @@
 import os
 from openai import OpenAI
-from config import AVAILABLE_MODELS, GPT_AVAILABLE_MODELS
+from config import PPLX_AVAILABLE_MODELS, GPT_AVAILABLE_MODELS
 
 
 openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -9,13 +9,13 @@ pplx_client = OpenAI(
 )
 
 model = "llama-3-sonar-small-32k-online"
-if model in AVAILABLE_MODELS:
+if model in PPLX_AVAILABLE_MODELS:
     client = pplx_client
 elif model in GPT_AVAILABLE_MODELS:
     client = openai_client
 else:
     raise ValueError(
-        f"Model {model} not found in AVAILABLE_MODELS or GPT_AVAILABLE_MODELS"
+        f"Model {model} not found in PPLX_AVAILABLE_MODELS or GPT_AVAILABLE_MODELS"
     )
 
 

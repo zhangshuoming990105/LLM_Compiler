@@ -13,11 +13,12 @@ from prompts import (
     emnlp_baseline_prompts,
 )
 from config import (
-    AVAILABLE_MODELS,
+    PPLX_AVAILABLE_MODELS,
     YOUR_API_KEY,
     GPT_AVAILABLE_MODELS,
     ANTHROPIC_AVAILABLE_MODELS,
-    DEEPSEEK_MODELS,
+    DEEPSEEK_AVAILABLE_MODELS,
+    OLLAMA_AVAILABLE_MODELS,
 )
 
 
@@ -79,10 +80,11 @@ def num_tokens_from_messages(messages, model="gpt-3.5-turbo-0613"):
 class Chat:
     def __init__(self, model="mixtral-8x7b-instruct"):
         if (
-            model not in AVAILABLE_MODELS
+            model not in PPLX_AVAILABLE_MODELS
             and model not in GPT_AVAILABLE_MODELS
             and model not in ANTHROPIC_AVAILABLE_MODELS
-            and model not in DEEPSEEK_MODELS
+            and model not in DEEPSEEK_AVAILABLE_MODELS
+            and model not in OLLAMA_AVAILABLE_MODELS
         ):
             logging.error(f"Model {model} is not available!")
             exit(1)
@@ -93,14 +95,20 @@ class Chat:
         )
         self.claude_client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
         self.deepseek_client = OpenAI(api_key="sk-de942e3222de415cb5636482c0b6a378", base_url="https://api.deepseek.com")
+        self.ollama_client = OpenAI(
+            base_url = 'http://localhost:11434/v1/',
+            api_key='ollama', # required, but unused
+        )
         if self.model in GPT_AVAILABLE_MODELS:
             self.client = self.gpt_client
         elif self.model in ANTHROPIC_AVAILABLE_MODELS:
             self.client = self.claude_client
-        elif self.model in DEEPSEEK_MODELS:
+        elif self.model in DEEPSEEK_AVAILABLE_MODELS:
             self.client = self.deepseek_client
-        else:
+        elif self.model in PPLX_AVAILABLE_MODELS:
             self.client = self.pplx_client
+        else:
+            self.client = self.ollama_client
         self.system_prompt = compiler_prompts["general"]
         initial_messages = [
             {

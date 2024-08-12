@@ -168,7 +168,7 @@ def c_decompiler(begin_id=0, end_id=100, use_short_prompt=False, model="gpt-4o",
 
             # using g++ to compile each file
             ret = subprocess.run(
-                ["g++-13", "-S", "tmp_driver.cpp", "-o", "tmp_driver.s"],
+                ["g++", "-S", "tmp_driver.cpp", "-o", "tmp_driver.s"],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
@@ -183,7 +183,7 @@ def c_decompiler(begin_id=0, end_id=100, use_short_prompt=False, model="gpt-4o",
             logging.info(f"disassembled C code :\n{decompiled_c_code}")
             # try to recompile the decompiled c code
             ret = subprocess.run(
-                ["gcc-13", "disassembled.c", "-S"],
+                ["gcc", "disassembled.c", "-S"],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
@@ -206,7 +206,7 @@ def c_decompiler(begin_id=0, end_id=100, use_short_prompt=False, model="gpt-4o",
                 case_id += 1
                 continue
             ret = subprocess.run(
-                ["g++-13", "disassembled.s", "tmp_driver.s", "-o", "tmp"],
+                ["g++", "disassembled.s", "tmp_driver.s", "-o", "tmp"],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )

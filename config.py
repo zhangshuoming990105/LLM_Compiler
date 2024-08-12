@@ -1,6 +1,6 @@
 YOUR_API_KEY = "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"
 
-AVAILABLE_MODELS = [
+PPLX_AVAILABLE_MODELS = [
     "mixtral-8x7b-instruct",
     "llama-3-8b-instruct",
     "llama-3-70b-instruct",
@@ -27,6 +27,11 @@ ANTHROPIC_AVAILABLE_MODELS = [
     "claude-3-haiku-20240307",
 ]
 
-DEEPSEEK_MODELS = [
+DEEPSEEK_AVAILABLE_MODELS = [
     "deepseek-coder",
+]
+
+OLLAMA_AVAILABLE_MODELS = [
+    "codegeex4",
+    "codestral",
 ]
