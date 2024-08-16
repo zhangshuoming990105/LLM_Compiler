@@ -420,7 +420,7 @@ if __name__ == "__main__":
     
     # CodeGeex4, ollama local models
     # c_compiler(model="codestral", begin_id=200, end_id=210, use_short_prompt=True)
-    c_compiler(model="gpt-4o", begin_id=200, end_id=210, use_short_prompt=True)
+    # c_compiler(model="gpt-4o", begin_id=200, end_id=210, use_short_prompt=True)
     
     # EMNLP additional experiments baselines:
     # GPT-4o
