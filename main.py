@@ -433,7 +433,7 @@ if __name__ == "__main__":
     # Mixtral-8x7b
     # c_compiler(model="mixtral-8x7b-instruct", begin_id=0, end_id=1, use_short_prompt=True)
     # Llama3.1
-    # c_compiler(model="llama-3.1-70b-instruct", begin_id=0, end_id=100, use_short_prompt=True)    
+    c_compiler(model="llama-3.1-70b-instruct", begin_id=0, end_id=10, use_short_prompt=True)    
     
     
     # python_c_translator(model="claude-3-haiku-20240307")
