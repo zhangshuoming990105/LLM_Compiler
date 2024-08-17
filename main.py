@@ -55,8 +55,8 @@ def human_eval():
         i += 1
 
 
-def c_compiler(model="gpt-4o", begin_id=0, end_id=100, use_short_prompt=False, use_emnlp_prompt=False):
-    compiler = Compiler(model, use_short_prompt=use_short_prompt,use_emnlp_prompt=use_emnlp_prompt)
+def c_compiler(model="gpt-4o", begin_id=0, end_id=100, use_short_prompt=False, use_emnlp_prompt=False, use_local=False):
+    compiler = Compiler(model, use_short_prompt=use_short_prompt,use_emnlp_prompt=use_emnlp_prompt, use_local=use_local)
     # ds = load_dataset("jordiae/exebench")["train_real_simple_io"]
     ds = load_dataset("mistral0105/exebench_io_validated_full_cleaned")["train"]
     # select validate example to a new dataset, by checking compile status and execution status
@@ -72,7 +72,8 @@ def c_compiler(model="gpt-4o", begin_id=0, end_id=100, use_short_prompt=False, u
             continue
         if case_id >= end_id:
                 break
-        try:
+        # try:
+        if True:
             id = 0
             x86_id = None
             for name in e["asm"]["target"]:
@@ -289,10 +290,10 @@ def c_compiler(model="gpt-4o", begin_id=0, end_id=100, use_short_prompt=False, u
             case_id += 1
             if case_id >= end_id:
                 break
-        except Exception as e:
-            logging.error(f"Unexpected Error: {e}")
-            case_id += 1
-            continue
+        # except Exception as e:
+        #     logging.error(f"Unexpected Error: {e}")
+        #     case_id += 1
+        #     continue
     logging.info("Done")
     logging.info(f"Passed cases: {passed_id}")
     logging.info(f"Failed cases: {failed_id}")
@@ -335,14 +336,14 @@ def python_compiler(model="gpt-4o",begin_id=0, end_id=1, use_short_prompt=False)
         code_translator.translate(
             human_eval_py_code,
             specify_out_file="humaneval.c",
-            desc_post="[INST]Only provide me with the #Output part. Check carefully with the escape characters, to make sure the Output code is correct.[\INST]",
+            desc_post=r"[INST]Only provide me with the #Output part. Check carefully with the escape characters, to make sure the Output code is correct.[\INST]",
             reset_messages=False,
         )
         code_translator.translate(
             human_eval_driver_code,
             specify_out_file="humaneval_driver.c",
-            desc_pre='[INST]Continue to translate the driver function from Python to C.\nFor the Python function with its body pass, like "def foo()->int:\npass" we generate a function declaration in C, like "int foo();".[\INST]',
-            desc_post="[INST]Only provide me with the #Output part.[\INST]",
+            desc_pre=r'[INST]Continue to translate the driver function from Python to C.\nFor the Python function with its body pass, like "def foo()->int:\npass" we generate a function declaration in C, like "int foo();".[\INST]',
+            desc_post=r"[INST]Only provide me with the #Output part.[\INST]",
         )
         # llm compilation
         compiler.compile("humaneval.c", out="humaneval_llm.s")
@@ -433,7 +434,11 @@ if __name__ == "__main__":
     # Mixtral-8x7b
     # c_compiler(model="mixtral-8x7b-instruct", begin_id=0, end_id=1, use_short_prompt=True)
     # Llama3.1
-    c_compiler(model="llama-3.1-70b-instruct", begin_id=0, end_id=10, use_short_prompt=True)    
+    # c_compiler(model="llama-3.1-70b-instruct", begin_id=0, end_id=10, use_short_prompt=True)
+    
+    # local models using transformers library to load(including our fine-tuned models)
+    # c_compiler(model="deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct", begin_id=0, end_id=10, use_short_prompt=True, use_local=True)
+    c_compiler(model="codellama/CodeLlama-7b-Instruct-hf", begin_id=0, end_id=10, use_short_prompt=True, use_local=True)
     
     
     # python_c_translator(model="claude-3-haiku-20240307")

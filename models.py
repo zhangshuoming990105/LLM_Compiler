@@ -21,6 +21,10 @@ from config import (
     OLLAMA_AVAILABLE_MODELS,
 )
 
+# local mode
+from transformers import AutoModelForCausalLM, AutoTokenizer
+import torch
+
 
 def num_token_from_string(
     string: str, encoding_name: str = "gpt-3.5-turbo-0613"
@@ -78,26 +82,42 @@ def num_tokens_from_messages(messages, model="gpt-3.5-turbo-0613"):
 
 
 class Chat:
-    def __init__(self, model="mixtral-8x7b-instruct"):
+    def __init__(self, model="mixtral-8x7b-instruct", use_local=False):
         if (
             model not in PPLX_AVAILABLE_MODELS
             and model not in GPT_AVAILABLE_MODELS
             and model not in ANTHROPIC_AVAILABLE_MODELS
             and model not in DEEPSEEK_AVAILABLE_MODELS
             and model not in OLLAMA_AVAILABLE_MODELS
+            and use_local is False
         ):
             logging.error(f"Model {model} is not available!")
             exit(1)
+        if use_local:
+            self.use_local = True
+            self.tokenizer = AutoTokenizer.from_pretrained(
+                model, trust_remote_code=True
+            )
+            self.local_model = AutoModelForCausalLM.from_pretrained(
+                model,
+                trust_remote_code=True,
+                torch_dtype=torch.float16,
+                device_map="auto",
+                resume_download = True,
+            )
         self.model = model
         self.gpt_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         self.pplx_client = OpenAI(
             api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai"
         )
         self.claude_client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
-        self.deepseek_client = OpenAI(api_key="sk-de942e3222de415cb5636482c0b6a378", base_url="https://api.deepseek.com")
+        self.deepseek_client = OpenAI(
+            api_key="sk-de942e3222de415cb5636482c0b6a378",
+            base_url="https://api.deepseek.com",
+        )
         self.ollama_client = OpenAI(
-            base_url = 'http://localhost:11434/v1/',
-            api_key='ollama', # required, but unused
+            base_url="http://localhost:11434/v1/",
+            api_key="ollama",  # required, but unused
         )
         if self.model in GPT_AVAILABLE_MODELS:
             self.client = self.gpt_client
@@ -107,6 +127,8 @@ class Chat:
             self.client = self.deepseek_client
         elif self.model in PPLX_AVAILABLE_MODELS:
             self.client = self.pplx_client
+        elif self.use_local:
+            self.client = self.local_model
         else:
             self.client = self.ollama_client
         self.system_prompt = compiler_prompts["general"]
@@ -120,7 +142,45 @@ class Chat:
         if self.model in ANTHROPIC_AVAILABLE_MODELS:
             self.messages = []
 
-    def chat(self, temperature=0.01, user_input=None):
+    def local_chat(self, temperature=0.01, user_input=None):
+        if user_input is None:
+            user_input = input("User: \n")
+            logging.info(f"stdin user input: \n{user_input}")
+        self.messages.append(
+            {
+                "role": "user",
+                "content": user_input,
+            }
+        )
+        assert self.use_local, "Local mode is not enabled."
+        
+        with torch.no_grad():
+            #message_prompt is the concatenation of system_prompt and user_input
+            message_prompt = self.tokenizer.apply_chat_template(self.messages, tokenize=False, add_generation_prompt=True)
+            # logging.info(message_prompt)
+            inputs = self.tokenizer(
+                message_prompt,
+                return_tensors="pt",
+                max_length=2048,
+                truncation=True,
+            ).to('cuda')
+            outputs = self.local_model.generate(
+                **inputs, 
+                temperature=temperature, 
+                max_new_tokens=2048
+            )
+            rsp_content = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+            # get the response - system_prompt - user_input
+            rsp_content = rsp_content[len(self.system_prompt) + len(user_input) :]
+        # logging.info(f"LLM response: \n{rsp_content}")
+        self.messages.append(
+            {
+                "role": "assistant",
+                "content": rsp_content,
+            }
+        )
+        
+    def non_local_chat(self, temperature=0.01, user_input=None):
         if user_input is None:
             user_input = input("User: \n")
             logging.info(f"stdin user input: \n{user_input}")
@@ -137,7 +197,9 @@ class Chat:
                 "LLM prompt size exceeds the limit 8192, will truncate the prompt."
             )
         if self.model in ANTHROPIC_AVAILABLE_MODELS:
-            anthropic_client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+            anthropic_client = anthropic.Anthropic(
+                api_key=os.getenv("ANTHROPIC_API_KEY")
+            )
             message = anthropic_client.messages.create(
                 model=self.model,
                 system=self.system_prompt,
@@ -161,6 +223,14 @@ class Chat:
             }
         )
 
+
+    def chat(self, temperature=0.01, user_input=None):
+        if self.use_local:
+            self.local_chat(temperature=temperature, user_input=user_input)
+        else:
+            self.non_local_chat(temperature=temperature, user_input=user_input)
+        
+
     def paraphrase(self, text):
         task_description = "paraphrase the following text, make sure it is well written and syntax correct."
         prompt = f"{task_description}\n{text}"
@@ -171,8 +241,14 @@ class Chat:
 
 
 class Compiler(Chat):
-    def __init__(self, model="mixtral-8x7b-instruct", use_short_prompt=False, use_emnlp_prompt=False):
-        super().__init__(model)
+    def __init__(
+        self,
+        model="mixtral-8x7b-instruct",
+        use_short_prompt=False,
+        use_emnlp_prompt=False,
+        use_local=False,
+    ):
+        super().__init__(model, use_local=use_local)
         self.full_prompt = (
             compiler_prompts["general"]
             + compiler_prompts["mission"]
@@ -200,6 +276,7 @@ class Compiler(Chat):
         else:
             self.system_prompt = self.full_prompt
             self.use_short_prompt = False
+
         query_size = num_token_from_string(self.system_prompt)
         logging.info(f"LLM default prompt size: {query_size}")
         initial_messages = [
@@ -212,8 +289,10 @@ class Compiler(Chat):
         if self.model in ANTHROPIC_AVAILABLE_MODELS:
             self.messages = []
 
+    
+
     # will only chat once
-    def compile(self, code=None, out="tmp.s", reset_messages=True):
+    def compile(self, code=None, out="tmp.s", reset_messages=True, use_local=False):
         if os.path.exists(code):
             code_file_name = code.split("/")[-1]
             if code_file_name != "tmp.c":
@@ -301,7 +380,7 @@ class Decompiler(Chat):
                 c_code = c_code[0]
             # logging.info(f"C code: \n{c_code}")
         else:
-            logging.warning("Failed to find the C code tag \"```c\"!")
+            logging.warning('Failed to find the C code tag "```c"!')
             c_code = decompiler_rsp
         with open("disassembled.c", "w") as f:
             f.write(c_code)

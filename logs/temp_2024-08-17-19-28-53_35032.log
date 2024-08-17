@@ -1,0 +1,536 @@
+INFO:root:log file created!
+INFO:root:Start time: 2024-08-17 19:28:53.891945
+WARNING:huggingface_hub.file_download:Error while downloading from https://cdn-lfs.huggingface.co/repos/f5/3c/f53c11af3d8c4fcedcb992cdf133bb4aa5919b4ef9c082c2103f1df906ef4548/0f52c0eab2dafa0a13e8103a426b17137f7b053e9211334158d7bd7cc1148ceb?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27model-00001-of-00002.safetensors%3B+filename%3D%22model-00001-of-00002.safetensors%22%3B&Expires=1724153341&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTcyNDE1MzM0MX19LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2RuLWxmcy5odWdnaW5nZmFjZS5jby9yZXBvcy9mNS8zYy9mNTNjMTFhZjNkOGM0ZmNlZGNiOTkyY2RmMTMzYmI0YWE1OTE5YjRlZjljMDgyYzIxMDNmMWRmOTA2ZWY0NTQ4LzBmNTJjMGVhYjJkYWZhMGExM2U4MTAzYTQyNmIxNzEzN2Y3YjA1M2U5MjExMzM0MTU4ZDdiZDdjYzExNDhjZWI%7EcmVzcG9uc2UtY29udGVudC1kaXNwb3NpdGlvbj0qIn1dfQ__&Signature=LjW7cDjicVInYJTjbwvIdnWG%7E-sGjCzBLRBJdj%7EFmDjV0O8ARowrqzy6TnNQCrh04i%7Eqbl1EEx%7E3E0qEnnfoPBlzDFL%7EQ3VZhw4gQsxSnICg2tP-bIHEPhWZqr%7ES5JJHK-RPx1IaGBxgpRcwI48sw3ONxqEw1N9SFj08BUDy6m1taBFlAgBiV-e3YakbsLPaNMNjoAQ14ddKpS-OJtYS7dykTyQ-a-E9%7E1bLTHg3rpRh16PiZkEWt5HJLer4EkXPcJwS2gk8%7Eo9LQSubrxx1Lt%7E8QwWGrCpo37HxN0HWN8V7tkR%7E%7Esq63sjlPU54PoTQCk44q60wHUvTndK%7ETmmSVg__&Key-Pair-Id=K3ESJI6DHPFC7: HTTPSConnectionPool(host='cdn-lfs.huggingface.co', port=443): Read timed out.
+Trying to resume download...
+WARNING:huggingface_hub.file_download:Error while downloading from https://cdn-lfs.huggingface.co/repos/f5/3c/f53c11af3d8c4fcedcb992cdf133bb4aa5919b4ef9c082c2103f1df906ef4548/0f52c0eab2dafa0a13e8103a426b17137f7b053e9211334158d7bd7cc1148ceb?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27model-00001-of-00002.safetensors%3B+filename%3D%22model-00001-of-00002.safetensors%22%3B&Expires=1724153341&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTcyNDE1MzM0MX19LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2RuLWxmcy5odWdnaW5nZmFjZS5jby9yZXBvcy9mNS8zYy9mNTNjMTFhZjNkOGM0ZmNlZGNiOTkyY2RmMTMzYmI0YWE1OTE5YjRlZjljMDgyYzIxMDNmMWRmOTA2ZWY0NTQ4LzBmNTJjMGVhYjJkYWZhMGExM2U4MTAzYTQyNmIxNzEzN2Y3YjA1M2U5MjExMzM0MTU4ZDdiZDdjYzExNDhjZWI%7EcmVzcG9uc2UtY29udGVudC1kaXNwb3NpdGlvbj0qIn1dfQ__&Signature=LjW7cDjicVInYJTjbwvIdnWG%7E-sGjCzBLRBJdj%7EFmDjV0O8ARowrqzy6TnNQCrh04i%7Eqbl1EEx%7E3E0qEnnfoPBlzDFL%7EQ3VZhw4gQsxSnICg2tP-bIHEPhWZqr%7ES5JJHK-RPx1IaGBxgpRcwI48sw3ONxqEw1N9SFj08BUDy6m1taBFlAgBiV-e3YakbsLPaNMNjoAQ14ddKpS-OJtYS7dykTyQ-a-E9%7E1bLTHg3rpRh16PiZkEWt5HJLer4EkXPcJwS2gk8%7Eo9LQSubrxx1Lt%7E8QwWGrCpo37HxN0HWN8V7tkR%7E%7Esq63sjlPU54PoTQCk44q60wHUvTndK%7ETmmSVg__&Key-Pair-Id=K3ESJI6DHPFC7: HTTPSConnectionPool(host='cdn-lfs.huggingface.co', port=443): Read timed out.
+Trying to resume download...
+WARNING:huggingface_hub.file_download:Error while downloading from https://cdn-lfs.huggingface.co/repos/f5/3c/f53c11af3d8c4fcedcb992cdf133bb4aa5919b4ef9c082c2103f1df906ef4548/0f52c0eab2dafa0a13e8103a426b17137f7b053e9211334158d7bd7cc1148ceb?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27model-00001-of-00002.safetensors%3B+filename%3D%22model-00001-of-00002.safetensors%22%3B&Expires=1724153341&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTcyNDE1MzM0MX19LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2RuLWxmcy5odWdnaW5nZmFjZS5jby9yZXBvcy9mNS8zYy9mNTNjMTFhZjNkOGM0ZmNlZGNiOTkyY2RmMTMzYmI0YWE1OTE5YjRlZjljMDgyYzIxMDNmMWRmOTA2ZWY0NTQ4LzBmNTJjMGVhYjJkYWZhMGExM2U4MTAzYTQyNmIxNzEzN2Y3YjA1M2U5MjExMzM0MTU4ZDdiZDdjYzExNDhjZWI%7EcmVzcG9uc2UtY29udGVudC1kaXNwb3NpdGlvbj0qIn1dfQ__&Signature=LjW7cDjicVInYJTjbwvIdnWG%7E-sGjCzBLRBJdj%7EFmDjV0O8ARowrqzy6TnNQCrh04i%7Eqbl1EEx%7E3E0qEnnfoPBlzDFL%7EQ3VZhw4gQsxSnICg2tP-bIHEPhWZqr%7ES5JJHK-RPx1IaGBxgpRcwI48sw3ONxqEw1N9SFj08BUDy6m1taBFlAgBiV-e3YakbsLPaNMNjoAQ14ddKpS-OJtYS7dykTyQ-a-E9%7E1bLTHg3rpRh16PiZkEWt5HJLer4EkXPcJwS2gk8%7Eo9LQSubrxx1Lt%7E8QwWGrCpo37HxN0HWN8V7tkR%7E%7Esq63sjlPU54PoTQCk44q60wHUvTndK%7ETmmSVg__&Key-Pair-Id=K3ESJI6DHPFC7: HTTPSConnectionPool(host='cdn-lfs.huggingface.co', port=443): Read timed out.
+Trying to resume download...
+WARNING:huggingface_hub.file_download:Error while downloading from https://cdn-lfs.huggingface.co/repos/f5/3c/f53c11af3d8c4fcedcb992cdf133bb4aa5919b4ef9c082c2103f1df906ef4548/0f52c0eab2dafa0a13e8103a426b17137f7b053e9211334158d7bd7cc1148ceb?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27model-00001-of-00002.safetensors%3B+filename%3D%22model-00001-of-00002.safetensors%22%3B&Expires=1724153341&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTcyNDE1MzM0MX19LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2RuLWxmcy5odWdnaW5nZmFjZS5jby9yZXBvcy9mNS8zYy9mNTNjMTFhZjNkOGM0ZmNlZGNiOTkyY2RmMTMzYmI0YWE1OTE5YjRlZjljMDgyYzIxMDNmMWRmOTA2ZWY0NTQ4LzBmNTJjMGVhYjJkYWZhMGExM2U4MTAzYTQyNmIxNzEzN2Y3YjA1M2U5MjExMzM0MTU4ZDdiZDdjYzExNDhjZWI%7EcmVzcG9uc2UtY29udGVudC1kaXNwb3NpdGlvbj0qIn1dfQ__&Signature=LjW7cDjicVInYJTjbwvIdnWG%7E-sGjCzBLRBJdj%7EFmDjV0O8ARowrqzy6TnNQCrh04i%7Eqbl1EEx%7E3E0qEnnfoPBlzDFL%7EQ3VZhw4gQsxSnICg2tP-bIHEPhWZqr%7ES5JJHK-RPx1IaGBxgpRcwI48sw3ONxqEw1N9SFj08BUDy6m1taBFlAgBiV-e3YakbsLPaNMNjoAQ14ddKpS-OJtYS7dykTyQ-a-E9%7E1bLTHg3rpRh16PiZkEWt5HJLer4EkXPcJwS2gk8%7Eo9LQSubrxx1Lt%7E8QwWGrCpo37HxN0HWN8V7tkR%7E%7Esq63sjlPU54PoTQCk44q60wHUvTndK%7ETmmSVg__&Key-Pair-Id=K3ESJI6DHPFC7: HTTPSConnectionPool(host='cdn-lfs.huggingface.co', port=443): Read timed out.
+Trying to resume download...
+WARNING:huggingface_hub.file_download:Error while downloading from https://cdn-lfs.huggingface.co/repos/f5/3c/f53c11af3d8c4fcedcb992cdf133bb4aa5919b4ef9c082c2103f1df906ef4548/9ddab1824225fbe405cea67c5d8d87666f1ab5c59ec89abdf2cacae9b555da75?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27model-00002-of-00002.safetensors%3B+filename%3D%22model-00002-of-00002.safetensors%22%3B&Expires=1724159300&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTcyNDE1OTMwMH19LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2RuLWxmcy5odWdnaW5nZmFjZS5jby9yZXBvcy9mNS8zYy9mNTNjMTFhZjNkOGM0ZmNlZGNiOTkyY2RmMTMzYmI0YWE1OTE5YjRlZjljMDgyYzIxMDNmMWRmOTA2ZWY0NTQ4LzlkZGFiMTgyNDIyNWZiZTQwNWNlYTY3YzVkOGQ4NzY2NmYxYWI1YzU5ZWM4OWFiZGYyY2FjYWU5YjU1NWRhNzU%7EcmVzcG9uc2UtY29udGVudC1kaXNwb3NpdGlvbj0qIn1dfQ__&Signature=XA0PUwotgzS6BQpylpjuuYpAv-jrDNVzEjNl95Mzo8hJ3sX9QNqLCPfqWe0jggXZddLD9d33WTTNysax6DNK2kHLiIKow4fQxfCNwEfR8U9sPLbEexWU2lpXZ7CXwx8BhHZsqiiA2-Gr0tzCw5zIyU9TGIkWaH5%7EvgfOEHJwfT4xQQGG-A7q4QZ2tNMVC1HmutgE8JjUNLB1DbndOBG6C4cU0OMyVgoNevnK328C7vA5mbuNxkC2ZtN0cnpOHZc0GCs-FbmCV1t1ew-hkTQ4BKJjvUqEJokPWSJKuPyrkhLssLWKI9Q5v-rLMOTa1d3yK-LLCi0puYD6fgKIL-t5Ug__&Key-Pair-Id=K3ESJI6DHPFC7: HTTPSConnectionPool(host='cdn-lfs.huggingface.co', port=443): Read timed out.
+Trying to resume download...
+INFO:root:LLM default prompt size: 254
+INFO:root:C code :
+
+
+
+double linear_interp(double x,double lx,double ux,double ly,double uy) {
+  return((x-lx)/(ux-lx)*(uy-ly)+ly);
+}
+INFO:root:x86 code: 
+
+; linear_interp function
+linear_interp:
+    ; x, lx, ux, ly, uy are passed in as arguments
+    movq    %rdi, %rax
+    movq    %rsi, %rdx
+    movq    %rcx, %r8
+    movq    %rdx, %r9
+    movq    %r8, %r10
+    movq    %r9, %r11
+    ; calculate (x-lx)/(ux-lx)
+    subq    %rdx, %rax
+    subq    %rdx, %r8
+    movq    %rax, %rdx
+    movq    %r8, %rax
+    movq    %r10, %r8
+    movq    %r11, %r10
+    ; calculate (uy-ly)*(x-lx)/(ux-lx)
+    mulq    %r10
+    mulq    %r11
+    subq    %r8, %rax
+    subq    %r8, %rdx
+    ; calculate ly + (uy-ly)*(x-lx)/(ux-lx)
+    addq    %r8, %rax
+    addq    %r8, %rdx
+    ret
+
+WARNING:root:CASE 0 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:2: Error: no such instruction: `linear_interp function'
+tmp.s:4: Error: no such instruction: `x, lx,ux,ly,uy are passed in as arguments'
+tmp.s:11: Error: no such instruction: `calculate (x-lx)/(ux-lx)'
+tmp.s:18: Error: no such instruction: `calculate (uy-ly)*(x-lx)/(ux-lx)'
+tmp.s:23: Error: no such instruction: `calculate ly+(uy-ly)*(x-lx)/(ux-lx)'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+double QuinticEaseIn(double p)
+{
+    return p * p * p * p * p;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	QuinticEaseIn
+	.type	QuinticEaseIn, @function
+QuinticEaseIn:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movsd	%xmm0, %xmm1
+	mulsd	%xmm1, %xmm1
+	mulsd	%xmm1, %xmm1
+	mulsd	%xmm1, %xmm1
+	mulsd	%xmm1, %xmm1
+	movsd	%xmm1, %xmm0
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 1 failed
+INFO:root:C code :
+#include <stdio.h>
+
+int dec_lv(char x, char c, int lv)
+{
+ if (x == c)
+  --lv;
+
+ return lv;
+}
+INFO:root:x86 code: 
+
+dec_lv:
+    push    rbp
+    mov     rbp, rsp
+    mov     rdx, rdi
+    mov     rcx, rsi
+    mov     rax, rdx
+    sub     rax, rcx
+    pop     rbp
+    ret
+
+WARNING:root:CASE 2 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:4: Error: operand size mismatch for `mov'
+tmp.s:5: Error: operand size mismatch for `mov'
+tmp.s:6: Error: operand size mismatch for `mov'
+tmp.s:7: Error: operand size mismatch for `mov'
+tmp.s:8: Error: operand size mismatch for `sub'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <unistd.h>
+
+#include <limits.h>
+
+#include <errno.h>
+
+#include <stdarg.h>
+
+#include <fcntl.h>
+
+#include <time.h>
+
+#include <signal.h>
+
+#include <dirent.h>
+
+#include <pwd.h>
+
+#include <sys/types.h>
+
+#include <sys/stat.h>
+
+#include <sys/wait.h>
+
+int
+prefix_of(char *special, char *s)
+{
+ for (; *special != '\0'; ++special)
+  if (*special != *s++)
+   return 0;
+ return (*s == '=' || *s == '\0');
+}
+WARNING:root:Failed to find the x86 code!
+WARNING:root:CASE 3 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:4: Error: operand size mismatch for `mov'
+tmp.s:5: Error: operand size mismatch for `mov'
+tmp.s:6: Error: operand size mismatch for `mov'
+tmp.s:7: Error: operand size mismatch for `mov'
+tmp.s:8: Error: operand size mismatch for `sub'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <memory.h>
+
+int* sub(int* a, int sizeA, int* b, int sizeB, int* resultSize){
+
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	sub
+	.type	sub, @function
+sub:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	-8(%rbp), %rax
+	movq	%rax, -56(%rbp)
+	movq	-16(%rbp), %rax
+	movq	%rax, -64(%rbp)
+	movq	-24(%rbp), %rax
+	movq	%rax, -72(%rbp)
+	movq	-32(%rbp), %rax
+	movq	%rax, -80(%rbp)
+	movq	-40(%rbp), %rax
+	movq	%rax, -88(%rbp)
+	movq	-48(%rbp), %rax
+	movq	%rax, -96(%rbp)
+	movq	-56(%rbp), %rax
+	movq	%rax, -104(%rbp)
+	movq	-64(%rbp), %rax
+	movq	%rax, -112(%rbp)
+	movq	-72(%rbp), %rax
+	movq	%rax, -120(%rbp)
+	movq	-80(%rbp), %rax
+	movq	%rax, -128(%rbp)
+	movq	-88(%rbp), %rax
+	movq	%rax, -136(%rbp)
+	movq	-96(%rbp), %rax
+	movq	%rax, -144(%rbp)
+	movq	-104(%rbp), %rax
+	movq	%rax, -152(%rbp)
+	movq	-112(%rbp), %rax
+	movq	%rax, -160(%rbp)
+	movq	-120(%rbp), %rax
+	movq	%rax, -168(%rbp)
+	movq	-128(%rbp), %rax
+	movq	%rax, -176(%rbp)
+	movq	-136(%rbp), %rax
+	movq	%rax, -184(%rbp)
+	movq	-144(%rbp), %rax
+	movq	%rax, -192(%rbp)
+	movq	-152(%rbp), %rax
+	movq	%rax, -200(%rbp)
+	movq	-160(%rbp), %rax
+	movq	%rax, -208(%rbp)
+	movq	-168(%rbp), %rax
+	movq	%rax, -216(%rbp)
+	movq	-176(%rbp), %rax
+	movq	%rax, -224(%rbp)
+	movq	-184(%rbp), %rax
+	movq	%rax, -232(%rbp)
+	movq	-192(%rbp), %rax
+	movq	%rax, -240(%rbp)
+	movq	-200(%rbp), %rax
+	movq	%rax, -248(%rbp)
+	movq	-208(%rbp), %rax
+	movq	%rax, -256(%rbp)
+	movq	-216(%rbp), %rax
+	movq	%rax, -264(%rbp)
+	movq	-224(%rbp), %rax
+	movq	%rax, -272(%rbp)
+	movq	-232(%rbp), %rax
+	movq	%rax, -280(%rbp)
+	movq	-240(%rbp), %rax
+	movq	%rax, -288(%rbp)
+	movq	-248(%rbp), %rax
+	movq	%rax, -296(%rbp)
+	movq	-256(%rbp), %rax
+	movq	%rax, -304(%rbp)
+	movq	-264(%rbp), %rax
+	movq	%rax, -312(%rbp)
+	movq	-272(%rbp), %rax
+	movq	%rax, -320(%rbp)
+	movq	-280(%rbp), %rax
+	movq	%rax, -328(%rbp)
+	movq	-288(%rbp), %rax
+	movq	%rax, -336(%rbp)
+	movq	-296(%rbp), %rax
+	movq	%rax, -344(%rbp)
+	movq	-304(%rbp), %rax
+	movq	%rax, -352(%rbp)
+	movq	-312(%rbp), %rax
+	movq	%rax, -360(%rbp)
+	movq	-320(%rbp), %rax
+	movq	%rax, -368(%rbp)
+	movq	-328(%rbp), %rax
+	movq	%rax, -376(%rbp)
+	movq	-336(%rbp), %rax
+	movq	%rax, -384(%rbp)
+	movq	-344(%rbp), %rax
+	movq	%rax, -392(%rbp)
+	movq	-352(%rbp), %rax
+	movq	%rax, -400(%rbp)
+	movq	-360(%rbp), %rax
+	movq	%rax, -408(%rbp)
+	movq	-368(%rbp), %rax
+	movq	%rax, -416(%rbp)
+	movq	-376(%rbp), %rax
+	movq	%rax, -424(%rbp)
+	movq	-384(%rbp), %rax
+	movq	%rax, -432(%rbp)
+	movq	-392(%rbp), %rax
+	movq	%rax, -440(%rbp)
+	movq	-400(%rbp), %rax
+	movq	%rax, -448(%rbp)
+	movq	-408(%rbp), %rax
+	movq	%rax, -456(%rbp)
+	movq	
+WARNING:root:CASE 4 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:117: Warning: end of file not at end of a line; newline inserted
+tmp.s:118: Error: number of operands mismatch for `movq'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+void vec_mpy(int y[], const short x[], short scaler)
+{
+ int i;
+
+ for (i = 0; i < 150; i++)
+   y[i] += ((scaler * x[i]) >> 31);
+}
+INFO:root:x86 code: 
+
+; void vec_mpy(int y[], const short x[], short scaler)
+;
+; Inputs:
+;   y: pointer to the destination array
+;   x: pointer to the source array
+;   scaler: scalar value to multiply with
+;
+; Outputs:
+;   y: the destination array with the result of the multiplication
+
+; Prologue
+push rbp
+mov rbp, rsp
+
+; Save registers
+push rbx
+push r12
+push r13
+push r14
+push r15
+
+; Load scaler
+mov r15, scaler
+
+; Load x
+mov r14, x
+
+; Load y
+mov r13, y
+
+; Initialize i
+mov r12, 0
+
+; Loop
+.loop:
+
+; Multiply and shift
+mov rbx, [r14 + r12 * 4]
+imul rbx, r15
+shr rbx, 31
+
+; Add to y
+mov [r13 + r12 * 4], rbx
+
+; Increment i
+inc r12
+
+; Check loop condition
+cmp r12, 150
+jle .loop
+
+; Epilogue
+pop r15
+pop r14
+pop r13
+pop r12
+pop rbx
+mov rsp, rbp
+pop rbp
+ret
+
+WARNING:root:CASE 5 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:2: Error: no such instruction: `void vec_mpy(int y[],const short x[],short scaler)'
+tmp.s:5: Error: no such instruction: `pointer to the destination array'
+tmp.s:6: Error: no such instruction: `pointer to the source array'
+tmp.s:7: Error: no such instruction: `scalar value to multiply with'
+tmp.s:10: Error: no such instruction: `the destination array with the result of the multiplication'
+tmp.s:12: Error: no such instruction: `prologue'
+tmp.s:14: Error: operand size mismatch for `mov'
+tmp.s:16: Error: no such instruction: `save registers'
+tmp.s:23: Error: no such instruction: `load scaler'
+tmp.s:24: Error: operand size mismatch for `mov'
+tmp.s:26: Error: no such instruction: `load x'
+tmp.s:27: Error: operand size mismatch for `mov'
+tmp.s:29: Error: no such instruction: `load y'
+tmp.s:30: Error: operand size mismatch for `mov'
+tmp.s:32: Error: no such instruction: `initialize i'
+tmp.s:33: Error: operand size mismatch for `mov'
+tmp.s:35: Error: number of operands mismatch for `loop'
+tmp.s:38: Error: no such instruction: `multiply and shift'
+tmp.s:39: Error: operand size mismatch for `mov'
+tmp.s:40: Error: operand size mismatch for `imul'
+tmp.s:41: Error: operand size mismatch for `shr'
+tmp.s:43: Error: junk `y' after expression
+tmp.s:43: Error: number of operands mismatch for `add'
+tmp.s:44: Error: operand size mismatch for `mov'
+tmp.s:46: Error: no such instruction: `increment i'
+tmp.s:47: Warning: no instruction mnemonic suffix given and no register operands; using default for `inc'
+tmp.s:49: Error: no such instruction: `check loop condition'
+tmp.s:50: Error: operand size mismatch for `cmp'
+tmp.s:53: Error: no such instruction: `epilogue'
+tmp.s:59: Error: operand size mismatch for `mov'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int sign_int(int num)
+{
+  return (( ((((num))) <= (((0)))) ? ( ((((num))) < (((0)))) ? ((-1)) : ((0)) ) : ((1)) ));
+}
+WARNING:root:Failed to find the x86 code!
+WARNING:root:CASE 6 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:2: Error: no such instruction: `void vec_mpy(int y[],const short x[],short scaler)'
+tmp.s:5: Error: no such instruction: `pointer to the destination array'
+tmp.s:6: Error: no such instruction: `pointer to the source array'
+tmp.s:7: Error: no such instruction: `scalar value to multiply with'
+tmp.s:10: Error: no such instruction: `the destination array with the result of the multiplication'
+tmp.s:12: Error: no such instruction: `prologue'
+tmp.s:14: Error: operand size mismatch for `mov'
+tmp.s:16: Error: no such instruction: `save registers'
+tmp.s:23: Error: no such instruction: `load scaler'
+tmp.s:24: Error: operand size mismatch for `mov'
+tmp.s:26: Error: no such instruction: `load x'
+tmp.s:27: Error: operand size mismatch for `mov'
+tmp.s:29: Error: no such instruction: `load y'
+tmp.s:30: Error: operand size mismatch for `mov'
+tmp.s:32: Error: no such instruction: `initialize i'
+tmp.s:33: Error: operand size mismatch for `mov'
+tmp.s:35: Error: number of operands mismatch for `loop'
+tmp.s:38: Error: no such instruction: `multiply and shift'
+tmp.s:39: Error: operand size mismatch for `mov'
+tmp.s:40: Error: operand size mismatch for `imul'
+tmp.s:41: Error: operand size mismatch for `shr'
+tmp.s:43: Error: junk `y' after expression
+tmp.s:43: Error: number of operands mismatch for `add'
+tmp.s:44: Error: operand size mismatch for `mov'
+tmp.s:46: Error: no such instruction: `increment i'
+tmp.s:47: Warning: no instruction mnemonic suffix given and no register operands; using default for `inc'
+tmp.s:49: Error: no such instruction: `check loop condition'
+tmp.s:50: Error: operand size mismatch for `cmp'
+tmp.s:53: Error: no such instruction: `epilogue'
+tmp.s:59: Error: operand size mismatch for `mov'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int big_endian(
+    void)
+{
+    union {
+        long l;
+        char c[sizeof(long)];
+    } u;
+
+    u.l = 1;
+
+    return (u.c[sizeof(long) - 1] == 1);
+}
+WARNING:root:Failed to find the x86 code!
+WARNING:root:CASE 7 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:2: Error: no such instruction: `void vec_mpy(int y[],const short x[],short scaler)'
+tmp.s:5: Error: no such instruction: `pointer to the destination array'
+tmp.s:6: Error: no such instruction: `pointer to the source array'
+tmp.s:7: Error: no such instruction: `scalar value to multiply with'
+tmp.s:10: Error: no such instruction: `the destination array with the result of the multiplication'
+tmp.s:12: Error: no such instruction: `prologue'
+tmp.s:14: Error: operand size mismatch for `mov'
+tmp.s:16: Error: no such instruction: `save registers'
+tmp.s:23: Error: no such instruction: `load scaler'
+tmp.s:24: Error: operand size mismatch for `mov'
+tmp.s:26: Error: no such instruction: `load x'
+tmp.s:27: Error: operand size mismatch for `mov'
+tmp.s:29: Error: no such instruction: `load y'
+tmp.s:30: Error: operand size mismatch for `mov'
+tmp.s:32: Error: no such instruction: `initialize i'
+tmp.s:33: Error: operand size mismatch for `mov'
+tmp.s:35: Error: number of operands mismatch for `loop'
+tmp.s:38: Error: no such instruction: `multiply and shift'
+tmp.s:39: Error: operand size mismatch for `mov'
+tmp.s:40: Error: operand size mismatch for `imul'
+tmp.s:41: Error: operand size mismatch for `shr'
+tmp.s:43: Error: junk `y' after expression
+tmp.s:43: Error: number of operands mismatch for `add'
+tmp.s:44: Error: operand size mismatch for `mov'
+tmp.s:46: Error: no such instruction: `increment i'
+tmp.s:47: Warning: no instruction mnemonic suffix given and no register operands; using default for `inc'
+tmp.s:49: Error: no such instruction: `check loop condition'
+tmp.s:50: Error: operand size mismatch for `cmp'
+tmp.s:53: Error: no such instruction: `epilogue'
+tmp.s:59: Error: operand size mismatch for `mov'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int _isatty(int fd)
+{
+  (void)fd;
+  return (1);
+}
+INFO:root:x86 code: 
+
+_isatty:
+    push    rbp
+    mov     rbp, rsp
+    mov     eax, 1
+    pop     rbp
+    ret
+
+WARNING:root:CASE 8 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:4: Error: operand size mismatch for `mov'
+tmp.s:5: Error: operand size mismatch for `mov'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+extern inline int
+JKMarray_idx (const int J, const int K, const int M)
+{
+  return (((4 * J * J + 5) * J) / 3 + 2 * J * J + K * (2 * J + 1) + M);
+}
+WARNING:root:Failed to find the x86 code!
+WARNING:root:CASE 9 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:4: Error: operand size mismatch for `mov'
+tmp.s:5: Error: operand size mismatch for `mov'
+
+WARNING:root:ret.stdout: 
+INFO:root:Done
+INFO:root:Passed cases: []
+INFO:root:Failed cases: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+INFO:root:Pass rate: 0.0%
+INFO:root:End time: 2024-08-17 21:25:28.427846
