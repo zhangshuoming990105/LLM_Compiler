@@ -24,6 +24,11 @@ from config import (
 # local mode
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
+from peft import (
+    PeftModel,
+    LoraConfig,
+    get_peft_model,
+)
 
 
 def num_token_from_string(
@@ -82,7 +87,13 @@ def num_tokens_from_messages(messages, model="gpt-3.5-turbo-0613"):
 
 
 class Chat:
-    def __init__(self, model="mixtral-8x7b-instruct", use_local=False):
+    def __init__(
+        self,
+        model="mixtral-8x7b-instruct",
+        use_local=False,
+        temperature=0.3,
+        peft_model="",
+    ):
         if (
             model not in PPLX_AVAILABLE_MODELS
             and model not in GPT_AVAILABLE_MODELS
@@ -103,9 +114,14 @@ class Chat:
                 trust_remote_code=True,
                 torch_dtype=torch.float16,
                 device_map="auto",
-                resume_download = True,
             )
+            if peft_model != "":
+                self.local_model = PeftModel.from_pretrained(
+                    self.local_model, peft_model
+                )
+                self.is_fineturned = True
         self.model = model
+        self.temperature = temperature
         self.gpt_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         self.pplx_client = OpenAI(
             api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai"
@@ -142,7 +158,7 @@ class Chat:
         if self.model in ANTHROPIC_AVAILABLE_MODELS:
             self.messages = []
 
-    def local_chat(self, temperature=0.01, user_input=None):
+    def local_chat(self, temperature, user_input=None):
         if user_input is None:
             user_input = input("User: \n")
             logging.info(f"stdin user input: \n{user_input}")
@@ -153,34 +169,64 @@ class Chat:
             }
         )
         assert self.use_local, "Local mode is not enabled."
-        
+
         with torch.no_grad():
-            #message_prompt is the concatenation of system_prompt and user_input
-            message_prompt = self.tokenizer.apply_chat_template(self.messages, tokenize=False, add_generation_prompt=True)
-            # logging.info(message_prompt)
+            # message_prompt is the concatenation of system_prompt and user_input
+            message_prompt = self.tokenizer.apply_chat_template(
+                self.messages, tokenize=False, add_generation_prompt=True
+            )
+            if self.is_fineturned:
+                # grep the ```c code ``` from the user input
+
+                if "```c" in user_input:
+                    user_input = user_input.split("```c")[1].split("```")
+                    if len(user_input) > 0:
+                        user_input = user_input[0]
+                messages = [
+                    {
+                        "role": "system",
+                        "content": """you are a professional AI assistant in code, based on the user input C code, 
+you are going to help me to generate the corresponding x86 assembly.
+You will perform like a compiler with O0 optimization level, the architecture is x86_64.
+We can assume there will only be one function body to be compiled.
+input code will be inside "```c" and "```"tags, please also make sure the generated x86 assembly be inside "```x86" and "```" tags.""",
+                    },
+                    {
+                        "role": "user",
+                        "content": f"""```c
+{user_input}
+```""",
+                    },
+                ]
+                message_prompt = self.tokenizer.apply_chat_template(
+                    self.messages, tokenize=False, add_generation_prompt=True
+                )
+            logging.info("Actual LLM Input:" + message_prompt)
             inputs = self.tokenizer(
                 message_prompt,
                 return_tensors="pt",
                 max_length=2048,
                 truncation=True,
-            ).to('cuda')
+            ).to("cuda")
             outputs = self.local_model.generate(
-                **inputs, 
-                temperature=temperature, 
-                max_new_tokens=2048
+                **inputs,
+                temperature=temperature,
+                do_sample=True,
+                max_new_tokens=2048,
+                repetition_penalty=2.0,
+                # output_scores=True,
             )
             rsp_content = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-            # get the response - system_prompt - user_input
-            rsp_content = rsp_content[len(self.system_prompt) + len(user_input) :]
-        # logging.info(f"LLM response: \n{rsp_content}")
+            logging.info("Actual LLM Output:" + rsp_content)
+            rsp_content = rsp_content[len(message_prompt) :]
         self.messages.append(
             {
                 "role": "assistant",
                 "content": rsp_content,
             }
         )
-        
-    def non_local_chat(self, temperature=0.01, user_input=None):
+
+    def non_local_chat(self, temperature, user_input=None):
         if user_input is None:
             user_input = input("User: \n")
             logging.info(f"stdin user input: \n{user_input}")
@@ -223,13 +269,11 @@ class Chat:
             }
         )
 
-
-    def chat(self, temperature=0.01, user_input=None):
+    def chat(self, temperature, user_input=None):
         if self.use_local:
             self.local_chat(temperature=temperature, user_input=user_input)
         else:
             self.non_local_chat(temperature=temperature, user_input=user_input)
-        
 
     def paraphrase(self, text):
         task_description = "paraphrase the following text, make sure it is well written and syntax correct."
@@ -247,8 +291,12 @@ class Compiler(Chat):
         use_short_prompt=False,
         use_emnlp_prompt=False,
         use_local=False,
+        temperature=0.3,
+        peft_model="",
     ):
-        super().__init__(model, use_local=use_local)
+        super().__init__(
+            model, use_local=use_local, temperature=temperature, peft_model=peft_model
+        )
         self.full_prompt = (
             compiler_prompts["general"]
             + compiler_prompts["mission"]
@@ -289,8 +337,6 @@ class Compiler(Chat):
         if self.model in ANTHROPIC_AVAILABLE_MODELS:
             self.messages = []
 
-    
-
     # will only chat once
     def compile(self, code=None, out="tmp.s", reset_messages=True, use_local=False):
         if os.path.exists(code):
@@ -303,7 +349,9 @@ class Compiler(Chat):
             if code_file_name is not None:
                 with open(code_file_name, "r") as f:
                     code = f.read()
-        self.chat(user_input=code)
+        # warp code between ```c and ```
+        code = f"#Input:\n```c\n{code}\n```"
+        self.chat(user_input=code, temperature=self.temperature)
         compiler_rsp = self.messages[-1]["content"]
         self.assemble(compiler_rsp, out=out)
         # reset the messages
@@ -372,7 +420,7 @@ class Decompiler(Chat):
         # set the source and target language
         description = f"decompile the following {self.arch} code into C code."
         prompt = f"[INST]#Description:\n{description}\n#Input:\n```{self.arch}\n{code}```[/INST]\n"
-        self.chat(user_input=prompt)
+        self.chat(user_input=code, temperature=self.temperature)
         decompiler_rsp = self.messages[-1]["content"]
         if f"```c" in decompiler_rsp:
             c_code = decompiler_rsp.split("```c")[1].split("```")
@@ -442,7 +490,7 @@ class CodeTranslator(Chat):
         prompt += f"[INST]#Description:\n{description}\n[/INST]#Input:\n```{source}\n{code}```\n"
         prompt += desc_post
 
-        self.chat(user_input=prompt)
+        self.chat(user_input=code, temperature=self.temperature)
         compiler_rsp = self.messages[-1]["content"]
         # logging.info(f"Translated code: \n{compiler_rsp}")
         # grep the translated code

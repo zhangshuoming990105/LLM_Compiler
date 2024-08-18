@@ -19,6 +19,7 @@ compiler_short_prompts = {
     "general": """[INST]you are a helpful AI assistant, you will think carefully and follow the instructions to assist the user.[/INST]""",
     "mission": """[INST]you are a professional AI assistant in code, based on the user input C code, 
 you are going to help me to generate the corresponding x86 assembly.
+You will perform like a compiler with O0 optimization level, the architecture is x86_64.
 We can assume there will only be one function body to be compiled.[/INST]""",
     "code_format": """[INST] input code will be insidde "```c" and "```"tags, please also make sure the generated x86 assembly be inside "```x86" and "```" tags.[/INST]""",
     "code_example": """[INST]Example:

@@ -55,8 +55,24 @@ def human_eval():
         i += 1
 
 
-def c_compiler(model="gpt-4o", begin_id=0, end_id=100, use_short_prompt=False, use_emnlp_prompt=False, use_local=False):
-    compiler = Compiler(model, use_short_prompt=use_short_prompt,use_emnlp_prompt=use_emnlp_prompt, use_local=use_local)
+def c_compiler(
+    model="gpt-4o",
+    begin_id=0,
+    end_id=100,
+    use_short_prompt=False,
+    use_emnlp_prompt=False,
+    use_local=False,
+    temperature=0.3,
+    peft_model="",
+):
+    compiler = Compiler(
+        model,
+        use_short_prompt=use_short_prompt,
+        use_emnlp_prompt=use_emnlp_prompt,
+        use_local=use_local,
+        temperature=temperature,
+        peft_model=peft_model,
+    )
     # ds = load_dataset("jordiae/exebench")["train_real_simple_io"]
     ds = load_dataset("mistral0105/exebench_io_validated_full_cleaned")["train"]
     # select validate example to a new dataset, by checking compile status and execution status
@@ -71,9 +87,9 @@ def c_compiler(model="gpt-4o", begin_id=0, end_id=100, use_short_prompt=False, u
             case_id += 1
             continue
         if case_id >= end_id:
-                break
-        # try:
-        if True:
+            break
+        try:
+            # if True:
             id = 0
             x86_id = None
             for name in e["asm"]["target"]:
@@ -290,10 +306,10 @@ def c_compiler(model="gpt-4o", begin_id=0, end_id=100, use_short_prompt=False, u
             case_id += 1
             if case_id >= end_id:
                 break
-        # except Exception as e:
-        #     logging.error(f"Unexpected Error: {e}")
-        #     case_id += 1
-        #     continue
+        except Exception as e:
+            logging.error(f"Unexpected Error: {e}")
+            case_id += 1
+            continue
     logging.info("Done")
     logging.info(f"Passed cases: {passed_id}")
     logging.info(f"Failed cases: {failed_id}")
@@ -315,7 +331,7 @@ def c_compiler(model="gpt-4o", begin_id=0, end_id=100, use_short_prompt=False, u
             f.close()
 
 
-def python_compiler(model="gpt-4o",begin_id=0, end_id=1, use_short_prompt=False):
+def python_compiler(model="gpt-4o", begin_id=0, end_id=1, use_short_prompt=False):
     code_translator = CodeTranslator(model, source="python", target="c")
     gpt4_compiler = Compiler(model, use_short_prompt=use_short_prompt)
     compiler = gpt4_compiler
@@ -418,11 +434,11 @@ if __name__ == "__main__":
         logging.basicConfig(level=logging.INFO)
     logging.info("log file created!")
     logging.info("Start time: " + str(datetime.datetime.now()))
-    
+
     # CodeGeex4, ollama local models
     # c_compiler(model="codestral", begin_id=200, end_id=210, use_short_prompt=True)
     # c_compiler(model="gpt-4o", begin_id=200, end_id=210, use_short_prompt=True)
-    
+
     # EMNLP additional experiments baselines:
     # GPT-4o
     # c_compiler(model="gpt-4o",begin_id=0, end_id=100, use_emnlp_prompt=True)
@@ -435,12 +451,36 @@ if __name__ == "__main__":
     # c_compiler(model="mixtral-8x7b-instruct", begin_id=0, end_id=1, use_short_prompt=True)
     # Llama3.1
     # c_compiler(model="llama-3.1-70b-instruct", begin_id=0, end_id=10, use_short_prompt=True)
-    
+
     # local models using transformers library to load(including our fine-tuned models)
-    # c_compiler(model="deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct", begin_id=0, end_id=10, use_short_prompt=True, use_local=True)
-    c_compiler(model="codellama/CodeLlama-7b-Instruct-hf", begin_id=0, end_id=10, use_short_prompt=True, use_local=True)
-    
-    
+    c_compiler(
+        model="deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct",
+        begin_id=0,
+        end_id=1,
+        use_short_prompt=True,
+        use_local=True,
+        temperature=0.4,
+    )
+    # c_compiler(
+    #     model="codellama/CodeLlama-7b-Instruct-hf",
+    #     begin_id=0,
+    #     end_id=100,
+    #     use_short_prompt=True,
+    #     use_local=True,
+    #     temperature=0.4,
+    # )
+
+    # peft model
+    # c_compiler(
+    #     model="deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct",
+    #     begin_id=0,
+    #     end_id=2,
+    #     use_short_prompt=True,
+    #     use_local=True,
+    #     temperature=0.4,
+    #     peft_model="/root/workspace/LLM_Compiler/peft_trainer/lora_adapters/DeepSeek-Coder-V2-Lite-Instruct_c_x86_O0_lora128_32_0_none_b16_gpu4/final_checkpoint",
+    # )
+
     # python_c_translator(model="claude-3-haiku-20240307")
     # python_compiler("claude-3-5-sonnet-20240620")
     logging.info("End time: " + str(datetime.datetime.now()))

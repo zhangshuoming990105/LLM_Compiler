@@ -1,0 +1,7093 @@
+INFO:root:log file created!
+INFO:root:Start time: 2024-08-18 00:44:07.312181
+INFO:root:LLM default prompt size: 274
+INFO:root:C code :
+
+
+
+double linear_interp(double x,double lx,double ux,double ly,double uy) {
+  return((x-lx)/(ux-lx)*(uy-ly)+ly);
+}
+INFO:root:x86 code: 
+
+.text
+.globl	linear_interp
+.type	linear_interp, @function
+linear_interp:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movsd	%xmm0, -8(%rbp)
+	movsd	%xmm1, -16(%rbp)
+	movsd	%xmm2, -24(%rbp)
+	movsd	%xmm3, -32(%rbp)
+	movsd	%xmm4, -40(%rbp)
+	movsd	%xmm5, -48(%rbp)
+	movsd	%xmm5, %xmm0
+	subsd	%xmm1, %xmm0
+	movsd	%xmm0, %xmm1
+	subsd	%xmm2, %xmm1
+	movsd	%xmm1, %xmm0
+	divsd	%xmm1, %xmm0
+	movsd	%xmm0, %xmm1
+	movsd	%xmm4, %xmm0
+	subsd	%xmm3, %xmm0
+	movsd	%xmm0, %xmm1
+	subsd	%xmm5, %xmm1
+	movsd	%xmm1, %xmm0
+	divsd	%xmm1, %xmm0
+	movsd	%xmm0, %xmm1
+	movsd	%xmm0, %xmm0
+	mulsd	%xmm1, %xmm0
+	addsd	%xmm3, %xmm0
+	movsd	%xmm0, %xmm0
+	movsd	%xmm0, %xmm1
+	addsd	%xmm5, %xmm1
+	movsd	%xmm1, %xmm0
+	mulsd	%xmm1, %xmm0
+	addsd	%xmm0, %xmm4
+	movsd	%xmm4, %xmm0
+	popq	%rbp
+	ret
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 0
+WARNING:root:WARNING: code failed to execute for input 1 in case 0
+WARNING:root:WARNING: code failed to execute for input 2 in case 0
+WARNING:root:WARNING: code failed to execute for input 3 in case 0
+WARNING:root:WARNING: code failed to execute for input 4 in case 0
+WARNING:root:WARNING: code failed to execute for input 5 in case 0
+WARNING:root:WARNING: code failed to execute for input 6 in case 0
+WARNING:root:WARNING: code failed to execute for input 7 in case 0
+WARNING:root:WARNING: code failed to execute for input 8 in case 0
+WARNING:root:WARNING: code failed to execute for input 9 in case 0
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 0 failed
+INFO:root:C code :
+
+double QuinticEaseIn(double p)
+{
+    return p * p * p * p * p;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	QuinticEaseIn
+	.type	QuinticEaseIn, @function
+QuinticEaseIn:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	mulsd	%xmm0, %xmm0
+	mulsd	%xmm0, %xmm0
+	mulsd	%xmm0, %xmm0
+	mulsd	%xmm0, %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 1 failed
+INFO:root:C code :
+#include <stdio.h>
+
+int dec_lv(char x, char c, int lv)
+{
+ if (x == c)
+  --lv;
+
+ return lv;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	dec_lv
+	.type	dec_lv, @function
+dec_lv:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movb	%sil, %dl
+	movb	%cl, %r8b
+	movl	%edx, %eax
+	cmpb	%r8b, %dl
+	je	.L2
+	decq	%rax
+.L2:
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 2 failed
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <unistd.h>
+
+#include <limits.h>
+
+#include <errno.h>
+
+#include <stdarg.h>
+
+#include <fcntl.h>
+
+#include <time.h>
+
+#include <signal.h>
+
+#include <dirent.h>
+
+#include <pwd.h>
+
+#include <sys/types.h>
+
+#include <sys/stat.h>
+
+#include <sys/wait.h>
+
+int
+prefix_of(char *special, char *s)
+{
+ for (; *special != '\0'; ++special)
+  if (*special != *s++)
+   return 0;
+ return (*s == '=' || *s == '\0');
+}
+INFO:root:x86 code: 
+
+.text
+.globl prefix_of
+.type prefix_of, @function
+prefix_of:
+.LFB0:
+	endbr64
+	pushq %rbp
+	movq %rsp, %rbp
+	movq %rdi, -8(%rbp)
+	movq %rsi, -16(%rbp)
+	movq $0, -24(%rbp)
+.L2:
+	movq -8(%rbp), %rax
+	movq (%rax), %rax
+	cmpb $0, (%rax)
+	je .L3
+	movq -16(%rbp), %rax
+	movq (%rax), %rax
+	cmpb $0, (%rax)
+	je .L4
+	movq -8(%rbp), %rax
+	movq (%rax), %rax
+	movb (%rax), %al
+	movq -16(%rbp), %rax
+	movq (%rax), %rax
+	movb (%rax), %bl
+	cmpb %al, %bl
+	jne .L5
+	incq -8(%rbp)
+	incq -16(%rbp)
+	jmp .L2
+.L3:
+	movq $1, -24(%rbp)
+	jmp .L6
+.L4:
+	movq $0, -24(%rbp)
+	jmp .L6
+.L5:
+	movq $0, -24(%rbp)
+.L6:
+	movq -24(%rbp), %rax
+	popq %rbp
+	ret
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 3
+WARNING:root:WARNING: code failed to execute for input 1 in case 3
+WARNING:root:WARNING: code failed to execute for input 2 in case 3
+WARNING:root:WARNING: code failed to execute for input 3 in case 3
+WARNING:root:WARNING: code failed to execute for input 4 in case 3
+WARNING:root:WARNING: code failed to execute for input 5 in case 3
+WARNING:root:WARNING: code failed to execute for input 6 in case 3
+WARNING:root:WARNING: code failed to execute for input 7 in case 3
+WARNING:root:WARNING: code failed to execute for input 8 in case 3
+WARNING:root:WARNING: code failed to execute for input 9 in case 3
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 3 failed
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <memory.h>
+
+int* sub(int* a, int sizeA, int* b, int sizeB, int* resultSize){
+
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	sub
+	.type	sub, @function
+sub:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -24(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -8(%rbp)
+	movq	%rcx, -8(%rbp)
+	movq	%r8, -16(%rbp)
+	movq	%r9, -24(%rbp)
+	movq	-24(%rbp), %rax
+	movq	%rax, %rdi
+	call	malloc@PLT
+	movq	%rax, -32(%rbp)
+	movq	-16(%rbp), %rax
+	movq	%rax, %rdi
+	call	malloc@PLT
+	movq	%rax, -40(%rbp)
+	movq	-8(%rbp), %rax
+	movq	%rax, %rdi
+	call	malloc@PLT
+	movq	%rax, -48(%rbp)
+	movq	-32(%rbp), %rax
+	movq	%rax, %rdi
+	call	memcpy@PLT
+	movq	-40(%rbp), %rax
+	movq	%rax, %rdi
+	call	memcpy@PLT
+	movq	-48(%rbp), %rax
+	movq	%rax, %rdi
+	call	memcpy@PLT
+	movq	-32(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-40(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-48(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-32(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-24(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-16(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-8(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-32(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-40(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-48(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-24(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-16(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-8(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-32(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-40(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-48(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-24(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-16(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-8(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-32(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-40(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-48(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-24(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-16(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-8(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-32(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-40(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-48(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-24(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-16(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-8(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-32(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-40(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-48(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-24(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-16(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-8(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-32(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-40(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-48(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-24(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-16(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-8(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-32(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-40(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-48(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+	movq	-24(%rbp), %rax
+	movq	%rax, %rdi
+WARNING:root:WARNING: code failed to execute for input 0 in case 4
+WARNING:root:WARNING: code failed to execute for input 1 in case 4
+WARNING:root:WARNING: code failed to execute for input 2 in case 4
+WARNING:root:WARNING: code failed to execute for input 3 in case 4
+WARNING:root:WARNING: code failed to execute for input 4 in case 4
+WARNING:root:WARNING: code failed to execute for input 5 in case 4
+WARNING:root:WARNING: code failed to execute for input 6 in case 4
+WARNING:root:WARNING: code failed to execute for input 7 in case 4
+WARNING:root:WARNING: code failed to execute for input 8 in case 4
+WARNING:root:WARNING: code failed to execute for input 9 in case 4
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 4 failed
+INFO:root:C code :
+
+void vec_mpy(int y[], const short x[], short scaler)
+{
+ int i;
+
+ for (i = 0; i < 150; i++)
+   y[i] += ((scaler * x[i]) >> 31);
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	vec_mpy
+	.type	vec_mpy, @function
+vec_mpy:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movl	$0, -28(%rbp)
+	jmp	.L2
+.L3:
+	movq	-8(%rbp), %rax
+	movq	(%rax,%rax,4), %rax
+	movq	-16(%rbp), %rdx
+	movq	(%rdx,%rax,4), %rdx
+	movq	-24(%rbp), %rax
+	movq	%rax, %rsi
+	movq	%rdx, %rdi
+	call	__mulsi3
+	movq	-28(%rbp), %rax
+	movq	%rax, %rdx
+	movq	-24(%rbp), %rax
+	sarl	$31, %eax
+	salq	%rax, %rdx
+	movq	-8(%rbp), %rax
+	movq	(%rax,%rax,4), %rax
+	movq	-16(%rbp), %rdx
+	movq	(%rdx,%rax,4), %rdx
+	movq	%rdx, %rsi
+	movq	%rdx, %rdi
+	call	__addsi3
+	movq	-8(%rbp), %rax
+	movq	(%rax,%rax,4), %rax
+	movq	-16(%rbp), %rdx
+	movq	(%rdx,%rax,4), %rdx
+	movq	%rdx, %rsi
+	movq	%rdx, %rdi
+	call	__addsi3
+	movq	-28(%rbp), %rax
+	movq	%rax, %rdx
+	movq	-24(%rbp), %rax
+	sarl	$31, %eax
+	salq	%rax, %rdx
+	movq	-8(%rbp), %rax
+	movq	(%rax,%rax,4), %rax
+	movq	-16(%rbp), %rdx
+	movq	(%rdx,%rax,4), %rdx
+	movq	%rdx, %rsi
+	movq	%rdx, %rdi
+	call	__addsi3
+	movq	-8(%rbp), %rax
+	movq	(%rax,%rax,4), %rax
+	movq	-16(%rbp), %rdx
+	movq	(%rdx,%rax,4), %rdx
+	movq	%rdx, %rsi
+	movq	%rdx, %rdi
+	call	__addsi3
+	movq	-28(%rbp), %rax
+	movq	%rax, %rdx
+	movq	-24(%rbp), %rax
+	sarl	$31, %eax
+	salq	%rax, %rdx
+	movq	-8(%rbp), %rax
+	movq	(%rax,%rax,4), %rax
+	movq	-16(%rbp), %rdx
+	movq	(%rdx,%rax,4), %rdx
+	movq	%rdx, %rsi
+	movq	%rdx, %rdi
+	call	__addsi3
+	movq	-8(%rbp), %rax
+	movq	(%rax,%rax,4), %rax
+	movq	-16(%rbp), %rdx
+	movq	(%rdx,%rax,4), %rdx
+	movq	%rdx, %rsi
+	movq	%rdx, %rdi
+	call	__addsi3
+	movq	-28(%rbp), %rax
+	movq	%rax, %rdx
+	movq	-24(%rbp), %rax
+	sarl	$31, %eax
+	salq	%rax, %rdx
+	movq	-8(%rbp), %rax
+	movq	(%rax,%rax,4), %rax
+	movq	-16(%rbp), %rdx
+	movq	(%rdx,%rax,4), %rdx
+	movq	%rdx, %rsi
+	movq	%rdx, %rdi
+	call	__addsi3
+	movq	-8(%rbp), %rax
+	movq	(%rax,%rax,4), %rax
+	movq	-16(%rbp), %rdx
+	movq	(%rdx,%rax,4), %rdx
+	movq	%rdx, %rsi
+	movq	%rdx, %rdi
+	call	__addsi3
+	movq	-28(%rbp), %rax
+	movq	%rax, %rdx
+	movq	-24(%rbp), %rax
+	sarl	$31, %eax
+	salq	%rax, %rdx
+	movq	-8(%rbp), %rax
+	movq	(%rax,%rax,4), %rax
+	movq	-16(%rbp), %rdx
+	movq	(%rdx,%rax,4), %rdx
+	movq	%rdx, %rsi
+	movq	%rdx, %rdi
+	call	__addsi3
+	movq	-8(%rbp), %rax
+	movq	(%rax,%rax,4), %rax
+	movq	-16(%rbp), %rdx
+	movq	(%rdx,%rax,4), %rdx
+	movq	%rdx, %rsi
+	movq	%rdx, %rdi
+	call	__addsi3
+	movq	-28(%rbp), %rax
+	movq	%rax, %rdx
+	movq	-24(%rbp), %rax
+	sarl	$31, %eax
+	salq	%rax, %rdx
+	movq	-8(%rbp), %rax
+	movq	(%rax,%rax,4), %rax
+	movq	-16(%rbp), %rdx
+	movq	(%rdx,%rax,4), %rdx
+	movq	%rdx, %rsi
+	movq	%rdx, %rdi
+	call	__addsi3
+	movq	-8(%rbp), %rax
+	movq	(%rax,%rax,4), %rax
+	movq	-16(%rbp), %rdx
+	movq	(%rdx,%rax,4), %rdx
+	movq	%rdx, %rsi
+	movq	%rdx, %rdi
+	call	__addsi3
+	movq	-28(%rbp), %rax
+	movq	%rax, %rdx
+	movq	-24(%rbp), %rax
+	sarl	$31, %eax
+	salq	%rax, %rdx
+	movq	-8(%rbp), %rax
+	movq	(%rax,%rax,4), %rax
+	movq	-16(%rbp), %rdx
+	movq	(%rdx,%rax,4), %rdx
+	movq	%rdx, %rsi
+	movq	%rdx, %rdi
+	call	__addsi3
+	movq	-8(%rbp), %rax
+	movq	(%rax,%rax,4), %rax
+	movq	-16(%rbp), %rdx
+	movq	(%rdx,%rax,4), %rdx
+	movq	%rdx, %rsi
+	movq	%rdx, %rd
+WARNING:root:CASE 5 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s: Warning: end of file not at end of a line; newline inserted
+tmp.s:28: Error: operand type mismatch for `sal'
+tmp.s:47: Error: operand type mismatch for `sal'
+tmp.s:66: Error: operand type mismatch for `sal'
+tmp.s:85: Error: operand type mismatch for `sal'
+tmp.s:104: Error: operand type mismatch for `sal'
+tmp.s:123: Error: operand type mismatch for `sal'
+tmp.s:142: Error: operand type mismatch for `sal'
+tmp.s:155: Error: bad register name `%rd'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int sign_int(int num)
+{
+  return (( ((((num))) <= (((0)))) ? ( ((((num))) < (((0)))) ? ((-1)) : ((0)) ) : ((1)) ));
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	sign_int
+	.type	sign_int, @function
+sign_int:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	cmpl	$0, -4(%rbp)
+	setle	%al
+	movzbl	%al, %eax
+	cmpl	$0, -4(%rbp)
+	setge	%al
+	movzbl	%al, %edx
+	cmpl	$0, -4(%rbp)
+	setne	%al
+	movzbl	%al, %ecx
+	movl	%edx, %eax
+	cmovne	%ecx, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 6 succeeded
+INFO:root:C code :
+
+int big_endian(
+    void)
+{
+    union {
+        long l;
+        char c[sizeof(long)];
+    } u;
+
+    u.l = 1;
+
+    return (u.c[sizeof(long) - 1] == 1);
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	big_endian
+	.type	big_endian, @function
+big_endian:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movl	$1, -4(%rbp)
+	movq	-4(%rbp), %rax
+	movq	%rax, -16(%rbp)
+	movzbl	-16(%rbp), %eax
+	cmpb	$1, %al
+	sete	%al
+	movzbl	%al, %eax
+	popq	%rbp
+	ret
+
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 7
+WARNING:root:WARNING: code failed to execute for input 1 in case 7
+WARNING:root:WARNING: code failed to execute for input 2 in case 7
+WARNING:root:WARNING: code failed to execute for input 3 in case 7
+WARNING:root:WARNING: code failed to execute for input 4 in case 7
+WARNING:root:WARNING: code failed to execute for input 5 in case 7
+WARNING:root:WARNING: code failed to execute for input 6 in case 7
+WARNING:root:WARNING: code failed to execute for input 7 in case 7
+WARNING:root:WARNING: code failed to execute for input 8 in case 7
+WARNING:root:WARNING: code failed to execute for input 9 in case 7
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 7 failed
+INFO:root:C code :
+
+int _isatty(int fd)
+{
+  (void)fd;
+  return (1);
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	_isatty
+	.type	_isatty, @function
+_isatty:
+.LFB0:
+	endbr64
+	movl	%edi, %eax
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 8 failed
+INFO:root:C code :
+
+extern inline int
+JKMarray_idx (const int J, const int K, const int M)
+{
+  return (((4 * J * J + 5) * J) / 3 + 2 * J * J + K * (2 * J + 1) + M);
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	JKMarray_idx
+	.type	JKMarray_idx, @function
+JKMarray_idx:
+.LFB0:
+	endbr64
+	movl	%edi, %eax
+	imull	%esi, %eax
+	imull	%edx, %eax
+	movl	%eax, %ecx
+	movl	%eax, %edx
+	imull	%esi, %ecx
+	imull	%edx, %ecx
+	movl	%ecx, %eax
+	imull	%edx, %eax
+	addl	%esi, %eax
+	movl	%eax, %ecx
+	imull	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %ecx
+	addl	%edx, %ecx
+	addl	%esi, %
+WARNING:root:CASE 9 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s: Warning: end of file not at end of a line; newline inserted
+tmp.s:180: Error: bad register name `%'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+long sign_long(long num)
+{
+  return (( ((((num))) <= (((0)))) ? ( ((((num))) < (((0)))) ? ((-1)) : ((0)) ) : ((1)) ));
+}
+INFO:root:x86 code: 
+
+
+	.text
+	.globl	sign_long
+	.type	sign_long, @function
+sign_long:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	-8(%rbp), %rax
+	movq	%rax, -16(%rbp)
+	cmpq	$0, -16(%rbp)
+	setle	%al
+	movzbl	%al, %eax
+	cmpq	$0, -16(%rbp)
+	setl	%al
+	movzbl	%al, %edx
+	cmpq	$0, -16(%rbp)
+	setg	%al
+	movzbl	%al, %ecx
+	movq	$1, %rax
+	cmovl	%edx, %eax
+	cmovg	%ecx, %eax
+	popq	%rbp
+	ret
+
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 10 succeeded
+INFO:root:C code :
+
+int dmp_cm_edit_config(void)
+{
+ return 0;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	dmp_cm_edit_config
+	.type	dmp_cm_edit_config, @function
+dmp_cm_edit_config:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 11 succeeded
+INFO:root:C code :
+
+int _cmp (int _a, int _b) {
+ int a = _a;
+ int b = _b;
+ return (a > b ? (-1) : (1));
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	_cmp
+	.type	_cmp, @function
+_cmp:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-4(%rbp), %eax
+	cmpl	-8(%rbp), %eax
+	setg	%al
+	movzbl	%al, %eax
+	popq	%rbp
+	ret
+
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 12 failed
+INFO:root:C code :
+
+int safe(void) {
+    extern int q;
+    int lp;
+    return 0;
+}
+INFO:root:x86 code: 
+
+
+.text
+.globl	safe
+.type	safe, @function
+safe:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 13 succeeded
+INFO:root:C code :
+
+int HelpItem146( void )
+{
+
+ return 0;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	HelpItem146
+	.type	HelpItem146, @function
+HelpItem146:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 14 succeeded
+INFO:root:C code :
+
+int update_program_status(int aggregated_dump) {}
+INFO:root:x86 code: 
+
+	.text
+	.globl	update_program_status
+	.type	update_program_status, @function
+update_program_status:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	$0, -8(%rbp)
+	jmp	.L2
+.L3:
+	movl	-4(%rbp), %eax
+	addl	$1, %eax
+	movl	%eax, -4(%rbp)
+.L2:
+	cmpl	$10, -4(%rbp)
+	jle	.L3
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 15 failed
+INFO:root:C code :
+#include <stdlib.h>
+
+int printArray(int arr[], int n)
+{
+    int i=1;
+    while(arr[i]==arr[0])
+    {
+        i++;
+    }
+    return i;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	printArray
+	.type	printArray, @function
+printArray:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	$1, -12(%rbp)
+	jmp	.L2
+.L3:
+	movl	-4(%rbp), %eax
+	movl	(%rax,%rbp), %eax
+	movl	-4(%rbp), %edx
+	movl	(%rdx,%rbp), %edx
+	cmpl	%eax, %edx
+	jne	.L4
+	movl	-12(%rbp), %eax
+	addl	$1, %eax
+	movl	%eax, -12(%rbp)
+.L2:
+	movl	-12(%rbp), %eax
+	cmpl	-8(%rbp), %eax
+	jle	.L3
+	movl	-12(%rbp), %eax
+	popq	%rbp
+	ret
+.L4:
+	movl	-12(%rbp), %eax
+	popq	%rbp
+	ret
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 16
+WARNING:root:WARNING: code failed to execute for input 1 in case 16
+WARNING:root:WARNING: code failed to execute for input 2 in case 16
+WARNING:root:WARNING: code failed to execute for input 3 in case 16
+WARNING:root:WARNING: code failed to execute for input 4 in case 16
+WARNING:root:WARNING: code failed to execute for input 5 in case 16
+WARNING:root:WARNING: code failed to execute for input 6 in case 16
+WARNING:root:WARNING: code failed to execute for input 7 in case 16
+WARNING:root:WARNING: code failed to execute for input 8 in case 16
+WARNING:root:WARNING: code failed to execute for input 9 in case 16
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 16 failed
+INFO:root:C code :
+
+int
+COLORS()
+{
+
+    return 256;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	main
+	.type	main, @function
+COLORS:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$256, %eax
+	popq	%rbp
+	ret
+	.size	main, .-main
+
+WARNING:root:CASE 17 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s: Error: .size expression for main does not evaluate to a constant
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int bar( int x )
+{
+   return x+1;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	bar
+	.type	bar, @function
+bar:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	addl	$1, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 18 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <time.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <assert.h>
+
+char *skipSpaces(char *pc)
+{
+ while((*pc == ' ' || *pc == '\n' || *pc == '\t' || *pc == '\r') &&
+   *pc != '\0')
+  pc++;
+
+ return pc;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	skipSpaces
+	.type	skipSpaces, @function
+skipSpaces:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	-8(%rbp), %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L2
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L3
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L4
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L5
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L6
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L7
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L8
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L9
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L10
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L11
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L12
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L13
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L14
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L15
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L16
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L17
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L18
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L19
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L20
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L21
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L22
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L23
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L24
+	movq	%rax, %rdi
+	call	strlen
+	movl	%eax, %ecx
+	movq	-8(%rbp), %rdi
+	movl	%ecx, %esi
+	call	memchr
+	testl	%eax, %eax
+	je	.L25
+	movq	%rax, %rdi
+	call	strlen
+	movl	%e
+WARNING:root:CASE 19 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s: Warning: end of file not at end of a line; newline inserted
+tmp.s:205: Error: bad register name `%e'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+char *init_buffer(char *buffer)
+{
+ int i;
+
+ i = 0;
+ while (buffer[i])
+  buffer[i++] = 0;
+ return (buffer);
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	init_buffer
+	.type	init_buffer, @function
+init_buffer:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movl	$0, -4(%rbp)
+	jmp	.L2
+.L3:
+	movsbl	(%rdi,%rax), %edx
+	movb	%dl, (%rdi,%rax)
+	incq	%rax
+.L2:
+	cmpb	$0, (%rdi,%rax)
+	je	.L3
+	movq	-8(%rbp), %rax
+	popq	%rbp
+	ret
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 20
+WARNING:root:WARNING: code failed to execute for input 1 in case 20
+WARNING:root:WARNING: code failed to execute for input 2 in case 20
+WARNING:root:WARNING: code failed to execute for input 3 in case 20
+WARNING:root:WARNING: code failed to execute for input 4 in case 20
+WARNING:root:WARNING: code failed to execute for input 5 in case 20
+WARNING:root:WARNING: code failed to execute for input 6 in case 20
+WARNING:root:WARNING: code failed to execute for input 7 in case 20
+WARNING:root:WARNING: code failed to execute for input 8 in case 20
+WARNING:root:WARNING: code failed to execute for input 9 in case 20
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 20 failed
+INFO:root:C code :
+
+int GetAnswer() {
+  return 42;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	GetAnswer
+	.type	GetAnswer, @function
+GetAnswer:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$42, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 21 succeeded
+INFO:root:C code :
+
+unsigned char padding(void)
+{
+  return 0xff;
+}
+INFO:root:x86 code: 
+
+padding:
+.LFB0:
+	endbr64
+	movb	$0xff, %al
+	ret
+
+WARNING:root:CASE 22 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: warning: /tmp/ccXxi1Qi.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/ccAgVDbW.o: in function `main':
+tmp_driver.cpp:(.text+0x2ae): undefined reference to `padding'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+int getPrec(char op) {
+
+    switch(op) {
+        case '+':
+        case '-':
+        return 1;
+
+        case '*':
+        case '/':
+        return 2;
+
+
+        case '(':
+        case ')':
+        return 3;
+
+        default:
+        return 0;
+    }
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	getPrec
+	.type	getPrec, @function
+getPrec:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movzbl	%sil, %eax
+	movzbl	%al, %edx
+	movl	$.L.str.2, %edi
+	movl	$1, %esi
+	testl	%edx, %edx
+	je	.L2
+	movl	$.L.str.3, %edi
+	movl	$2, %esi
+	testl	%edx, %edx
+	je	.L2
+	movl	$.L.str.4, %edi
+	movl	$3, %esi
+	testl	%edx, %edx
+	je	.L2
+	movl	$.L.str.5, %edi
+	movl	$0, %esi
+	testl	%edx, %edx
+	je	.L2
+	movl	$.L.str.6, %edi
+	movl	$4, %esi
+.L2:
+	call	printf@PLT
+	movl	$0, %eax
+	popq	%rbp
+	ret
+.L.str.2:
+	.asciz	"+"
+.L.str.3:
+	.asciz	"*"
+.L.str.4:
+	.asciz	"/"
+.L.str.5:
+	.asciz	"("
+.L.str.6:
+	.asciz	")"
+
+WARNING:root:CASE 23 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/cc18YB00.o: relocation R_X86_64_32 against `.text' can not be used when making a PIE object; recompile with -fPIE
+/usr/bin/ld: failed to set dynamic section sizes: bad value
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <sys/stat.h>
+
+#include <errno.h>
+
+#include <sys/times.h>
+
+int _isatty(int file)
+{
+  return 0;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	_isatty
+	.type	_isatty, @function
+_isatty:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 24 succeeded
+INFO:root:C code :
+#include <stdlib.h>
+
+#include <stdio.h>
+
+#include <string.h>
+
+#include <errno.h>
+
+char flip_bit (char bit_character) {
+ if ('0' == bit_character)
+  return '1';
+ else
+  return '0';
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	flip_bit
+	.type	flip_bit, @function
+flip_bit:
+.LFB0:
+	endbr64
+	movzbl	%edi, %eax
+	xorl	$1, %eax
+	movzbl	%al, %edi
+	ret
+
+WARNING:root:CASE 25 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:8: Error: operand size mismatch for `movzb'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int
+foo (int a, int b)
+{
+  int t;
+
+  if (b)
+    {
+      if (a)
+ t = 3;
+      else
+ t = 5;
+
+      a = 0;
+    }
+  else
+    t = 7;
+
+  return t;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	foo
+	.type	foo, @function
+foo:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	cmpl	$0, -8(%rbp)
+	jne	.L2
+	movl	$3, -12(%rbp)
+	jmp	.L3
+.L2:
+	cmpl	$0, -4(%rbp)
+	jne	.L4
+	movl	$5, -12(%rbp)
+	jmp	.L3
+.L4:
+	movl	$7, -12(%rbp)
+.L3:
+	movl	-12(%rbp), %eax
+	popq	%rbp
+	ret
+
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 26 failed
+INFO:root:C code :
+#include <math.h>
+
+#include <stddef.h>
+
+double opTimes(double lhs, double rhs) { return lhs * rhs; }
+INFO:root:x86 code: 
+
+	.text
+	.globl	opTimes
+	.type	opTimes, @function
+opTimes:
+.LFB0:
+	endbr64
+	fldl	8(%rsp)
+	fmul	8(%rsp)
+	fstpl	%st(1)
+	fstpl	(%rsp)
+	ret
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 27
+WARNING:root:WARNING: code failed to execute for input 1 in case 27
+WARNING:root:WARNING: code failed to execute for input 2 in case 27
+WARNING:root:WARNING: code failed to execute for input 3 in case 27
+WARNING:root:WARNING: code failed to execute for input 4 in case 27
+WARNING:root:WARNING: code failed to execute for input 5 in case 27
+WARNING:root:WARNING: code failed to execute for input 6 in case 27
+WARNING:root:WARNING: code failed to execute for input 7 in case 27
+WARNING:root:WARNING: code failed to execute for input 8 in case 27
+WARNING:root:WARNING: code failed to execute for input 9 in case 27
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 27 failed
+INFO:root:C code :
+
+float raw_linear_derivative_at( float y ) {
+  return 1.0;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	raw_linear_derivative_at
+	.type	raw_linear_derivative_at, @function
+raw_linear_derivative_at:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm0
+WARNING:root:WARNING: code failed to execute for input 0 in case 28
+WARNING:root:WARNING: code failed to execute for input 1 in case 28
+WARNING:root:WARNING: code failed to execute for input 2 in case 28
+WARNING:root:WARNING: code failed to execute for input 3 in case 28
+WARNING:root:WARNING: code failed to execute for input 4 in case 28
+WARNING:root:WARNING: code failed to execute for input 5 in case 28
+WARNING:root:WARNING: code failed to execute for input 6 in case 28
+WARNING:root:WARNING: code failed to execute for input 7 in case 28
+WARNING:root:WARNING: code failed to execute for input 8 in case 28
+WARNING:root:WARNING: code failed to execute for input 9 in case 28
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 28 failed
+INFO:root:C code :
+
+int bitCount(int x) {
+  return 2;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	bitCount
+	.type	bitCount, @function
+bitCount:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	$2, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 29 succeeded
+INFO:root:C code :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int xtoi(char *p)
+{
+ int curr;
+ int res = 0;
+
+ while (*p)
+ {
+  curr = ((*p) >= '0' && (*p) <= '9' ? (*p) - '0' : (*p) >= 'A' && (*p) <= 'F' ? (*p) - 'A' + 10 : (*p) >= 'a' && (*p) <= 'f' ? (*p) - 'a' + 10 : -1);
+  if (curr == -1) break;
+  res = res * 0x10 + curr;
+  p++;
+ }
+
+ return res;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	xtoi
+	.type	xtoi, @function
+xtoi:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -0x8(%rbp)
+	movl	$0, -0x4(%rbp)
+	jmp	.L2
+.L3:
+	movslq	(%rdi), %rax
+	leaq	.L4(%rip), %rsi
+	movl	(%rsi), %eax
+	movslq	%eax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rsi
+	movq	%rsi, %rd
+WARNING:root:CASE 30 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s: Warning: end of file not at end of a line; newline inserted
+tmp.s:174: Error: bad register name `%rd'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <assert.h>
+
+int DummyCDInit(__attribute ((unused)) const char *cdrom_name)
+{
+
+
+
+ return 0;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	DummyCDInit
+	.type	DummyCDInit, @function
+DummyCDInit:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -0x8(%rbp)
+	movq	%rsi, -0x10(%rbp)
+	movq	$0, -0x18(%rbp)
+	movq	$0, -0x20(%rbp)
+	movq	$0, -0x28(%rbp)
+	movq	$0, -0x30(%rbp)
+	movq	$0, -0x38(%rbp)
+	movq	$0, -0x40(%rbp)
+	movq	$0, -0x48(%rbp)
+	movq	$0, -0x50(%rbp)
+	movq	$0, -0x58(%rbp)
+	movq	$0, -0x60(%rbp)
+	movq	$0, -0x68(%rbp)
+	movq	$0, -0x70(%rbp)
+	movq	$0, -0x78(%rbp)
+	movq	$0, -0x80(%rbp)
+	movq	$0, -0x88(%rbp)
+	movq	$0, -0x90(%rbp)
+	movq	$0, -0x98(%rbp)
+	movq	$0, -0xa0(%rbp)
+	movq	$0, -0xa8(%rbp)
+	movq	$0, -0xb0(%rbp)
+	movq	$0, -0xb8(%rbp)
+	movq	$0, -0xc0(%rbp)
+	movq	$0, -0xc8(%rbp)
+	movq	$0, -0xd0(%rbp)
+	movq	$0, -0xd8(%rbp)
+	movq	$0, -0xe0(%rbp)
+	movq	$0, -0xe8(%rbp)
+	movq	$0, -0xf0(%rbp)
+	movq	$0, -0xf8(%rbp)
+	movq	$0, -0x100(%rbp)
+	movq	$0, -0x108(%rbp)
+	movq	$0, -0x110(%rbp)
+	movq	$0, -0x118(%rbp)
+	movq	$0, -0x120(%rbp)
+	movq	$0, -0x128(%rbp)
+	movq	$0, -0x130(%rbp)
+	movq	$0, -0x138(%rbp)
+	movq	$0, -0x140(%rbp)
+	movq	$0, -0x148(%rbp)
+	movq	$0, -0x150(%rbp)
+	movq	$0, -0x158(%rbp)
+	movq	$0, -0x160(%rbp)
+	movq	$0, -0x168(%rbp)
+	movq	$0, -0x170(%rbp)
+	movq	$0, -0x178(%rbp)
+	movq	$0, -0x180(%rbp)
+	movq	$0, -0x188(%rbp)
+	movq	$0, -0x190(%rbp)
+	movq	$0, -0x198(%rbp)
+	movq	$0, -0x1a0(%rbp)
+	movq	$0, -0x1a8(%rbp)
+	movq	$0, -0x1b0(%rbp)
+	movq	$0, -0x1b8(%rbp)
+	movq	$0, -0x1c0(%rbp)
+	movq	$0, -0x1c8(%rbp)
+	movq	$0, -0x1d0(%rbp)
+	movq	$0, -0x1d8(%rbp)
+	movq	$0, -0x1e0(%rbp)
+	movq	$0, -0x1e8(%rbp)
+	movq	$0, -0x1f0(%rbp)
+	movq	$0, -0x1f8(%rbp)
+	movq	$0, -0x200(%rbp)
+	movq	$0, -0x208(%rbp)
+	movq	$0, -0x210(%rbp)
+	movq	$0, -0x218(%rbp)
+	movq	$0, -0x220(%rbp)
+	movq	$0, -0x228(%rbp)
+	movq	$0, -0x230(%rbp)
+	movq	$0, -0x238(%rbp)
+	movq	$0, -0x240(%rbp)
+	movq	$0, -0x248(%rbp)
+	movq	$0, -0x250(%rbp)
+	movq	$0, -0x258(%rbp)
+	movq	$0, -0x260(%rbp)
+	movq	$0, -0x268(%rbp)
+	movq	$0, -0x270(%rbp)
+	movq	$0, -0x278(%rbp)
+	movq	$0, -0x280(%rbp)
+	movq	$0, -0x288(%rbp)
+	movq	$0, -0x290(%rbp)
+	movq	$0, -0x298(%rbp)
+	movq	$0, -0x2a0(%rbp)
+	movq	$0, -0x2a8(%rbp)
+	movq	$0, -0x2b0(%rbp)
+	movq	$0, -0x2b8(%rbp)
+	movq	$0, -0x2c0(%rbp)
+	movq	$0, -0x2c8(%rbp)
+	movq	$0, -0x2d0(%rbp)
+	movq	$0, -0x2d8(%rbp)
+	movq	$0, -0x2e0(%rbp)
+	movq	$0, -0x2e8(%rbp)
+	movq	$0, -0x2f0(%rbp)
+	movq	$0, -0x2f8(%rbp)
+	movq	$0, -0x300(%rbp)
+	movq	$0, -0x308(%rbp)
+	movq	$0, -0x310(%rbp)
+	movq	$0, -0x318(%rbp)
+	movq	$0, -0x320(%rbp)
+	movq	$0, -0x328(%rbp)
+	movq	$0, -0x330(%rbp)
+	movq	$0, -0x338(%rbp)
+	movq	$0, -0x340(%rbp)
+	movq	$0, -0x348(%rbp)
+	movq	$0, -0x350(%rbp)
+	movq	$0, -0x358(%rbp)
+	movq	$0, -0x360(%rbp)
+	movq	$0, -0x368(%rbp)
+	movq	$0, -0x370(%rbp)
+	movq	$0, -0x378(%rbp)
+	movq	$0, -0x380(%
+WARNING:root:CASE 31 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s: Warning: end of file not at end of a line; newline inserted
+tmp.s:121: Error: unbalanced parenthesis in operand 2.
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+#include <time.h>
+
+#include <stdlib.h>
+
+#include <ctype.h>
+
+int retPosVector(char letra, char alfabeto[]) {
+ int i;
+
+ for( i = 0; alfabeto[i]; i++) {
+  if(alfabeto[i] == letra) {
+   return i;
+  }
+ }
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	retPosVector
+	.type	retPosVector, @function
+retPosVector:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movl	$0, -20(%rbp)
+.L2:
+	movq	-16(%rbp), %rax
+	movzbl	(%rax), %eax
+	testl	%eax, %eax
+	je	.L4
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %eax
+	movl	%eax, %edx
+	movq	-16(%rbp), %rax
+	movzbl	1(%rax), %eax
+	movl	%eax, %esi
+	movl	%edx, %edi
+	call	strcmp@PLT
+	testl	%eax, %eax
+	jne	.L3
+	movl	$1, -20(%rbp)
+	jmp	.L4
+.L3:
+	addq	$1, -16(%rbp)
+	jmp	.L2
+.L4:
+	movl	-20(%rbp), %eax
+	popq	%rbp
+	ret
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 32
+WARNING:root:WARNING: code failed to execute for input 1 in case 32
+WARNING:root:WARNING: code failed to execute for input 2 in case 32
+WARNING:root:WARNING: code failed to execute for input 3 in case 32
+WARNING:root:WARNING: code failed to execute for input 4 in case 32
+WARNING:root:WARNING: code failed to execute for input 5 in case 32
+WARNING:root:WARNING: code failed to execute for input 6 in case 32
+WARNING:root:WARNING: code failed to execute for input 7 in case 32
+WARNING:root:WARNING: code failed to execute for input 8 in case 32
+WARNING:root:WARNING: code failed to execute for input 9 in case 32
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 32 failed
+INFO:root:C code :
+
+unsigned int CgosStrLen(const char *s)
+  {
+  const char *ss=s;
+  if (!s) return 0;
+  while (*s++);
+  return s-ss-1;
+  }
+INFO:root:x86 code: 
+
+	.text
+	.globl	CgosStrLen
+	.type	CgosStrLen, @function
+CgosStrLen:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	-8(%rbp), %rax
+	testq	%rax, %rax
+	jne	.L2
+	movl	$0, %eax
+	jmp	.L3
+.L2:
+	movq	-8(%rbp), %rax
+	movq	%rax, %rdx
+	movq	%rdx, %rax
+	incq	%rax
+	movq	%rdx, %rdi
+	call	strlen@PLT
+	movl	$1, %edx
+	movq	%rax, %rdi
+	call	strlen@PLT
+	subl	%edx, %eax
+	movl	%eax, %edx
+.L3:
+	movl	%edx, %eax
+	popq	%rbp
+	ret
+	.size	CgosStrLen, .-CgosStrLen
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 33
+WARNING:root:WARNING: code failed to execute for input 1 in case 33
+WARNING:root:WARNING: code failed to execute for input 2 in case 33
+WARNING:root:WARNING: code failed to execute for input 3 in case 33
+WARNING:root:WARNING: code failed to execute for input 4 in case 33
+WARNING:root:WARNING: code failed to execute for input 5 in case 33
+WARNING:root:WARNING: code failed to execute for input 6 in case 33
+WARNING:root:WARNING: code failed to execute for input 7 in case 33
+WARNING:root:WARNING: code failed to execute for input 8 in case 33
+WARNING:root:WARNING: code failed to execute for input 9 in case 33
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 33 failed
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <math.h>
+
+#include <time.h>
+
+#include <omp.h>
+
+#include <unistd.h>
+
+int checkExpDesignator(char *str, int len)
+{
+ int i,n=0;
+
+ for (i=0; i<len; i++)
+ {
+  if (str[i]=='D')
+  {
+   n++;
+   str[i] = 'E';
+  }
+ }
+
+ return(n);
+}
+INFO:root:x86 code: 
+
+.text
+.globl checkExpDesignator
+.type checkExpDesignator, @function
+checkExpDesignator:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movl	%esi, -12(%rbp)
+	movq	-8(%rbp), %rax
+	movq	%rax, -16(%rbp)
+	movl	-12(%rbp), %eax
+	movl	%eax, -20(%rbp)
+	movq	-16(%rbp), %rdi
+	movq	-20(%rbp), %rsi
+	movq	%rdi, %rax
+	movq	%rsi, %rdi
+	movq	%rax, %rsi
+	call	strlen@PLT
+	movq	%rax, -28(%rbp)
+	movq	-28(%rbp), %rax
+	movq	%rax, %rdi
+	call	malloc@PLT
+	movq	%rax, -32(%rbp)
+	movq	-16(%rbp), %rax
+	movq	%rax, %rdi
+	call	strcpy@PLT
+	movq	-32(%rbp), %rax
+	movq	%rax, %rdi
+	call	strlen@PLT
+	movq	%rax, -40(%rbp)
+	movq	-40(%rbp), %rax
+	movq	%rax, %rdi
+	call	malloc@PLT
+	movq	%rax, -48(%rbp)
+	movq	-32(%rbp), %rax
+	movq	%rax, %rdi
+	call	strcpy@PLT
+	movq	-48(%rbp), %rax
+	movq	%rax, %rdi
+	call	strlen@PLT
+	movq	%rax, -56(%rbp)
+	movq	-56(%rbp), %rax
+	movq	%rax, %rdi
+	call	malloc@PLT
+	movq	%rax, -64(%rbp)
+	movq	-48(%rbp), %rax
+	movq	%rax, %rdi
+	call	strcpy@PLT
+	movq	-64(%rbp), %rax
+	movq	%rax, %rdi
+	call	strlen@PLT
+	movq	%rax, -72(%rbp)
+	movq	-72(%rbp), %rax
+	movq	%rax, %rdi
+	call	malloc@PLT
+	movq	%rax, -80(%rbp)
+	movq	-64(%rbp), %rax
+	movq	%rax, %rdi
+	call	strcpy@PLT
+	movq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	strlen@PLT
+	movq	%rax, -88(%rbp)
+	movq	-88(%rbp), %rax
+	movq	%rax, %rdi
+	call	malloc@PLT
+	movq	%rax, -96(%rbp)
+	movq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	strcpy@PLT
+	movq	-96(%rbp), %rax
+	movq	%rax, %rdi
+	call	strlen@PLT
+	movq	%rax, -104(%rbp)
+	movq	-104(%rbp), %rax
+	movq	%rax, %rdi
+	call	malloc@PLT
+	movq	%rax, -112(%rbp)
+	movq	-96(%rbp), %rax
+	movq	%rax, %rdi
+	call	strcpy@PLT
+	movq	-112(%rbp), %rax
+	movq	%rax, %rdi
+	call	strlen@PLT
+	movq	%rax, -120(%rbp)
+	movq	-120(%rbp), %rax
+	movq	%rax, %rdi
+	call	malloc@PLT
+	movq	%rax, -128(%rbp)
+	movq	-112(%rbp), %rax
+	movq	%rax, %rdi
+	call	strcpy@PLT
+	movq	-128(%rbp), %rax
+	movq	%rax, %rdi
+	call	strlen@PLT
+	movq	%rax, -136(%rbp)
+	movq	-136(%rbp), %rax
+	movq	%rax, %rdi
+	call	malloc@PLT
+	movq	%rax, -144(%rbp)
+	movq	-128(%rbp), %rax
+	movq	%rax, %rdi
+	call	strcpy@PLT
+	movq	-144(%rbp), %rax
+	movq	%rax, %rdi
+	call	strlen@PLT
+	movq	%rax, -152(%rbp)
+	movq	-152(%rbp), %rax
+	movq	%rax, %rdi
+	call	malloc@PLT
+	movq	%rax, -160(%rbp)
+	movq	-144(%rbp), %rax
+	movq	%rax, %rdi
+	call	strcpy@PLT
+	movq	-160(%rbp), %rax
+	movq	%rax, %rdi
+	call	strlen@PLT
+	movq	%rax, -168(%rbp)
+	movq	-168(%rbp), %rax
+	movq	%rax, %rdi
+	call	malloc@PLT
+	movq	%rax, -176(%rbp)
+	movq	-160(%rbp), %rax
+	movq	%rax, %rdi
+	call	strcpy@PLT
+	movq	-176(%rbp), %rax
+	movq	%rax, %rdi
+	call	strlen@PLT
+	movq	%rax, -184(%rbp)
+	movq	-184(%rbp), %rax
+	movq	%rax, %rdi
+	call	malloc@PLT
+	movq	%rax, -192(%rbp)
+	movq	-176(%rbp), %rax
+	movq	%rax, %rdi
+	call	strcpy@PLT
+	movq	-192(%rbp), %rax
+	movq	%rax, %rdi
+	call	strlen@PLT
+	movq	%rax, -200(%rbp)
+	movq	-200(%rbp), %rax
+	movq	%rax, %rdi
+	call	malloc@PLT
+	movq	%rax, -208(%rbp)
+	movq	-192(%rbp), %rax
+	movq	%rax, %rdi
+	call	strcpy@PLT
+	movq	-208(%rbp), %rax
+	movq	%rax, %rdi
+	call	strlen@PLT
+	movq	%rax, -216(%rbp)
+	movq	-216(%rbp), %rax
+	movq	%rax, %rdi
+	call	malloc@PLT
+	movq	%rax, -224(%rbp)
+	movq	-208(%rbp), %rax
+	movq	%rax, %rdi
+	call	strcpy@PLT
+	
+WARNING:root:WARNING: code failed to execute for input 0 in case 34
+WARNING:root:WARNING: code failed to execute for input 1 in case 34
+WARNING:root:WARNING: code failed to execute for input 2 in case 34
+WARNING:root:WARNING: code failed to execute for input 3 in case 34
+WARNING:root:WARNING: code failed to execute for input 4 in case 34
+WARNING:root:WARNING: code failed to execute for input 5 in case 34
+WARNING:root:WARNING: code failed to execute for input 6 in case 34
+WARNING:root:WARNING: code failed to execute for input 7 in case 34
+WARNING:root:WARNING: code failed to execute for input 8 in case 34
+WARNING:root:WARNING: code failed to execute for input 9 in case 34
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 34 failed
+INFO:root:C code :
+#include <stddef.h>
+
+#include <stdint.h>
+
+int oc_storage_config(const char *store) {
+    return -1;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	oc_storage_config
+	.type	oc_storage_config, @function
+oc_storage_config:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8,
+WARNING:root:CASE 35 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s: Warning: end of file not at end of a line; newline inserted
+tmp.s:134: Error: expecting operand after ','; got nothing
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+int inter_mercenary_sql_init(void)
+{
+ return 0;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	inter_mercenary_sql_init
+	.type	inter_mercenary_sql_init, @function
+inter_mercenary_sql_init:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 36 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int tester(int num){
+ return num;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	tester
+	.type	tester, @function
+tester:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 37 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int logicOr(int x, int y) {
+ if (x || y == 1) {
+  return 1;
+ }
+ else {
+  return 0;
+ }
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	logicOr
+	.type	logicOr, @function
+logicOr:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-4(%rbp), %eax
+	orl	-8(%rbp), %eax
+	cmpl	$1, -8(%rbp)
+	jne	.L2
+	movl	$1, %eax
+	jmp	.L3
+.L2:
+	movl	$0, %eax
+.L3:
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 38 failed
+INFO:root:C code :
+
+int f6(int c, int shamt) {
+
+
+
+
+  return c << shamt;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	f6
+	.type	f6, @function
+f6:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-4(%rbp), %eax
+	shll	%esi
+	movl	%eax, -12(%rbp)
+	movl	-12(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 39 failed
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+char cipher (char c){
+ if(c >= 65 && c<= 90){
+  c = c - 65;
+  c = 90 - c;
+ }else if( c >= 97 && c<= 122){
+  c = c-97;
+  c = 122 - c;
+ }
+ return c;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	cipher
+	.type	cipher, @function
+cipher:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movb	%al, -0x1(%rbp)
+	cmpb	$0x41, %al
+	jle	.L2
+	cmpb	$0x5b, %al
+	jle	.L3
+	jmp	.L4
+.L2:
+	movb	$0x19, %al
+	jmp	.L5
+.L3:
+	movb	$0x20, %al
+	jmp	.L5
+.L4:
+	movb	$0x21, %al
+.L5:
+	movb	%al, %cl
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 40 failed
+INFO:root:C code :
+
+int
+g(int a)
+{
+ return a;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	g
+	.type	g, @function
+g:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 41 succeeded
+INFO:root:C code :
+
+float obdConvert_44 (unsigned int A, unsigned int B, unsigned int C, unsigned int D) {
+ return ((float)A*256.0f+(float)B)*0.0000305f;
+}
+INFO:root:x86 code: 
+
+.text
+.globl obdConvert_44
+.type obdConvert_44, @function
+obdConvert_44:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	A(%rip), %eax
+	movl	B(%rip), %ebx
+	movl	C(%rip), %ecx
+	movl	D(%rip), %edx
+	imull	%ebx, %eax
+	imull	%ecx, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	imull	%ebx, %eax
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %ebx
+	movl	%eax, %esi
+	movl	%ebx, %edi
+	movl	%esi, %eax
+	movl	%edi, %
+WARNING:root:CASE 42 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s: Warning: end of file not at end of a line; newline inserted
+tmp.s:188: Error: bad register name `%'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+double check_double() { return 0; }
+INFO:root:x86 code: 
+
+	.text
+	.globl	check_double
+	.type	check_double, @function
+check_double:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 43 succeeded
+INFO:root:C code :
+
+int ft_tolower(int c)
+{
+ if (c <= 90 && c >= 65)
+  return (c + 32);
+ return (c);
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	ft_tolower
+	.type	ft_tolower, @function
+ft_tolower:
+.LFB0:
+	endbr64
+	movl	%edi, %eax
+	cmpq	$90, %rax
+	setle	%al
+	cmpq	$65, %rax
+	setge	%al
+	movq	%rax, %rdi
+	call	ft_isalpha@PLT
+	testb	%al, %al
+	jne	.L2
+	movl	%edi, %eax
+	addq	$32, %rax
+	ret
+.L2:
+	movl	%edi, %eax
+	ret
+
+WARNING:root:CASE 44 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: warning: /tmp/cc0HXEhW.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/cc0HXEhW.o: in function `ft_tolower':
+(.text+0x18): undefined reference to `ft_isalpha'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+
+
+
+
+
+
+int SwapLong(int num)
+{
+ return (((num >> 0) & 0xFF) << 24) + (((num >> 8) & 0xFF) << 16) + (((num >> 16) & 0xFF) << 8) + (((num >> 24) & 0xFF) << 0);
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	SwapLong
+	.type	SwapLong, @function
+SwapLong:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	shlq	$0, %rax
+	movl	%eax, %edx
+	shrq	$8, %rdx
+	andl	$255, %edx
+	movl	%edx, %eax
+	shlq	$24, %rax
+	movl	%eax, %edx
+	shrq	$16, %rdx
+	andl	$255, %edx
+	movl	%edx, %eax
+	shlq	$16, %rax
+	movl	%eax, %edx
+	shrq	$8, %rdx
+	andl	$255, %edx
+	movl	%edx, %eax
+	shlq	$8, %rax
+	movl	%eax, %edx
+	shrq	$0, %rdx
+	andl	$255, %edx
+	movl	%edx, %eax
+	popq	%rbp
+	ret
+
+
+INFO:root:Local error rate: 90.0%
+INFO:root:CASE 45 failed
+INFO:root:C code :
+#include <inttypes.h>
+
+#include <stdlib.h>
+
+#include <limits.h>
+
+#include <stdio.h>
+
+#include <string.h>
+
+#include <sqlite3.h>
+
+int Bank_int_IsValidName(const char *Name)
+{
+ if( !Name ) return 0;
+ while(*Name)
+ {
+  if( *Name == '\'' ) return 0;
+  Name ++;
+ }
+ return 1;
+}
+INFO:root:x86 code: 
+
+.text
+.globl Bank_int_IsValidName
+.type Bank_int_IsValidName, @function
+Bank_int_IsValidName:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	-16(%rbp), %rax
+	testq	%rax, %rax
+	je	.L2
+	movq	%rax, %rdi
+	call	strlen@PLT
+	movq	%rax, %rdx
+	movq	-16(%rbp), %rax
+	movq	%rdx, %rcx
+	movq	%rax, %rsi
+	movq	%rdi, %rax
+	call	strncmp@PLT
+	testq	%rax, %rax
+	jne	.L2
+	movl	$1, %eax
+	jmp	.L3
+.L2:
+	movl	$0, %eax
+.L3:
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 46 failed
+INFO:root:C code :
+#include <assert.h>
+
+#include <errno.h>
+
+#include <fcntl.h>
+
+#include <poll.h>
+
+#include <signal.h>
+
+#include <stdarg.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <sys/mman.h>
+
+#include <sys/time.h>
+
+#include <sys/types.h>
+
+#include <sys/wait.h>
+
+#include <time.h>
+
+#include <unistd.h>
+
+int RIFSIGNALED(int status)
+{
+    return (status & 0xff) != 0;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	RIFSIGNALED
+	.type	RIFSIGNALED, @function
+RIFSIGNALED:
+.LFB0:
+	endbr64
+	movl	%edi, %eax
+	movl	$1, %edx
+	andl	%edx, %eax
+	ret
+	.size	RIFSIGNALED, .-RIFSIGNALED
+
+
+INFO:root:Local error rate: 60.0%
+INFO:root:CASE 47 failed
+INFO:root:C code :
+
+
+
+
+
+
+
+
+
+
+
+void TextDisplaySetBarText(int barnum, const char *str)
+{
+
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	TextDisplaySetBarText
+	.type	TextDisplaySetBarText, @function
+TextDisplaySetBarText:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	-16(%rbp), %rax
+	movq	%rax, -24(%rbp)
+	movl	-4(%rbp), %eax
+	movl	%eax, %edi
+	call	TextDisplaySetBarText@PLT
+	nop
+	popq	%rbp
+	ret
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 48
+WARNING:root:WARNING: code failed to execute for input 1 in case 48
+WARNING:root:WARNING: code failed to execute for input 2 in case 48
+WARNING:root:WARNING: code failed to execute for input 3 in case 48
+WARNING:root:WARNING: code failed to execute for input 4 in case 48
+WARNING:root:WARNING: code failed to execute for input 5 in case 48
+WARNING:root:WARNING: code failed to execute for input 6 in case 48
+WARNING:root:WARNING: code failed to execute for input 7 in case 48
+WARNING:root:WARNING: code failed to execute for input 8 in case 48
+WARNING:root:WARNING: code failed to execute for input 9 in case 48
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 48 failed
+INFO:root:C code :
+
+char * getTokenTypeName(int type){
+ switch(type){
+  case 1:
+   return "<LParen>";
+  case 2:
+   return "<RParen>";
+  case 3:
+   return "<Number>";
+  case 8:
+   return "<ID>";
+  case 6:
+   return "<Plus>";
+  case 7:
+   return "<Minus>";
+  case -2:
+   return "<EOF>";
+  case -1:
+   return "<Error!>";
+  default:
+   return "<Unknown token type!>";
+ }
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	getTokenTypeName
+	.type	getTokenTypeName, @function
+getTokenTypeName:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	cmpl	$1, -4(%rbp)
+	jne	.L2
+	leaq	.LC0(%rip), %rax
+	jmp	.L3
+.L2:
+	cmpl	$2, -4(%rbp)
+	jne	.L4
+	leaq	.LC1(%rip), %rax
+	jmp	.L3
+.L4:
+	cmpl	$3, -4(%rbp)
+	jne	.L5
+	leaq	.LC2(%rip), %rax
+	jmp	.L3
+.L5:
+	cmpl	$8, -4(%rbp)
+	jne	.L6
+	leaq	.LC3(%rip), %rax
+	jmp	.L3
+.L6:
+	cmpl	$6, -4(%rbp)
+	jne	.L7
+	leaq	.LC4(%rip), %rax
+	jmp	.L3
+.L7:
+	cmpl	$7, -4(%rbp)
+	jne	.L8
+	leaq	.LC5(%rip), %rax
+	jmp	.L3
+.L8:
+	cmpl	$-2, -4(%rbp)
+	jne	.L9
+	leaq	.LC6(%rip), %rax
+	jmp	.L3
+.L9:
+	cmpl	$-1, -4(%rbp)
+	jne	.L10
+	leaq	.LC7(%rip), %rax
+	jmp	.L3
+.L10:
+	leaq	.LC8(%rip), %rax
+.L3:
+	movq	%rax, %rax
+	popq	%rbp
+	ret
+.LC0:
+	.string	"<LParen>"
+.LC1:
+	.string	"<RParen>"
+.LC2:
+	.string	"<Number>"
+.LC3:
+	.string	"<ID>"
+.LC4:
+	.string	"<Plus>"
+.LC5:
+	.string	"<Minus>"
+.LC6:
+	.string	"<EOF>"
+.LC7:
+	.string	"<Error!>"
+.LC8:
+	.string	"<Unknown token type!>"
+
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 49 succeeded
+INFO:root:C code :
+#include <math.h>
+
+#include <stdio.h>
+
+#include <errno.h>
+
+#include <stdlib.h>
+
+int mus_iclamp(int lo, int val, int hi)
+{
+    if (val > hi)
+        return(hi);
+    else
+        if (val < lo)
+            return(lo);
+        else return(val);
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	mus_iclamp
+	.type	mus_iclamp, @function
+mus_iclamp:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	%edx, -12(%rbp)
+	cmpl	-12(%rbp), -8(%rbp)
+	jle	.L2
+	movl	-12(%rbp), %eax
+	jmp	.L3
+.L2:
+	cmpl	-8(%rbp), -4(%rbp)
+	jle	.L4
+	movl	-8(%rbp), %eax
+	jmp	.L3
+.L4:
+	movl	-4(%rbp), %eax
+.L3:
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 50 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:13: Error: operand size mismatch for `cmp'
+tmp.s:18: Error: operand size mismatch for `cmp'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+float UI_ClampCvar( float min, float max, float value )
+{
+ if ( value < min ) return min;
+ if ( value > max ) return max;
+ return value;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	UI_ClampCvar
+	.type	UI_ClampCvar, @function
+UI_ClampCvar:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movss	%xmm0, %xmm1
+	movss	%xmm1, %xmm2
+	movss	%xmm2, %xmm3
+	movss	%xmm3, %xmm4
+	movss	%xmm4, %xmm5
+	movss	%xmm5, %xmm6
+	movss	%xmm6, %xmm7
+	movss	%xmm7, %xmm8
+	movss	%xmm8, %xmm9
+	movss	%xmm9, %xmm10
+	movss	%xmm10, %xmm11
+	movss	%xmm11, %xmm12
+	movss	%xmm12, %xmm13
+	movss	%xmm13, %xmm14
+	movss	%xmm14, %xmm15
+	movss	%xmm15, %xmm16
+	movss	%xmm16, %xmm17
+	movss	%xmm17, %xmm18
+	movss	%xmm18, %xmm19
+	movss	%xmm19, %xmm20
+	movss	%xmm20, %xmm21
+	movss	%xmm21, %xmm22
+	movss	%xmm22, %xmm23
+	movss	%xmm23, %xmm24
+	movss	%xmm24, %xmm25
+	movss	%xmm25, %xmm26
+	movss	%xmm26, %xmm27
+	movss	%xmm27, %xmm28
+	movss	%xmm28, %xmm29
+	movss	%xmm29, %xmm30
+	movss	%xmm30, %xmm31
+	movss	%xmm31, %xmm32
+	movss	%xmm32, %xmm33
+	movss	%xmm33, %xmm34
+	movss	%xmm34, %xmm35
+	movss	%xmm35, %xmm36
+	movss	%xmm36, %xmm37
+	movss	%xmm37, %xmm38
+	movss	%xmm38, %xmm39
+	movss	%xmm39, %xmm40
+	movss	%xmm40, %xmm41
+	movss	%xmm41, %xmm42
+	movss	%xmm42, %xmm43
+	movss	%xmm43, %xmm44
+	movss	%xmm44, %xmm45
+	movss	%xmm45, %xmm46
+	movss	%xmm46, %xmm47
+	movss	%xmm47, %xmm48
+	movss	%xmm48, %xmm49
+	movss	%xmm49, %xmm50
+	movss	%xmm50, %xmm51
+	movss	%xmm51, %xmm52
+	movss	%xmm52, %xmm53
+	movss	%xmm53, %xmm54
+	movss	%xmm54, %xmm55
+	movss	%xmm55, %xmm56
+	movss	%xmm56, %xmm57
+	movss	%xmm57, %xmm58
+	movss	%xmm58, %xmm59
+	movss	%xmm59, %xmm60
+	movss	%xmm60, %xmm61
+	movss	%xmm61, %xmm62
+	movss	%xmm62, %xmm63
+	movss	%xmm63, %xmm64
+	movss	%xmm64, %xmm65
+	movss	%xmm65, %xmm66
+	movss	%xmm66, %xmm67
+	movss	%xmm67, %xmm68
+	movss	%xmm68, %xmm69
+	movss	%xmm69, %xmm70
+	movss	%xmm70, %xmm71
+	movss	%xmm71, %xmm72
+	movss	%xmm72, %xmm73
+	movss	%xmm73, %xmm74
+	movss	%xmm74, %xmm75
+	movss	%xmm75, %xmm76
+	movss	%xmm76, %xmm77
+	movss	%xmm77, %xmm78
+	movss	%xmm78, %xmm79
+	movss	%xmm79, %xmm80
+	movss	%xmm80, %xmm81
+	movss	%xmm81, %xmm82
+	movss	%xmm82, %xmm83
+	movss	%xmm83, %xmm84
+	movss	%xmm84, %xmm85
+	movss	%xmm85, %xmm86
+	movss	%xmm86, %xmm87
+	movss	%xmm87, %xmm88
+	movss	%xmm88, %xmm89
+	movss	%xmm89, %xmm90
+	movss	%xmm90, %xmm91
+	movss	%xmm91, %xmm92
+	movss	%xmm92, %xmm93
+	movss	%xmm93, %xmm94
+	movss	%xmm94, %xmm95
+	movss	%xmm95, %xmm96
+	movss	%xmm96, %xmm97
+	movss	%xmm97, %xmm98
+	movss	%xmm98, %xmm99
+	movss	%xmm99, %xmm100
+	movss	%xmm100, %xmm101
+	movss	%xmm101, %xmm102
+	movss	%xmm102, %xmm103
+	movss	%xmm103, %xmm104
+	movss	%xmm104, %xmm105
+	movss	%xmm105, %xmm106
+	movss	%xmm106, %xmm107
+	movss	%xmm107, %xmm108
+	movss	%xmm108, %xmm109
+	movss	%xmm109, %xmm110
+	movss	%xmm110, %xmm111
+	movss	%xmm111, %xmm112
+	movss	%xmm112, %xmm113
+	movss	%xmm113, %xmm114
+	movss	%xmm114, %xmm115
+	movss	%xmm115, %xmm116
+	movss	%xmm116, %xmm117
+	movss	%xmm117, %xmm118
+	movss	%xmm118, %xmm119
+	movss	%xmm119, %xmm120
+	movss	%xmm120, %xmm121
+	movss	%xmm1
+WARNING:root:CASE 51 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s: Warning: end of file not at end of a line; newline inserted
+tmp.s:25: Error: no EVEX encoding for `movss'
+tmp.s:26: Error: no EVEX encoding for `movss'
+tmp.s:27: Error: no EVEX encoding for `movss'
+tmp.s:28: Error: no EVEX encoding for `movss'
+tmp.s:29: Error: no EVEX encoding for `movss'
+tmp.s:30: Error: no EVEX encoding for `movss'
+tmp.s:31: Error: no EVEX encoding for `movss'
+tmp.s:32: Error: no EVEX encoding for `movss'
+tmp.s:33: Error: no EVEX encoding for `movss'
+tmp.s:34: Error: no EVEX encoding for `movss'
+tmp.s:35: Error: no EVEX encoding for `movss'
+tmp.s:36: Error: no EVEX encoding for `movss'
+tmp.s:37: Error: no EVEX encoding for `movss'
+tmp.s:38: Error: no EVEX encoding for `movss'
+tmp.s:39: Error: no EVEX encoding for `movss'
+tmp.s:40: Error: no EVEX encoding for `movss'
+tmp.s:41: Error: bad register name `%xmm32'
+tmp.s:42: Error: bad register name `%xmm32'
+tmp.s:43: Error: bad register name `%xmm33'
+tmp.s:44: Error: bad register name `%xmm34'
+tmp.s:45: Error: bad register name `%xmm35'
+tmp.s:46: Error: bad register name `%xmm36'
+tmp.s:47: Error: bad register name `%xmm37'
+tmp.s:48: Error: bad register name `%xmm38'
+tmp.s:49: Error: bad register name `%xmm39'
+tmp.s:50: Error: bad register name `%xmm40'
+tmp.s:51: Error: bad register name `%xmm41'
+tmp.s:52: Error: bad register name `%xmm42'
+tmp.s:53: Error: bad register name `%xmm43'
+tmp.s:54: Error: bad register name `%xmm44'
+tmp.s:55: Error: bad register name `%xmm45'
+tmp.s:56: Error: bad register name `%xmm46'
+tmp.s:57: Error: bad register name `%xmm47'
+tmp.s:58: Error: bad register name `%xmm48'
+tmp.s:59: Error: bad register name `%xmm49'
+tmp.s:60: Error: bad register name `%xmm50'
+tmp.s:61: Error: bad register name `%xmm51'
+tmp.s:62: Error: bad register name `%xmm52'
+tmp.s:63: Error: bad register name `%xmm53'
+tmp.s:64: Error: bad register name `%xmm54'
+tmp.s:65: Error: bad register name `%xmm55'
+tmp.s:66: Error: bad register name `%xmm56'
+tmp.s:67: Error: bad register name `%xmm57'
+tmp.s:68: Error: bad register name `%xmm58'
+tmp.s:69: Error: bad register name `%xmm59'
+tmp.s:70: Error: bad register name `%xmm60'
+tmp.s:71: Error: bad register name `%xmm61'
+tmp.s:72: Error: bad register name `%xmm62'
+tmp.s:73: Error: bad register name `%xmm63'
+tmp.s:74: Error: bad register name `%xmm64'
+tmp.s:75: Error: bad register name `%xmm65'
+tmp.s:76: Error: bad register name `%xmm66'
+tmp.s:77: Error: bad register name `%xmm67'
+tmp.s:78: Error: bad register name `%xmm68'
+tmp.s:79: Error: bad register name `%xmm69'
+tmp.s:80: Error: bad register name `%xmm70'
+tmp.s:81: Error: bad register name `%xmm71'
+tmp.s:82: Error: bad register name `%xmm72'
+tmp.s:83: Error: bad register name `%xmm73'
+tmp.s:84: Error: bad register name `%xmm74'
+tmp.s:85: Error: bad register name `%xmm75'
+tmp.s:86: Error: bad register name `%xmm76'
+tmp.s:87: Error: bad register name `%xmm77'
+tmp.s:88: Error: bad register name `%xmm78'
+tmp.s:89: Error: bad register name `%xmm79'
+tmp.s:90: Error: bad register name `%xmm80'
+tmp.s:91: Error: bad register name `%xmm81'
+tmp.s:92: Error: bad register name `%xmm82'
+tmp.s:93: Error: bad register name `%xmm83'
+tmp.s:94: Error: bad register name `%xmm84'
+tmp.s:95: Error: bad register name `%xmm85'
+tmp.s:96: Error: bad register name `%xmm86'
+tmp.s:97: Error: bad register name `%xmm87'
+tmp.s:98: Error: bad register name `%xmm88'
+tmp.s:99: Error: bad register name `%xmm89'
+tmp.s:100: Error: bad register name `%xmm90'
+tmp.s:101: Error: bad register name `%xmm91'
+tmp.s:102: Error: bad register name `%xmm92'
+tmp.s:103: Error: bad register name `%xmm93'
+tmp.s:104: Error: bad register name `%xmm94'
+tmp.s:105: Error: bad register name `%xmm95'
+tmp.s:106: Error: bad register name `%xmm96'
+tmp.s:107: Error: bad register name `%xmm97'
+tmp.s:108: Error: bad register name `%xmm98'
+tmp.s:109: Error: bad register name `%xmm99'
+tmp.s:110: Error: bad register name `%xmm100'
+tmp.s:111: Error: bad register name `%xmm101'
+tmp.s:112: Error: bad register name `%xmm102'
+tmp.s:113: Error: bad register name `%xmm103'
+tmp.s:114: Error: bad register name `%xmm104'
+tmp.s:115: Error: bad register name `%xmm105'
+tmp.s:116: Error: bad register name `%xmm106'
+tmp.s:117: Error: bad register name `%xmm107'
+tmp.s:118: Error: bad register name `%xmm108'
+tmp.s:119: Error: bad register name `%xmm109'
+tmp.s:120: Error: bad register name `%xmm110'
+tmp.s:121: Error: bad register name `%xmm111'
+tmp.s:122: Error: bad register name `%xmm112'
+tmp.s:123: Error: bad register name `%xmm113'
+tmp.s:124: Error: bad register name `%xmm114'
+tmp.s:125: Error: bad register name `%xmm115'
+tmp.s:126: Error: bad register name `%xmm116'
+tmp.s:127: Error: bad register name `%xmm117'
+tmp.s:128: Error: bad register name `%xmm118'
+tmp.s:129: Error: bad register name `%xmm119'
+tmp.s:130: Error: bad register name `%xmm120'
+tmp.s:131: Error: number of operands mismatch for `movss'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+short USBSTK5505_GPIO_init()
+{
+    return 0;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	USBSTK5505_GPIO_init
+	.type	USBSTK5505_GPIO_init, @function
+USBSTK5505_GPIO_init:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 52 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <math.h>
+
+#include <stdlib.h>
+
+#include <unistd.h>
+
+#include <stdarg.h>
+
+#include <string.h>
+
+double H (double x) {
+   if (x >= 0) return 1.;
+   else return 0.;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	H
+	.type	H, @function
+H:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movsd	%xmm0, %xmm1
+	ucomisd	.LC0(%rip), %xmm1
+	setae	%al
+	movzbl	%al, %eax
+	popq	%rbp
+	ret
+.LC0:
+	.double	0.000000
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 53 failed
+INFO:root:C code :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int LZ4_versionNumber (void) { return (1 *100*100 + 6 *100 + 0); }
+INFO:root:x86 code: 
+
+	.text
+	.globl	LZ4_versionNumber
+	.type	LZ4_versionNumber, @function
+LZ4_versionNumber:
+.LFB0:
+	endbr64
+	movl	$100000, %eax
+	ret
+	.size	LZ4_versionNumber, .-LZ4_versionNumber
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 54 failed
+INFO:root:C code :
+
+int foo(int time, int n) {
+#pragma omp parallel for default(shared) schedule(dynamic, 1) reduction(+ : time)
+  for (int i = 1; i < n; ++i);
+  return 0;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	foo
+	.type	foo, @function
+foo:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	$0, -12(%rbp)
+	jmp	.L2
+.L3:
+	movl	-4(%rbp), %eax
+	movl	%eax, %esi
+	movl	-8(%rbp), %edi
+	call	bar
+	movl	%eax, -12(%rbp)
+.L2:
+	movl	-4(%rbp), %eax
+	addl	$1, %eax
+	movl	%eax, -4(%rbp)
+	cmpl	-8(%rbp), %eax
+	jle	.L3
+	movl	-12(%rbp), %eax
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 55 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: warning: /tmp/ccLqT7Ce.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/ccLqT7Ce.o: in function `foo':
+(.text+0x20): undefined reference to `bar'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+int checkrange(char c1, char c2)
+{
+
+ if (('a' <= c1 && c1 <= 'z') && (c1 <= c2 && c2 <= 'z'))
+  return 1;
+
+ if (('A' <= c1 && c1 <= 'Z') && (c1 <= c2 && c2 <= 'Z'))
+  return 1;
+
+ if (('0' <= c1 && c1 <= '9') && (c1 <= c2 && c2 <= '9'))
+  return 1;
+
+ return 0;
+}
+INFO:root:x86 code: 
+
+.text
+.globl checkrange
+.type checkrange, @function
+checkrange:
+.LFB0:
+	endbr64
+	pushq %rbp
+	movq %rsp, %rbp
+	movb %sil, %cl
+	cmpb $97, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $90, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $97, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $90, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $97, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $90, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $97, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $90, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $97, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $90, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $97, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $90, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $97, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $90, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $97, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $90, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $97, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $90, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $97, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $90, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $97, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $90, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $97, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $90, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $97, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $90, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $97, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $90, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $97, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $90, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $97, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $90, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $97, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $90, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $97, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $90, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $57, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $97, %cl
+	setle %al
+	movzx %al, %eax
+	cmpb $90,
+WARNING:root:CASE 56 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s: Warning: end of file not at end of a line; newline inserted
+tmp.s:230: Error: expecting operand after ','; got nothing
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <math.h>
+
+double
+gsl_coerce_double (const double x)
+{
+  volatile double y;
+  y = x;
+  return y;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	gsl_coerce_double
+	.type	gsl_coerce_double, @function
+gsl_coerce_double:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movsd	%xmm0, %xmm1
+	movsd	%xmm1, %xmm0
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 57 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int c059(void) { return 0; }
+INFO:root:x86 code: 
+
+	.text
+	.globl	c059
+	.type	c059, @function
+c059:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 58 succeeded
+INFO:root:C code :
+#include <math.h>
+
+#include <stdlib.h>
+
+double mcdrag_rpm(double twist, double velocity)
+{
+  return (velocity/(twist/60.0)*12.0);
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	mcdrag_rpm
+	.type	mcdrag_rpm, @function
+mcdrag_rpm:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movsd	.LC0(%rip), %xmm0
+	movsd	%xmm0, %xmm1
+	movsd	%xmm1, %xmm2
+	movsd	%xmm2, %xmm3
+	movsd	%xmm3, %xmm4
+	movsd	%xmm4, %xmm5
+	movsd	%xmm5, %xmm6
+	movsd	%xmm6, %xmm7
+	movsd	%xmm7, %xmm8
+	movsd	%xmm8, %xmm9
+	movsd	%xmm9, %xmm10
+	movsd	%xmm10, %xmm11
+	movsd	%xmm11, %xmm12
+	movsd	%xmm12, %xmm13
+	movsd	%xmm13, %xmm14
+	movsd	%xmm14, %xmm15
+	movsd	%xmm15, %xmm16
+	movsd	%xmm16, %xmm17
+	movsd	%xmm17, %xmm18
+	movsd	%xmm18, %xmm19
+	movsd	%xmm19, %xmm20
+	movsd	%xmm20, %xmm21
+	movsd	%xmm21, %xmm22
+	movsd	%xmm22, %xmm23
+	movsd	%xmm23, %xmm24
+	movsd	%xmm24, %xmm25
+	movsd	%xmm25, %xmm26
+	movsd	%xmm26, %xmm27
+	movsd	%xmm27, %xmm28
+	movsd	%xmm28, %xmm29
+	movsd	%xmm29, %xmm30
+	movsd	%xmm30, %xmm31
+	movsd	%xmm31, %xmm32
+	movsd	%xmm32, %xmm33
+	movsd	%xmm33, %xmm34
+	movsd	%xmm34, %xmm35
+	movsd	%xmm35, %xmm36
+	movsd	%xmm36, %xmm37
+	movsd	%xmm37, %xmm38
+	movsd	%xmm38, %xmm39
+	movsd	%xmm39, %xmm40
+	movsd	%xmm40, %xmm41
+	movsd	%xmm41, %xmm42
+	movsd	%xmm42, %xmm43
+	movsd	%xmm43, %xmm44
+	movsd	%xmm44, %xmm45
+	movsd	%xmm45, %xmm46
+	movsd	%xmm46, %xmm47
+	movsd	%xmm47, %xmm48
+	movsd	%xmm48, %xmm49
+	movsd	%xmm49, %xmm50
+	movsd	%xmm50, %xmm51
+	movsd	%xmm51, %xmm52
+	movsd	%xmm52, %xmm53
+	movsd	%xmm53, %xmm54
+	movsd	%xmm54, %xmm55
+	movsd	%xmm55, %xmm56
+	movsd	%xmm56, %xmm57
+	movsd	%xmm57, %xmm58
+	movsd	%xmm58, %xmm59
+	movsd	%xmm59, %xmm60
+	movsd	%xmm60, %xmm61
+	movsd	%xmm61, %xmm62
+	movsd	%xmm62, %xmm63
+	movsd	%xmm63, %xmm64
+	movsd	%xmm64, %xmm65
+	movsd	%xmm65, %xmm66
+	movsd	%xmm66, %xmm67
+	movsd	%xmm67, %xmm68
+	movsd	%xmm68, %xmm69
+	movsd	%xmm69, %xmm70
+	movsd	%xmm70, %xmm71
+	movsd	%xmm71, %xmm72
+	movsd	%xmm72, %xmm73
+	movsd	%xmm73, %xmm74
+	movsd	%xmm74, %xmm75
+	movsd	%xmm75, %xmm76
+	movsd	%xmm76, %xmm77
+	movsd	%xmm77, %xmm78
+	movsd	%xmm78, %xmm79
+	movsd	%xmm79, %xmm80
+	movsd	%xmm80, %xmm81
+	movsd	%xmm81, %xmm82
+	movsd	%xmm82, %xmm83
+	movsd	%xmm83, %xmm84
+	movsd	%xmm84, %xmm85
+	movsd	%xmm85, %xmm86
+	movsd	%xmm86, %xmm87
+	movsd	%xmm87, %xmm88
+	movsd	%xmm88, %xmm89
+	movsd	%xmm89, %xmm90
+	movsd	%xmm90, %xmm91
+	movsd	%xmm91, %xmm92
+	movsd	%xmm92, %xmm93
+	movsd	%xmm93, %xmm94
+	movsd	%xmm94, %xmm95
+	movsd	%xmm95, %xmm96
+	movsd	%xmm96, %xmm97
+	movsd	%xmm97, %xmm98
+	movsd	%xmm98, %xmm99
+	movsd	%xmm99, %xmm100
+	movsd	%xmm100, %xmm101
+	movsd	%xmm101, %xmm102
+	movsd	%xmm102, %xmm103
+	movsd	%xmm103, %xmm104
+	movsd	%xmm104, %xmm105
+	movsd	%xmm105, %xmm106
+	movsd	%xmm106, %xmm107
+	movsd	%xmm107, %xmm108
+	movsd	%xmm108, %xmm109
+	movsd	%xmm109, %xmm110
+	movsd	%xmm110, %xmm111
+	movsd	%xmm111, %xmm112
+	movsd	%xmm112, %xmm113
+	movsd	%xmm113, %xmm114
+	movsd	%xmm114, %xmm115
+	movsd	%xmm115, %xmm116
+	movsd	%xmm116, %xmm117
+	movsd	%xmm117, %xmm118
+	movsd	%xmm118, %xmm119
+	movsd	%xmm119, %xmm120
+	movsd	%xmm120,
+WARNING:root:CASE 59 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s: Warning: end of file not at end of a line; newline inserted
+tmp.s:26: Error: no EVEX encoding for `movsd'
+tmp.s:27: Error: no EVEX encoding for `movsd'
+tmp.s:28: Error: no EVEX encoding for `movsd'
+tmp.s:29: Error: no EVEX encoding for `movsd'
+tmp.s:30: Error: no EVEX encoding for `movsd'
+tmp.s:31: Error: no EVEX encoding for `movsd'
+tmp.s:32: Error: no EVEX encoding for `movsd'
+tmp.s:33: Error: no EVEX encoding for `movsd'
+tmp.s:34: Error: no EVEX encoding for `movsd'
+tmp.s:35: Error: no EVEX encoding for `movsd'
+tmp.s:36: Error: no EVEX encoding for `movsd'
+tmp.s:37: Error: no EVEX encoding for `movsd'
+tmp.s:38: Error: no EVEX encoding for `movsd'
+tmp.s:39: Error: no EVEX encoding for `movsd'
+tmp.s:40: Error: no EVEX encoding for `movsd'
+tmp.s:41: Error: no EVEX encoding for `movsd'
+tmp.s:42: Error: bad register name `%xmm32'
+tmp.s:43: Error: bad register name `%xmm32'
+tmp.s:44: Error: bad register name `%xmm33'
+tmp.s:45: Error: bad register name `%xmm34'
+tmp.s:46: Error: bad register name `%xmm35'
+tmp.s:47: Error: bad register name `%xmm36'
+tmp.s:48: Error: bad register name `%xmm37'
+tmp.s:49: Error: bad register name `%xmm38'
+tmp.s:50: Error: bad register name `%xmm39'
+tmp.s:51: Error: bad register name `%xmm40'
+tmp.s:52: Error: bad register name `%xmm41'
+tmp.s:53: Error: bad register name `%xmm42'
+tmp.s:54: Error: bad register name `%xmm43'
+tmp.s:55: Error: bad register name `%xmm44'
+tmp.s:56: Error: bad register name `%xmm45'
+tmp.s:57: Error: bad register name `%xmm46'
+tmp.s:58: Error: bad register name `%xmm47'
+tmp.s:59: Error: bad register name `%xmm48'
+tmp.s:60: Error: bad register name `%xmm49'
+tmp.s:61: Error: bad register name `%xmm50'
+tmp.s:62: Error: bad register name `%xmm51'
+tmp.s:63: Error: bad register name `%xmm52'
+tmp.s:64: Error: bad register name `%xmm53'
+tmp.s:65: Error: bad register name `%xmm54'
+tmp.s:66: Error: bad register name `%xmm55'
+tmp.s:67: Error: bad register name `%xmm56'
+tmp.s:68: Error: bad register name `%xmm57'
+tmp.s:69: Error: bad register name `%xmm58'
+tmp.s:70: Error: bad register name `%xmm59'
+tmp.s:71: Error: bad register name `%xmm60'
+tmp.s:72: Error: bad register name `%xmm61'
+tmp.s:73: Error: bad register name `%xmm62'
+tmp.s:74: Error: bad register name `%xmm63'
+tmp.s:75: Error: bad register name `%xmm64'
+tmp.s:76: Error: bad register name `%xmm65'
+tmp.s:77: Error: bad register name `%xmm66'
+tmp.s:78: Error: bad register name `%xmm67'
+tmp.s:79: Error: bad register name `%xmm68'
+tmp.s:80: Error: bad register name `%xmm69'
+tmp.s:81: Error: bad register name `%xmm70'
+tmp.s:82: Error: bad register name `%xmm71'
+tmp.s:83: Error: bad register name `%xmm72'
+tmp.s:84: Error: bad register name `%xmm73'
+tmp.s:85: Error: bad register name `%xmm74'
+tmp.s:86: Error: bad register name `%xmm75'
+tmp.s:87: Error: bad register name `%xmm76'
+tmp.s:88: Error: bad register name `%xmm77'
+tmp.s:89: Error: bad register name `%xmm78'
+tmp.s:90: Error: bad register name `%xmm79'
+tmp.s:91: Error: bad register name `%xmm80'
+tmp.s:92: Error: bad register name `%xmm81'
+tmp.s:93: Error: bad register name `%xmm82'
+tmp.s:94: Error: bad register name `%xmm83'
+tmp.s:95: Error: bad register name `%xmm84'
+tmp.s:96: Error: bad register name `%xmm85'
+tmp.s:97: Error: bad register name `%xmm86'
+tmp.s:98: Error: bad register name `%xmm87'
+tmp.s:99: Error: bad register name `%xmm88'
+tmp.s:100: Error: bad register name `%xmm89'
+tmp.s:101: Error: bad register name `%xmm90'
+tmp.s:102: Error: bad register name `%xmm91'
+tmp.s:103: Error: bad register name `%xmm92'
+tmp.s:104: Error: bad register name `%xmm93'
+tmp.s:105: Error: bad register name `%xmm94'
+tmp.s:106: Error: bad register name `%xmm95'
+tmp.s:107: Error: bad register name `%xmm96'
+tmp.s:108: Error: bad register name `%xmm97'
+tmp.s:109: Error: bad register name `%xmm98'
+tmp.s:110: Error: bad register name `%xmm99'
+tmp.s:111: Error: bad register name `%xmm100'
+tmp.s:112: Error: bad register name `%xmm101'
+tmp.s:113: Error: bad register name `%xmm102'
+tmp.s:114: Error: bad register name `%xmm103'
+tmp.s:115: Error: bad register name `%xmm104'
+tmp.s:116: Error: bad register name `%xmm105'
+tmp.s:117: Error: bad register name `%xmm106'
+tmp.s:118: Error: bad register name `%xmm107'
+tmp.s:119: Error: bad register name `%xmm108'
+tmp.s:120: Error: bad register name `%xmm109'
+tmp.s:121: Error: bad register name `%xmm110'
+tmp.s:122: Error: bad register name `%xmm111'
+tmp.s:123: Error: bad register name `%xmm112'
+tmp.s:124: Error: bad register name `%xmm113'
+tmp.s:125: Error: bad register name `%xmm114'
+tmp.s:126: Error: bad register name `%xmm115'
+tmp.s:127: Error: bad register name `%xmm116'
+tmp.s:128: Error: bad register name `%xmm117'
+tmp.s:129: Error: bad register name `%xmm118'
+tmp.s:130: Error: bad register name `%xmm119'
+tmp.s:131: Error: bad register name `%xmm120'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include    <stdlib.h>  /* Include standard library header */
+
+#include    <math.h>    /* Include math library header */
+
+#include    <string.h>  /* Include string function header */
+
+#include    <ctype.h>   /* Include character function header */
+
+#include    <limits.h>  /* define LONG_MIN and LONG_MAX */
+
+int valid_serial(char *carray)
+{
+int i, code, num[10], sumo=0, sume=0, sumss=0;
+
+for(i=0;i<10;i++){
+  code = carray[i];
+  num[i] = code - 0x30;
+  if((code<0x30)||(code>0x39)){
+    return 0;
+  }
+}
+
+sumo = num[0]+num[2]+num[4];
+sumo = sumo - (sumo/10)*10;
+
+sume = num[1]+num[3]+num[5];
+sume = sume - (sume/10)*10;
+
+sumss = num[0]+num[1]+num[2]+num[3]+num[4]+num[5]+sumo+sume;
+
+if((sumo!=num[6])||(sume!=num[7])||(sumss!=(10*num[8]+num[9]))){
+  return 0;
+}
+
+return 1;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	valid_serial
+	.type	valid_serial, @function
+valid_serial:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movl	$0, -12(%rbp)
+	movl	$0, -16(%rbp)
+	movl	$0, -20(%rbp)
+	movl	$0, -24(%rbp)
+	movl	$0, -28(%rbp)
+	movl	$0, -32(%rbp)
+	movl	$0, -36(%rbp)
+	movl	$0, -40(%rbp)
+	movl	$0, -44(%rbp)
+	movl	$0, -48(%rbp)
+	movl	$0, -52(%rbp)
+	movl	$0, -56(%rbp)
+	movl	$0, -60(%rbp)
+	movl	$0, -64(%rbp)
+	movl	$0, -68(%rbp)
+	movl	$0, -72(%rbp)
+	movl	$0, -76(%rbp)
+	movl	$0, -80(%rbp)
+	movl	$0, -84(%rbp)
+	movl	$0, -88(%rbp)
+	movl	$0, -92(%rbp)
+	movl	$0, -96(%rbp)
+	movl	$0, -100(%rbp)
+	movl	$0, -104(%rbp)
+	movl	$0, -108(%rbp)
+	movl	$0, -112(%rbp)
+	movl	$0, -116(%rbp)
+	movl	$0, -120(%rbp)
+	movl	$0, -124(%rbp)
+	movl	$0, -128(%rbp)
+	movl	$0, -132(%rbp)
+	movl	$0, -136(%rbp)
+	movl	$0, -140(%rbp)
+	movl	$0, -144(%rbp)
+	movl	$0, -148(%rbp)
+	movl	$0, -152(%rbp)
+	movl	$0, -156(%rbp)
+	movl	$0, -160(%rbp)
+	movl	$0, -164(%rbp)
+	movl	$0, -168(%rbp)
+	movl	$0, -172(%rbp)
+	movl	$0, -176(%rbp)
+	movl	$0, -180(%rbp)
+	movl	$0, -184(%rbp)
+	movl	$0, -188(%rbp)
+	movl	$0, -192(%rbp)
+	movl	$0, -196(%rbp)
+	movl	$0, -200(%rbp)
+	movl	$0, -204(%rbp)
+	movl	$0, -208(%rbp)
+	movl	$0, -212(%rbp)
+	movl	$0, -216(%rbp)
+	movl	$0, -220(%rbp)
+	movl	$0, -224(%rbp)
+	movl	$0, -228(%rbp)
+	movl	$0, -232(%rbp)
+	movl	$0, -236(%rbp)
+	movl	$0, -240(%rbp)
+	movl	$0, -244(%rbp)
+	movl	$0, -248(%rbp)
+	movl	$0, -252(%rbp)
+	movl	$0, -256(%rbp)
+	movl	$0, -260(%rbp)
+	movl	$0, -264(%rbp)
+	movl	$0, -268(%rbp)
+	movl	$0, -272(%rbp)
+	movl	$0, -276(%rbp)
+	movl	$0, -280(%rbp)
+	movl	$0, -284(%rbp)
+	movl	$0, -288(%rbp)
+	movl	$0, -292(%rbp)
+	movl	$0, -296(%rbp)
+	movl	$0, -300(%rbp)
+	movl	$0, -304(%rbp)
+	movl	$0, -308(%rbp)
+	movl	$0, -312(%rbp)
+	movl	$0, -316(%rbp)
+	movl	$0, -320(%rbp)
+	movl	$0, -324(%rbp)
+	movl	$0, -328(%rbp)
+	movl	$0, -332(%rbp)
+	movl	$0, -336(%rbp)
+	movl	$0, -340(%rbp)
+	movl	$0, -344(%rbp)
+	movl	$0, -348(%rbp)
+	movl	$0, -352(%rbp)
+	movl	$0, -356(%rbp)
+	movl	$0, -360(%rbp)
+	movl	$0, -364(%rbp)
+	movl	$0, -368(%rbp)
+	movl	$0, -372(%rbp)
+	movl	$0, -376(%rbp)
+	movl	$0, -380(%rbp)
+	movl	$0, -384(%rbp)
+	movl	$0, -388(%rbp)
+	movl	$0, -392(%rbp)
+	movl	$0, -396(%rbp)
+	movl	$0, -400(%rbp)
+	movl	$0, -404(%rbp)
+	movl	$0, -408(%rbp)
+	movl	$0, -412(%rbp)
+	movl	$0, -416(%rbp)
+	movl	$0, -420(%rbp)
+	movl	$0, -424(%rbp)
+	movl	$0, -428(%rbp)
+	movl	$0, -432(%rbp)
+	movl	$0, -436(%rbp)
+	movl	$0, -440(%rbp)
+	movl	$0, -444(%rbp)
+	movl	$0, -448(%rbp)
+	movl	$0, -452(%rbp)
+	movl	$0, -456(%rbp)
+	movl	$0, -460(%rbp)
+	movl	$0, -464(%rbp)
+	movl	$0, -468(%rbp)
+	movl	$0, -472(%rbp)
+	movl	$0, -476(%rbp)
+	movl	$0, -480(%rbp)
+	movl	$0, -484(%rbp)
+	movl	$0, -488(%rbp)
+	movl	$0, -492(%rbp)
+	movl	$0, -496(%rbp)
+	movl	$0, -500(%rbp)
+	movl	$0, -504(%rbp)
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 60
+WARNING:root:WARNING: code failed to execute for input 1 in case 60
+WARNING:root:WARNING: code failed to execute for input 2 in case 60
+WARNING:root:WARNING: code failed to execute for input 3 in case 60
+WARNING:root:WARNING: code failed to execute for input 4 in case 60
+WARNING:root:WARNING: code failed to execute for input 5 in case 60
+WARNING:root:WARNING: code failed to execute for input 6 in case 60
+WARNING:root:WARNING: code failed to execute for input 7 in case 60
+WARNING:root:WARNING: code failed to execute for input 8 in case 60
+WARNING:root:WARNING: code failed to execute for input 9 in case 60
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 60 failed
+INFO:root:C code :
+
+int f(int x) { return x - 5; }
+INFO:root:x86 code: 
+
+.text
+.globl f
+.type f, @function
+f:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	subl	$5, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 61 succeeded
+INFO:root:C code :
+#include <stdbool.h>
+
+bool timeout_reached(void)
+{
+    return false;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	timeout_reached
+	.type	timeout_reached, @function
+timeout_reached:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 62 succeeded
+INFO:root:C code :
+#include <string.h>
+
+char* langRomTypeMicrosolFdc() { return "Microsol Disk Controller"; }
+INFO:root:x86 code: 
+
+	.text
+	.globl	langRomTypeMicrosolFdc
+	.type	langRomTypeMicrosolFdc, @function
+langRomTypeMicrosolFdc:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%fs:40, %rax
+	movq	%rax, -8(%rbp)
+	xorl	%eax, %eax
+	movl	$4, %edi
+	call	__strlen
+	movq	%rax, %rdx
+	movl	$12, %esi
+	movq	%rdx, %rdi
+	call	memcpy
+	movq	-8(%rbp), %rdx
+	movq	%rdx, %rsi
+	movq	%rax, %rdi
+	call	free
+	movq	%rax, %rdi
+	call	free
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 63 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: warning: /tmp/cctNm4Fx.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/cctNm4Fx.o: in function `langRomTypeMicrosolFdc':
+(.text+0x1d): undefined reference to `__strlen'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int do_386() { return 386; }
+INFO:root:x86 code: 
+
+	.text
+	.globl	do_386
+	.type	do_386, @function
+do_386:
+.LFB0:
+	endbr64
+	movl	$386, %eax
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 64 succeeded
+INFO:root:C code :
+
+int function(int a, int b) { return a+b; }
+INFO:root:x86 code: 
+
+	.text
+	.globl	function
+	.type	function, @function
+function:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-4(%rbp), %eax
+	addl	-8(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 65 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+double
+UC_11_1_11
+(
+    double F_g_s_rep,
+
+    double F_g_u_d
+
+)
+{
+        return (F_g_s_rep / F_g_u_d);
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	UC_11_1_11
+	.type	UC_11_1_11, @function
+UC_11_1_11:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movsd	%xmm0, %xmm1
+	movsd	%xmm1, %xmm2
+	divsd	%xmm2, %xmm1
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 66 failed
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <sys/types.h>
+
+#include <sys/stat.h>
+
+#include <signal.h>
+
+#include <fcntl.h>
+
+#include <unistd.h>
+
+#include <stdlib.h>
+
+#include <sys/wait.h>
+
+int stop_process(int pid)
+{
+ return kill(pid, 15);
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	stop_process
+	.type	stop_process, @function
+stop_process:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	movl	$15, %edx
+	movl	%eax, %esi
+	movl	$1, %edi
+	movl	$37, %eax
+	call	kill@PLT
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 67 failed
+INFO:root:C code :
+#include <string.h>
+
+int vout_finish(void)
+{
+  return 0;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	vout_finish
+	.type	vout_finish, @function
+vout_finish:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 68 succeeded
+INFO:root:C code :
+
+int alloc(int *p)
+{
+  int tmp = 5;
+
+
+
+  return 0;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	alloc
+	.type	alloc, @function
+alloc:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$5, -4(%rbp)
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 69 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stddef.h>
+
+#include <string.h>
+
+char* mote64_Name(void) {
+ return "MOTE64";
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	mote64_Name
+	.type	mote64_Name, @function
+mote64_Name:
+.LFB0:
+	endbr32
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$10, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	malloc@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+	movq	%rax, %rdi
+	movl	$0, %eax
+	movl	$0, %edx
+	movq	%rax, %rdi
+	call	memset@PLT
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 70
+WARNING:root:WARNING: code failed to execute for input 1 in case 70
+WARNING:root:WARNING: code failed to execute for input 2 in case 70
+WARNING:root:WARNING: code failed to execute for input 3 in case 70
+WARNING:root:WARNING: code failed to execute for input 4 in case 70
+WARNING:root:WARNING: code failed to execute for input 5 in case 70
+WARNING:root:WARNING: code failed to execute for input 6 in case 70
+WARNING:root:WARNING: code failed to execute for input 7 in case 70
+WARNING:root:WARNING: code failed to execute for input 8 in case 70
+WARNING:root:WARNING: code failed to execute for input 9 in case 70
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 70 failed
+INFO:root:C code :
+#include <stdio.h>
+
+char *hello(void) {
+    return "hello";
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	hello
+	.type	hello, @function
+hello:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$104, %eax
+	movl	%eax, -4(%rbp)
+	movq	%fs:40, %rax
+	movq	%rax, -16(%rbp)
+	xorl	%eax, %eax
+	addq	$16, %rsp
+	popq	%rbp
+	ret
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 71
+WARNING:root:WARNING: code failed to execute for input 1 in case 71
+WARNING:root:WARNING: code failed to execute for input 2 in case 71
+WARNING:root:WARNING: code failed to execute for input 3 in case 71
+WARNING:root:WARNING: code failed to execute for input 4 in case 71
+WARNING:root:WARNING: code failed to execute for input 5 in case 71
+WARNING:root:WARNING: code failed to execute for input 6 in case 71
+WARNING:root:WARNING: code failed to execute for input 7 in case 71
+WARNING:root:WARNING: code failed to execute for input 8 in case 71
+WARNING:root:WARNING: code failed to execute for input 9 in case 71
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 71 failed
+INFO:root:C code :
+
+
+
+
+
+int exists(const char *filename)
+{
+ return (0);
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	exists
+	.type	exists, @function
+exists:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 72 succeeded
+INFO:root:C code :
+#include <math.h>
+
+float fast_cbrtf(float x)
+{
+   union {int ix; float x;} v;
+   v.x = x;
+   v.ix = v.ix/4 + v.ix/16;
+   v.ix = v.ix + v.ix/16;
+   v.ix = v.ix + v.ix/256;
+   v.ix = 0x2a511cd0 + v.ix;
+   return v.x;
+}
+INFO:root:x86 code: 
+
+.text
+.globl fast_cbrtf
+.type fast_cbrtf, @function
+fast_cbrtf:
+.LFB0:
+	endbr64
+	movss	%xmm0, %xmm1
+	movss	%xmm0, %xmm2
+	movss	%xmm0, %xmm3
+	movss	%xmm0, %xmm4
+	movss	%xmm0, %xmm5
+	movss	%xmm0, %xmm6
+	movss	%xmm0, %xmm7
+	movss	%xmm0, %xmm8
+	movss	%xmm0, %xmm9
+	movss	%xmm0, %xmm10
+	movss	%xmm0, %xmm11
+	movss	%xmm0, %xmm12
+	movss	%xmm0, %xmm13
+	movss	%xmm0, %xmm14
+	movss	%xmm0, %xmm15
+	movss	%xmm0, %xmm16
+	movss	%xmm0, %xmm17
+	movss	%xmm0, %xmm18
+	movss	%xmm0, %xmm19
+	movss	%xmm0, %xmm20
+	movss	%xmm0, %xmm21
+	movss	%xmm0, %xmm22
+	movss	%xmm0, %xmm23
+	movss	%xmm0, %xmm24
+	movss	%xmm0, %xmm25
+	movss	%xmm0, %xmm26
+	movss	%xmm0, %xmm27
+	movss	%xmm0, %xmm28
+	movss	%xmm0, %xmm29
+	movss	%xmm0, %xmm30
+	movss	%xmm0, %xmm31
+	movss	%xmm0, %xmm32
+	movss	%xmm0, %xmm33
+	movss	%xmm0, %xmm34
+	movss	%xmm0, %xmm35
+	movss	%xmm0, %xmm36
+	movss	%xmm0, %xmm37
+	movss	%xmm0, %xmm38
+	movss	%xmm0, %xmm39
+	movss	%xmm0, %xmm40
+	movss	%xmm0, %xmm41
+	movss	%xmm0, %xmm42
+	movss	%xmm0, %xmm43
+	movss	%xmm0, %xmm44
+	movss	%xmm0, %xmm45
+	movss	%xmm0, %xmm46
+	movss	%xmm0, %xmm47
+	movss	%xmm0, %xmm48
+	movss	%xmm0, %xmm49
+	movss	%xmm0, %xmm50
+	movss	%xmm0, %xmm51
+	movss	%xmm0, %xmm52
+	movss	%xmm0, %xmm53
+	movss	%xmm0, %xmm54
+	movss	%xmm0, %xmm55
+	movss	%xmm0, %xmm56
+	movss	%xmm0, %xmm57
+	movss	%xmm0, %xmm58
+	movss	%xmm0, %xmm59
+	movss	%xmm0, %xmm60
+	movss	%xmm0, %xmm61
+	movss	%xmm0, %xmm62
+	movss	%xmm0, %xmm63
+	movss	%xmm0, %xmm64
+	movss	%xmm0, %xmm65
+	movss	%xmm0, %xmm66
+	movss	%xmm0, %xmm67
+	movss	%xmm0, %xmm68
+	movss	%xmm0, %xmm69
+	movss	%xmm0, %xmm70
+	movss	%xmm0, %xmm71
+	movss	%xmm0, %xmm72
+	movss	%xmm0, %xmm73
+	movss	%xmm0, %xmm74
+	movss	%xmm0, %xmm75
+	movss	%xmm0, %xmm76
+	movss	%xmm0, %xmm77
+	movss	%xmm0, %xmm78
+	movss	%xmm0, %xmm79
+	movss	%xmm0, %xmm80
+	movss	%xmm0, %xmm81
+	movss	%xmm0, %xmm82
+	movss	%xmm0, %xmm83
+	movss	%xmm0, %xmm84
+	movss	%xmm0, %xmm85
+	movss	%xmm0, %xmm86
+	movss	%xmm0, %xmm87
+	movss	%xmm0, %xmm88
+	movss	%xmm0, %xmm89
+	movss	%xmm0, %xmm90
+	movss	%xmm0, %xmm91
+	movss	%xmm0, %xmm92
+	movss	%xmm0, %xmm93
+	movss	%xmm0, %xmm94
+	movss	%xmm0, %xmm95
+	movss	%xmm0, %xmm96
+	movss	%xmm0, %xmm97
+	movss	%xmm0, %xmm98
+	movss	%xmm0, %xmm99
+	movss	%xmm0, %xmm100
+	movss	%xmm0, %xmm101
+	movss	%xmm0, %xmm102
+	movss	%xmm0, %xmm103
+	movss	%xmm0, %xmm104
+	movss	%xmm0, %xmm105
+	movss	%xmm0, %xmm106
+	movss	%xmm0, %xmm107
+	movss	%xmm0, %xmm108
+	movss	%xmm0, %xmm109
+	movss	%xmm0, %xmm110
+	movss	%xmm0, %xmm111
+	movss	%xmm0, %xmm112
+	movss	%xmm0, %xmm113
+	movss	%xmm0, %xmm114
+	movss	%xmm0, %xmm115
+	movss	%xmm0, %xmm116
+	movss	%xmm0, %xmm117
+	movss	%xmm0, %xmm118
+	movss	%xmm0, %xmm119
+	movss	%xmm0, %xmm120
+	movss	%xmm0, %xmm121
+	movss	%xmm0, %xmm122
+	movss	%xmm0, %xmm123
+	movss	%xmm0, %xmm124
+	movss	%xmm0, %xmm125
+	movss	%xmm0, %xmm126
+	movss	%xmm0, %xmm127
+	movss	%xmm0, %xmm128
+	movss	%xmm0, %xmm129
+	movss	%xmm0, %xmm130
+	movss	%xmm0, %xmm131
+	movss	%xmm0
+WARNING:root:CASE 73 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s: Warning: end of file not at end of a line; newline inserted
+tmp.s:23: Error: no EVEX encoding for `movss'
+tmp.s:24: Error: no EVEX encoding for `movss'
+tmp.s:25: Error: no EVEX encoding for `movss'
+tmp.s:26: Error: no EVEX encoding for `movss'
+tmp.s:27: Error: no EVEX encoding for `movss'
+tmp.s:28: Error: no EVEX encoding for `movss'
+tmp.s:29: Error: no EVEX encoding for `movss'
+tmp.s:30: Error: no EVEX encoding for `movss'
+tmp.s:31: Error: no EVEX encoding for `movss'
+tmp.s:32: Error: no EVEX encoding for `movss'
+tmp.s:33: Error: no EVEX encoding for `movss'
+tmp.s:34: Error: no EVEX encoding for `movss'
+tmp.s:35: Error: no EVEX encoding for `movss'
+tmp.s:36: Error: no EVEX encoding for `movss'
+tmp.s:37: Error: no EVEX encoding for `movss'
+tmp.s:38: Error: no EVEX encoding for `movss'
+tmp.s:39: Error: bad register name `%xmm32'
+tmp.s:40: Error: bad register name `%xmm33'
+tmp.s:41: Error: bad register name `%xmm34'
+tmp.s:42: Error: bad register name `%xmm35'
+tmp.s:43: Error: bad register name `%xmm36'
+tmp.s:44: Error: bad register name `%xmm37'
+tmp.s:45: Error: bad register name `%xmm38'
+tmp.s:46: Error: bad register name `%xmm39'
+tmp.s:47: Error: bad register name `%xmm40'
+tmp.s:48: Error: bad register name `%xmm41'
+tmp.s:49: Error: bad register name `%xmm42'
+tmp.s:50: Error: bad register name `%xmm43'
+tmp.s:51: Error: bad register name `%xmm44'
+tmp.s:52: Error: bad register name `%xmm45'
+tmp.s:53: Error: bad register name `%xmm46'
+tmp.s:54: Error: bad register name `%xmm47'
+tmp.s:55: Error: bad register name `%xmm48'
+tmp.s:56: Error: bad register name `%xmm49'
+tmp.s:57: Error: bad register name `%xmm50'
+tmp.s:58: Error: bad register name `%xmm51'
+tmp.s:59: Error: bad register name `%xmm52'
+tmp.s:60: Error: bad register name `%xmm53'
+tmp.s:61: Error: bad register name `%xmm54'
+tmp.s:62: Error: bad register name `%xmm55'
+tmp.s:63: Error: bad register name `%xmm56'
+tmp.s:64: Error: bad register name `%xmm57'
+tmp.s:65: Error: bad register name `%xmm58'
+tmp.s:66: Error: bad register name `%xmm59'
+tmp.s:67: Error: bad register name `%xmm60'
+tmp.s:68: Error: bad register name `%xmm61'
+tmp.s:69: Error: bad register name `%xmm62'
+tmp.s:70: Error: bad register name `%xmm63'
+tmp.s:71: Error: bad register name `%xmm64'
+tmp.s:72: Error: bad register name `%xmm65'
+tmp.s:73: Error: bad register name `%xmm66'
+tmp.s:74: Error: bad register name `%xmm67'
+tmp.s:75: Error: bad register name `%xmm68'
+tmp.s:76: Error: bad register name `%xmm69'
+tmp.s:77: Error: bad register name `%xmm70'
+tmp.s:78: Error: bad register name `%xmm71'
+tmp.s:79: Error: bad register name `%xmm72'
+tmp.s:80: Error: bad register name `%xmm73'
+tmp.s:81: Error: bad register name `%xmm74'
+tmp.s:82: Error: bad register name `%xmm75'
+tmp.s:83: Error: bad register name `%xmm76'
+tmp.s:84: Error: bad register name `%xmm77'
+tmp.s:85: Error: bad register name `%xmm78'
+tmp.s:86: Error: bad register name `%xmm79'
+tmp.s:87: Error: bad register name `%xmm80'
+tmp.s:88: Error: bad register name `%xmm81'
+tmp.s:89: Error: bad register name `%xmm82'
+tmp.s:90: Error: bad register name `%xmm83'
+tmp.s:91: Error: bad register name `%xmm84'
+tmp.s:92: Error: bad register name `%xmm85'
+tmp.s:93: Error: bad register name `%xmm86'
+tmp.s:94: Error: bad register name `%xmm87'
+tmp.s:95: Error: bad register name `%xmm88'
+tmp.s:96: Error: bad register name `%xmm89'
+tmp.s:97: Error: bad register name `%xmm90'
+tmp.s:98: Error: bad register name `%xmm91'
+tmp.s:99: Error: bad register name `%xmm92'
+tmp.s:100: Error: bad register name `%xmm93'
+tmp.s:101: Error: bad register name `%xmm94'
+tmp.s:102: Error: bad register name `%xmm95'
+tmp.s:103: Error: bad register name `%xmm96'
+tmp.s:104: Error: bad register name `%xmm97'
+tmp.s:105: Error: bad register name `%xmm98'
+tmp.s:106: Error: bad register name `%xmm99'
+tmp.s:107: Error: bad register name `%xmm100'
+tmp.s:108: Error: bad register name `%xmm101'
+tmp.s:109: Error: bad register name `%xmm102'
+tmp.s:110: Error: bad register name `%xmm103'
+tmp.s:111: Error: bad register name `%xmm104'
+tmp.s:112: Error: bad register name `%xmm105'
+tmp.s:113: Error: bad register name `%xmm106'
+tmp.s:114: Error: bad register name `%xmm107'
+tmp.s:115: Error: bad register name `%xmm108'
+tmp.s:116: Error: bad register name `%xmm109'
+tmp.s:117: Error: bad register name `%xmm110'
+tmp.s:118: Error: bad register name `%xmm111'
+tmp.s:119: Error: bad register name `%xmm112'
+tmp.s:120: Error: bad register name `%xmm113'
+tmp.s:121: Error: bad register name `%xmm114'
+tmp.s:122: Error: bad register name `%xmm115'
+tmp.s:123: Error: bad register name `%xmm116'
+tmp.s:124: Error: bad register name `%xmm117'
+tmp.s:125: Error: bad register name `%xmm118'
+tmp.s:126: Error: bad register name `%xmm119'
+tmp.s:127: Error: bad register name `%xmm120'
+tmp.s:128: Error: bad register name `%xmm121'
+tmp.s:129: Error: bad register name `%xmm122'
+tmp.s:130: Error: bad register name `%xmm123'
+tmp.s:131: Error: bad register name `%xmm124'
+tmp.s:132: Error: bad register name `%xmm125'
+tmp.s:133: Error: bad register name `%xmm126'
+tmp.s:134: Error: bad register name `%xmm127'
+tmp.s:135: Error: bad register name `%xmm128'
+tmp.s:136: Error: bad register name `%xmm129'
+tmp.s:137: Error: bad register name `%xmm130'
+tmp.s:138: Error: bad register name `%xmm131'
+tmp.s:139: Error: number of operands mismatch for `movss'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stddef.h>
+
+int GO_strcmp (char *d, char *s)
+{
+ while ('\0' != *d) {
+  if (*d != *s)
+   return *d - *s;
+  d++;
+  s++;
+ }
+
+ return *d - *s;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	GO_strcmp
+	.type	GO_strcmp, @function
+GO_strcmp:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+.L2:
+	movzbl	(%rdi), %eax
+	movzbl	(%rsi), %edx
+	cmpb	$0, %al
+	je	.L3
+	cmpb	%al, %dl
+	jne	.L4
+	incq	%rdi
+	incq	%rsi
+	jmp	.L2
+.L3:
+	movzbl	(%rdi), %eax
+	movzbl	(%rsi), %edx
+	subb	%al, %dl
+	movb	%dl, %al
+	popq	%rbp
+	ret
+.L4:
+	movzbl	(%rdi), %eax
+	movzbl	(%rsi), %edx
+	subb	%al, %dl
+	movb	%dl, %al
+	popq	%rbp
+	ret
+	.size	GO_strcmp, .-GO_strcmp
+	.ident	"GCC: (GNU) 11.1.0"
+	.section	.note.GNU-stack,"",@progbits
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 74 failed
+INFO:root:C code :
+
+int
+test_01 (volatile short* x)
+{
+  return *x;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	test_01
+	.type	test_01, @function
+test_01:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movzwl	-8(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 75 failed
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <ctype.h>
+
+int isspec(char c)
+{
+    return (((c >= '!') && (c <= '/')) || (c >= ':' && c <= '@') || ((c >= '[') && (c <= '`')) || ((c >= '{') && (c <= 'DEL')));
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	isspec
+	.type	isspec, @function
+isspec:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movb	%al, %cl
+	cmpb	$'!', %cl
+	setle	%al
+	cmpb	$'/', %cl
+	setle	%al
+	cmpb	$':', %cl
+	setle	%al
+	cmpb	$'[', %cl
+	setle	%al
+	cmpb	$'`', %cl
+	setle	%al
+	cmpb	$'{', %cl
+	setle	%al
+	cmpb	$'DEL', %cl
+	setle	%al
+	movzbl	%al, %eax
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 76 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:23: Error: junk `EL44%cl' after expression
+tmp.s:23: Error: number of operands mismatch for `cmp'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int hash_val (int key)
+{
+    return key;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	hash_val
+	.type	hash_val, @function
+hash_val:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 77 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <stdint.h>
+
+#include <math.h>
+
+int cat_nums(char *str_out, char *str){
+
+ int i=0,j=0;
+ while(str[i]!='\0'){
+  if(str[i] >= '0' && str[i] <= '9'){
+   str_out[j++] = str[i];
+  }
+  i++;
+ }
+ str_out[j] = '\0';
+ return(j);
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	cat_nums
+	.type	cat_nums, @function
+cat_nums:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movl	$0, -20(%rbp)
+	movl	$0, -24(%rbp)
+	movl	$0, -28(%rbp)
+	movl	$0, -32(%rbp)
+	movq	-8(%rbp), %rax
+	movq	%rax, -40(%rbp)
+	movq	-16(%rbp), %rax
+	movq	%rax, -48(%rbp)
+	movq	-40(%rbp), %rax
+	movq	%rax, -64(%rbp)
+	movq	-48(%rbp), %rax
+	movq	%rax, -72(%rbp)
+	movq	-64(%rbp), %rax
+	movq	%rax, -80(%rbp)
+	movq	-72(%rbp), %rax
+	movq	%rax, -88(%rbp)
+	movq	-80(%rbp), %rax
+	movq	%rax, -96(%rbp)
+	movq	-88(%rbp), %rax
+	movq	%rax, -104(%rbp)
+	movq	-96(%rbp), %rax
+	movq	%rax, -112(%rbp)
+	movq	-104(%rbp), %rax
+	movq	%rax, -120(%rbp)
+	movq	-112(%rbp), %rax
+	movq	%rax, -128(%rbp)
+	movq	-120(%rbp), %rax
+	movq	%rax, -136(%rbp)
+	movq	-128(%rbp), %rax
+	movq	%rax, -144(%rbp)
+	movq	-136(%rbp), %rax
+	movq	%rax, -152(%rbp)
+	movq	-144(%rbp), %rax
+	movq	%rax, -160(%rbp)
+	movq	-152(%rbp), %rax
+	movq	%rax, -168(%rbp)
+	movq	-160(%rbp), %rax
+	movq	%rax, -176(%rbp)
+	movq	-168(%rbp), %rax
+	movq	%rax, -184(%rbp)
+	movq	-176(%rbp), %rax
+	movq	%rax, -192(%rbp)
+	movq	-184(%rbp), %rax
+	movq	%rax, -200(%rbp)
+	movq	-192(%rbp), %rax
+	movq	%rax, -208(%rbp)
+	movq	-200(%rbp), %rax
+	movq	%rax, -216(%rbp)
+	movq	-208(%rbp), %rax
+	movq	%rax, -224(%rbp)
+	movq	-216(%rbp), %rax
+	movq	%rax, -232(%rbp)
+	movq	-224(%rbp), %rax
+	movq	%rax, -240(%rbp)
+	movq	-232(%rbp), %rax
+	movq	%rax, -248(%rbp)
+	movq	-240(%rbp), %rax
+	movq	%rax, -256(%rbp)
+	movq	-248(%rbp), %rax
+	movq	%rax, -264(%rbp)
+	movq	-256(%rbp), %rax
+	movq	%rax, -272(%rbp)
+	movq	-264(%rbp), %rax
+	movq	%rax, -280(%rbp)
+	movq	-272(%rbp), %rax
+	movq	%rax, -288(%rbp)
+	movq	-280(%rbp), %rax
+	movq	%rax, -296(%rbp)
+	movq	-288(%rbp), %rax
+	movq	%rax, -304(%rbp)
+	movq	-296(%rbp), %rax
+	movq	%rax, -312(%rbp)
+	movq	-304(%rbp), %rax
+	movq	%rax, -320(%rbp)
+	movq	-312(%rbp), %rax
+	movq	%rax, -328(%rbp)
+	movq	-320(%rbp), %rax
+	movq	%rax, -336(%rbp)
+	movq	-328(%rbp), %rax
+	movq	%rax, -344(%rbp)
+	movq	-336(%rbp), %rax
+	movq	%rax, -352(%rbp)
+	movq	-344(%rbp), %rax
+	movq	%rax, -360(%rbp)
+	movq	-352(%rbp), %rax
+	movq	%rax, -368(%rbp)
+	movq	-360(%rbp), %rax
+	movq	%rax, -376(%rbp)
+	movq	-368(%rbp), %rax
+	movq	%rax, -384(%rbp)
+	movq	-376(%rbp), %rax
+	movq	%rax, -392(%rbp)
+	movq	-384(%rbp), %rax
+	movq	%rax, -400(%rbp)
+	movq	-392(%rbp), %rax
+	movq	%rax, -408(%rbp)
+	movq	-400(%rbp), %rax
+	movq	%rax, -416(%rbp)
+	movq	-408(%rbp), %rax
+	movq	%rax, -424(%rbp)
+	movq	-416(%rbp), %rax
+	movq	%rax, -432(%rbp)
+	movq	-424(%rbp), %rax
+	movq	%rax, -440(%rbp)
+	movq	-432(%rbp), %rax
+	movq	%rax, -448(%rbp)
+	movq	-440(%rbp), %rax
+	movq	%rax, -456(%rbp)
+	movq	-448(%rbp), %rax
+	movq	%rax, -464(%rbp)
+	movq	-456(%rbp), %rax
+	movq	%rax, -472(%rbp)
+	movq	-464(%rbp), %rax
+	movq	%rax, -480(%rbp)
+	movq	-472(%rbp), %rax
+	movq	%rax, -488(%rbp)
+	movq	-480(%rbp), %rax
+	movq	%rax, -496(%rbp)
+	movq	-488(%rbp), %rax
+	movq
+WARNING:root:CASE 78 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s: Warning: end of file not at end of a line; newline inserted
+tmp.s:131: Error: number of operands mismatch for `movq'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdarg.h>
+
+#include <sys/types.h>
+
+#include <sys/stat.h>
+
+__attribute__ ((used))
+int _write(int file, char *ptr, int len)
+{
+# 103 "/scratch/repos/new/home/jordi_armengol_estape/c-scraper/outputs/2022-01-22/02-19-57/repos/LCRS-UCC/STM32F4Discovery-expansion/refs/heads/Working/OtharSoft/syscalls/syscalls.c"
+    return len;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	_write
+	.type	_write, @function
+_write:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, %eax
+	movq	%rsi, %rdi
+	movl	%edx, %esi
+	call	__write
+	popq	%rbp
+	ret
+
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 79 failed
+INFO:root:C code :
+#include <stdio.h>
+
+int countVowels(char *str)
+{
+ int i,count=0;
+ for(i=0;str[i]!='\0';++i)
+  if('a' == str[i] ||
+     'e' == str[i] ||
+     'i' == str[i] ||
+     'o' == str[i] ||
+     'u' == str[i] ||
+     'A' == str[i] ||
+     'E' == str[i] ||
+     'I' == str[i] ||
+     'O' == str[i] ||
+     'U' == str[i] )
+   count++;
+ return count;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	countVowels
+	.type	countVowels, @function
+countVowels:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movl	$0, -12(%rbp)
+	jmp	.L2
+.L3:
+	movslq	-12(%rbp), %rax
+	movslq	-8(%rbp), %rcx
+	movsbl	(%rcx,%rax), %eax
+	cmpb	$97, %al
+	je	.L4
+	cmpb	$101, %al
+	je	.L4
+	cmpb	$105, %al
+	je	.L4
+	cmpb	$111, %al
+	je	.L4
+	cmpb	$117, %al
+	je	.L4
+	cmpb	$65, %al
+	je	.L4
+	cmpb	$69, %al
+	je	.L4
+	cmpb	$73, %al
+	je	.L4
+	cmpb	$79, %al
+	je	.L4
+.L5:
+	movl	-12(%rbp), %eax
+	addl	$1, %eax
+	movl	%eax, -12(%rbp)
+.L2:
+	movslq	-12(%rbp), %rax
+	movslq	-8(%rbp), %rcx
+	movsbl	(%rcx,%rax), %eax
+	testb	%al, %al
+	je	.L3
+	movl	-12(%rbp), %eax
+	popq	%rbp
+	ret
+.L4:
+	jmp	.L5
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 80
+WARNING:root:WARNING: code failed to execute for input 1 in case 80
+WARNING:root:WARNING: code failed to execute for input 2 in case 80
+WARNING:root:WARNING: code failed to execute for input 3 in case 80
+WARNING:root:WARNING: code failed to execute for input 4 in case 80
+WARNING:root:WARNING: code failed to execute for input 5 in case 80
+WARNING:root:WARNING: code failed to execute for input 6 in case 80
+WARNING:root:WARNING: code failed to execute for input 7 in case 80
+WARNING:root:WARNING: code failed to execute for input 8 in case 80
+WARNING:root:WARNING: code failed to execute for input 9 in case 80
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 80 failed
+INFO:root:C code :
+#include <string.h>
+
+char* langRomTypeMirroredRam1k() { return "1kB Mirrored RAM"; }
+INFO:root:x86 code: 
+
+.text
+.globl	langRomTypeMirroredRam1k
+.type	langRomTypeMirroredRam1k, @function
+langRomTypeMirroredRam1k:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%fs:40, %rax
+	movq	%rax, -8(%rbp)
+	xorl	%eax, %eax
+	leaq	.LC0(%rip), %rdx
+	movq	%rdx, %rdi
+	call	strlen@PLT
+	movl	%eax, %esi
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L2
+	movq	-16(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L2:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L3
+	movq	-24(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L3:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L4
+	movq	-32(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L4:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L5
+	movq	-40(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L5:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L6
+	movq	-48(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L6:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L7
+	movq	-56(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L7:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L8
+	movq	-64(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L8:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L9
+	movq	-72(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L9:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L10
+	movq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L10:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L11
+	movq	-88(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L11:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L12
+	movq	-96(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L12:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L13
+	movq	-104(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L13:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L14
+	movq	-112(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L14:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L15
+	movq	-120(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L15:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L16
+	movq	-128(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L16:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L17
+	movq	-136(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L17:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L18
+	movq	-144(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L18:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L19
+	movq	-152(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L19:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L20
+	movq	-160(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L20:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L21
+	movq	-168(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L21:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L22
+	movq	-176(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L22:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L23
+	movq	-184(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L23:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L24
+	movq	-192(%rbp), %rax
+	movq	%rax, %rdi
+	call	free@PLT
+.L24:
+	movq	%fs:40, %rax
+	cmpq	%rax, -8(%rbp)
+	jne	.L25
+	movq	-200(%rbp), %ra
+WARNING:root:CASE 81 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s: Warning: end of file not at end of a line; newline inserted
+tmp.s:181: Error: bad register name `%ra'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+unsigned long unsignedlong_id(unsigned long x){return x;}
+INFO:root:x86 code: 
+
+	.text
+	.globl	unsignedlong_id
+	.type	unsignedlong_id, @function
+unsignedlong_id:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	-8(%rbp), %rax
+	popq	%rbp
+	ret
+
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 82 succeeded
+INFO:root:C code :
+#include <stdlib.h>
+
+void pointerExample1(int *ptr1, int *ptr2){
+ ptr1 = ptr2;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	pointerExample1
+	.type	pointerExample1, @function
+pointerExample1:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	-8(%rbp), %rax
+	movq	-16(%rbp), %rdx
+	movq	%rdx, (%rax)
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 83 failed
+INFO:root:C code :
+#include <stdio.h>
+
+int hcf_iterative(int a, int b){
+ int q, r;
+ if(a > 0 && b > 0){
+  if(a < b)
+   return hcf_iterative(b, a);
+
+  q = a / b;
+  r = a % b;
+  while(r != 0 && r != 1){
+   a = b;
+   b = r;
+   q = a / b;
+   r = a % b;
+  }
+
+  if(r == 0)
+   return b;
+  else if(r == 1)
+   return 1;
+ }
+ return -1;
+}
+INFO:root:x86 code: 
+
+.text
+.globl	hcf_iterative
+.type	hcf_iterative, @function
+hcf_iterative:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	cmpl	$0, -4(%rbp)
+	jle	.L2
+	cmpl	$0, -8(%rbp)
+	jle	.L2
+	cmpl	$1, -8(%rbp)
+	jle	.L3
+	movl	-4(%rbp), %eax
+	movl	-8(%rbp), %edx
+	sarl	$1, %eax
+	sarl	$1, %edx
+	movl	%eax, -4(%rbp)
+	movl	%edx, -8(%rbp)
+	jmp	.L4
+.L3:
+	movl	$1, %eax
+	jmp	.L5
+.L4:
+	movl	-4(%rbp), %eax
+	movl	-8(%rbp), %edx
+	sarl	$1, %eax
+	sarl	$1, %edx
+	movl	%eax, -4(%rbp)
+	movl	%edx, -8(%rbp)
+	jmp	.L4
+.L2:
+	movl	$0, %eax
+.L5:
+	popq	%rbp
+	ret
+
+WARNING:root:WARNING: code execute timeout for input 0 in case 84
+WARNING:root:WARNING: code execute timeout for input 1 in case 84
+WARNING:root:WARNING: code execute timeout for input 2 in case 84
+WARNING:root:WARNING: code execute timeout for input 3 in case 84
+WARNING:root:WARNING: code execute timeout for input 4 in case 84
+WARNING:root:WARNING: code execute timeout for input 5 in case 84
+WARNING:root:WARNING: code execute timeout for input 6 in case 84
+WARNING:root:WARNING: code execute timeout for input 7 in case 84
+WARNING:root:WARNING: code execute timeout for input 8 in case 84
+WARNING:root:WARNING: code execute timeout for input 9 in case 84
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 84 failed
+INFO:root:C code :
+
+int soma3(int a, int b, int c)
+{
+ return a+b+c;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	soma3
+	.type	soma3, @function
+soma3:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	%edx, -12(%rbp)
+	movl	-4(%rbp), %eax
+	addl	-8(%rbp), %eax
+	addl	-12(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 85 succeeded
+INFO:root:C code :
+
+unsigned long int_sqrt(unsigned long x)
+{
+        unsigned long b, m, y = 0;
+
+        if (x <= 1)
+                return x;
+
+        m = 1UL << ((sizeof(long) * 8) - 2);
+        while (m != 0) {
+                b = y + m;
+                y >>= 1;
+
+                if (x >= b) {
+                        x -= b;
+                        y += m;
+                }
+                m >>= 2;
+        }
+
+        return y;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	int_sqrt
+	.type	int_sqrt, @function
+int_sqrt:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	$0, -24(%rbp)
+	movq	$1, -32(%rbp)
+	movq	$0, -40(%rbp)
+	movq	$0, -48(%rbp)
+	movq	$0, -56(%rbp)
+	jmp	.L4
+.L3:
+	movq	-56(%rbp), %rax
+	movq	-48(%rbp), %rdx
+	movq	-40(%rbp), %rcx
+	movq	-32(%rbp), %r8
+	movq	-24(%rbp), %r9
+	movq	-8(%rbp), %r10
+	movq	-16(%rbp), %r11
+	call	int_sqrt
+	movq	%rax, -24(%rbp)
+	movq	-56(%rbp), %rax
+	movq	-48(%rbp), %rdx
+	movq	-40(%rbp), %rcx
+	movq	-32(%rbp), %r8
+	movq	-24(%rbp), %r9
+	movq	-8(%rbp), %r10
+	movq	-16(%rbp), %r11
+	call	int_sqrt
+	movq	%rax, -40(%rbp)
+	movq	-56(%rbp), %rax
+	movq	-48(%rbp), %rdx
+	movq	-40(%rbp), %rcx
+	movq	-32(%rbp), %r8
+	movq	-24(%rbp), %r9
+	movq	-8(%rbp), %r10
+	movq	-16(%rbp), %r11
+	call	int_sqrt
+	movq	%rax, -32(%rbp)
+	movq	-56(%rbp), %rax
+	movq	-48(%rbp), %rdx
+	movq	-40(%rbp), %rcx
+	movq	-32(%rbp), %r8
+	movq	-24(%rbp), %r9
+	movq	-8(%rbp), %r10
+	movq	-16(%rbp), %r11
+	call	int_sqrt
+	movq	%rax, -48(%rbp)
+	movq	-56(%rbp), %rax
+	movq	-48(%rbp), %rdx
+	movq	-40(%rbp), %rcx
+	movq	-32(%rbp), %r8
+	movq	-24(%rbp), %r9
+	movq	-8(%rbp), %r10
+	movq	-16(%rbp), %r11
+	call	int_sqrt
+	movq	%rax, -56(%rbp)
+	movq	-56(%rbp), %rax
+	movq	-48(%rbp), %rdx
+	movq	-40(%rbp), %rcx
+	movq	-32(%rbp), %r8
+	movq	-24(%rbp), %r9
+	movq	-8(%rbp), %r10
+	movq	-16(%rbp), %r11
+	call	int_sqrt
+	movq	%rax, -64(%rbp)
+	movq	-64(%rbp), %rax
+	movq	-56(%rbp), %rdx
+	movq	-48(%rbp), %rcx
+	movq	-40(%rbp), %r8
+	movq	-32(%rbp), %r9
+	movq	-24(%rbp), %r10
+	movq	-8(%rbp), %r11
+	call	int_sqrt
+	movq	%rax, -72(%rbp)
+	movq	-72(%rbp), %rax
+	movq	-64(%rbp), %rdx
+	movq	-56(%rbp), %rcx
+	movq	-48(%rbp), %r8
+	movq	-40(%rbp), %r9
+	movq	-32(%rbp), %r10
+	movq	-24(%rbp), %r11
+	call	int_sqrt
+	movq	%rax, -80(%rbp)
+	movq	-80(%rbp), %rax
+	movq	-72(%rbp), %rdx
+	movq	-64(%rbp), %rcx
+	movq	-56(%rbp), %r8
+	movq	-48(%rbp), %r9
+	movq	-40(%rbp), %r10
+	movq	-32(%rbp), %r11
+	call	int_sqrt
+	movq	%rax, -88(%rbp)
+	movq	-88(%rbp), %rax
+	movq	-80(%rbp), %rdx
+	movq	-72(%rbp), %rcx
+	movq	-64(%rbp), %r8
+	movq	-56(%rbp), %r9
+	movq	-48(%rbp), %r10
+	movq	-40(%rbp), %r11
+	call	int_sqrt
+	movq	%rax, -96(%rbp)
+	movq	-96(%rbp), %rax
+	movq	-88(%rbp), %rdx
+	movq	-80(%rbp), %rcx
+	movq	-72(%rbp), %r8
+	movq	-64(%rbp), %r9
+	movq	-56(%rbp), %r10
+	movq	-48(%rbp), %r11
+	call	int_sqrt
+	movq	%rax, -104(%rbp)
+	movq	-104(%rbp), %rax
+	movq	-96(%rbp), %rdx
+	movq	-88(%rbp), %rcx
+	movq	-80(%rbp), %r8
+	movq	-72(%rbp), %r9
+	movq	-64(%rbp), %r10
+	movq	-56(%rbp), %r11
+	call	int_sqrt
+	movq	%rax, -112(%rbp)
+	movq	-112(%rbp), %rax
+	movq	-104(%rbp), %rdx
+	movq	-96(%rbp), %rcx
+	movq	-88(%rbp), %r8
+	movq	-80(%rbp), %r9
+	movq	-72(%rbp), %r10
+	movq	-64(%rbp), %r11
+	call	int_sqrt
+	movq	%rax, -120(%rbp)
+	movq	-120(%rbp), %rax
+	movq	-112(%rbp), %rdx
+	movq	-104(%rbp), %rcx
+	movq	-96(%rbp), %r8
+	movq	-88(%rbp), %r9
+	movq	-80(%rbp), %r10
+	movq	-72(%rbp), %r11
+	call	int_sqrt
+	movq	%rax, -128(%rbp)
+	movq	-128(%rbp), %rax
+	movq	-120(%rbp), %rdx
+	movq
+WARNING:root:CASE 86 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s: Warning: end of file not at end of a line; newline inserted
+tmp.s:147: Error: number of operands mismatch for `movq'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h> 
+
+int comp(int num)
+{
+    int res = 0;
+    int cnt = 0;
+
+    while (num) {
+        if (!(num & 1)) {
+            res = res | (1 << cnt);
+        }
+        ++cnt;
+        num = num >> 1;
+    }
+
+    return res;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	comp
+	.type	comp, @function
+comp:
+.LFB2:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	$0, -8(%rbp)
+	movl	$0, -12(%rbp)
+	jmp	.L2
+.L3:
+	movl	-4(%rbp), %eax
+	andl	$1, %eax
+	testl	%eax, %eax
+	jne	.L4
+	movl	-8(%rbp), %eax
+	shll	$1, %eax
+	movl	%eax, -8(%rbp)
+.L2:
+	movl	-4(%rbp), %eax
+	shrl	$1, %eax
+	movl	%eax, -4(%rbp)
+	movl	-8(%rbp), %eax
+	movl	%eax, -12(%rbp)
+	movl	-4(%rbp), %eax
+	testl	%eax, %eax
+	jne	.L3
+	movl	-12(%rbp), %eax
+	popq	%rbp
+	ret
+.L4:
+	movl	-8(%rbp), %eax
+	shll	$1, %eax
+	movl	%eax, -8(%rbp)
+	jmp	.L2
+
+INFO:root:Local error rate: 90.0%
+INFO:root:CASE 87 failed
+INFO:root:C code :
+
+int logicalShift(int x, int n) {
+ int a=(x>>31&1)<<32+~n;
+ return (x^a<<n)>>n^a;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	logicalShift
+	.type	logicalShift, @function
+logicalShift:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-4(%rbp), %eax
+	sarl	$31, %eax
+	andl	$1, %eax
+	shll	$32, %eax
+	notl	%eax
+	addl	-8(%rbp), %eax
+	movl	-4(%rbp), %edx
+	xorl	%eax, %edx
+	shll	-8(%rbp), %edx
+	shrl	-8(%rbp), %edx
+	xorl	%edx, %eax
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 88 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:20: Error: operand size mismatch for `shl'
+tmp.s:21: Error: operand size mismatch for `shr'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+double light_time(double distance) {
+    double t = 0.0;
+
+
+
+    return t;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	light_time
+	.type	light_time, @function
+light_time:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movsd	%xmm0, -24(%rbp)
+	movsd	$0.0, -16(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm1
+	movsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	
+WARNING:root:CASE 89 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:11: Error: junk `.0' after expression
+tmp.s:11: Error: operand type mismatch for `movsd'
+tmp.s:131: Warning: end of file not at end of a line; newline inserted
+tmp.s:132: Warning: found `movsd'; assuming `movsl' was meant
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+double business_sum(double in, double in2) {
+    return in + in2;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	business_sum
+	.type	business_sum, @function
+business_sum:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movsd	%xmm0, -24(%rbp)
+	movsd	%xmm1, -16(%rbp)
+	movsd	-24(%rbp), %xmm0
+	addsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 90 succeeded
+INFO:root:C code :
+
+int do_961() { return 961; }
+INFO:root:x86 code: 
+
+	.text
+	.globl	do_961
+	.type	do_961, @function
+do_961:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$961, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 91 succeeded
+INFO:root:C code :
+
+
+
+
+
+int chroma_sub_implemented(int mode)
+{
+  switch (mode) {
+  case 0:
+  case 1:
+  case 3:
+    return 1;
+  case 2:
+  case 4:
+  case 5:
+  case 7:
+  case 6:
+  default:
+    return 0;
+  }
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	chroma_sub_implemented
+	.type	chroma_sub_implemented, @function
+chroma_sub_implemented:
+.LFB0:
+	endbr64
+	movl	%edi, %eax
+	andl	$1, %eax
+	cmpl	$0, %eax
+	jne	.L2
+	movl	$1, %eax
+	jmp	.L3
+.L2:
+	movl	$0, %eax
+.L3:
+	ret
+
+
+INFO:root:Local error rate: 70.0%
+INFO:root:CASE 92 failed
+INFO:root:C code :
+#include <stdio.h>
+
+int leapyear(int year) {
+  if (year % 400 == 0)
+    return 1;
+  else if (year % 4 == 0 && year % 100 != 0)
+    return 1;
+  else
+    return 0;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	leapyear
+	.type	leapyear, @function
+leapyear:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	cmpl	$0, -4(%rbp)
+	jne	.L2
+	movl	$1, %eax
+	jmp	.L3
+.L2:
+	cmpl	$400, -4(%rbp)
+	jne	.L4
+	movl	$1, %eax
+	jmp	.L3
+.L4:
+	cmpl	$4, -4(%rbp)
+	jne	.L5
+	cmpl	$100, -4(%rbp)
+	jne	.L5
+	movl	$1, %eax
+	jmp	.L3
+.L5:
+	movl	$0, %eax
+.L3:
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 30.0%
+INFO:root:CASE 93 failed
+INFO:root:C code :
+
+int subtract(int x, int y) {
+    return x - y;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	subtract
+	.type	subtract, @function
+subtract:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-4(%rbp), %eax
+	subl	-8(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 94 succeeded
+INFO:root:C code :
+#include <ctype.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <stdint.h>
+
+#include <math.h>
+
+#include <time.h>
+
+#include <fcntl.h>
+
+#include <sys/types.h>
+
+#include <errno.h>
+
+#include <limits.h>
+
+double calc_swst(unsigned short swst_dn, double pri)
+{
+
+
+     return ((double) swst_dn * 210.94e-09 + 9.0 * pri - 6.6E-6);
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	calc_swst
+	.type	calc_swst, @function
+calc_swst:
+.LFB2:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movzbl	swst_dn(%rip), %eax
+	movl	%eax, %edx
+	movl	pri(%rip), %eax
+	imull	$210940, %edx
+	movl	%edx, %esi
+	movl	%eax, %edi
+	movl	$9, %eax
+	imull	%esi, %eax
+	movl	%eax, %esi
+	movl	$660, %eax
+	imull	%edi, %eax
+	movl	%eax, %edi
+	movl	$660, %eax
+	subl	%edi, %eax
+	movl	%eax, %edi
+	movl	%esi, %eax
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 95 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: warning: /tmp/ccVnEJcZ.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/ccVnEJcZ.o: warning: relocation against `swst_dn' in read-only section `.text'
+/usr/bin/ld: /tmp/ccVnEJcZ.o: in function `calc_swst':
+(.text+0xb): undefined reference to `swst_dn'
+/usr/bin/ld: (.text+0x13): undefined reference to `pri'
+/usr/bin/ld: warning: creating DT_TEXTREL in a PIE
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int gsl_TouchNear(void)
+{
+  return 0;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	gsl_TouchNear
+	.type	gsl_TouchNear, @function
+gsl_TouchNear:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 96 succeeded
+INFO:root:C code :
+
+int _link (const char *old_name, const char *new_name)
+{
+  return -1;
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	_link
+	.type	_link, @function
+_link:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movl	$0, -20(%rbp)
+	movl	-20(%rbp), %eax
+	addq	$16, %rsp
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 97 failed
+INFO:root:C code :
+
+int quant(int n, int m)
+{
+ int i, neg;
+
+ neg = 0;
+ if (n < 0) {
+  neg++;
+  n = -n;
+ }
+
+ i = n / m;
+ if (n - m * i > m / 2)
+  i += 1;
+ i *= m;
+ if (neg)
+  i = -i;
+ return(i);
+}
+INFO:root:x86 code: 
+
+	.text
+	.globl	quant
+	.type	quant, @function
+quant:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	$0, -12(%rbp)
+	movl	$0, -16(%rbp)
+	movl	-4(%rbp), %eax
+	cmpl	$0, %eax
+	jg	.L2
+	movl	$1, -12(%rbp)
+	jmp	.L3
+.L2:
+	movl	-4(%rbp), %eax
+	movl	%eax, %edx
+	movl	-8(%rbp), %eax
+	cdqe
+	idivl	%edx
+	movl	%eax, -12(%rbp)
+.L3:
+	movl	-4(%rbp), %eax
+	movl	%eax, %edx
+	movl	-8(%rbp), %eax
+	cdqe
+	idivl	%edx
+	movl	%edx, -16(%rbp)
+	movl	-12(%rbp), %eax
+	cmpl	$0, %eax
+	jg	.L4
+	movl	-12(%rbp), %eax
+	movl	%eax, -12(%rbp)
+	jmp	.L5
+.L4:
+	movl	-12(%rbp), %eax
+	movl	%eax, -12(%rbp)
+	movl	-16(%rbp), %eax
+	movl	%eax, -12(%rbp)
+.L5:
+	movl	-12(%rbp), %eax
+	movl	%eax, %edx
+	movl	-12(%rbp), %eax
+	cltd
+	idivl	%edx
+	movl	%eax, -12(%rbp)
+	movl	-12(%rbp), %eax
+	popq	%rbp
+	ret
+
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 98
+WARNING:root:WARNING: code failed to execute for input 1 in case 98
+WARNING:root:WARNING: code failed to execute for input 2 in case 98
+WARNING:root:WARNING: code failed to execute for input 3 in case 98
+WARNING:root:WARNING: code failed to execute for input 4 in case 98
+WARNING:root:WARNING: code failed to execute for input 5 in case 98
+WARNING:root:WARNING: code failed to execute for input 6 in case 98
+WARNING:root:WARNING: code failed to execute for input 7 in case 98
+WARNING:root:WARNING: code failed to execute for input 8 in case 98
+WARNING:root:WARNING: code failed to execute for input 9 in case 98
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 98 failed
+INFO:root:C code :
+
+void fs_scandir(char *dir, char *name)
+{
+}
+INFO:root:x86 code: 
+
+.text
+.globl	fs_scandir
+.type	fs_scandir, @function
+fs_scandir:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 99 succeeded
+INFO:root:Done
+INFO:root:Passed cases: [6, 10, 11, 13, 14, 18, 21, 24, 29, 36, 37, 41, 43, 49, 52, 57, 58, 61, 62, 64, 65, 68, 69, 72, 77, 82, 85, 90, 91, 94, 96, 99]
+INFO:root:Failed cases: [0, 1, 2, 3, 4, 5, 7, 8, 9, 12, 15, 16, 17, 19, 20, 22, 23, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 38, 39, 40, 42, 44, 45, 46, 47, 48, 50, 51, 53, 54, 55, 56, 59, 60, 63, 66, 67, 70, 71, 73, 74, 75, 76, 78, 79, 80, 81, 83, 84, 86, 87, 88, 89, 92, 93, 95, 97, 98]
+INFO:root:Pass rate: 32.0%
+INFO:root:End time: 2024-08-18 01:30:05.218322
