@@ -185,7 +185,7 @@ class Chat:
                 messages = [
                     {
                         "role": "system",
-                        "content": """you are a professional AI assistant in code, based on the user input C code, 
+                        "content": r"""you are a professional AI assistant in code, based on the user input C code, 
 you are going to help me to generate the corresponding x86 assembly.
 You will perform like a compiler with O0 optimization level, the architecture is x86_64.
 We can assume there will only be one function body to be compiled.
@@ -230,23 +230,24 @@ main:
                 messages = [
                     {
                         "role": "system",
-                        "content": """you are a professional AI assistant in code, based on the user input C code, 
-    you are going to help me to generate the corresponding x86 assembly.
-    You will perform like a compiler with O0 optimization level, the architecture is x86_64.
-    We can assume there will only be one function body to be compiled.
-    input code will be inside "```c" and "```"tags, please also make sure the generated x86 assembly be inside "```x86" and "```" tags.""",
+                        "content": r"""you are a professional AI assistant in code, based on the user input C code, 
+you are going to help me to generate the corresponding x86 assembly.
+You will perform like a compiler with O0 optimization level, the architecture is x86_64.
+We can assume there will only be one function body to be compiled.
+input code will be inside "```c" and "```"tags, please also make sure the generated x86 assembly be inside "```x86" and "```" tags.
+""",
                     },
                     {
                         "role": "user",
                         "content": f"""```c
-    {user_input}
-    ```""",
+{user_input}
+```""",
                     },
                 ]
             message_prompt = self.tokenizer.apply_chat_template(
                 messages, tokenize=False, add_generation_prompt=True
             )
-            # logging.info("Actual LLM Input:" + message_prompt)
+            logging.info("Actual LLM Input:" + message_prompt)
             inputs = self.tokenizer(
                 message_prompt,
                 return_tensors="pt",
@@ -255,14 +256,14 @@ main:
             ).to("cuda")
             outputs = self.local_model.generate(
                 **inputs,
-                temperature=temperature,
-                do_sample=True,
+                # temperature=temperature,
+                # do_sample=True,
                 max_new_tokens=2048,
-                repetition_penalty=2.0,
+                # repetition_penalty=2.0,
                 # output_scores=True,
             )
-            rsp_content = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-            logging.info("Actual LLM Output:" + rsp_content)
+            rsp_content = self.tokenizer.decode(outputs[0])
+            # logging.info("Actual LLM Output:" + rsp_content)
             rsp_content = rsp_content[len(message_prompt) :]
         self.messages.append(
             {

@@ -456,11 +456,11 @@ if __name__ == "__main__":
     c_compiler(
         model="deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct",
         begin_id=0,
-        end_id=1,
+        end_id=100,
         use_short_prompt=True,
         use_local=True,
-        temperature=0.4,
-        # peft_model="/root/workspace/LLM_Compiler/peft_trainer/lora_adapters/DeepSeek-Coder-V2-Lite-Instruct_c_x86_O0_lora64_32_0.02_none_b16_gpu4/checkpoint-5000",
+        temperature=0,
+        peft_model="/root/workspace/LLM_Compiler/peft_trainer/lora_adapters/DeepSeek-Coder-V2-Lite-Instruct_c_x86_O0_lora64_32_0.02_none_b16_gpu4/checkpoint-5000",
     )
     # c_compiler(
     #     model="codellama/CodeLlama-7b-Instruct-hf",
