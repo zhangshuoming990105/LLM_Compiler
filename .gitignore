@@ -6,3 +6,4 @@ baselines/*
 .cache
 peft_trainer/lora_adapters/*
 wandb
+playground

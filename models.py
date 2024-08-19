@@ -119,7 +119,9 @@ class Chat:
                 self.local_model = PeftModel.from_pretrained(
                     self.local_model, peft_model
                 )
-                self.is_fineturned = True
+                self.is_finetuned = True
+            else:
+                self.is_finetuned = False
         self.model = model
         self.temperature = temperature
         self.gpt_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -172,16 +174,14 @@ class Chat:
 
         with torch.no_grad():
             # message_prompt is the concatenation of system_prompt and user_input
-            message_prompt = self.tokenizer.apply_chat_template(
-                self.messages, tokenize=False, add_generation_prompt=True
-            )
-            if self.is_fineturned:
-                # grep the ```c code ``` from the user input
 
-                if "```c" in user_input:
-                    user_input = user_input.split("```c")[1].split("```")
-                    if len(user_input) > 0:
-                        user_input = user_input[0]
+            # grep the ```c code ``` from the user input
+
+            if "```c" in user_input:
+                user_input = user_input.split("```c")[1].split("```")
+                if len(user_input) > 0:
+                    user_input = user_input[0]
+            if not self.is_finetuned:
                 messages = [
                     {
                         "role": "system",
@@ -189,7 +189,35 @@ class Chat:
 you are going to help me to generate the corresponding x86 assembly.
 You will perform like a compiler with O0 optimization level, the architecture is x86_64.
 We can assume there will only be one function body to be compiled.
-input code will be inside "```c" and "```"tags, please also make sure the generated x86 assembly be inside "```x86" and "```" tags.""",
+input code will be inside "```c" and "```"tags, please also make sure the generated x86 assembly be inside "```x86" and "```" tags.
+Example is below:
+User:
+```c
+int main() {
+    printf("Hello, World!\n");
+    return 0;
+}
+```
+Assistant:
+```x86
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	leaq	.LC0(%rip), %rdi
+	call	puts@PLT
+	movl	$0, %eax
+	popq	%rbp
+	ret
+.LC0:
+	.string	"Hello, World!"
+ 
+ ```
+ """,
                     },
                     {
                         "role": "user",
@@ -198,10 +226,27 @@ input code will be inside "```c" and "```"tags, please also make sure the genera
 ```""",
                     },
                 ]
-                message_prompt = self.tokenizer.apply_chat_template(
-                    self.messages, tokenize=False, add_generation_prompt=True
-                )
-            logging.info("Actual LLM Input:" + message_prompt)
+            else:
+                messages = [
+                    {
+                        "role": "system",
+                        "content": """you are a professional AI assistant in code, based on the user input C code, 
+    you are going to help me to generate the corresponding x86 assembly.
+    You will perform like a compiler with O0 optimization level, the architecture is x86_64.
+    We can assume there will only be one function body to be compiled.
+    input code will be inside "```c" and "```"tags, please also make sure the generated x86 assembly be inside "```x86" and "```" tags.""",
+                    },
+                    {
+                        "role": "user",
+                        "content": f"""```c
+    {user_input}
+    ```""",
+                    },
+                ]
+            message_prompt = self.tokenizer.apply_chat_template(
+                messages, tokenize=False, add_generation_prompt=True
+            )
+            # logging.info("Actual LLM Input:" + message_prompt)
             inputs = self.tokenizer(
                 message_prompt,
                 return_tensors="pt",

@@ -17,6 +17,9 @@ from transformers import (
 )
 from datasets import load_dataset
 import wandb
+import deepspeed
+
+wandb.require("core")
 from dataclasses import dataclass
 
 
@@ -27,11 +30,11 @@ class CompilerLoraConfig:
     tgt_language: str = "x86"
     opt_level: str = "O0"
     corpus: str = "zhangshuoming/c_x86_O0_exebench_json_cleaned"
-    max_length: int = 2048
+    max_length: int = 4096
     # lora config
-    r: int = 128 # 128, 64, 32
+    r: int = 64  # 128, 64, 32
     lora_alpha: int = 32
-    lora_dropout: float = 0 # do we need dropout?
+    lora_dropout: float = 0.02  # do we need dropout?
     bias: str = "none"
 
     base_model: str = "codellama/CodeLlama-13b-Instruct-hf"
@@ -39,7 +42,6 @@ class CompilerLoraConfig:
 
     # base_model: str = "daryl149/llama-2-7b-chat-hf"
     # base_model_name: str = "llama-2-7b-chat-hf"
-
 
     # train config
     batch_size: int = 16
@@ -77,21 +79,19 @@ def set_x86_config(config: CompilerLoraConfig):
     config.tgt_language = "x86"
     # legacy setting for codellama13b, baseline
     # config.corpus = "zhangshuoming/c_x86_O0_exebench_json_cleaned"
-    
+
     # setting1: codellama13b, baseline
     # config.corpus = "mistral0105/emnlp_baseline_train_ds_for_codellama"
-    
+
     # setting2: deepseekcoder, baseline
     config.corpus = "mistral0105/emnlp_baseline_train_ds_for_deepseekcoder"
-    
+
     # setting3: codellama13b, augmented
     # config.corpus = "mistral0105/emnlp_augmented_train_ds_for_codellama"
-    
+
     # setting4: deepseekcoder, augmented
     # config.corpus = "mistral0105/emnlp_augmented_train_ds_for_deepseekcoder"
-    
-    
-    
+
 
 def set_disassemble_config(config: CompilerLoraConfig):
     config.src_language = "x86"
@@ -107,13 +107,14 @@ if __name__ == "__main__":
     # first, use a small dataset to test the code
     config.base_model = "deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct"
     config.base_model_name = "DeepSeek-Coder-V2-Lite-Instruct"
-    config.learning_rate = 5e-5
-    config.warmup_steps = 1000
-    config.eval_steps = 2000
-    config.save_steps = 1000
-    config.save_total_limit = 5
-    
-    
+    config.learning_rate = 1e-4
+    config.warmup_steps = 5000
+    config.eval_steps = 10000
+    config.save_steps = 5000
+    config.save_total_limit = 3
+    config.r = 64
+    config.lora_alpha = 32
+
     print(config)
     corpus = load_dataset(config.corpus, split="train")
     small_dataset = corpus.train_test_split(0.05, 0.95, True)
@@ -127,7 +128,9 @@ if __name__ == "__main__":
     model = AutoModelForCausalLM.from_pretrained(
         base_model, torch_dtype=torch.float16, device_map="auto", trust_remote_code=True
     )
-    tokenizer = AutoTokenizer.from_pretrained(base_model, use_fast=True, trust_remote_code=True)
+    tokenizer = AutoTokenizer.from_pretrained(
+        base_model, use_fast=True, trust_remote_code=True
+    )
     # finetuning script
     # tokenizer.add_eos_token = True
     # tokenizer.pad_token_id = 2
@@ -167,9 +170,11 @@ if __name__ == "__main__":
     lora_config = LoraConfig(
         r=config.r,
         lora_alpha=config.lora_alpha,
-        target_modules=["q_proj", "k_proj", "v_proj", "o_proj"],
+        target_modules=["q_proj", "o_proj", "kv_b_proj", "kv_a_proj_with_mqa"],
         lora_dropout=config.lora_dropout,
         bias=config.bias,
+        # use_dora=True,
+        use_rslora=True,
         task_type="CAUSAL_LM",
     )
     model = get_peft_model(model, lora_config)
@@ -185,11 +190,40 @@ if __name__ == "__main__":
     output_name = f"{wandb_project}_b{config.batch_size}_gpu{config.batch_size//config.per_device_train_batch_size}"
     output_dir = "peft_trainer/lora_adapters/" + output_name
 
+    # deepspeed config
+    # deepspeed_conf = {
+    #     "train_batch_size": "auto",
+    #     "train_micro_batch_size_per_gpu": "auto",
+    #     "gradient_accumulation_steps": "auto",
+    #     # "zero_optimization": {
+    #     #     "stage": 2,
+    #     #     "offload_optimizer": {
+    #     #         "device": "cpu",
+    #     #         "pin_memory": True,
+    #     #     },
+    #     #     "allgather_partitions": True,
+    #     #     "allgather_bucket_size": 2e8,
+    #     #     "overlap_comm": True,
+    #     #     "reduce_scatter": True,
+    #     #     "reduce_bucket_size": 2e8,
+    #     #     "contiguous_gradients": True,
+    #     # },
+    #     "fp16": {
+    #         "enabled": "auto",
+    #     },
+    #     "zero_optimization": {
+    #         "stage": 0,
+    #     },
+    #     "gradient_accumulation_steps": "auto",
+    #     "gradient_clipping": "auto",
+    #     "train_batch_size": "auto",
+    #     "train_micro_batch_size_per_gpu": "auto",
+    #     "steps_per_print": "auto",
+    # }
+
     training_args = TrainingArguments(
         per_device_train_batch_size=config.per_device_train_batch_size,
         gradient_accumulation_steps=config.gradient_accumulation_steps,
-        # per_device_eval_batch_size=per_device_train_batch_size,
-        # eval_accumulation_steps=gradient_accumulation_steps,
         num_train_epochs=config.num_train_epochs,
         warmup_steps=config.warmup_steps,
         learning_rate=config.learning_rate,
@@ -198,17 +232,43 @@ if __name__ == "__main__":
         fp16_opt_level=config.fp16_opt_level,
         logging_steps=config.logging_steps,
         optim=config.optim,
-        evaluation_strategy=config.evaluation_strategy,
+        eval_strategy=config.evaluation_strategy,
         save_strategy=config.save_strategy,
         eval_steps=config.eval_steps,
         save_steps=config.save_steps,
         output_dir=output_dir,
         save_total_limit=config.save_total_limit,
         group_by_length=False,  # group sequences of roughly the same length together to speed up training
+        # deepspeed=deepspeed_conf,
         hub_strategy="checkpoint",
         report_to="wandb",
         run_name=f"{config.base_model_name}-{datetime.now().strftime('%Y-%m-%d-%H-%M')}",
     )
+
+    # training_args = TrainingArguments(
+    #     per_device_train_batch_size=config.per_device_train_batch_size,
+    #     gradient_accumulation_steps=config.gradient_accumulation_steps,
+    #     # per_device_eval_batch_size=per_device_train_batch_size,
+    #     # eval_accumulation_steps=gradient_accumulation_steps,
+    #     num_train_epochs=config.num_train_epochs,
+    #     warmup_steps=config.warmup_steps,
+    #     learning_rate=config.learning_rate,
+    #     lr_scheduler_type=config.lr_scheduler_type,
+    #     fp16=config.fp16,
+    #     fp16_opt_level=config.fp16_opt_level,
+    #     logging_steps=config.logging_steps,
+    #     optim=config.optim,
+    #     eval_strategy=config.evaluation_strategy,
+    #     save_strategy=config.save_strategy,
+    #     eval_steps=config.eval_steps,
+    #     save_steps=config.save_steps,
+    #     output_dir=output_dir,
+    #     save_total_limit=config.save_total_limit,
+    #     group_by_length=False,  # group sequences of roughly the same length together to speed up training
+    #     hub_strategy="checkpoint",
+    #     report_to="wandb",
+    #     run_name=f"{config.base_model_name}-{datetime.now().strftime('%Y-%m-%d-%H-%M')}",
+    # )
 
     trainer = Trainer(
         model=model,
@@ -236,7 +296,7 @@ if __name__ == "__main__":
     # model = AutoModelForCausalLM.from_pretrained(base_model)
     # model = PeftModel.from_pretrained(model, adapter_name)
     # tokenizer = AutoTokenizer.from_pretrained(base_model)
-    
+
     # merge models
     # adapter_name = output_dir
     # save_path = f"models/merged_{output_name}"
