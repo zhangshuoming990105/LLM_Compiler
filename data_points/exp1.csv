@@ -1,0 +1,4 @@
+models, samples_num, IO Accuracy
+"llama3.1:int4", 100, 0.29
+"codestral:int4", 100, 0.67
+"codestral", 100, 0.71

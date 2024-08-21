@@ -104,6 +104,7 @@ class Chat:
         ):
             logging.error(f"Model {model} is not available!")
             exit(1)
+        self.use_local = False
         if use_local:
             self.use_local = True
             self.tokenizer = AutoTokenizer.from_pretrained(
@@ -330,8 +331,8 @@ class Compiler(Chat):
     def __init__(
         self,
         model="mixtral-8x7b-instruct",
-        use_short_prompt=False,
-        use_emnlp_prompt=False,
+        use_one_shot_prompt=False,
+        use_zero_shot_prompt=False,
         use_local=False,
         temperature=0.3,
         peft_model="",
@@ -356,16 +357,16 @@ class Compiler(Chat):
             + compiler_short_prompts["code_format"]
             + compiler_short_prompts["code_example"]
         )
-        if use_emnlp_prompt:
+        if use_zero_shot_prompt:
             self.simplified_prompt = emnlp_baseline_prompts["general"]
-            self.use_short_prompt = True
-            use_short_prompt = True
-        if use_short_prompt:
+            self.use_one_shot_prompt = True
+            use_one_shot_prompt = True
+        if use_one_shot_prompt:
             self.system_prompt = self.simplified_prompt
-            self.use_short_prompt = True
+            self.use_one_shot_prompt = True
         else:
             self.system_prompt = self.full_prompt
-            self.use_short_prompt = False
+            self.use_one_shot_prompt = False
 
         query_size = num_token_from_string(self.system_prompt)
         logging.info(f"LLM default prompt size: {query_size}")

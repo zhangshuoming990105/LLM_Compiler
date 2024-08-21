@@ -7,3 +7,4 @@ baselines/*
 peft_trainer/lora_adapters/*
 wandb
 playground
+temp

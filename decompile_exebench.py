@@ -25,7 +25,7 @@ def log_decompile_failed(
     failed_c_ref.append(c_code)
 
 
-def c_decompiler(begin_id=0, end_id=100, use_short_prompt=False, model="gpt-4o", test_O3=False):
+def c_decompiler(begin_id=0, end_id=100, use_one_shot_prompt=False, model="gpt-4o", test_O3=False):
     decompiler = Decompiler(model)
 
     # ds = load_dataset("jordiae/exebench")["train_real_simple_io"]

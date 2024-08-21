@@ -32,6 +32,16 @@ DEEPSEEK_AVAILABLE_MODELS = [
 ]
 
 OLLAMA_AVAILABLE_MODELS = [
+    # general models
+    "llama3.1",
+    # code models
     "codegeex4",
+    "codegeex4-9b-all-fp16",
     "codestral",
+    "codestral:22b-v0.1-f16",
+    "deepseek-coder-v2",
+    "deepseek-coder-v2:16b-lite-instruct-fp16",
+    "codegemma",
+    "codeqwen",
+    
 ]

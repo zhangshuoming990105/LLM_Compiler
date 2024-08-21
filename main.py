@@ -5,9 +5,18 @@ import json
 import datetime
 import logging
 import subprocess
+import argparse
+from tqdm import tqdm
 from datasets import load_dataset, Dataset
 from utils import get_env, workspace_clear
 from models import Chat, Compiler, Decompiler, CodeTranslator
+from config import (
+    ANTHROPIC_AVAILABLE_MODELS,
+    GPT_AVAILABLE_MODELS,
+    OLLAMA_AVAILABLE_MODELS,
+    PPLX_AVAILABLE_MODELS,
+    DEEPSEEK_AVAILABLE_MODELS,
+)
 
 
 def log_failed(
@@ -59,16 +68,16 @@ def c_compiler(
     model="gpt-4o",
     begin_id=0,
     end_id=100,
-    use_short_prompt=False,
-    use_emnlp_prompt=False,
+    use_one_shot_prompt=False,
+    use_zero_shot_prompt=False,
     use_local=False,
     temperature=0.3,
     peft_model="",
 ):
     compiler = Compiler(
         model,
-        use_short_prompt=use_short_prompt,
-        use_emnlp_prompt=use_emnlp_prompt,
+        use_one_shot_prompt=use_one_shot_prompt,
+        use_zero_shot_prompt=use_zero_shot_prompt,
         use_local=use_local,
         temperature=temperature,
         peft_model=peft_model,
@@ -82,6 +91,7 @@ def c_compiler(
     failed_asm = []
     failed_asm_ref = []
     case_id = 0
+    total_id = end_id - begin_id
     for e in ds:
         if case_id < begin_id:
             case_id += 1
@@ -331,9 +341,9 @@ def c_compiler(
             f.close()
 
 
-def python_compiler(model="gpt-4o", begin_id=0, end_id=1, use_short_prompt=False):
+def python_compiler(model="gpt-4o", begin_id=0, end_id=1, use_one_shot_prompt=False):
     code_translator = CodeTranslator(model, source="python", target="c")
-    gpt4_compiler = Compiler(model, use_short_prompt=use_short_prompt)
+    gpt4_compiler = Compiler(model, use_one_shot_prompt=use_one_shot_prompt)
     compiler = gpt4_compiler
     dataset = load_dataset("openai/openai_humaneval")
     case_id = 0
@@ -414,6 +424,7 @@ def ir_optimizer():
 
 
 if __name__ == "__main__":
+    # 1. environment setup
     root_dir = get_env()
     if root_dir is None:
         print("Failed to locate the working directory!")
@@ -421,68 +432,122 @@ if __name__ == "__main__":
     python_dir = os.path.join(root_dir, "python")
     sandbox_dir = os.path.join(root_dir, "sandbox/temp")
     log_dir = os.path.join(root_dir, "logs")
-    temp_name = f"temp_{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{random.randint(0, 1000000)}"
+
+    # 2. configure experiment parameters
+    # default parameters
+    candidate_model = "codestral:22b-v0.1-f16"
+    need_log = True
+    use_local = False
+    begin_id = 0
+    end_id = 100
+    prompt_style = "one"
+
+    # 3. parse command line arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--model", type=str, default="llama3.1")
+    parser.add_argument("--begin_id", type=int, default=0)
+    parser.add_argument("--end_id", type=int, default=100)
+    parser.add_argument("--prompt_style", type=str, default="one")
+    parser.add_argument("--use_local", type=bool, default=False)
+    parser.add_argument("--need_log", type=bool, default=True)
+    S = parser.parse_args()
+    candidate_model = S.model
+    begin_id = S.begin_id
+    end_id = S.end_id
+    prompt_style = S.prompt_style
+    use_local = S.use_local
+    need_log = S.need_log
+    if prompt_style == "one":
+        use_one_shot_prompt = True
+        use_zero_shot_prompt = False
+    elif prompt_style == "zero":
+        use_one_shot_prompt = False
+        use_zero_shot_prompt = True
+    else:
+        use_one_shot_prompt = False
+        use_zero_shot_prompt = False
+
+    # check if the model is available
+    ALL_MODELS = (
+        ANTHROPIC_AVAILABLE_MODELS
+        + GPT_AVAILABLE_MODELS
+        + OLLAMA_AVAILABLE_MODELS
+        + PPLX_AVAILABLE_MODELS
+        + DEEPSEEK_AVAILABLE_MODELS
+    )
+    if candidate_model not in ALL_MODELS and not use_local:
+        print(f"Model {candidate_model} is not available!")
+        exit(1)
+
+    temp_name = f"temp_{candidate_model}_{begin_id}_{end_id}_{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{random.randint(0, 1000000)}"
     temp_dir = os.path.join(sandbox_dir, temp_name)
     if not os.path.exists(temp_dir):
         os.makedirs(temp_dir, exist_ok=True)
         os.chdir(temp_dir)
     log_file = os.path.join(log_dir, f"{temp_name}.log")
-    need_log = True
     if need_log:
         logging.basicConfig(filename=log_file, level=logging.INFO)
     else:
         logging.basicConfig(level=logging.INFO)
     logging.info("log file created!")
     logging.info("Start time: " + str(datetime.datetime.now()))
+    logging.info("Current run:" + temp_name)
 
     # CodeGeex4, ollama local models
-    # c_compiler(model="codestral", begin_id=200, end_id=210, use_short_prompt=True)
-    # c_compiler(model="gpt-4o", begin_id=200, end_id=210, use_short_prompt=True)
+    # c_compiler(model="codestral", begin_id=200, end_id=210, use_one_shot_prompt=True)
+    # c_compiler(model="gpt-4o", begin_id=200, end_id=210, use_one_shot_prompt=True)
+    c_compiler(
+        model=candidate_model,
+        begin_id=begin_id,
+        end_id=end_id,
+        use_one_shot_prompt=use_one_shot_prompt,
+        use_zero_shot_prompt=use_zero_shot_prompt,
+        use_local=use_local,
+    )
+
+    logging.info("End time: " + str(datetime.datetime.now()))
 
     # EMNLP additional experiments baselines:
     # GPT-4o
-    # c_compiler(model="gpt-4o",begin_id=0, end_id=100, use_emnlp_prompt=True)
+    # c_compiler(model="gpt-4o",begin_id=0, end_id=100, use_zero_shot_prompt=True)
     # DeepSeek-Coder
-    # c_compiler(model="deepseek-coder", begin_id=0, end_id=100, use_emnlp_prompt=True)
+    # c_compiler(model="deepseek-coder", begin_id=0, end_id=100, use_zero_shot_prompt=True)
     # CLAUDE-3: claude-3-opus-20240229
     # CLAUDE-3.5: claude-3-5-sonnet-20240620
-    # c_compiler(model="claude-3-5-sonnet-20240620",begin_id=0, end_id=100, use_emnlp_prompt=True)
+    # c_compiler(model="claude-3-5-sonnet-20240620",begin_id=0, end_id=100, use_zero_shot_prompt=True)
     # Mixtral-8x7b
-    # c_compiler(model="mixtral-8x7b-instruct", begin_id=0, end_id=1, use_short_prompt=True)
+    # c_compiler(model="mixtral-8x7b-instruct", begin_id=0, end_id=1, use_one_shot_prompt=True)
     # Llama3.1
-    # c_compiler(model="llama-3.1-70b-instruct", begin_id=0, end_id=10, use_short_prompt=True)
-
+    # c_compiler(model="llama-3.1-70b-instruct", begin_id=0, end_id=10, use_one_shot_prompt=True)
     # local models using transformers library to load(including our fine-tuned models)
-    c_compiler(
-        model="deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct",
-        begin_id=0,
-        end_id=100,
-        use_short_prompt=True,
-        use_local=True,
-        temperature=0.2,
-        peft_model="/root/workspace/LLM_Compiler/peft_trainer/lora_adapters/DeepSeek-Coder-V2-Lite-Instruct_c_x86_O0_lora64_32_0.02_none_b16_gpu4/checkpoint-5000",
-    )
+    # c_compiler(
+    #     model="deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct",
+    #     begin_id=0,
+    #     end_id=100,
+    #     use_one_shot_prompt=True,
+    #     use_local=True,
+    #     temperature=0.2,
+    #     peft_model="/root/workspace/LLM_Compiler/peft_trainer/lora_adapters/DeepSeek-Coder-V2-Lite-Instruct_c_x86_O0_lora64_32_0.02_none_b16_gpu4/checkpoint-5000",
+    # )
     # c_compiler(
     #     model="codellama/CodeLlama-7b-Instruct-hf",
     #     begin_id=0,
     #     end_id=100,
-    #     use_short_prompt=True,
+    #     use_one_shot_prompt=True,
     #     use_local=True,
     #     temperature=0.4,
     # )
-
     # peft model
     # c_compiler(
     #     model="deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct",
     #     begin_id=0,
     #     end_id=2,
-    #     use_short_prompt=True,
+    #     use_one_shot_prompt=True,
     #     use_local=True,
     #     temperature=0.4,
     #     peft_model="/root/workspace/LLM_Compiler/peft_trainer/lora_adapters/DeepSeek-Coder-V2-Lite-Instruct_c_x86_O0_lora128_32_0_none_b16_gpu4/final_checkpoint",
     # )
-
     # python_c_translator(model="claude-3-haiku-20240307")
     # python_compiler("claude-3-5-sonnet-20240620")
-    logging.info("End time: " + str(datetime.datetime.now()))
+    # logging.info("End time: " + str(datetime.datetime.now()))
     # workspace_clear(sandbox_dir, log_dir)
