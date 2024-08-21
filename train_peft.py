@@ -29,6 +29,7 @@ class CompilerLoraConfig:
     src_language: str = "c"
     tgt_language: str = "x86"
     opt_level: str = "O0"
+    experiment_level: str = "baseline"
     corpus: str = "zhangshuoming/c_x86_O0_exebench_json_cleaned"
     max_length: int = 4096
     # lora config
@@ -84,13 +85,14 @@ def set_x86_config(config: CompilerLoraConfig):
     # config.corpus = "mistral0105/emnlp_baseline_train_ds_for_codellama"
 
     # setting2: deepseekcoder, baseline
-    config.corpus = "mistral0105/emnlp_baseline_train_ds_for_deepseekcoder"
+    # config.corpus = "mistral0105/emnlp_baseline_train_ds_for_deepseekcoder"
 
     # setting3: codellama13b, augmented
     # config.corpus = "mistral0105/emnlp_augmented_train_ds_for_codellama"
 
     # setting4: deepseekcoder, augmented
-    # config.corpus = "mistral0105/emnlp_augmented_train_ds_for_deepseekcoder"
+    config.corpus = "mistral0105/emnlp_c_x86_O0_exebench_numeric_ft_full_for_deepseekcoder"
+    config.experiment_level = "full"
 
 
 def set_disassemble_config(config: CompilerLoraConfig):
@@ -108,12 +110,14 @@ if __name__ == "__main__":
     config.base_model = "deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct"
     config.base_model_name = "DeepSeek-Coder-V2-Lite-Instruct"
     config.learning_rate = 1e-4
-    config.warmup_steps = 5000
-    config.eval_steps = 10000
-    config.save_steps = 5000
+    config.warmup_steps = 200
+    config.eval_steps = 250
+    config.save_steps = 500
+    config.logging_steps = 25
+    config.num_train_epochs = 2
     config.save_total_limit = 3
-    config.r = 64
-    config.lora_alpha = 32
+    config.r = 32
+    config.lora_alpha = 16
 
     print(config)
     corpus = load_dataset(config.corpus, split="train")
@@ -158,11 +162,11 @@ if __name__ == "__main__":
 
     tokenized_train_dataset = train_dataset.map(
         generate_and_tokenize_prompt,
-        cache_file_name=f".cache/tokenized_train_{config.src_language}_{config.tgt_language}_{config.opt_level}_{config.base_model_name}",
+        cache_file_name=f".cache/tokenized_train_{config.src_language}_{config.tgt_language}_{config.opt_level}_{config.base_model_name}_{config.experiment_level}",
     )
     tokenized_val_dataset = eval_dataset.map(
         generate_and_tokenize_prompt,
-        cache_file_name=f".cache/tokenized_eval_{config.src_language}_{config.tgt_language}_{config.opt_level}_{config.base_model_name}",
+        cache_file_name=f".cache/tokenized_eval_{config.src_language}_{config.tgt_language}_{config.opt_level}_{config.base_model_name}_{config.experiment_level}",
     )
     print("tokenize dataset done.")
     model.train()  # put model back into training mode
@@ -173,13 +177,13 @@ if __name__ == "__main__":
         target_modules=["q_proj", "o_proj", "kv_b_proj", "kv_a_proj_with_mqa"],
         lora_dropout=config.lora_dropout,
         bias=config.bias,
-        # use_dora=True,
+        use_dora=True,
         use_rslora=True,
         task_type="CAUSAL_LM",
     )
     model = get_peft_model(model, lora_config)
     model.print_trainable_parameters()
-    wandb_project = f"{config.base_model_name}_{config.src_language}_{config.tgt_language}_{config.opt_level}_lora{config.r}_{config.lora_alpha}_{config.lora_dropout}_{config.bias}"
+    wandb_project = f"{config.base_model_name}_{config.src_language}_{config.tgt_language}_{config.opt_level}_lora{config.r}_{config.lora_alpha}_{config.lora_dropout}_{config.bias}_{config.experiment_level}"
     if len(wandb_project) > 0:
         os.environ["WANDB_PROJECT"] = wandb_project
 
@@ -233,6 +237,7 @@ if __name__ == "__main__":
         logging_steps=config.logging_steps,
         optim=config.optim,
         eval_strategy=config.evaluation_strategy,
+        load_best_model_at_end=True,
         save_strategy=config.save_strategy,
         eval_steps=config.eval_steps,
         save_steps=config.save_steps,

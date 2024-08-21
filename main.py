@@ -427,7 +427,7 @@ if __name__ == "__main__":
         os.makedirs(temp_dir, exist_ok=True)
         os.chdir(temp_dir)
     log_file = os.path.join(log_dir, f"{temp_name}.log")
-    need_log = False
+    need_log = True
     if need_log:
         logging.basicConfig(filename=log_file, level=logging.INFO)
     else:
@@ -459,7 +459,7 @@ if __name__ == "__main__":
         end_id=100,
         use_short_prompt=True,
         use_local=True,
-        temperature=0,
+        temperature=0.2,
         peft_model="/root/workspace/LLM_Compiler/peft_trainer/lora_adapters/DeepSeek-Coder-V2-Lite-Instruct_c_x86_O0_lora64_32_0.02_none_b16_gpu4/checkpoint-5000",
     )
     # c_compiler(

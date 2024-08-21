@@ -171,12 +171,8 @@ class Chat:
             }
         )
         assert self.use_local, "Local mode is not enabled."
-
         with torch.no_grad():
-            # message_prompt is the concatenation of system_prompt and user_input
-
             # grep the ```c code ``` from the user input
-
             if "```c" in user_input:
                 user_input = user_input.split("```c")[1].split("```")
                 if len(user_input) > 0:
@@ -247,7 +243,7 @@ input code will be inside "```c" and "```"tags, please also make sure the genera
             message_prompt = self.tokenizer.apply_chat_template(
                 messages, tokenize=False, add_generation_prompt=True
             )
-            logging.info("Actual LLM Input:" + message_prompt)
+            # logging.info("Actual LLM Input:" + message_prompt)
             inputs = self.tokenizer(
                 message_prompt,
                 return_tensors="pt",
@@ -256,10 +252,10 @@ input code will be inside "```c" and "```"tags, please also make sure the genera
             ).to("cuda")
             outputs = self.local_model.generate(
                 **inputs,
-                # temperature=temperature,
-                # do_sample=True,
+                temperature=temperature,
+                do_sample=True,
                 max_new_tokens=2048,
-                # repetition_penalty=2.0,
+                repetition_penalty=1.1,
                 # output_scores=True,
             )
             rsp_content = self.tokenizer.decode(outputs[0])
