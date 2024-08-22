@@ -1,0 +1,4662 @@
+INFO:root:log file created!
+INFO:root:Start time: 2024-08-21 19:36:11.172768
+INFO:root:Current run:temp_codegeex4_0_100_2024-08-21-19-36-11_530222
+INFO:root:LLM default prompt size: 274
+INFO:root:C code :
+
+
+
+double linear_interp(double x,double lx,double ux,double ly,double uy) {
+  return((x-lx)/(ux-lx)*(uy-ly)+ly);
+}
+INFO:root:current LLM prompt size: 325
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+
+
+WARNING:root:CASE 0 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: warning: /tmp/ccWe4ygt.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/ccJVNNrW.o: in function `main':
+tmp_driver.cpp:(.text+0x3f3): undefined reference to `linear_interp'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+double QuinticEaseIn(double p)
+{
+    return p * p * p * p * p;
+}
+INFO:root:current LLM prompt size: 314
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+        .text
+        .globl  QuinticEaseIn
+        .type   QuinticEaseIn, @function
+QuinticEaseIn:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movsd	%xmm0, %xmm1
+	mulsd	%xmm1, %xmm1
+	mulsd	%xmm1, %xmm1
+	mulsd	%xmm1, %xmm1
+	mulsd	%xmm1, %xmm1
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 1 failed
+INFO:root:C code :
+#include <stdio.h>
+
+int dec_lv(char x, char c, int lv)
+{
+ if (x == c)
+  --lv;
+
+ return lv;
+}
+INFO:root:current LLM prompt size: 324
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"dec_lv.c"
+	.text
+	.globl	dec_lv
+	.type	dec_lv, @function
+dec_lv:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movb	%dl, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	cmpb	-4(%rbp), %sil
+	jne	.L2
+	subl	$1, -8(%rbp)
+.L2:
+	movl	-8(%rbp), %eax
+	leave
+	ret
+	.size	dec_lv, .-dec_lv
+	.ident	"GCC: (GNU) 9.3.0"
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 2 failed
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <unistd.h>
+
+#include <limits.h>
+
+#include <errno.h>
+
+#include <stdarg.h>
+
+#include <fcntl.h>
+
+#include <time.h>
+
+#include <signal.h>
+
+#include <dirent.h>
+
+#include <pwd.h>
+
+#include <sys/types.h>
+
+#include <sys/stat.h>
+
+#include <sys/wait.h>
+
+int
+prefix_of(char *special, char *s)
+{
+ for (; *special != '\0'; ++special)
+  if (*special != *s++)
+   return 0;
+ return (*s == '=' || *s == '\0');
+}
+INFO:root:current LLM prompt size: 421
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"prefix_of.c"
+	.text
+	.globl	prefix_of
+	.type	prefix_of, @function
+prefix_of:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movq	%rdi, -16(%rbp)
+	movq	%rsi, -8(%rbp)
+.L2:
+	movl	-16(%rbp), %eax
+	cmpl	$0, (%rax)
+	jne	.L3
+	movl	$1, %eax
+	jmp	.L4
+.L3:
+	movl	-16(%rbp), %eax
+	addq	$8, %rax
+	movl	($rax), %edx
+	movl	-8(%rbp), %eax
+	cmpl	%edx, (%rax)
+	setne	%al
+	testb	%al, %al
+	jne	.L5
+.L4:
+	addq	$16, %rsp
+	popq	%rbp
+	ret
+.L5:
+	movl	-16(%rbp), %eax
+	addq	$8, %rax
+	movl	($rax), %edx
+	movl	-8(%rbp), %eax
+	cmpb	%dl, (%rax)
+	jne	.L2
+	addq	$16, %rsp
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 3 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccIfWXN6.o: relocation R_X86_64_32S against undefined symbol `$rax' can not be used when making a PIE object; recompile with -fPIE
+/usr/bin/ld: failed to set dynamic section sizes: bad value
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <memory.h>
+
+int* sub(int* a, int sizeA, int* b, int sizeB, int* resultSize){
+
+}
+INFO:root:current LLM prompt size: 332
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	sub
+	.type	sub, @function
+sub:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movl	%edi, -8(%rbp)
+	movl	%esi, -12(%rbp)
+	movl	%edx, -16(%rbp)
+	movl	%ecx, -20(%rbp)
+	movl	%r8d, -24(%rbp)
+	movl	%r9d, -28(%rbp)
+	movq	-8(%rbp), %rax
+	movq	%rax, %rdi
+	call	free
+	movl	$0, %eax
+	addq	$32, %rsp
+	popq	%rbp
+	ret
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 4
+WARNING:root:WARNING: code failed to execute for input 1 in case 4
+WARNING:root:WARNING: code failed to execute for input 2 in case 4
+WARNING:root:WARNING: code failed to execute for input 3 in case 4
+WARNING:root:WARNING: code failed to execute for input 4 in case 4
+WARNING:root:WARNING: code failed to execute for input 5 in case 4
+WARNING:root:WARNING: code failed to execute for input 6 in case 4
+WARNING:root:WARNING: code failed to execute for input 7 in case 4
+WARNING:root:WARNING: code failed to execute for input 8 in case 4
+WARNING:root:WARNING: code failed to execute for input 9 in case 4
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 4 failed
+INFO:root:C code :
+
+void vec_mpy(int y[], const short x[], short scaler)
+{
+ int i;
+
+ for (i = 0; i < 150; i++)
+   y[i] += ((scaler * x[i]) >> 31);
+}
+INFO:root:current LLM prompt size: 341
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	vec_mpy
+	.type	vec_mpy, @function
+vec_mpy:
+.LFB1:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$1120, %rsp
+	movq	%rdi, -8(%rbp)
+	movl	%esi, -12(%rbp)
+	movl	%edx, -16(%rbp)
+	movl	$150, %eax
+	cltq
+	mulq	-12(%rbp)
+	movl	%eax, %edi
+	cvttsd2siq	.LC1(%rip), %rax
+	movq	%rax, %rcx
+	movl	%ecx, -24(%rbp)
+	movl	$0, -28(%rbp)
+	jmp	.L3
+.L4:
+	movl	-28(%rbp), %eax
+	cltq
+	movslq	%eax, %rdx
+	movl	-12(%rbp), %eax
+	cltq
+	addq	%rdx, %rax
+	movswl	(%rax), %edx
+	imulw	-16(%rbp), %dx
+	sarw	$31, %dx
+	movslq	%edx, %rdx
+	movslq	-8(%rbp), %rax
+	cltq
+	addq	%rdx, (%rax,%rsi)
+	addl	$1, -28(%rbp)
+.L3:
+	cmpl	-24(%rbp), -28(%rbp)
+	jl	.L4
+	nop
+	leave
+	ret
+	.size	vec_mpy, .-vec_mpy
+	.ident	"GCC: (GNU) 9.2.0"
+	.section	.note.GNU-stack,"",@progbits
+
+WARNING:root:CASE 5 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:39: Error: operand size mismatch for `cmp'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int sign_int(int num)
+{
+  return (( ((((num))) <= (((0)))) ? ( ((((num))) < (((0)))) ? ((-1)) : ((0)) ) : ((1)) ));
+}
+INFO:root:current LLM prompt size: 334
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	sign_int
+	.type	sign_int, @function
+sign_int:
+.LFB0:
+	endbr64
+	cmpl	$0, %edi
+	jge	.L3
+	movl	%edi, %eax
+	imull	$-1, %eax
+	ret
+.L3:
+	testl	%edi, %edi
+	jns	.L2
+	movl	$1, %eax
+	ret
+.L2:
+	xorl	%eax, %eax
+	ret
+
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 6 failed
+INFO:root:C code :
+
+int big_endian(
+    void)
+{
+    union {
+        long l;
+        char c[sizeof(long)];
+    } u;
+
+    u.l = 1;
+
+    return (u.c[sizeof(long) - 1] == 1);
+}
+INFO:root:current LLM prompt size: 341
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	big_endian
+	.type	big_endian, @function
+big_endian:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movabsq	$4294967295, %rax
+	andl	$255, %eax
+	movb	%al, (%rsp)
+	movl	$0, %eax
+	movb	$1, %cl
+	movl	$1, %eax
+	cmpb	(%rsp), %cl
+	sete	%al
+	movzbl	%al, %eax
+	addq	$32, %rsp
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 7 succeeded
+INFO:root:C code :
+
+int _isatty(int fd)
+{
+  (void)fd;
+  return (1);
+}
+INFO:root:current LLM prompt size: 312
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	_isatty
+	.type	_isatty, @function
+_isatty:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$1, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 8 succeeded
+INFO:root:C code :
+
+extern inline int
+JKMarray_idx (const int J, const int K, const int M)
+{
+  return (((4 * J * J + 5) * J) / 3 + 2 * J * J + K * (2 * J + 1) + M);
+}
+INFO:root:current LLM prompt size: 354
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	%edx, -12(%rbp)
+	movl	-4(%rbp), %eax
+	imull	$4, %eax
+	movl	%eax, %ecx
+	movl	-4(%rbp), %eax
+	imull	%eax, %eax
+	addl	%ecx, %eax
+	movl	%eax, %edx
+	shrl	$2, %edx
+	addl	$2, %edx
+	movl	-4(%rbp), %eax
+	imull	%eax, %eax
+	addl	%edx, %eax
+	movl	-8(%rbp), %edx
+	imull	$2, %edx
+	movl	-4(%rbp), %eax
+	imull	%eax, %eax
+	addl	%edx, %eax
+	movl	-12(%rbp), %esi
+	imull	$1, %esi
+	movl	%esi, %edx
+	addl	%eax, %edx
+	movl	%edx, %eax
+	leave
+	ret
+
+WARNING:root:CASE 9 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: warning: /tmp/ccecblY2.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/cclCUaco.o: in function `main':
+tmp_driver.cpp:(.text+0x349): undefined reference to `JKMarray_idx'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+long sign_long(long num)
+{
+  return (( ((((num))) <= (((0)))) ? ( ((((num))) < (((0)))) ? ((-1)) : ((0)) ) : ((1)) ));
+}
+INFO:root:current LLM prompt size: 334
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	sign_long
+	.type	sign_long, @function
+sign_long:
+.LFB3:
+	endbr64
+	cmpq	$0, %rdi
+	js	L4
+	jg	L5
+	movl	%edi, %eax
+	ret
+L4:
+	testq	%rdi, %rdi
+	jns	L6
+	movl	$-1, %eax
+	ret
+L6:
+	xorl	%eax, %eax
+	ret
+L5:
+	movl	$1, %eax
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 10 succeeded
+INFO:root:C code :
+
+int dmp_cm_edit_config(void)
+{
+ return 0;
+}
+INFO:root:current LLM prompt size: 306
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	dmp_cm_edit_config
+	.type	dmp_cm_edit_config, @function
+dmp_cm_edit_config:
+.LFB1:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 11 succeeded
+INFO:root:C code :
+
+int _cmp (int _a, int _b) {
+ int a = _a;
+ int b = _b;
+ return (a > b ? (-1) : (1));
+}
+INFO:root:current LLM prompt size: 331
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	_cmp
+	.type	_cmp, @function
+_cmp:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-4(%rbp), %eax
+	cltq
+	movq	%rax, %rdi
+	movl	-8(%rbp), %eax
+	cltq
+	movq	%rax, %rsi
+	movl	$.LCO, %edi
+	xorl	%eax, %eax
+	call	__builtin___cfi_check@PLT
+	call	__isgreater
+	testl	%eax, %eax
+	jle	.L2
+	movl	$-1, %eax
+	jmp	.L3
+.L2:
+	movl	$1, %eax
+.L3:
+	leave
+	ret
+	.size	_cmp, .-_cmp
+	.ident	"GCC: (x86_64-redhat-linux-gnu) 8.4.1 20200929 (Red Hat 8.4.1-1)"
+	.section	.note.GNU-stack,"",@progbits
+.LCO:
+	.string	"_a"
+
+WARNING:root:CASE 12 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccp773Fp.o: relocation R_X86_64_32 against `.note.GNU-stack' can not be used when making a PIE object; recompile with -fPIE
+/usr/bin/ld: failed to set dynamic section sizes: bad value
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int safe(void) {
+    extern int q;
+    int lp;
+    return 0;
+}
+INFO:root:current LLM prompt size: 312
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	safe
+	.type	safe, @function
+safe:
+.LFB1:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movl	$.LCO@GOTPCREL(%rip), %eax
+	movl	(%rax), %eax
+	movl	%eax, -4(%rbp)
+	movl	$0, %eax
+	addq	$32, %rsp
+	popq	%rbp
+	ret
+.LC1:
+	.string	"q"
+
+WARNING:root:CASE 13 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:11: Error: junk `(%rip)' after expression
+tmp.s:11: Error: relocated field and relocation type differ in signedness
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int HelpItem146( void )
+{
+
+ return 0;
+}
+INFO:root:current LLM prompt size: 305
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	HelpItem146
+	.type	HelpItem146, @function
+HelpItem146:
+.LFB1:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	xorl	%eax, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 14 succeeded
+INFO:root:C code :
+
+int update_program_status(int aggregated_dump) {}
+INFO:root:current LLM prompt size: 301
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	update_program_status
+	.type	update_program_status, @function
+update_program_status:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movl	%edi, -4(%rbp)
+	nop
+	leave
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 15 succeeded
+INFO:root:C code :
+#include <stdlib.h>
+
+int printArray(int arr[], int n)
+{
+    int i=1;
+    while(arr[i]==arr[0])
+    {
+        i++;
+    }
+    return i;
+}
+INFO:root:current LLM prompt size: 334
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	printArray
+	.type	printArray, @function
+printArray:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movl	8(%rdi), %eax
+	cmpl	$1, %eax
+	jle	.L3
+	movl	%dword 12(%rdi), %eax
+	movslq	%eax, %rax
+	salq	$2, %rax
+	addq	%rax, %rdi
+.L4:
+	movl	(%rdi,%rsi,4), %eax
+	cmpl	(%rdi), %eax
+	jne	.L3
+	addl	$1, %esi
+	cmpl	%dword 12(%rdi), %esi
+	jg	.L3
+	jmp	.L4
+.L3:
+	movl	%esi, %eax
+	leave
+	ret
+
+WARNING:root:CASE 16 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:14: Error: bad register name `%dword 12(%rdi)'
+tmp.s:23: Error: bad register name `%dword 12(%rdi)'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int
+COLORS()
+{
+
+    return 256;
+}
+INFO:root:current LLM prompt size: 304
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	COLORS
+	.type	COLORS, @function
+COLORS:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$256, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 17 succeeded
+INFO:root:C code :
+
+int bar( int x )
+{
+   return x+1;
+}
+INFO:root:current LLM prompt size: 306
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	bar
+	.type	bar, @function
+bar:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	addl	$1, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 18 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <time.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <assert.h>
+
+char *skipSpaces(char *pc)
+{
+ while((*pc == ' ' || *pc == '\n' || *pc == '\t' || *pc == '\r') &&
+   *pc != '\0')
+  pc++;
+
+ return pc;
+}
+INFO:root:current LLM prompt size: 368
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+.LC0:
+	.string	" "
+	.type	skipSpaces, @function
+skipSpaces:
+.LFB1:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+.L2:
+	cmpb	$32, (%rax)
+	jne	.L3
+	cmpb	$10, (%rax)
+	jne	.L4
+.L3:
+	cmpb	$9, (%rax)
+	jne	.L5
+.L4:
+	cmpb	$13, (%rax)
+	jne	.L6
+.L5:
+	addq	$1, %rax
+	movq	-8(%rbp), %rdi
+	jmp	.L2
+.L6:
+	movq	%rax, -8(%rbp)
+	movl	$32, %eax
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 19 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: warning: /tmp/ccCa3QKK.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/ccctmwKG.o: in function `main':
+tmp_driver.cpp:(.text+0x38b): undefined reference to `skipSpaces'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+char *init_buffer(char *buffer)
+{
+ int i;
+
+ i = 0;
+ while (buffer[i])
+  buffer[i++] = 0;
+ return (buffer);
+}
+INFO:root:current LLM prompt size: 327
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.LC0:
+	.string ""
+init_buffer:
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)	# buffer
+	xorl	%eax, %eax
+	movl	%eax, -8(%rbp)	# i
+	jmp	.L2
+.L3:
+	addl	$1, -8(%rbp)
+.L2:
+	cmpl	-8(%rbp), -4(%rbp)
+	setne	%al
+	testb	%al, %al
+	jne	.L3
+	movl	-8(%rbp), %eax
+	movb	$0, (%rax)
+	movq	-4(%rbp), %rax
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 20 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:14: Error: operand size mismatch for `cmp'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int GetAnswer() {
+  return 42;
+}
+INFO:root:current LLM prompt size: 303
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl	GetAnswer
+    .type	GetAnswer, @function
+GetAnswer:
+.LFB0:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    $42, %eax
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 21 succeeded
+INFO:root:C code :
+
+unsigned char padding(void)
+{
+  return 0xff;
+}
+INFO:root:current LLM prompt size: 305
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	padding
+	.type	padding, @function
+padding:
+.LFB1:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movb	$-1, %al
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 22 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+int getPrec(char op) {
+
+    switch(op) {
+        case '+':
+        case '-':
+        return 1;
+
+        case '*':
+        case '/':
+        return 2;
+
+
+        case '(':
+        case ')':
+        return 3;
+
+        default:
+        return 0;
+    }
+}
+INFO:root:current LLM prompt size: 364
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	getPrec
+	.type	getPrec, @function
+getPrec:
+.LFB1:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$24, %rsp
+	movb	%dl, -4(%rbp)
+	cmpl	$43, -4(%rbp)
+	je	L2
+	cmpl	$45, -4(%rbp)
+	jne	L3
+L2:
+	movl	$1, %eax
+	jmp	L4
+L3:
+	cmpl	$42, -4(%rbp)
+	je	L5
+	cmpl	$47, -4(%rbp)
+	jne	L6
+L5:
+	movl	$2, %eax
+	jmp	L4
+L6:
+	cmpl	$40, -4(%rbp)
+	je	L7
+	cmpl	$41, -4(%rbp)
+	jne	L8
+L7:
+	movl	$3, %eax
+	jmp	L4
+L8:
+	xorl	%eax, %eax
+L4:
+	leave
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 23 succeeded
+INFO:root:C code :
+#include <sys/stat.h>
+
+#include <errno.h>
+
+#include <sys/times.h>
+
+int _isatty(int file)
+{
+  return 0;
+}
+INFO:root:current LLM prompt size: 324
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	_isatty
+	.type	_isatty, @function
+_isatty:
+.LFB1:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	xorl	%eax, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 24 succeeded
+INFO:root:C code :
+#include <stdlib.h>
+
+#include <stdio.h>
+
+#include <string.h>
+
+#include <errno.h>
+
+char flip_bit (char bit_character) {
+ if ('0' == bit_character)
+  return '1';
+ else
+  return '0';
+}
+INFO:root:current LLM prompt size: 342
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	flip_bit
+	.type	flip_bit, @function
+flip_bit:
+.LFB2:
+	endbr64
+	cmpb	$48, %dil
+	setne	%al
+	notb	%al
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 25 failed
+INFO:root:C code :
+
+int
+foo (int a, int b)
+{
+  int t;
+
+  if (b)
+    {
+      if (a)
+ t = 3;
+      else
+ t = 5;
+
+      a = 0;
+    }
+  else
+    t = 7;
+
+  return t;
+}
+INFO:root:current LLM prompt size: 354
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+
+	.text
+	.globl	foo
+	.type	foo, @function
+foo:
+.LFB1:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	cmpl	$0, -8(%rbp)
+	jne	L2
+	movl	$7, %eax
+	jmp	L3
+L2:
+	movl	-4(%rbp), %eax
+	testl	%eax, %eax
+	jne	L4
+	movl	$5, %eax
+	jmp	L5
+L4:
+	movl	$3, %eax
+L5:
+	movl	%eax, -12(%rbp)
+	movb	$0, -16(%rbp)
+	cmpl	$0, -8(%rbp)
+	jne	L6
+	movl	-12(%rbp), %eax
+	jmp	L3
+L6:
+	movl	$0, %eax
+	movl	%eax, -4(%rbp)
+L3:
+	movl	-12(%rbp), %eax
+	leave
+	ret
+
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 26 succeeded
+INFO:root:C code :
+#include <math.h>
+
+#include <stddef.h>
+
+double opTimes(double lhs, double rhs) { return lhs * rhs; }
+INFO:root:current LLM prompt size: 318
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	opTimes
+	.type	opTimes, @function
+opTimes:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movsd	%xmm0, -8(%rbp)
+	movsd	%xmm1, -16(%rbp)
+	mulsd	-16(%rbp), -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 27 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:12: Error: operand size mismatch for `mulsd'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+float raw_linear_derivative_at( float y ) {
+  return 1.0;
+}
+INFO:root:current LLM prompt size: 310
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	raw_linear_derivative_at
+	.type	raw_linear_derivative_at, @function
+raw_linear_derivative_at:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	flds	single .LC0(%rip)
+	popq	%rbp
+	ret
+.LC0:
+	.float	1.000000e+00
+
+WARNING:root:CASE 28 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:10: Error: junk `.LC0' after expression
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int bitCount(int x) {
+  return 2;
+}
+INFO:root:current LLM prompt size: 305
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	bitCount
+	.type	bitCount, @function
+bitCount:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$2, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 29 succeeded
+INFO:root:C code :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int xtoi(char *p)
+{
+ int curr;
+ int res = 0;
+
+ while (*p)
+ {
+  curr = ((*p) >= '0' && (*p) <= '9' ? (*p) - '0' : (*p) >= 'A' && (*p) <= 'F' ? (*p) - 'A' + 10 : (*p) >= 'a' && (*p) <= 'f' ? (*p) - 'a' + 10 : -1);
+  if (curr == -1) break;
+  res = res * 0x10 + curr;
+  p++;
+ }
+
+ return res;
+}
+INFO:root:current LLM prompt size: 429
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.LFB3:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset %rbp, -16
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movq	%rsi, -8(%rbp)
+	movl	$0, %eax
+	movl	$0, -4(%rbp)
+.L2:
+	movq	-8(%rbp), %rdx
+	addq	$1, %rdx
+	movb	(%rdx), %dl
+	testb	%dl, %dl
+	jz	.L3
+	movq	-8(%rbp), %rdi
+	movsbl	(%rdi), %eax
+	cmpb	$48, %al
+	setge	%dl
+	testb	%dl, %dl
+	jne	.L4
+	movl	$-1, %eax
+	jmp	.L5
+.L4:
+	movq	-8(%rbp), %rdi
+	movsbl	(%rdi), %eax
+	cmpb	$57, %al
+	setle	%dl
+	testb	%dl, %dl
+	jne	.L6
+	movl	0xffffffff, %eax
+	addl	-8(%rbp), %eax
+	subl	$48, %eax
+	jmp	.L7
+.L6:
+	movq	-8(%rbp), %rdi
+	movsbl	(%rdi), %eax
+	cmpb	$65, %al
+	setge	%dl
+	testb	%dl, %dl
+	jne	.L8
+	movl	0xffffffff, %eax
+	addl	-8(%rbp), %eax
+	subl	$55, %eax
+	jmp	.L7
+.L8:
+	movq	-8(%rbp), %rdi
+	movsbl	(%rdi), %eax
+	cmpb	$70, %al
+	setle	%dl
+	testb	%dl, %dl
+	jne	.L9
+	movl	0xffffffff, %eax
+	addl	-8(%rbp), %eax
+	subl	$87, %eax
+	jmp	.L7
+.L9:
+	movq	-8(%rbp), %rdi
+	movsbl	(%rdi), %eax
+	cmpb	$97, %al
+	setge	%dl
+	testb	%dl, %dl
+	jne	.L10
+	movl	0xffffffff, %eax
+	addl	-8(%rbp), %eax
+	subl	$87, %eax
+	jmp	.L7
+.L10:
+	movl	$-1, %eax
+	jmp	.L5
+.L7:
+	addl	%eax, -4(%rbp)
+.L5:
+	movq	-8(%rbp), %rdx
+	addq	$1, %rdx
+	movq	%rdx, -8(%rbp)
+	testl	-4(%rbp), %eax
+	jne	.L2
+.L3:
+	movl	-4(%rbp), %eax
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE3:
+
+WARNING:root:CASE 30 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: warning: /tmp/ccPDNI4v.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/cctYZLXg.o: in function `main':
+tmp_driver.cpp:(.text+0x38a): undefined reference to `xtoi'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <assert.h>
+
+int DummyCDInit(__attribute ((unused)) const char *cdrom_name)
+{
+
+
+
+ return 0;
+}
+INFO:root:current LLM prompt size: 330
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+        .text
+        .globl    DummyCDInit
+        .type     DummyCDInit, @function
+DummyCDInit:
+.LFB2:
+        endbr64
+        pushq     %rbp
+        movq      %rsp, %rbp
+        testq     %rdi, %rdi
+        je        .L3
+        movq      %rsi, %rdi
+        call      memcpy@PLT
+.L3:
+        xorl      %eax, %eax
+        popq      %rbp
+        ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 31 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <time.h>
+
+#include <stdlib.h>
+
+#include <ctype.h>
+
+int retPosVector(char letra, char alfabeto[]) {
+ int i;
+
+ for( i = 0; alfabeto[i]; i++) {
+  if(alfabeto[i] == letra) {
+   return i;
+  }
+ }
+}
+INFO:root:current LLM prompt size: 363
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+
+
+WARNING:root:CASE 32 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: warning: /tmp/ccvxjzEB.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/ccA3YYr1.o: in function `main':
+tmp_driver.cpp:(.text+0x3c2): undefined reference to `retPosVector'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+unsigned int CgosStrLen(const char *s)
+  {
+  const char *ss=s;
+  if (!s) return 0;
+  while (*s++);
+  return s-ss-1;
+  }
+INFO:root:current LLM prompt size: 336
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	CgosStrLen
+	.type	CgosStrLen, @function
+CgosStrLen:
+.LFB12:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	cmpq	$0, -8(%rbp)
+	je	L2
+	movq	-8(%rbp), %rax
+.L3:
+	addq	$1, %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	jne	.L3
+	subq	$1, %rax
+L2:
+	movl	(%rax), %eax
+	popq	%rbp
+	ret
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 33
+WARNING:root:WARNING: code failed to execute for input 1 in case 33
+WARNING:root:WARNING: code failed to execute for input 2 in case 33
+WARNING:root:WARNING: code failed to execute for input 3 in case 33
+WARNING:root:WARNING: code failed to execute for input 4 in case 33
+WARNING:root:WARNING: code failed to execute for input 5 in case 33
+WARNING:root:WARNING: code failed to execute for input 6 in case 33
+WARNING:root:WARNING: code failed to execute for input 7 in case 33
+WARNING:root:WARNING: code failed to execute for input 8 in case 33
+WARNING:root:WARNING: code failed to execute for input 9 in case 33
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 33 failed
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <math.h>
+
+#include <time.h>
+
+#include <omp.h>
+
+#include <unistd.h>
+
+int checkExpDesignator(char *str, int len)
+{
+ int i,n=0;
+
+ for (i=0; i<len; i++)
+ {
+  if (str[i]=='D')
+  {
+   n++;
+   str[i] = 'E';
+  }
+ }
+
+ return(n);
+}
+INFO:root:current LLM prompt size: 386
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+.LC0:
+	.string	"%c"
+.LC1:
+	.string	"Error: Invalid input string!\n"
+.LC2:
+	.string	"Exp Designator Count: %d\n"
+main:
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$48, %rsp
+	movl	$.LC0, %eax
+	testl	%esi, %esi
+	jne	.L3
+	movl	$.LC1, %eax
+	call	printf
+	jmp	.L4
+.L3:
+	movl	%esi, -8(%rbp)
+	xorl	%eax, %eax
+.L5:
+	cmpl	$0, %eax
+	jge	.L6
+	addl	$1, %eax
+	movl	%eax, -12(%rbp)
+	movslq	-12(%rbp), %rdx
+	movb	(%rsi,%rdx), %al
+	testb	%al, %al
+	jne	.L7
+.L6:
+	movl	-8(%rbp), %esi
+	addl	$1, %esi
+	movl	%esi, %eax
+	jmp	main
+.L7:
+	cmpl	$68, %al
+	jne	.L5
+	addl	$1, -8(%rbp)
+	movb	$69, (%rsi,%rdx)
+	jmp	.L5
+.L4:
+	movl	-8(%rbp), %esi
+	movl	$.LC2, %eax
+	xorl	%edx, %edx
+	addl	$1, %esi
+	movl	%esi, %edi
+	call	printf
+	movl	$0, %eax
+	leave
+	ret
+
+WARNING:root:CASE 34 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:37: Error: `%al' not allowed with `cmpl'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stddef.h>
+
+#include <stdint.h>
+
+int oc_storage_config(const char *store) {
+    return -1;
+}
+INFO:root:current LLM prompt size: 318
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	oc_storage_config
+	.type	oc_storage_config, @function
+oc_storage_config:
+.LFB2:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movq	%rdi, -8(%rbp)
+	movl	$-1, %eax
+	leave
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 35 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+int inter_mercenary_sql_init(void)
+{
+ return 0;
+}
+INFO:root:current LLM prompt size: 317
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl inter_mercenary_sql_init
+    .type inter_mercenary_sql_init, @function
+inter_mercenary_sql_init:
+.LFB3:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    $0, %eax
+    popq    %rbp
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 36 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int tester(int num){
+ return num;
+}
+INFO:root:current LLM prompt size: 306
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	tester
+	.type	tester, @function
+tester:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 37 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int logicOr(int x, int y) {
+ if (x || y == 1) {
+  return 1;
+ }
+ else {
+  return 0;
+ }
+}
+INFO:root:current LLM prompt size: 332
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	logicOr
+	.type	logicOr, @function
+logicOr:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	cmpl	$1, -4(%rbp)
+	setne	%al
+	testb	%al, %al
+	jne	L2
+	cmpl	$1, -8(%rbp)
+	setne	%al
+	testb	%al, %al
+	jne	L3
+L2:
+	movl	$0, %eax
+	jmp	L4
+L3:
+	movl	$1, %eax
+L4:
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 38 failed
+INFO:root:C code :
+
+int f6(int c, int shamt) {
+
+
+
+
+  return c << shamt;
+}
+INFO:root:current LLM prompt size: 312
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl f6
+    .type   f6, @function
+f6:
+.LFB0:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, %eax
+    sall    %esi, %eax
+    popq    %rbp
+    ret
+
+WARNING:root:CASE 39 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:11: Error: operand type mismatch for `sal'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+char cipher (char c){
+ if(c >= 65 && c<= 90){
+  c = c - 65;
+  c = 90 - c;
+ }else if( c >= 97 && c<= 122){
+  c = c-97;
+  c = 122 - c;
+ }
+ return c;
+}
+INFO:root:current LLM prompt size: 369
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	cipher
+	.type	cipher, @function
+cipher:
+.LFB2:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$24, %rsp
+	movb	%al, -8(%rbp)
+	movzbl	-8(%rbp), %eax
+	subl	$65, %eax
+	cmpl	$25, %eax
+	jg	.L3
+	cmpb	$90, %al
+	jle	.L4
+.L3:
+	addl	$26, %eax
+.L4:
+	movb	%al, -8(%rbp)
+	movzbl	-8(%rbp), %eax
+	subl	$97, %eax
+	cmpl	$25, %eax
+	jg	.L6
+	cmpb	$122, %al
+	jle	.L7
+.L6:
+	addl	$26, %eax
+.L7:
+	movb	%al, -8(%rbp)
+	movsbl	-8(%rbp), %eax
+	leave
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 40 failed
+INFO:root:C code :
+
+int
+g(int a)
+{
+ return a;
+}
+INFO:root:current LLM prompt size: 303
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	g
+	.type	g, @function
+g:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 41 succeeded
+INFO:root:C code :
+
+float obdConvert_44 (unsigned int A, unsigned int B, unsigned int C, unsigned int D) {
+ return ((float)A*256.0f+(float)B)*0.0000305f;
+}
+INFO:root:current LLM prompt size: 339
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	obdConvert_44
+	.type	obdConvert_44, @function
+obdConvert_44:
+.LFB2:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%esi, -4(%rbp)
+	movl	%edi, -8(%rbp)
+	fldz
+	cvtsi2ss	-8(%rbp), %xmm0
+	mulss	%xmm0, %xmm0
+	movslq	-4(%rbp), %rdx
+	salq	$8, %rdx
+	orq	%rdx, -8(%rbp)
+	cvtsi2ss	-8(%rbp), %xmm1
+	addss	%xmm1, %xmm0
+	movl	$305, %eax
+	movl	$4294967168, %edx
+	mulsd	%xmm0, %xmm0
+	subsd	.LC2(%rip), %xmm0
+	popq	%rbp
+	ret
+.LC2:
+	.long	0
+	.long	1073439056
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 42 failed
+INFO:root:C code :
+
+double check_double() { return 0; }
+INFO:root:current LLM prompt size: 302
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl check_double
+    .type check_double, @function
+check_double:
+.LFB2:
+    endbr64
+    xorpd   %xmm0, %xmm0
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 43 succeeded
+INFO:root:C code :
+
+int ft_tolower(int c)
+{
+ if (c <= 90 && c >= 65)
+  return (c + 32);
+ return (c);
+}
+INFO:root:current LLM prompt size: 325
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	ft_tolower
+	.type	ft_tolower, @function
+ft_tolower:
+.LFB0:
+	endbr64
+	cmpq	$90, %rdi
+	setge	%al
+	testq	%rax, %rax
+	jne	.L2
+	cmpq	$65, %rdi
+.set	L2=.
+	setle	%al
+	testq	%rax, %rax
+	jne	.L3
+	movl	%edi, %eax
+	ret
+.L3:
+	addl	$32, %edi
+	movl	%edi, %eax
+	ret
+
+WARNING:root:CASE 44 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:13: Error: expected comma after "L2"
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+
+
+
+
+
+
+int SwapLong(int num)
+{
+ return (((num >> 0) & 0xFF) << 24) + (((num >> 8) & 0xFF) << 16) + (((num >> 16) & 0xFF) << 8) + (((num >> 24) & 0xFF) << 0);
+}
+INFO:root:current LLM prompt size: 364
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	SwapLong
+	.type	SwapLong, @function
+SwapLong:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, %eax
+	xorl	%esi, %esi
+	movzbl	(%rdi), %ebp
+	movb	%ebp, %sil
+	shll	$24, %eax
+	shrl	$0, %esi
+	andl	$255, %esi
+	orl	%esi, %eax
+	movzwl	8(%rdi), %esi
+	xorl	%edx, %edx
+	movb	%si, %dl
+	shll	$16, %eax
+	shrl	$8, %esi
+	andl	$255, %esi
+	orl	%esi, %eax
+	movzbl	10(%rdi), %esi
+	xorl	%ecx, %ecx
+	movb	%sil, %cl
+	shll	$8, %eax
+	shrl	$16, %esi
+	andl	$255, %esi
+	orl	%esi, %eax
+	movzbl	12(%rdi), %esi
+	xorl	%edx, %edx
+	movb	%sil, %dl
+	shll	$0, %eax
+	shrl	$24, %esi
+	andl	$255, %esi
+	orl	%esi, %eax
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 45 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:13: Error: operand type mismatch for `mov'
+tmp.s:20: Error: operand type mismatch for `mov'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <inttypes.h>
+
+#include <stdlib.h>
+
+#include <limits.h>
+
+#include <stdio.h>
+
+#include <string.h>
+
+#include <sqlite3.h>
+
+int Bank_int_IsValidName(const char *Name)
+{
+ if( !Name ) return 0;
+ while(*Name)
+ {
+  if( *Name == '\'' ) return 0;
+  Name ++;
+ }
+ return 1;
+}
+INFO:root:current LLM prompt size: 371
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+
+
+WARNING:root:CASE 46 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: warning: /tmp/ccjQBI8f.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/ccljqEEG.o: in function `main':
+tmp_driver.cpp:(.text+0x38a): undefined reference to `Bank_int_IsValidName'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <assert.h>
+
+#include <errno.h>
+
+#include <fcntl.h>
+
+#include <poll.h>
+
+#include <signal.h>
+
+#include <stdarg.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <sys/mman.h>
+
+#include <sys/time.h>
+
+#include <sys/types.h>
+
+#include <sys/wait.h>
+
+#include <time.h>
+
+#include <unistd.h>
+
+int RIFSIGNALED(int status)
+{
+    return (status & 0xff) != 0;
+}
+INFO:root:current LLM prompt size: 396
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+.LC0:
+	.string	"Hello, World!"
+
+WARNING:root:CASE 47 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: warning: /tmp/ccVfRPol.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/cc3mujN1.o: in function `main':
+tmp_driver.cpp:(.text+0x2e1): undefined reference to `RIFSIGNALED'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+
+
+
+
+
+
+
+
+
+
+void TextDisplaySetBarText(int barnum, const char *str)
+{
+
+}
+INFO:root:current LLM prompt size: 309
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+
+
+WARNING:root:CASE 48 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: warning: /tmp/cc0baVpl.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/ccaEt56J.o: in function `main':
+tmp_driver.cpp:(.text+0x347): undefined reference to `TextDisplaySetBarText'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+char * getTokenTypeName(int type){
+ switch(type){
+  case 1:
+   return "<LParen>";
+  case 2:
+   return "<RParen>";
+  case 3:
+   return "<Number>";
+  case 8:
+   return "<ID>";
+  case 6:
+   return "<Plus>";
+  case 7:
+   return "<Minus>";
+  case -2:
+   return "<EOF>";
+  case -1:
+   return "<Error!>";
+  default:
+   return "<Unknown token type!>";
+ }
+}
+INFO:root:current LLM prompt size: 398
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+
+	.section	.rodata
+.LC0:
+	.string	"<LParen>"
+.LC1:
+	.string	"<RParen>"
+.LC2:
+	.string	"<Number>"
+.LC3:
+	.string	"<ID>"
+.LC4:
+	.string	"<Plus>"
+.LC5:
+	.string	"<Minus>"
+.LC6:
+	.string	"<EOF>"
+.LC7:
+	.string	"<Error!>"
+.LC8:
+	.string	"<Unknown token type!>"
+	.text
+	.globl	getTokenTypeName
+	.type	getTokenTypeName, @function
+getTokenTypeName:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	cmpl	$1, -4(%rbp)
+	je	L3
+	cmpl	$2, -4(%rbp)
+	je	L4
+	cmpl	$3, -4(%rbp)
+	je	L5
+	cmpl	$8, -4(%rbp)
+	je	L6
+	cmpl	$6, -4(%rbp)
+	je	L7
+	cmpl	$7, -4(%rbp)
+	je	L8
+	cmpl	$-2, -4(%rbp)
+	je	L9
+	cmpl	$-1, -4(%rbp)
+	je	L10
+	jmp	L11
+L3:
+	movq	$.LC0, %rax
+	jmp	L12
+L4:
+	movq	$.LC1, %rax
+	jmp	L12
+L5:
+	movq	$.LC2, %rax
+	jmp	L12
+L6:
+	movq	$.LC3, %rax
+	jmp	L12
+L7:
+	movq	$.LC4, %rax
+	jmp	L12
+L8:
+	movq	$.LC5, %rax
+	jmp	L12
+L9:
+	movq	$.LC6, %rax
+	jmp	L12
+L10:
+	movq	$.LC7, %rax
+	jmp	L12
+L11:
+	movq	$.LC8, %rax
+L12:
+	popq	%rbp
+	ret
+
+
+WARNING:root:CASE 49 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccRZ1ELf.o: relocation R_X86_64_32S against `.rodata' can not be used when making a PIE object; recompile with -fPIE
+/usr/bin/ld: failed to set dynamic section sizes: bad value
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <math.h>
+
+#include <stdio.h>
+
+#include <errno.h>
+
+#include <stdlib.h>
+
+int mus_iclamp(int lo, int val, int hi)
+{
+    if (val > hi)
+        return(hi);
+    else
+        if (val < lo)
+            return(lo);
+        else return(val);
+}
+INFO:root:current LLM prompt size: 358
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	mus_iclamp
+	.type	mus_iclamp, @function
+mus_iclamp:
+.LFB0:
+	endbr64
+	cmpl	%esi, %edi
+	setge	%al
+	testb	%al, %al
+	jne	L2
+	movl	%esi, %eax
+	ret
+L2:
+	cmpl	%edx, %esi
+	setge	%al
+	testb	%al, %al
+	jne	L3
+	movl	%esi, %eax
+	ret
+L3:
+	movl	%esi, %eax
+	ret
+
+INFO:root:Local error rate: 90.0%
+INFO:root:CASE 50 failed
+INFO:root:C code :
+
+float UI_ClampCvar( float min, float max, float value )
+{
+ if ( value < min ) return min;
+ if ( value > max ) return max;
+ return value;
+}
+INFO:root:current LLM prompt size: 331
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	fldl	%xmm1
+	fstpl	-8(%rbp)
+	movss	%xmm2, -4(%rbp)
+fldl	-8(%rbp)
+flds	-4(%rbp)
+fucomiss	.LC3(%rip)
+ja	.L6
+	fldl	-8(%rbp)
+	fstpl	%xmm0
+	fldl	%xmm1
+	fstpl	%xmm1
+	fldl	-4(%rbp)
+	fstpl	%xmm2
+	faddss	%xmm1, %xmm2
+	faddss	%xmm0, %xmm2
+	fstps	%xmm0
+fldl	%xmm1
+fucomiss	.LC3(%rip)
+jb	.L7
+	fldl	-8(%rbp)
+	fstpl	%xmm0
+	fldl	%xmm1
+	fstpl	%xmm1
+	fldl	-4(%rbp)
+	fstpl	%xmm2
+	faddss	%xmm1, %xmm2
+	faddss	%xmm0, %xmm2
+	fstps	%xmm0
+.L7:
+fldl	%xmm0
+jmp	.L5
+.L6:
+	fldl	-8(%rbp)
+	fstpl	%xmm0
+	fldl	%xmm1
+	fstpl	%xmm1
+	fldl	-4(%rbp)
+	fstpl	%xmm2
+	faddss	%xmm1, %xmm2
+	faddss	%xmm0, %xmm2
+	fstps	%xmm0
+.L5:
+	leave
+	ret
+.LC3:
+	.float	2.14748365e+09
+
+WARNING:root:CASE 51 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:7: Error: invalid instruction suffix for `fld'
+tmp.s:12: Error: no such instruction: `fucomiss .LC3(%rip)'
+tmp.s:15: Error: invalid instruction suffix for `fstp'
+tmp.s:16: Error: invalid instruction suffix for `fld'
+tmp.s:17: Error: invalid instruction suffix for `fstp'
+tmp.s:19: Error: invalid instruction suffix for `fstp'
+tmp.s:20: Error: no such instruction: `faddss %xmm1,%xmm2'
+tmp.s:21: Error: no such instruction: `faddss %xmm0,%xmm2'
+tmp.s:22: Error: invalid instruction suffix for `fstp'
+tmp.s:23: Error: invalid instruction suffix for `fld'
+tmp.s:24: Error: no such instruction: `fucomiss .LC3(%rip)'
+tmp.s:27: Error: invalid instruction suffix for `fstp'
+tmp.s:28: Error: invalid instruction suffix for `fld'
+tmp.s:29: Error: invalid instruction suffix for `fstp'
+tmp.s:31: Error: invalid instruction suffix for `fstp'
+tmp.s:32: Error: no such instruction: `faddss %xmm1,%xmm2'
+tmp.s:33: Error: no such instruction: `faddss %xmm0,%xmm2'
+tmp.s:34: Error: invalid instruction suffix for `fstp'
+tmp.s:36: Error: invalid instruction suffix for `fld'
+tmp.s:40: Error: invalid instruction suffix for `fstp'
+tmp.s:41: Error: invalid instruction suffix for `fld'
+tmp.s:42: Error: invalid instruction suffix for `fstp'
+tmp.s:44: Error: invalid instruction suffix for `fstp'
+tmp.s:45: Error: no such instruction: `faddss %xmm1,%xmm2'
+tmp.s:46: Error: no such instruction: `faddss %xmm0,%xmm2'
+tmp.s:47: Error: invalid instruction suffix for `fstp'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+short USBSTK5505_GPIO_init()
+{
+    return 0;
+}
+INFO:root:current LLM prompt size: 308
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	USBSTK5505_GPIO_init
+	.type	USBSTK5505_GPIO_init, @function
+USBSTK5505_GPIO_init:
+.LFB1:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 52 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <math.h>
+
+#include <stdlib.h>
+
+#include <unistd.h>
+
+#include <stdarg.h>
+
+#include <string.h>
+
+double H (double x) {
+   if (x >= 0) return 1.;
+   else return 0.;
+}
+INFO:root:current LLM prompt size: 348
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	H
+	.type	H, @function
+H:
+.LFB3:
+	endbr64
+	cmpsd	%xmm0, %xmm0
+	jb	.L2
+	movaps	%xmm0, %xmm1
+	xorpd	%xmm1, %xmm1
+	ret
+.L2:
+	xorpd	%xmm0, %xmm0
+
+WARNING:root:CASE 53 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:8: Error: number of operands mismatch for `cmpsd'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int LZ4_versionNumber (void) { return (1 *100*100 + 6 *100 + 0); }
+INFO:root:current LLM prompt size: 318
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+
+
+WARNING:root:CASE 54 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: warning: /tmp/ccnYgEle.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/ccPZKbRw.o: in function `main':
+tmp_driver.cpp:(.text+0x2ac): undefined reference to `LZ4_versionNumber'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int foo(int time, int n) {
+#pragma omp parallel for default(shared) schedule(dynamic, 1) reduction(+ : time)
+  for (int i = 1; i < n; ++i);
+  return 0;
+}
+INFO:root:current LLM prompt size: 341
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	foo
+	.type	foo, @function
+foo:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-8(%rbp), %eax
+	cmpl	$1, %eax
+	jge	.L2
+	xorl	%eax, %eax
+	addq	$16, %rsp
+	popl	%rbp
+	ret
+.L2:
+	movl	-4(%rbp), %edx
+	movl	-8(%rbp), %esi
+	movl	%edi, %eax
+	call	omp_get_max_threads@PLT
+	cmpl	%eax, %esi
+	jg	.L3
+	xorl	%eax, %eax
+	addq	$16, %rsp
+	popl	%rbp
+	ret
+.L3:
+	movl	-4(%rbp), %edx
+	movl	-8(%rbp), %esi
+	call	omp_in_parallel@PLT
+	testl	%eax, %eax
+	jne	.L4
+	xorl	%eax, %eax
+	addq	$16, %rsp
+	popl	%rbp
+	ret
+.L4:
+	movl	-8(%rbp), %esi
+	call	omp_get_thread_num@PLT
+	cltq
+	movq	%rax, %rdi
+	imull	L5(%rip), %rdi
+	addq	$1, %rdi
+	movl	%edi, %eax
+	cmpl	-8(%rbp), %eax
+	jge	.L6
+	xorl	%eax, %eax
+	addq	$16, %rsp
+	popl	%rbp
+	ret
+.L6:
+	movl	-4(%rbp), %edx
+	movl	-8(%rbp), %esi
+	call	omp_get_num_threads@PLT
+	cmpl	$1, %eax
+	jne	.L7
+	xorl	%eax, %eax
+	addq	$16, %rsp
+	popl	%rbp
+	ret
+.L7:
+	movl	-8(%rbp), %esi
+	call	omp_get_thread_num@PLT
+	cltq
+	movl	%eax, %edi
+	movl	-4(%rbp), %edx
+	cmpl	$1, %edx
+	jle	.L8
+	xorl	%eax, %eax
+	addq	$16, %rsp
+	popl	%rbp
+	ret
+.L8:
+	movl	%esi, -12(%rbp)
+	movl	-4(%rbp), %edi
+	call	omp_get_thread_num@PLT
+	cltq
+	movl	%eax, %esi
+	movl	%esi, %eax
+	movslq	%eax, %rdx
+	imull	L5(%rip), %rdx
+	addq	$1, %rdx
+	movl	-12(%rbp), %esi
+	movl	%edx, %edi
+	call	omp_set_nested@PLT
+	xorl	%eax, %eax
+	addq	$16, %rsp
+	popl	%rbp
+	ret
+.L5:
+	.long	1
+	.size	foo, .-foo
+	.ident	"GCC: (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0"
+	.section	.note.GNU-stack,"",@progbits
+
+WARNING:root:CASE 55 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:18: Error: invalid instruction suffix for `pop'
+tmp.s:29: Error: invalid instruction suffix for `pop'
+tmp.s:39: Error: invalid instruction suffix for `pop'
+tmp.s:46: Error: incorrect register `%rdi' used with `l' suffix
+tmp.s:53: Error: invalid instruction suffix for `pop'
+tmp.s:63: Error: invalid instruction suffix for `pop'
+tmp.s:75: Error: invalid instruction suffix for `pop'
+tmp.s:85: Error: incorrect register `%rdx' used with `l' suffix
+tmp.s:92: Error: invalid instruction suffix for `pop'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+int checkrange(char c1, char c2)
+{
+
+ if (('a' <= c1 && c1 <= 'z') && (c1 <= c2 && c2 <= 'z'))
+  return 1;
+
+ if (('A' <= c1 && c1 <= 'Z') && (c1 <= c2 && c2 <= 'Z'))
+  return 1;
+
+ if (('0' <= c1 && c1 <= '9') && (c1 <= c2 && c2 <= '9'))
+  return 1;
+
+ return 0;
+}
+INFO:root:current LLM prompt size: 413
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	checkrange
+	.type	checkrange, @function
+checkrange:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$24, %rsp
+	movb	%dl, -4(%rbp)
+	movb	%sil, -5(%rbp)
+	cmpb	$97, -4(%rbp)
+	jl	.L3
+	cmpb	$122, -4(%rbp)
+	jg	.L3
+	movb	-5(%rbp), %dl
+	cmpb	-4(%rbp), %dl
+	jg	.L4
+	cmpb	$122, %dl
+	jle	.L1
+.L3:
+	jmp	.L6
+.L1:
+	movb	-4(%rbp), %al
+	cmpb	$65, %al
+	jl	.L5
+	cmpb	$90, %al
+	jg	.L5
+	movb	-5(%rbp), %dl
+	cmpb	-4(%rbp), %dl
+	jg	.L7
+	cmpb	$90, %dl
+	jle	.L2
+.L5:
+	jmp	.L6
+.L2:
+	movb	-4(%rbp), %al
+	cmpb	$48, %al
+	jl	.L8
+	cmpb	$57, %al
+	jg	.L8
+	movb	-5(%rbp), %dl
+	cmpb	-4(%rbp), %dl
+	jg	.L9
+	cmpb	$57, %dl
+	jle	.L10
+.L8:
+	jmp	.L6
+.L10:
+	movl	$1, %eax
+	jmp	.L11
+.L9:
+	movl	$0, %eax
+	jmp	.L12
+.L7:
+	movl	$0, %eax
+	jmp	.L12
+.L4:
+	movl	$0, %eax
+	jmp	.L13
+.L6:
+	movb	-5(%rbp), %dl
+	cmpb	-4(%rbp), %dl
+	jg	.L14
+	cmpb	$122, %dl
+	jle	.L15
+.L14:
+	movl	$0, %eax
+	jmp	.L16
+.L15:
+	movl	$1, %eax
+	jmp	.L11
+.L13:
+	movl	$0, %eax
+	jmp	.L17
+.L12:
+	jmp	.L18
+.L11:
+	leave
+	ret
+.L18:
+	leave
+	ret
+
+WARNING:root:CASE 56 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: warning: /tmp/cc4ZSlnB.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/cc4ZSlnB.o: in function `checkrange':
+(.text+0x91): undefined reference to `.L16'
+/usr/bin/ld: (.text+0xa2): undefined reference to `.L17'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <math.h>
+
+double
+gsl_coerce_double (const double x)
+{
+  volatile double y;
+  y = x;
+  return y;
+}
+INFO:root:current LLM prompt size: 325
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .file   "coerce.c"
+    .section    .rodata
+.LC0:
+    .long   0
+    .text
+    .globl  gsl_coerce_double
+    .type   gsl_coerce_double, @function
+gsl_coerce_double:
+.LFB0:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    testl   %edi, %edi
+    je      .L2
+    movsd   %xmm0, %xmm1
+    jmp     .L3
+.L2:
+    pxor    %xmm0, %xmm0
+    cvtsi2sdq   %rdi, %xmm1
+.L3:
+    movapd  %xmm1, %xmm0
+    popq    %rbp
+    ret
+    .size   gsl_coerce_double, .-gsl_coerce_double
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 57 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int c059(void) { return 0; }
+INFO:root:current LLM prompt size: 308
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	c059
+	.type	c059, @function
+c059:
+.LFB1:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	xorl	%eax, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 58 succeeded
+INFO:root:C code :
+#include <math.h>
+
+#include <stdlib.h>
+
+double mcdrag_rpm(double twist, double velocity)
+{
+  return (velocity/(twist/60.0)*12.0);
+}
+INFO:root:current LLM prompt size: 331
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	mcdrag_rpm
+	.type	mcdrag_rpm, @function
+mcdrag_rpm:
+.LFB1:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movsd	%xmm0, 16(%rbp)
+	movsd	%xmm1, 8(%rbp)
+	fldl	16(%rbp)			# Load velocity
+	fdivr	st5, st0				# st0 = velocity / twist
+	fldpi
+	fmul	dword .LC1[rip]			# st0 = (velocity / twist)/60.0
+	fmulp	st1, st0
+	fmul	dword .LC2[rip]
+	popq	%rbp
+	ret
+.LC1:
+	.long	314159259
+.LC2:
+	.double	12.000000000000000
+
+WARNING:root:CASE 59 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:13: Error: operand size mismatch for `fdivr'
+tmp.s:15: Error: junk `.LC1[rip]' after expression
+tmp.s:15: Warning: no instruction mnemonic suffix given and no register operands; using default for `fmul'
+tmp.s:16: Error: operand size mismatch for `fmulp'
+tmp.s:17: Error: junk `.LC2[rip]' after expression
+tmp.s:17: Warning: no instruction mnemonic suffix given and no register operands; using default for `fmul'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include    <stdlib.h>  /* Include standard library header */
+
+#include    <math.h>    /* Include math library header */
+
+#include    <string.h>  /* Include string function header */
+
+#include    <ctype.h>   /* Include character function header */
+
+#include    <limits.h>  /* define LONG_MIN and LONG_MAX */
+
+int valid_serial(char *carray)
+{
+int i, code, num[10], sumo=0, sume=0, sumss=0;
+
+for(i=0;i<10;i++){
+  code = carray[i];
+  num[i] = code - 0x30;
+  if((code<0x30)||(code>0x39)){
+    return 0;
+  }
+}
+
+sumo = num[0]+num[2]+num[4];
+sumo = sumo - (sumo/10)*10;
+
+sume = num[1]+num[3]+num[5];
+sume = sume - (sume/10)*10;
+
+sumss = num[0]+num[1]+num[2]+num[3]+num[4]+num[5]+sumo+sume;
+
+if((sumo!=num[6])||(sume!=num[7])||(sumss!=(10*num[8]+num[9]))){
+  return 0;
+}
+
+return 1;
+}
+INFO:root:current LLM prompt size: 571
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.section	.rodata.str1.1,"aMS",@progbits,1
+.LC0:
+	.string	"Hello, World!"
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	leaq	.LC0(%rip), %rdi
+	call	puts@PLT
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 60 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccL9JYci.o: in function `main':
+tmp_driver.cpp:(.text+0x25f): multiple definition of `main'; /tmp/ccPhHX8k.o:(.text+0x0): first defined here
+/usr/bin/ld: warning: /tmp/ccPhHX8k.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/ccL9JYci.o: in function `main':
+tmp_driver.cpp:(.text+0x38a): undefined reference to `valid_serial'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int f(int x) { return x - 5; }
+INFO:root:current LLM prompt size: 305
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+        .text
+        .globl    f
+        .type     f, @function
+f:
+.LFB0:
+        endbr64
+        pushq     %rbp
+        movq      %rsp, %rbp
+        movl      %edi, -4(%rbp)
+        movl      -4(%rbp), %eax
+        subl      $5, %eax
+        popq      %rbp
+        ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 61 succeeded
+INFO:root:C code :
+#include <stdbool.h>
+
+bool timeout_reached(void)
+{
+    return false;
+}
+INFO:root:current LLM prompt size: 309
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	timeout_reached
+	.type	timeout_reached, @function
+timeout_reached:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movb	$0, %al
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 62 succeeded
+INFO:root:C code :
+#include <string.h>
+
+char* langRomTypeMicrosolFdc() { return "Microsol Disk Controller"; }
+INFO:root:current LLM prompt size: 316
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .file   1 "/usr/include/string.h"
+    .text
+    .p2align 4,,15
+    .globl  _ZN11MicrosolDisk6fdcRomEv
+    .type   _ZN11MicrosolDisk6fdcRomEv, @function
+_ZN11MicrosolDisk6fdcRomEv:
+.LFB0:
+    .cfi_startproc
+    movq    $.LC0, %rax
+    ret
+    .cfi_endproc
+.LFE0:
+    .size   _ZN11MicrosolDisk6fdcRomEv, .-_ZN11MicrosolDisk6fdcRomEv
+    .section    .rodata.str1.1,"aMS",@progbits,1
+.LC0:
+    .string "Microsol Disk Controller"
+    .ident  "GCC: (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0"
+    .section    .note.GNU-stack,"",@progbits
+
+WARNING:root:CASE 63 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/cctH7hb4.o: relocation R_X86_64_32S against `.rodata.str1.1' can not be used when making a PIE object; recompile with -fPIE
+/usr/bin/ld: failed to set dynamic section sizes: bad value
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int do_386() { return 386; }
+INFO:root:current LLM prompt size: 303
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	do_386
+	.type	do_386, @function
+do_386:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$386, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 64 succeeded
+INFO:root:C code :
+
+int function(int a, int b) { return a+b; }
+INFO:root:current LLM prompt size: 306
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	function
+	.type	function, @function
+function:
+.LFB1:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-4(%rbp), %eax
+	addl	-8(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 65 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+double
+UC_11_1_11
+(
+    double F_g_s_rep,
+
+    double F_g_u_d
+
+)
+{
+        return (F_g_s_rep / F_g_u_d);
+}
+INFO:root:current LLM prompt size: 348
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl UC_11_1_11
+	.type UC_11_1_11, @function
+UC_11_1_11:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movsd	%xmm0, -8(%rbp)
+	movsd	%xmm1, -16(%rbp)
+	mulsd	-16(%rbp), %xmm0
+	addq	$16, %rsp
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 66 failed
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <sys/types.h>
+
+#include <sys/stat.h>
+
+#include <signal.h>
+
+#include <fcntl.h>
+
+#include <unistd.h>
+
+#include <stdlib.h>
+
+#include <sys/wait.h>
+
+int stop_process(int pid)
+{
+ return kill(pid, 15);
+}
+INFO:root:current LLM prompt size: 355
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.LFB0:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset %rbp, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register %rbp
+	subq	$32, %rsp
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	movl	$15, %esi
+	movl	$0, %edx
+	movl	%eax, %edi
+	call	kill@PLT
+	movl	%eax, -8(%rbp)
+	movl	-8(%rbp), %eax
+	leave
+	.cfi_restore %rbp
+	.cfi_def_cfa %rsp, 8
+	ret
+	.cfi_endproc
+.LFE0:
+	.size	stop_process, .-stop_process
+	.ident	"GCC: (GNU) 9.3.0"
+	.section	.note.GNU-stack,"",@progbits
+
+WARNING:root:CASE 67 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s: Error: .size expression for stop_process does not evaluate to a constant
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <string.h>
+
+int vout_finish(void)
+{
+  return 0;
+}
+INFO:root:current LLM prompt size: 310
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	vout_finish
+	.type	vout_finish, @function
+vout_finish:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	xorl	%eax, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 68 succeeded
+INFO:root:C code :
+
+int alloc(int *p)
+{
+  int tmp = 5;
+
+
+
+  return 0;
+}
+INFO:root:current LLM prompt size: 312
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	alloc
+	.type	alloc, @function
+alloc:
+.LFB2:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movl	$5, -4(%rbp)
+	nop
+	movl	$0, %eax
+	leave
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 69 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stddef.h>
+
+#include <string.h>
+
+char* mote64_Name(void) {
+ return "MOTE64";
+}
+INFO:root:current LLM prompt size: 321
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	mote64_Name
+	.type	mote64_Name, @function
+mote64_Name:
+.LFB0:
+	endbr64
+	movq	$.LC0, %rax
+	ret
+.LC0:
+	.string	"MOTE64"
+
+WARNING:root:CASE 70 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccRrSzp5.o: relocation R_X86_64_32S against `.text' can not be used when making a PIE object; recompile with -fPIE
+/usr/bin/ld: failed to set dynamic section sizes: bad value
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+char *hello(void) {
+    return "hello";
+}
+INFO:root:current LLM prompt size: 309
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	hello
+	.type	hello, @function
+hello:
+.LFB0:
+	endbr64
+	movq	$.LCO, %rax
+	ret
+.LC0:
+	.string	"hello"
+
+WARNING:root:CASE 71 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccnclyeL.o: relocation R_X86_64_32S against undefined symbol `.LCO' can not be used when making a PIE object; recompile with -fPIE
+/usr/bin/ld: failed to set dynamic section sizes: bad value
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+
+
+
+
+int exists(const char *filename)
+{
+ return (0);
+}
+INFO:root:current LLM prompt size: 305
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+
+
+WARNING:root:CASE 72 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: warning: /tmp/ccPu2N1F.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/ccIk3GBj.o: in function `main':
+tmp_driver.cpp:(.text+0x38a): undefined reference to `exists'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <math.h>
+
+float fast_cbrtf(float x)
+{
+   union {int ix; float x;} v;
+   v.x = x;
+   v.ix = v.ix/4 + v.ix/16;
+   v.ix = v.ix + v.ix/16;
+   v.ix = v.ix + v.ix/256;
+   v.ix = 0x2a511cd0 + v.ix;
+   return v.x;
+}
+INFO:root:current LLM prompt size: 383
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	fast_cbrtf
+	.type	fast_cbrtf, @function
+fast_cbrtf:
+.LFB1:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	vmovss	%xmm0, -4(%rbp)
+	movss	-4(%rbp), %xmm0
+	cvttps2dq	%xmm0, %eax
+	addl	$2899952, %eax
+	movl	%eax, %edx
+	shll	$2, %edx
+	addl	%edx, %eax
+	addl	%edx, %eax
+	movl	%eax, %edx
+	shll	$8, %edx
+	addl	%edx, %eax
+	movl	%eax, %esi
+	movl	$2899952, %eax
+	orl	%esi, %eax
+	vmovd	%eax, %xmm0
+	cvttsd2siq	%xmm1, %rdx
+	movslq	%edx, %rsi
+	shll	$32, %rsi
+	movl	$2899952, %rax
+	orl	%rsi, %rax
+	vmovd	%rax, %xmm0
+	cvtdq2ps	%xmm0, %xmm1
+	addss	%xmm1, %xmm0
+	vmovss	%xmm0, -4(%rbp)
+	movss	-4(%rbp), %xmm0
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 73 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:12: Error: operand type mismatch for `cvttps2dq'
+tmp.s:27: Error: incorrect register `%rsi' used with `l' suffix
+tmp.s:28: Error: incorrect register `%rax' used with `l' suffix
+tmp.s:29: Error: incorrect register `%rax' used with `l' suffix
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stddef.h>
+
+int GO_strcmp (char *d, char *s)
+{
+ while ('\0' != *d) {
+  if (*d != *s)
+   return *d - *s;
+  d++;
+  s++;
+ }
+
+ return *d - *s;
+}
+INFO:root:current LLM prompt size: 350
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	GO_strcmp
+	.type	GO_strcmp, @function
+GO_strcmp:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	jmp	.L3
+.L4:
+	movl	-8(%rbp), %eax
+	addl	$1, %eax
+	movl	%eax, -8(%rbp)
+	movl	-16(%rbp), %eax
+	addl	$1, %eax
+	movl	%eax, -16(%rbp)
+.L3:
+	movq	-8(%rbp), %rdi
+	movzbl	(%rdi), %esi
+	cmpb	$0, %sil
+	setne	%al
+	testb	%al, %al
+	jne	.L4
+	movl	-16(%rbp), %eax
+	movzbl	(%rax), %edx
+	subl	%edx, %eax
+	movl	%eax, %esi
+	movq	-8(%rbp), %rdi
+	movzbl	(%rdi), %eax
+	subl	%eax, %esi
+	movsbl	%sil, %eax
+	movl	%eax, %eax
+	popq	%rbp
+	ret
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 74
+WARNING:root:WARNING: code failed to execute for input 1 in case 74
+WARNING:root:WARNING: code failed to execute for input 2 in case 74
+WARNING:root:WARNING: code failed to execute for input 3 in case 74
+WARNING:root:WARNING: code failed to execute for input 4 in case 74
+WARNING:root:WARNING: code failed to execute for input 5 in case 74
+WARNING:root:WARNING: code failed to execute for input 6 in case 74
+WARNING:root:WARNING: code failed to execute for input 7 in case 74
+WARNING:root:WARNING: code failed to execute for input 8 in case 74
+WARNING:root:WARNING: code failed to execute for input 9 in case 74
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 74 failed
+INFO:root:C code :
+
+int
+test_01 (volatile short* x)
+{
+  return *x;
+}
+INFO:root:current LLM prompt size: 310
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.LFB3:
+        .cfi_startproc
+        pushq   %rbp
+        .cfi_def_cfa_offset 16
+        .cfi_offset %rbp, -16
+        movq    %rsp, %rbp
+        .cfi_def_cfa_register %rbp
+        movl    (%rdi), %eax
+        popq    %rbp
+        ret
+        .cfi_endproc
+
+WARNING:root:CASE 75 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: warning: /tmp/ccdG9wdx.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/ccHtfZ3z.o: in function `main':
+tmp_driver.cpp:(.text+0x4e1): undefined reference to `test_01'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <ctype.h>
+
+int isspec(char c)
+{
+    return (((c >= '!') && (c <= '/')) || (c >= ':' && c <= '@') || ((c >= '[') && (c <= '`')) || ((c >= '{') && (c <= 'DEL')));
+}
+INFO:root:current LLM prompt size: 368
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	isspec
+	.type	isspec, @function
+isspec:
+.LFB0:
+	endbr64
+	cmpq	$32, %rdi
+	jge	L2
+	movzbl	(%rdi), %eax
+	addl	$65, %eax
+	sallq	$1, %rax
+	subq	$130, %rax
+	testb	%al, %al
+	setne	%dl
+	andl	$-256, %edx
+	movslq	%edx, %eax
+	ret
+L2:
+	cmpq	$126, %rdi
+	jle	L3
+	movzbl	(%rdi), %eax
+	addl	$65, %eax
+	sallq	$1, %rax
+	subq	$130, %rax
+	testb	%al, %al
+	setne	%dl
+	andl	$-256, %edx
+	movslq	%edx, %eax
+	ret
+L3:
+	cmpq	$59, %rdi
+	jle	L4
+	movzbl	(%rdi), %eax
+	addl	$65, %eax
+	sallq	$1, %rax
+	subq	$130, %rax
+	testb	%al, %al
+	setne	%dl
+	andl	$-256, %edx
+	movslq	%edx, %eax
+	ret
+L4:
+	cmpq	$47, %rdi
+	jle	L5
+	movzbl	(%rdi), %eax
+	addl	$65, %eax
+	sallq	$1, %rax
+	subq	$130, %rax
+	testb	%al, %al
+	setne	%dl
+	andl	$-256, %edx
+	movslq	%edx, %eax
+	ret
+L5:
+	cmpq	$58, %rdi
+	jle	L6
+	movzbl	(%rdi), %eax
+	addl	$65, %eax
+	sallq	$1, %rax
+	subq	$130, %rax
+	testb	%al, %al
+	setne	%dl
+	andl	$-256, %edx
+	movslq	%edx, %eax
+	ret
+L6:
+	cmpq	$64, %rdi
+	jle	L7
+	movzbl	(%rdi), %eax
+	addl	$65, %eax
+	sallq	$1, %rax
+	subq	$130, %rax
+	testb	%al, %al
+	setne	%dl
+	andl	$-256, %edx
+	movslq	%edx, %eax
+	ret
+L7:
+	cmpq	$92, %rdi
+	jle	L8
+	movzbl	(%rdi), %eax
+	addl	$65, %eax
+	sallq	$1, %rax
+	subq	$130, %rax
+	testb	%al, %al
+	setne	%dl
+	andl	$-256, %edx
+	movslq	%edx, %eax
+	ret
+L8:
+	cmpq	$91, %rdi
+	jle	L9
+	movzbl	(%rdi), %eax
+	addl	$65, %eax
+	sallq	$1,GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+WARNING:root:CASE 76 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s: Warning: end of file not at end of a line; newline inserted
+tmp.s:12: Error: no such instruction: `sallq $1,%rax'
+tmp.s:17: Error: operand size mismatch for `movsl'
+tmp.s:24: Error: no such instruction: `sallq $1,%rax'
+tmp.s:29: Error: operand size mismatch for `movsl'
+tmp.s:36: Error: no such instruction: `sallq $1,%rax'
+tmp.s:41: Error: operand size mismatch for `movsl'
+tmp.s:48: Error: no such instruction: `sallq $1,%rax'
+tmp.s:53: Error: operand size mismatch for `movsl'
+tmp.s:60: Error: no such instruction: `sallq $1,%rax'
+tmp.s:65: Error: operand size mismatch for `movsl'
+tmp.s:72: Error: no such instruction: `sallq $1,%rax'
+tmp.s:77: Error: operand size mismatch for `movsl'
+tmp.s:84: Error: no such instruction: `sallq $1,%rax'
+tmp.s:89: Error: operand size mismatch for `movsl'
+tmp.s:96: Error: no such instruction: `sallq $1,GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int hash_val (int key)
+{
+    return key;
+}
+INFO:root:current LLM prompt size: 305
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	hash_val
+	.type	hash_val, @function
+hash_val:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 77 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <stdint.h>
+
+#include <math.h>
+
+int cat_nums(char *str_out, char *str){
+
+ int i=0,j=0;
+ while(str[i]!='\0'){
+  if(str[i] >= '0' && str[i] <= '9'){
+   str_out[j++] = str[i];
+  }
+  i++;
+ }
+ str_out[j] = '\0';
+ return(j);
+}
+INFO:root:current LLM prompt size: 388
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	cat_nums
+	.type	cat_nums, @function
+cat_nums:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	leaq	8(%rdi), %rax
+	movq	%rax, -8(%rbp)
+	cmpl	$0, (%rsi)
+	jne	.L2
+	movl	$0, %eax
+	addq	$16, %rsp
+	popq	%rbp
+	ret
+.L2:
+	movb	(%rsi), %eax
+	cmpb	$48, %al
+	jl	.L3
+	cmpb	$57, %al
+	jg	.L3
+	movb	%al, (%rdi)
+	addl	$1, -8(%rbp)
+	addq	$1, %rsi
+	addq	$1, %rdi
+.L3:
+	movl	-8(%rbp), %eax
+	cmpq	%rax, 8(%rdi)
+	jne	.L2
+	movb	$0, (%rdi)
+	movl	$0, %eax
+	addq	$16, %rsp
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 78 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:20: Error: `%eax' not allowed with `movb'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdarg.h>
+
+#include <sys/types.h>
+
+#include <sys/stat.h>
+
+__attribute__ ((used))
+int _write(int file, char *ptr, int len)
+{
+# 103 "/scratch/repos/new/home/jordi_armengol_estape/c-scraper/outputs/2022-01-22/02-19-57/repos/LCRS-UCC/STM32F4Discovery-expansion/refs/heads/Working/OtharSoft/syscalls/syscalls.c"
+    return len;
+}
+INFO:root:current LLM prompt size: 403
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+.LC0:
+	.string	"_write"
+.LC1:
+	.string	"int file, char *ptr, int len"
+main:
+.LFB2:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movl	8(%rsi), %eax
+	movslq	%eax, %rax
+	movq	16(%rsi), %rdx
+	movl	24(%rsi), %ecx
+	xorl	%edx, %edx
+	movl	4(%rsi), %esi
+	movl	$.LC0, %edi
+	call	printf@PLT
+	movl	$0, %eax
+	nop
+	addq	$16, %rsp
+	popq	%rbp
+	ret
+.LFE2:
+
+WARNING:root:CASE 79 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccpHQvvK.o: relocation R_X86_64_32 against `.text' can not be used when making a PIE object; recompile with -fPIE
+/usr/bin/ld: failed to set dynamic section sizes: bad value
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+int countVowels(char *str)
+{
+ int i,count=0;
+ for(i=0;str[i]!='\0';++i)
+  if('a' == str[i] ||
+     'e' == str[i] ||
+     'i' == str[i] ||
+     'o' == str[i] ||
+     'u' == str[i] ||
+     'A' == str[i] ||
+     'E' == str[i] ||
+     'I' == str[i] ||
+     'O' == str[i] ||
+     'U' == str[i] )
+   count++;
+ return count;
+}
+INFO:root:current LLM prompt size: 425
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	countVowels
+	.type	countVowels, @function
+countVowels:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movq	%rdi, -8(%rbp)
+	cmpl	$0, -8(%rbp)
+	je	L6
+	movl	$0, -4(%ebp)
+.L3:
+	addl	$1, -4(%ebp)
+.L2:
+	movl	-4(%ebp), %eax
+	cltq
+	movslq	%eax, %rdx
+	movq	-8(%rbp), %rax
+	addq	%rdx, %rax
+	movzbl	(%rax), %eax
+	cmpb	$97, %al
+	je	L7
+	cmpb	$101, %al
+	je	L7
+	cmpb	$105, %al
+	je	L7
+	cmpb	$111, %al
+	je	L7
+	cmpb	$117, %al
+	je	L7
+	cmpb	$65, %al
+	je	L7
+	cmpb	$69, %al
+	je	L7
+	cmpb	$73, %al
+	je	L7
+	cmpb	$79, %al
+	je	L7
+	cmpb	$85, %al
+	je	L7
+.L7:
+	addl	$1, -4(%ebp)
+	movl	-4(%ebp), %eax
+	cltq
+	movslq	%eax, %rdx
+	movq	-8(%rbp), %rax
+	addq	%rdx, %rax
+	cmpb	$0, (%rax)
+	jne	L3
+.L6:
+	movl	-4(%ebp), %eax
+	leave
+	ret
+
+WARNING:root:CASE 80 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: warning: /tmp/ccvejQgZ.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/ccvejQgZ.o: in function `countVowels':
+(.text+0x16): undefined reference to `L6'
+/usr/bin/ld: (.text+0x3e): undefined reference to `L7'
+/usr/bin/ld: (.text+0x46): undefined reference to `L7'
+/usr/bin/ld: (.text+0x4e): undefined reference to `L7'
+/usr/bin/ld: (.text+0x56): undefined reference to `L7'
+/usr/bin/ld: (.text+0x5e): undefined reference to `L7'
+/usr/bin/ld: /tmp/ccvejQgZ.o:(.text+0x66): more undefined references to `L7' follow
+/usr/bin/ld: /tmp/ccvejQgZ.o: in function `countVowels':
+(.text+0xa4): undefined reference to `L3'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <string.h>
+
+char* langRomTypeMirroredRam1k() { return "1kB Mirrored RAM"; }
+INFO:root:current LLM prompt size: 318
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	langRomTypeMirroredRam1k
+	.type	langRomTypeMirroredRam1k, @function
+langRomTypeMirroredRam1k:
+.LFB0:
+	endbr64
+	movq	$.LC0, %rax
+	ret
+.LC0:
+	.string	"1kB Mirrored RAM"
+
+WARNING:root:CASE 81 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccF7lfpW.o: relocation R_X86_64_32S against `.text' can not be used when making a PIE object; recompile with -fPIE
+/usr/bin/ld: failed to set dynamic section sizes: bad value
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+unsigned long unsignedlong_id(unsigned long x){return x;}
+INFO:root:current LLM prompt size: 304
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	unsignedlong_id
+	.type	unsignedlong_id, @function
+unsignedlong_id:
+.LFB0:
+	endbr64
+	movq	%rdi, %rax
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 82 succeeded
+INFO:root:C code :
+#include <stdlib.h>
+
+void pointerExample1(int *ptr1, int *ptr2){
+ ptr1 = ptr2;
+}
+INFO:root:current LLM prompt size: 318
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	pointerExample1
+	.type	pointerExample1, @function
+pointerExample1:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	16(%rdi), %rax
+	movq	%rsi, 16(%rdi)
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 83 failed
+INFO:root:C code :
+#include <stdio.h>
+
+int hcf_iterative(int a, int b){
+ int q, r;
+ if(a > 0 && b > 0){
+  if(a < b)
+   return hcf_iterative(b, a);
+
+  q = a / b;
+  r = a % b;
+  while(r != 0 && r != 1){
+   a = b;
+   b = r;
+   q = a / b;
+   r = a % b;
+  }
+
+  if(r == 0)
+   return b;
+  else if(r == 1)
+   return 1;
+ }
+ return -1;
+}
+INFO:root:current LLM prompt size: 422
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	hcf_iterative
+	.type	hcf_iterative, @function
+hcf_iterative:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	cmpq	$0, %rsi
+	jle	.L2
+	cmpq	$0, %rdi
+	jle	.L2
+	cmpq	%rsi, %rdi
+	jge	.L3
+	movl	%esi, %eax
+	xchg	%rax, %rdi
+	movl	%eax, %esi
+.L3:
+	movq	%rdi, 8(%rbp)
+	movq	%rsi, (%rbp)
+	movl	$0, %eax
+	jmp	.L4
+.L2:
+	movl	$-1, %eax
+	jmp	.L5
+.L4:
+	movq	8(%rbp), %rdx
+	movq	(%rbp), %rcx
+	idivq	%rdx
+	movq	%rdx, 16(%rbp)
+	movq	%rax, %rdi
+	movl	$0, %eax
+	cmpq	$1, 16(%rbp)
+	jne	.L6
+.L5:
+	addq	$32, %rsp
+	popq	%rbp
+	ret
+	.p2align 4,,3
+.L6:
+	movq	8(%rbp), %rdx
+	movq	(%rbp), %rcx
+	idivq	%rdx
+	movq	%rdx, (%rbp)
+	movl	$0, %eax
+	jmp	.L7
+.L7:
+	addq	$32, %rsp
+	popq	%rbp
+	ret
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 84
+WARNING:root:WARNING: code failed to execute for input 1 in case 84
+WARNING:root:WARNING: code failed to execute for input 2 in case 84
+WARNING:root:WARNING: code failed to execute for input 3 in case 84
+WARNING:root:WARNING: code failed to execute for input 4 in case 84
+WARNING:root:WARNING: code failed to execute for input 5 in case 84
+WARNING:root:WARNING: code failed to execute for input 6 in case 84
+WARNING:root:WARNING: code failed to execute for input 7 in case 84
+WARNING:root:WARNING: code failed to execute for input 8 in case 84
+WARNING:root:WARNING: code failed to execute for input 9 in case 84
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 84 failed
+INFO:root:C code :
+
+int soma3(int a, int b, int c)
+{
+ return a+b+c;
+}
+INFO:root:current LLM prompt size: 311
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	soma3
+	.type	soma3, @function
+soma3:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	%edx, -12(%rbp)
+	movl	-4(%rbp), %eax
+	addl	-8(%rbp), %eax
+	addl	-12(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 85 succeeded
+INFO:root:C code :
+
+unsigned long int_sqrt(unsigned long x)
+{
+        unsigned long b, m, y = 0;
+
+        if (x <= 1)
+                return x;
+
+        m = 1UL << ((sizeof(long) * 8) - 2);
+        while (m != 0) {
+                b = y + m;
+                y >>= 1;
+
+                if (x >= b) {
+                        x -= b;
+                        y += m;
+                }
+                m >>= 2;
+        }
+
+        return y;
+}
+INFO:root:current LLM prompt size: 399
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	int_sqrt
+	.type	int_sqrt, @function
+int_sqrt:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movl	%edi, -4(%rbp)
+	cmpl	$1, -4(%rbp)
+	jg	.L3
+	movl	-4(%rbp), %eax
+	addq	$16, %rsp
+	popq	%rbp
+	ret
+.L3:
+	movabsq	$4611686018427387904, %rax
+	shrq	$1, %rax
+	movq	%rax, -24(%rbp)
+.L5:
+	cmpq	$0, -24(%rbp)
+	jne	.L6
+	movl	-4(%rbp), %eax
+	addq	$16, %rsp
+	popq	%rbp
+	ret
+.L6:
+	movl	-4(%rbp), %edx
+	movq	-24(%rbp), %rax
+	addq	%rax, %rdx
+	shrq	$1, -24(%rbp)
+	cmpq	-4(%rbp), %rdx
+	jb	.L7
+	subl	%edx, -4(%rbp)
+	addq	%rax, -24(%rbp)
+.L7:
+	movabsq	$4611686018427387904, %rcx
+	shrq	$2, %rcx
+	movq	%rcx, -16(%rbp)
+	jmp	.L5
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 86
+WARNING:root:WARNING: code failed to execute for input 1 in case 86
+WARNING:root:WARNING: code failed to execute for input 2 in case 86
+WARNING:root:WARNING: code failed to execute for input 3 in case 86
+WARNING:root:WARNING: code failed to execute for input 4 in case 86
+WARNING:root:WARNING: code failed to execute for input 5 in case 86
+WARNING:root:WARNING: code failed to execute for input 6 in case 86
+WARNING:root:WARNING: code failed to execute for input 7 in case 86
+WARNING:root:WARNING: code failed to execute for input 8 in case 86
+WARNING:root:WARNING: code failed to execute for input 9 in case 86
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 86 failed
+INFO:root:C code :
+#include <stdio.h> 
+
+int comp(int num)
+{
+    int res = 0;
+    int cnt = 0;
+
+    while (num) {
+        if (!(num & 1)) {
+            res = res | (1 << cnt);
+        }
+        ++cnt;
+        num = num >> 1;
+    }
+
+    return res;
+}
+INFO:root:current LLM prompt size: 364
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	comp
+	.type	comp, @function
+comp:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movl	%edi, -4(%rbp)
+	cltq
+	testq	%rdi, %rdi
+	jle	.L3
+	movl	$0, -8(%rbp)
+	movl	$0, -12(%rbp)
+.L2:
+	cmpq	$1, -12(%rbp)
+	jge	.L4
+	movl	-8(%rbp), %eax
+	andl	$1, %eax
+	testl	%eax, %eax
+	je	.L5
+	movl	-12(%rbp), %eax
+	cltq
+	sallq	%rax, %rax
+	orl	%eax, -4(%rbp)
+.L5:
+	addl	$1, -12(%rbp)
+	movq	-4(%rbp), %rdi
+	shrq	%rdi
+	movq	%rdi, -4(%rbp)
+	jmp	.L2
+.L4:
+	movl	-8(%rbp), %eax
+	addq	$16, %rsp
+	popq	%rbp
+	ret
+.L3:
+	movl	$0, %eax
+	addq	$16, %rsp
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 87 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:26: Error: no such instruction: `sallq %rax,%rax'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int logicalShift(int x, int n) {
+ int a=(x>>31&1)<<32+~n;
+ return (x^a<<n)>>n^a;
+}
+INFO:root:current LLM prompt size: 329
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	logicalShift
+	.type	logicalShift, @function
+logicalShift:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$8, %rsp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-4(%rbp), %eax
+	cltd
+	movq	%esp, %rdx
+	subq	$24, %rdx
+	movq	%rdx, (%rsp)
+	movl	$31, %edi
+	call	shiftrt
+	movl	%eax, %esi
+	movl	-4(%rbp), %eax
+	xorl	%esi, %eax
+	sall	%cl, %eax
+	movl	%eax, -12(%rbp)
+	movl	-8(%rbp), %eax
+	notl	%eax
+	movl	%eax, -16(%rbp)
+	movl	-4(%rbp), %eax
+	xorl	-12(%rbp), %eax
+	movl	-8(%rbp), %ecx
+	sall	%cl, %eax
+	movl	-16(%rbp), %edx
+	xorl	%edx, %eax
+	addl	$8, %esp
+	popl	%rbp
+	ret
+.LFE0:
+	.size	logicalShift, .-logicalShift
+	.section	.rodata.str1.1,"aMS",@progbits,1
+.LC1:
+	.string	"%d"
+	.local	bin2int
+	.type	bin2int, @function
+bin2int:
+.LFB3:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movl	%edi, -4(%rbp)
+	cmpl	$31, -4(%rbp)
+	jle	.L5
+	movl	-4(%rbp), %eax
+	xorl	%esi, %eax
+	sall	%cl, %eax
+	movl	%eax, -8(%rbp)
+	movl	-4(%rbp), %eax
+	notl	%eax
+	movl	%eax, -12(%rbp)
+	movl	-4(%rbp), %eax
+	xorl	-8(%rbp), %eax
+	movl	-4(%rbp), %ecx
+	sall	%cl, %eax
+	movl	-12(%rbp), %edx
+	xorl	%edx, %eax
+.L5:
+	addl	$16, %esp
+	popl	%rbp
+	ret
+.LFE3:
+	.size	bin2int, .-bin2int
+	.section	.rodata.str1.8,"aMS",@progbits,1
+.LC2:
+	.string	"%s"
+	.local	shiftrt
+	.type	shiftrt, @function
+shiftrt:
+.LFB4:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movl	%esi, -4(%rbp)
+	cmpl	$31, -4(%rbp)
+	jle	.L8
+	movl	-4(%rbp), %eax
+	cltd
+	movq	%esp, %rdGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+WARNING:root:CASE 88 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s: Warning: end of file not at end of a line; newline inserted
+tmp.s:15: Error: operand type mismatch for `movq'
+tmp.s:35: Error: invalid instruction suffix for `pop'
+tmp.s:68: Error: invalid instruction suffix for `pop'
+tmp.s:88: Error: bad register name `%rdGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+double light_time(double distance) {
+    double t = 0.0;
+
+
+
+    return t;
+}
+INFO:root:current LLM prompt size: 313
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	light_time
+	.type	light_time, @function
+light_time:
+.LFB1:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$24, %rsp
+	fldz
+	fstpl	-8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	addq	$24, %rsp
+	popq	%rbp
+	ret
+
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 89 succeeded
+INFO:root:C code :
+
+double business_sum(double in, double in2) {
+    return in + in2;
+}
+INFO:root:current LLM prompt size: 311
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	business_sum
+	.type	business_sum, @function
+business_sum:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movsd	%xmm0, -8(%rbp)
+	movsd	%xmm1, -16(%rbp)
+	fldl	-16(%rbp)
+	faddpl	.LC2
+	movapd	%xmm0, %xmm1
+	andnpd	%xmm1, %xmm1
+	jne	L3
+	ucomisd	%xmm0, %xmm1
+	jbe	L4
+L3:
+	fstpl	-8(%rbp)
+L4:
+fldl -8(%rbp)
+	addsd	%fs:256, %xmm0
+	movsd	%xmm0, %xmm0
+	leave
+	ret
+.LC2:
+	.double	1.0
+
+WARNING:root:CASE 90 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:14: Error: invalid instruction suffix for `faddp'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int do_961() { return 961; }
+INFO:root:current LLM prompt size: 303
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	do_961
+	.type	do_961, @function
+do_961:
+.LFB0:
+	endbr64
+	movl	$961, %eax
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 91 succeeded
+INFO:root:C code :
+
+
+
+
+
+int chroma_sub_implemented(int mode)
+{
+  switch (mode) {
+  case 0:
+  case 1:
+  case 3:
+    return 1;
+  case 2:
+  case 4:
+  case 5:
+  case 7:
+  case 6:
+  default:
+    return 0;
+  }
+}
+INFO:root:current LLM prompt size: 364
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+
+	.text
+	.globl	chroma_sub_implemented
+	.type	chroma_sub_implemented, @function
+chroma_sub_implemented:
+.LFB4:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	cmpq	$0, %rdi
+	jne	.L5
+	jmp	.L3
+.L5:
+	cmpq	$1, %rdi
+	jne	.L6
+	jmp	.L3
+.L6:
+	cmpq	$2, %rdi
+	jne	.L7
+	jmp	.L4
+.L7:
+	cmpq	$3, %rdi
+	jne	.L8
+	jmp	.L3
+.L8:
+	cmpq	$4, %rdi
+	jne	.L9
+	jmp	.L4
+.L9:
+	cmpq	$5, %rdi
+	jne	.L10
+	jmp	.L4
+.L10:
+	cmpq	$6, %rdi
+	jne	.L11
+	jmp	.L2
+.L11:
+	cmpq	$7, %rdi
+	jne	.L12
+	jmp	.L2
+.L12:
+	movl	$0, %eax
+	jmp	.L1
+.L4:
+	movl	$1, %eax
+	jmp	.L1
+.L3:
+	movl	$1, %eax
+.L1:
+	leave
+	ret
+
+WARNING:root:CASE 92 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: warning: /tmp/cc7DxroB.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/cc7DxroB.o: in function `chroma_sub_implemented':
+(.text+0x43): undefined reference to `.L2'
+/usr/bin/ld: (.text+0x4e): undefined reference to `.L2'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+int leapyear(int year) {
+  if (year % 400 == 0)
+    return 1;
+  else if (year % 4 == 0 && year % 100 != 0)
+    return 1;
+  else
+    return 0;
+}
+INFO:root:current LLM prompt size: 354
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	leapyear
+	.type	leapyear, @function
+leapyear:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movl	%edi, -4(%rbp)
+	cmpl	$400, -4(%rbp)
+	je	.L3
+	cmpl	$0, -4(%rbp)
+	jne	.L2
+.L3:
+	movl	$1, %eax
+	jmp	.L1
+.L2:
+	cmpl	$100, -4(%rbp)
+	je	.L4
+	cmpl	$0, -4(%rbp)
+	jne	.L5
+.L4:
+	movl	$0, %eax
+	jmp	.L1
+.L5:
+	cmpl	$4, -4(%rbp)
+	jne	.L6
+	movl	$1, %eax
+	jmp	.L1
+.L6:
+	movl	$0, %eax
+.L1:
+	leave
+	ret
+
+INFO:root:Local error rate: 20.0%
+INFO:root:CASE 93 failed
+INFO:root:C code :
+
+int subtract(int x, int y) {
+    return x - y;
+}
+INFO:root:current LLM prompt size: 308
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	subtract
+	.type	subtract, @function
+subtract:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-4(%rbp), %eax
+	subl	-8(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 94 succeeded
+INFO:root:C code :
+#include <ctype.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <stdint.h>
+
+#include <math.h>
+
+#include <time.h>
+
+#include <fcntl.h>
+
+#include <sys/types.h>
+
+#include <errno.h>
+
+#include <limits.h>
+
+double calc_swst(unsigned short swst_dn, double pri)
+{
+
+
+     return ((double) swst_dn * 210.94e-09 + 9.0 * pri - 6.6E-6);
+}
+INFO:root:current LLM prompt size: 395
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	calc_swst
+	.type	calc_swst, @function
+calc_swst:
+.LFB1:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movw	%si, %ax
+	movsd	%xmm0, %xmm2
+	cvtsi2sd	%ax, %xmm3
+	mulsd	%xmm3, %xmm1
+	consts_double_21094e-09:
+		.value	4.1094000000000003E-10
+	movsd	.consts_double_21094e-09(%rip), %xmm0
+	mulsd	%xmm0, %xmm1
+	addsd	%xmm2, %xmm1
+	consts_double_9:
+		.value	9.0
+	addsd	%xmm3, %xmm2
+	movsd	.consts_double_9(%rip), %xmm0
+	subsd	%xmm0, %xmm1
+	consts_double_66e-6:
+		.value	6.5999999999999994E-7
+	subsd	%xmm1, %xmm0
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 95 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:12: Error: operand size mismatch for `cvtsi2sd'
+tmp.s:14: Error: no such instruction: `consts_double_21094e-09:'
+tmp.s:15: Error: junk at end of line, first unrecognized character is `.'
+tmp.s:16: Error: junk `9' after expression
+tmp.s:20: Error: junk at end of line, first unrecognized character is `.'
+tmp.s:24: Error: invalid character ':' in mnemonic
+tmp.s:25: Error: junk at end of line, first unrecognized character is `.'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int gsl_TouchNear(void)
+{
+  return 0;
+}
+INFO:root:current LLM prompt size: 306
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	gsl_TouchNear
+	.type	gsl_TouchNear, @function
+gsl_TouchNear:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 96 succeeded
+INFO:root:C code :
+
+int _link (const char *old_name, const char *new_name)
+{
+  return -1;
+}
+INFO:root:current LLM prompt size: 315
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	_link
+	.type	_link, @function
+_link:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movl	$-1, %eax
+	addq	$16, %rsp
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 97 succeeded
+INFO:root:C code :
+
+int quant(int n, int m)
+{
+ int i, neg;
+
+ neg = 0;
+ if (n < 0) {
+  neg++;
+  n = -n;
+ }
+
+ i = n / m;
+ if (n - m * i > m / 2)
+  i += 1;
+ i *= m;
+ if (neg)
+  i = -i;
+ return(i);
+}
+INFO:root:current LLM prompt size: 372
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	quant
+	.type	quant, @function
+quant:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$24, %rsp
+	movl	%edi, -4(%rbp)  # n
+	movl	%esi, -8(%rbp)  # m
+	movl	$0, -16(%rbp)   # neg
+	cmpl	$0, -4(%rbp)
+	jge	.L2
+	addl	$1, -16(%rbp)
+	movl	-4(%rbp), %eax
+	imull	$-1, %eax
+	movl	%eax, -4(%rbp)
+.L2:
+	movl	-8(%rbp), %eax
+	cltd
+	idivl	-4(%rbp)
+	movl	%eax, -12(%rbp)  # i = n / m
+	movl	-4(%rbp), %eax
+	imull	-12(%rbp), %eax
+	subl	-8(%rbp), %eax
+	cmpl	$0, %eax
+	jge	.L3
+	movl	%eax, %ecx
+	sall	$31, %ecx
+	addl	%ecx, %eax
+.L3:
+	movl	-8(%rbp), %edx
+	shrl	$1, %edx
+	cmpl	%edx, %eax
+	jge	.L4
+	addl	$1, -12(%rbp)
+.L4:
+	movl	-12(%rbp), %eax
+	imull	-8(%rbp), %eax
+	movl	%eax, -20(%rbp)  # i *= m
+	cmpl	$0, -16(%rbp)
+	jge	.L5
+	movl	-20(%rbp), %eax
+	imulw	$-1, (%rbp)
+	movw	%ax, -20(%rbp)
+.L5:
+	movl	-20(%rbp), %eax
+	addq	$24, %rsp
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 98 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:46: Error: operand size mismatch for `imul'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+void fs_scandir(char *dir, char *name)
+{
+}
+INFO:root:current LLM prompt size: 307
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	fs_scandir
+	.type	fs_scandir, @function
+fs_scandir:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	nop
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 99 succeeded
+INFO:root:Done
+INFO:root:Passed cases: [7, 8, 10, 11, 14, 15, 17, 18, 21, 22, 23, 24, 26, 29, 31, 35, 36, 37, 41, 43, 52, 57, 58, 61, 62, 64, 65, 68, 69, 77, 82, 85, 89, 91, 94, 96, 97, 99]
+INFO:root:Failed cases: [0, 1, 2, 3, 4, 5, 6, 9, 12, 13, 16, 19, 20, 25, 27, 28, 30, 32, 33, 34, 38, 39, 40, 42, 44, 45, 46, 47, 48, 49, 50, 51, 53, 54, 55, 56, 59, 60, 63, 66, 67, 70, 71, 72, 73, 74, 75, 76, 78, 79, 80, 81, 83, 84, 86, 87, 88, 90, 92, 93, 95, 98]
+INFO:root:Pass rate: 38.0%
+INFO:root:End time: 2024-08-21 19:44:16.376688

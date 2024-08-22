@@ -73,6 +73,7 @@ def c_compiler(
     use_local=False,
     temperature=0.3,
     peft_model="",
+    pass_k=1,
 ):
     compiler = Compiler(
         model,
@@ -90,9 +91,19 @@ def c_compiler(
     failed_c = []
     failed_asm = []
     failed_asm_ref = []
+    first_pass_id = []
     case_id = 0
     total_id = end_id - begin_id
+
+    # ds = ds[begin_id:end_id]
     for e in ds:
+        # we want to use case_id-begin_id/total_id as the progress bar
+        progress_bar = tqdm(
+            total=total_id,
+            initial=case_id - begin_id,
+            dynamic_ncols=True,
+        )
+        progress_bar.update(1)
         if case_id < begin_id:
             case_id += 1
             continue
@@ -232,77 +243,80 @@ def c_compiler(
                 continue
             # c source code using gcc to compile, not g++
             # to test llm_compiler, use aicc instead of gcc
-            compiler.compile("tmp.c")
-            x86_llm_code = open("tmp.s", "r").read()
-            # assemble the object files
-            ret = subprocess.run(
-                ["g++", "tmp.s", "tmp_driver.s", "-o", "tmp"],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-            if ret.returncode != 0:
-                logging.warning(
-                    f"CASE {case_id} failed to assemble the code to executable!"
+
+            # if any one pass, we consider it as passed
+            any_pass = False
+            first_pass = False
+            for try_k in range(pass_k):
+                ret = compiler.compile("tmp.c")
+                x86_llm_code = open("tmp.s", "r").read()
+                ret = subprocess.run(
+                    ["g++", "tmp.s", "tmp_driver.s", "-o", "tmp"],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
                 )
-                logging.warning(f"ret.stderr: {ret.stderr.decode()}")
-                logging.warning(f"ret.stdout: {ret.stdout.decode()}")
-                log_failed(
-                    failed_id,
-                    failed_c,
-                    failed_asm,
-                    failed_asm_ref,
-                    case_id,
-                    c_code,
-                    x86_llm_code,
-                    x86_code,
-                )
-                case_id += 1
-                continue
-            # try to run the code, args are each input file
-            local_err = 0
-            local_succ = 0
-            for j in range(input_count):
-                try:
-                    ret = subprocess.run(
-                        ["./tmp", f"input/in{j}.json", f"output/out{j}_real.json"],
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE,
-                        timeout=10,
-                    )
-                except subprocess.TimeoutExpired:
-                    logging.warning(
-                        f"WARNING: code execute timeout for input {j} in case {case_id}"
-                    )
-                    local_err += 1
-                    continue
                 if ret.returncode != 0:
                     logging.warning(
-                        f"WARNING: code failed to execute for input {j} in case {case_id}"
+                        f"{try_k}th try in {case_id} failed to assemble the code to executable!"
                     )
-                    local_err += 1
                     continue
-                # compare the output with the expected output
-                with open(f"output/out{j}_real.json", "r") as f:
-                    real_output = f.read()
-                with open(f"output/out{j}.json", "r") as f:
-                    expected_output = f.read()
-                try:
-                    json_my = json.loads(real_output)
-                    json_ref = json.loads(expected_output)
-                except json.JSONDecodeError:
-                    logging.error(f"SKIP: json decode failed for input {j}")
-                    local_err += 1
+                local_err = 0
+                local_succ = 0
+                for j in range(input_count):
+                    try:
+                        ret = subprocess.run(
+                            ["./tmp", f"input/in{j}.json", f"output/out{j}_real.json"],
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                            timeout=10,
+                        )
+                    except subprocess.TimeoutExpired:
+                        logging.warning(
+                            f"WARNING: code execute timeout for input {j} in case {case_id}"
+                        )
+                        local_err += 1
+                        continue
+                    if ret.returncode != 0:
+                        logging.warning(
+                            f"WARNING: code failed to execute for input {j} in case {case_id}"
+                        )
+                        local_err += 1
+                        continue
+                    # compare the output with the expected output
+                    with open(f"output/out{j}_real.json", "r") as f:
+                        real_output = f.read()
+                    with open(f"output/out{j}.json", "r") as f:
+                        expected_output = f.read()
+                    try:
+                        json_my = json.loads(real_output)
+                        json_ref = json.loads(expected_output)
+                    except json.JSONDecodeError:
+                        logging.error(f"SKIP: json decode failed for input {j}")
+                        local_err += 1
+                        break
+                    if json_my == json_ref:
+                        local_succ += 1
+                    else:
+                        local_err += 1
+                logging.info(f"Local error rate: {local_err*100 / input_count}%")
+                if local_err == 0:
+                    any_pass = True
+                    if try_k == 0:
+                        first_pass = True
+                    logging.info(f"{try_k}th try in {case_id} succeeded")
                     break
-                if json_my == json_ref:
-                    local_succ += 1
                 else:
-                    local_err += 1
-            logging.info(f"Local error rate: {local_err*100 / input_count}%")
-            if local_err == 0:
-                logging.info(f"CASE {case_id} succeeded")
+                    logging.info(f"{try_k}th try in {case_id} failed")
+                    continue
+
+            if any_pass:
+                logging.info(f"CASE {case_id} success")
                 passed_id.append(case_id)
+                if first_pass:
+                    first_pass_id.append(case_id)
             else:
-                logging.info(f"CASE {case_id} failed")
+                logging.info(f"CASE {case_id} fail")
+                # for simplicity, pass_k only record the last try
                 log_failed(
                     failed_id,
                     failed_c,
@@ -315,14 +329,18 @@ def c_compiler(
                 )
             case_id += 1
             if case_id >= end_id:
+                progress_bar.close()
                 break
         except Exception as e:
             logging.error(f"Unexpected Error: {e}")
             case_id += 1
             continue
+
     logging.info("Done")
     logging.info(f"Passed cases: {passed_id}")
+    logging.info(f"First pass cases: {first_pass_id}")
     logging.info(f"Failed cases: {failed_id}")
+    logging.info(f"First pass rate: {len(first_pass_id)*100 / (end_id-begin_id)}%")
     logging.info(f"Pass rate: {len(passed_id)*100 / (end_id-begin_id)}%")
     # save failed cases to a new directory named failed under current
     if not os.path.exists("failed"):
@@ -450,6 +468,9 @@ if __name__ == "__main__":
     parser.add_argument("--prompt_style", type=str, default="one")
     parser.add_argument("--use_local", type=bool, default=False)
     parser.add_argument("--need_log", type=bool, default=True)
+    parser.add_argument("--temperature", type=float, default=0.3)
+    parser.add_argument("--peft_model", type=str, default="")
+    parser.add_argument("--pass_k", type=int, default=1)
     S = parser.parse_args()
     candidate_model = S.model
     begin_id = S.begin_id
@@ -457,6 +478,9 @@ if __name__ == "__main__":
     prompt_style = S.prompt_style
     use_local = S.use_local
     need_log = S.need_log
+    temperature = S.temperature
+    peft_model = S.peft_model
+    pass_k = S.pass_k
     if prompt_style == "one":
         use_one_shot_prompt = True
         use_zero_shot_prompt = False
@@ -503,6 +527,9 @@ if __name__ == "__main__":
         use_one_shot_prompt=use_one_shot_prompt,
         use_zero_shot_prompt=use_zero_shot_prompt,
         use_local=use_local,
+        temperature=temperature,
+        peft_model=peft_model,
+        pass_k=pass_k,
     )
 
     logging.info("End time: " + str(datetime.datetime.now()))

@@ -1,4 +1,8 @@
-models, samples_num, IO Accuracy
-"llama3.1:int4", 100, 0.29
-"codestral:int4", 100, 0.67
-"codestral", 100, 0.71
+models, IO Accuracy, FirstTry Accuracy, Pass@k,
+"llama3.1", 0.29, 0.29, 1
+"llama3.1", 0.34, 0.17, 5
+"codestral", 0.67, 0.67, 1
+"codestral:fp16", 0.71, 0.71, 1
+"codegeex4", 0.38, 0.38, 1
+"deepseek-coder-v2-lite:fp16", 0.73, 0.73, 1
+"deepseek-coder(api):fp16", 0.91, 0.87, 5
