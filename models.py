@@ -161,6 +161,17 @@ class Chat:
         if self.model in ANTHROPIC_AVAILABLE_MODELS:
             self.messages = []
 
+    def message_reset(self):
+        initial_messages = [
+            {
+                "role": "system",
+                "content": (self.system_prompt),
+            },
+        ]
+        self.messages = initial_messages
+        if self.model in ANTHROPIC_AVAILABLE_MODELS:
+            self.messages = []
+
     def local_chat(self, temperature, user_input=None):
         if user_input is None:
             user_input = input("User: \n")
@@ -281,6 +292,7 @@ input code will be inside "```c" and "```"tags, please also make sure the genera
         )
         query_size = num_tokens_from_messages(self.messages)
         logging.info(f"current LLM prompt size: {query_size}")
+        logging.debug(f"current LLM prompt: {self.messages}")
         if query_size >= 8192:
             logging.warning(
                 "LLM prompt size exceeds the limit 8192, will truncate the prompt."
@@ -304,7 +316,7 @@ input code will be inside "```c" and "```"tags, please also make sure the genera
                 messages=self.messages,
             )
             rsp_content = response.choices[0].message.content
-        # logging.info(f"LLM response: \n{rsp_content}")
+        logging.debug(f"LLM response: \n{rsp_content}")
         self.messages.append(
             {
                 "role": "assistant",
@@ -370,18 +382,55 @@ class Compiler(Chat):
 
         query_size = num_token_from_string(self.system_prompt)
         logging.info(f"LLM default prompt size: {query_size}")
-        initial_messages = [
-            {
-                "role": "system",
-                "content": (self.system_prompt),
-            },
-        ]
-        self.messages = initial_messages
-        if self.model in ANTHROPIC_AVAILABLE_MODELS:
-            self.messages = []
+        self.message_reset()
+
+    def compile_with_error_message(
+        self,
+        code=None,
+        out="tmp.s",
+        reset_messages=True,
+        use_local=False,
+        error_asm="",
+        error_message="",
+        prompt_prefix="",
+        prompt_postfix="",
+    ):
+        if os.path.exists(code):
+            code_file_name = code.split("/")[-1]
+            if code_file_name != "tmp.c":
+                # copy to the current directory
+                os.system(f"cp {code} .")
+            # get the file name
+            code_file_name = code.split("/")[-1]
+            if code_file_name is not None:
+                with open(code_file_name, "r") as f:
+                    code = f.read()
+        code = f"#Input:\n```c\n{code}\n```"
+        error_asm = f"#Output:\n```x86\n{error_asm}\n```"
+        error_prompt = f"""Previous output is not correct, please check the error message below and correct the code:
+```plaintext
+{error_message}
+```
+First give your opinion on why the previous output is incorrect, generate them with "#Analysis" tag.
+Now regenerate the assembly from the "#Input" C code, 
+make sure the generated x86 assembly in the "#Output" be inside "```x86" and "```" tags."""
+        prompt = f"{prompt_prefix}\n{code}\n{error_asm}\n{error_prompt}\n{prompt_postfix}"
+        self.chat(user_input=prompt, temperature=self.temperature)
+        compiler_rsp = self.messages[-1]["content"]
+        self.assemble(compiler_rsp, out=out)
+        if reset_messages:
+            self.message_reset()
 
     # will only chat once
-    def compile(self, code=None, out="tmp.s", reset_messages=True, use_local=False):
+    def compile(
+        self,
+        code=None,
+        out="tmp.s",
+        reset_messages=True,
+        use_local=False,
+        prompt_prefix="",
+        prompt_postfix="",
+    ):
         if os.path.exists(code):
             code_file_name = code.split("/")[-1]
             if code_file_name != "tmp.c":
@@ -399,15 +448,7 @@ class Compiler(Chat):
         self.assemble(compiler_rsp, out=out)
         # reset the messages
         if reset_messages:
-            initial_messages = [
-                {
-                    "role": "system",
-                    "content": (self.system_prompt),
-                },
-            ]
-            self.messages = initial_messages
-            if self.model in ANTHROPIC_AVAILABLE_MODELS:
-                self.messages = []
+            self.message_reset()
 
     def assemble(self, compiler_rsp, out="output.s", generate_binary=False):
         if "```x86" in compiler_rsp:
@@ -429,6 +470,61 @@ class Compiler(Chat):
                     logging.info("Succeed to compile the x86 code!")
         else:
             logging.warning("Failed to find the x86 code!")
+
+    def analyze(self, code, temperature):
+        # 0. a general analysis on the code, find out what the code is doing
+        # 1. analyze if code contains numerical values
+        # 2. analyze if code contains string values
+        # 3. analyze if code contains function calls
+        # 4. analyze if code is recursive
+        prompt = f"""Please analyze the following C code, what is it doing?
+And you need to analyze if the following features are included in the code:
+0. What is the code doing?
+1. If the code contains numerical values, like 1.0, 2e-5, 3.14f, etc.
+2. If the code contains hex or octal values, like 0x3f, 077, etc.
+3. If the code contains other function calls.
+4. If the code is recursive.
+Return your answer with the following format:
+```plaintext
+#summary: one sentence summary.
+#numerical: True/False
+#hex_octal: True/False
+#functioncall: True/False
+#recursive: True/False
+```
+
+Below is the code you need to analyze:
+```c
+{code}
+```
+"""
+        self.chat(user_input=prompt, temperature=temperature)
+        # handle rsp, if error, return default values
+        rsp = self.messages[-1]["content"]
+        summary = ""
+        numerical = False
+        hex_octal = False
+        functioncall = False
+        recursive = False
+        try:
+            # grep the rsp in ```plaintext and ```
+            rsp = rsp.split("```plaintext")[1].split("```")[0]
+            # split the rsp into lines
+            rsp = rsp.split("\n")
+            if "#summary:" in rsp[0]:
+                summary = rsp[0].split("#summary:")[1]
+            if "#numerical: True" in rsp[1]:
+                numerical = True
+            if "#hex_octal: True" in rsp[2]:
+                hex_octal = True
+            if "#functioncall: True" in rsp[3]:
+                functioncall = True
+            if "#recursive: True" in rsp[4]:
+                recursive = True
+        except Exception as e:
+            logging.warning(f"Failed to parse the analysis result: \n{e}")
+        self.message_reset()
+        return summary, numerical, hex_octal, functioncall, recursive
 
 
 class Decompiler(Chat):

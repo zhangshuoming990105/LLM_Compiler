@@ -64,6 +64,176 @@ def human_eval():
         i += 1
 
 
+def python_compiler(model="gpt-4o", begin_id=0, end_id=1, use_one_shot_prompt=False):
+    code_translator = CodeTranslator(model, source="python", target="c")
+    gpt4_compiler = Compiler(model, use_one_shot_prompt=use_one_shot_prompt)
+    compiler = gpt4_compiler
+    dataset = load_dataset("openai/openai_humaneval")
+    case_id = 0
+    for e in dataset["test"]:
+        if case_id < begin_id:
+            case_id += 1
+            continue
+        human_eval_py_code = ""
+        human_eval_py_code += e["prompt"]
+        human_eval_py_code += e["canonical_solution"]
+
+        human_eval_driver_code = ""
+        human_eval_driver_code += e["test"]
+        human_eval_driver_code += """check_candidate()"""
+
+        code_translator.translate(
+            human_eval_py_code,
+            specify_out_file="humaneval.c",
+            desc_post=r"[INST]Only provide me with the #Output part. Check carefully with the escape characters, to make sure the Output code is correct.[\INST]",
+            reset_messages=False,
+        )
+        code_translator.translate(
+            human_eval_driver_code,
+            specify_out_file="humaneval_driver.c",
+            desc_pre=r'[INST]Continue to translate the driver function from Python to C.\nFor the Python function with its body pass, like "def foo()->int:\npass" we generate a function declaration in C, like "int foo();".[\INST]',
+            desc_post=r"[INST]Only provide me with the #Output part.[\INST]",
+        )
+        # llm compilation
+        compiler.compile("humaneval.c", out="humaneval_llm.s")
+
+        # gcc compile ref
+        ret = subprocess.run(
+            ["gcc", "-S", "humaneval_driver.c", "humaneval.c", "-o", "ref"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        if ret.returncode != 0:
+            logging.warning(f"Failed to compile the driver code!")
+            logging.info(
+                f"stdout: \n{ret.stdout.decode()}\nstderr: \n{ret.stderr.decode()}"
+            )
+            break
+        # gcc compile hyp
+        ret = subprocess.run(
+            ["gcc", "humaneval_driver.c", "humaneval_llm.s", "-o", "hyp"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        if ret.returncode != 0:
+            logging.warning(f"Failed to compile the driver code!")
+            logging.info(
+                f"stdout: \n{ret.stdout.decode()}\nstderr: \n{ret.stderr.decode()}"
+            )
+        case_id += 1
+        if case_id >= end_id:
+            break
+
+
+def examine_exebench(input_count, case_id, try_k, round=0):
+    error_message = ""
+    ret = subprocess.run(
+        ["g++", "tmp.s", "tmp_driver.s", "-o", "tmp"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    if ret.returncode != 0:
+        logging.warning(
+            f"{try_k}th try {round} round in {case_id} failed to assemble the code to executable!"
+        )
+        # not compilable, so all failed
+        error_message = f"""Compilation error: Failed to assemble the assembly code to executable!
+where compilation error is:
+stdout:
+{ret.stdout.decode()}
+stderr:
+{ret.stderr.decode()}
+"""
+        logging.debug(f"error message: {error_message}")
+        return (
+            False,
+            error_message,
+        )
+    local_err = 0
+    local_succ = 0
+    for j in range(input_count):
+        try:
+            ret = subprocess.run(
+                [
+                    "./tmp",
+                    f"input/in{j}.json",
+                    f"output/out{j}_real.json",
+                ],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                timeout=10,
+            )
+        except subprocess.TimeoutExpired:
+            logging.warning(
+                f"WARNING: code execute timeout for input {j} in case {case_id}"
+            )
+            # organize the error message
+            # for context length limit, we only report the last error
+            error_message = f"""Runtime error: input {j} in case {case_id} failed because of timeout.
+Inputs are: 
+{open(f"input/in{j}.json", "r").read()}
+Expected outputs are:
+{open(f"output/out{j}.json", "r").read()}
+The real output is: None, because of timeout.
+----------
+"""
+
+            local_err += 1
+            continue
+        if ret.returncode != 0:
+            logging.warning(
+                f"WARNING: code failed to execute for input {j} in case {case_id}"
+            )
+            # for context length limit, we only report the last error
+            error_message = f"""input {j} in case {case_id} failed because of runtime error.
+Inputs are: 
+{open(f"input/in{j}.json", "r").read()}
+Expected outputs are:
+{open(f"output/out{j}.json", "r").read()}
+Run stdout:
+{ret.stdout.decode()}
+Run stderr:
+{ret.stderr.decode()}
+----------
+"""
+            local_err += 1
+            continue
+        # compare the output with the expected output
+        with open(f"output/out{j}_real.json", "r") as f:
+            real_output = f.read()
+        with open(f"output/out{j}.json", "r") as f:
+            expected_output = f.read()
+        try:
+            json_my = json.loads(real_output)
+            json_ref = json.loads(expected_output)
+        except json.JSONDecodeError:
+            logging.error(f"SKIP: json decode failed for input {j}")
+            local_err += 1
+            break
+        if json_my == json_ref:
+            local_succ += 1
+        else:
+            local_err += 1
+            # for context length limit, we only report the last error
+            error_message += f"""input {j} in case {case_id} failed because of output mismatch.
+Inputs are: 
+{open(f"input/in{j}.json", "r").read()}
+Expected outputs are:
+{open(f"output/out{j}.json", "r").read()}
+Actual outputs are:
+{open(f"output/out{j}_real.json", "r").read()}
+----------
+"""
+    logging.info(f"Local error rate: {local_err*100 / input_count}%")
+    if local_err == 0:
+        logging.info(f"{try_k}th try {round} round in {case_id} succeeded")
+        return True, error_message
+    else:
+        logging.info(f"{try_k}th try {round} round in {case_id} failed")
+        logging.debug(f"error message: {error_message}")
+        return False, error_message
+
+
 def c_compiler(
     model="gpt-4o",
     begin_id=0,
@@ -74,7 +244,15 @@ def c_compiler(
     temperature=0.3,
     peft_model="",
     pass_k=1,
+    self_correct=False,  # whether to use self-correcting mechanism
+    self_correct_round=3,  # the number of self-correcting rounds
+    do_analyze=False,
 ):
+    """
+    Compile the C code of ExeBench to assembly code and then to executable code.
+    Return Pass@k accuracy.
+    Supported Models: see config.py, and local model through huggingface checkpoint
+    """
     compiler = Compiler(
         model,
         use_one_shot_prompt=use_one_shot_prompt,
@@ -241,74 +419,119 @@ def c_compiler(
                 logging.warning(f"CASE {case_id} Failed to compile the driver code!")
                 case_id += 1
                 continue
-            # c source code using gcc to compile, not g++
-            # to test llm_compiler, use aicc instead of gcc
 
-            # if any one pass, we consider it as passed
             any_pass = False
             first_pass = False
             for try_k in range(pass_k):
-                ret = compiler.compile("tmp.c")
+                compiler.compile("tmp.c")
+                success, error_message = examine_exebench(input_count, case_id, try_k)
                 x86_llm_code = open("tmp.s", "r").read()
-                ret = subprocess.run(
-                    ["g++", "tmp.s", "tmp_driver.s", "-o", "tmp"],
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                )
-                if ret.returncode != 0:
-                    logging.warning(
-                        f"{try_k}th try in {case_id} failed to assemble the code to executable!"
-                    )
-                    continue
-                local_err = 0
-                local_succ = 0
-                for j in range(input_count):
-                    try:
-                        ret = subprocess.run(
-                            ["./tmp", f"input/in{j}.json", f"output/out{j}_real.json"],
-                            stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE,
-                            timeout=10,
-                        )
-                    except subprocess.TimeoutExpired:
-                        logging.warning(
-                            f"WARNING: code execute timeout for input {j} in case {case_id}"
-                        )
-                        local_err += 1
-                        continue
-                    if ret.returncode != 0:
-                        logging.warning(
-                            f"WARNING: code failed to execute for input {j} in case {case_id}"
-                        )
-                        local_err += 1
-                        continue
-                    # compare the output with the expected output
-                    with open(f"output/out{j}_real.json", "r") as f:
-                        real_output = f.read()
-                    with open(f"output/out{j}.json", "r") as f:
-                        expected_output = f.read()
-                    try:
-                        json_my = json.loads(real_output)
-                        json_ref = json.loads(expected_output)
-                    except json.JSONDecodeError:
-                        logging.error(f"SKIP: json decode failed for input {j}")
-                        local_err += 1
-                        break
-                    if json_my == json_ref:
-                        local_succ += 1
-                    else:
-                        local_err += 1
-                logging.info(f"Local error rate: {local_err*100 / input_count}%")
-                if local_err == 0:
+                if success:
                     any_pass = True
                     if try_k == 0:
                         first_pass = True
-                    logging.info(f"{try_k}th try in {case_id} succeeded")
                     break
                 else:
-                    logging.info(f"{try_k}th try in {case_id} failed")
-                    continue
+                    if self_correct:
+                        summary = ""
+                        numerical = False
+                        hex_octal = False
+                        functioncall = False
+                        recursive = False
+                        if do_analyze:
+                            summary, numerical, hex_octal, functioncall, recursive = (
+                                compiler.analyze(code=c_code, temperature=temperature)
+                            )
+                            logging.info(f"Summary: {summary}")
+                            logging.info(f"Numerical: {numerical}")
+                            logging.info(f"Hex/Octal: {hex_octal}")
+                            logging.info(f"Function call: {functioncall}")
+                            logging.info(f"Recursive: {recursive}")
+                            # generate helpful message for LLM to generate
+                            helper_message = ""
+                            helper_message += "The following are some tips for you to generate the correct code:\n"
+                            if numerical:
+                                helper_message += """For numerical values, you don't need to convert the value to IEEE754 format, 
+just keep them as they are, 
+C: double a = 23.0;
+x86: 
+label: 
+    .double 23.0
+"""
+                            if hex_octal:
+                                helper_message += """#For hexadecimal or octal values, you don't need to convert them to base-10 value,
+just keep them as they are,
+C: int a = 0x23;
+x86:
+    movl $0x23, xxx(a's address)
+"""
+                            if functioncall:
+                                helper_message += ""
+                            if recursive:
+                                helper_message += """this is a recursive function, you need to generate the assembly with strict stack management.
+make sure you have the correct stack frame and stack pointer management.
+You can refer to the following code snippet:
+#Input:
+```c
+int fib(int n) {
+    if (n <= 1) {
+        return 1;
+    }
+    return fib(n - 1) + fib(n - 2);
+}
+```
+#Output:
+```x86
+	.text
+	.globl	fib
+	.type	fib, @function
+fib:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	pushq	%rbx
+	subq	$24, %rsp
+	movl	%edi, -20(%rbp)
+	cmpl	$1, -20(%rbp)
+	jg	.L2
+	movl	$1, %eax
+	jmp	.L3
+.L2:
+	movl	-20(%rbp), %eax
+	subl	$1, %eax
+	movl	%eax, %edi
+	call	fib
+	movl	%eax, %ebx
+	movl	-20(%rbp), %eax
+	subl	$2, %eax
+	movl	%eax, %edi
+	call	fib
+	addl	%ebx, %eax
+.L3:
+	movq	-8(%rbp), %rbx
+	leave
+	ret
+```
+"""
+                            logging.info(f"Helper message: {helper_message}")
 
+                        for round in range(self_correct_round):
+                            compiler.compile_with_error_message(
+                                "tmp.c",
+                                error_asm=x86_llm_code,
+                                error_message=error_message,
+                                prompt_prefix=helper_message,
+                            )
+                            correct_success, error_message = examine_exebench(
+                                input_count, case_id, try_k, round+1
+                            )
+                            x86_llm_code = open("tmp.s", "r").read()
+                            if correct_success:
+                                any_pass = True
+                                break
+                        if any_pass:
+                            break
             if any_pass:
                 logging.info(f"CASE {case_id} success")
                 passed_id.append(case_id)
@@ -359,88 +582,6 @@ def c_compiler(
             f.close()
 
 
-def python_compiler(model="gpt-4o", begin_id=0, end_id=1, use_one_shot_prompt=False):
-    code_translator = CodeTranslator(model, source="python", target="c")
-    gpt4_compiler = Compiler(model, use_one_shot_prompt=use_one_shot_prompt)
-    compiler = gpt4_compiler
-    dataset = load_dataset("openai/openai_humaneval")
-    case_id = 0
-    for e in dataset["test"]:
-        if case_id < begin_id:
-            case_id += 1
-            continue
-        human_eval_py_code = ""
-        human_eval_py_code += e["prompt"]
-        human_eval_py_code += e["canonical_solution"]
-
-        human_eval_driver_code = ""
-        human_eval_driver_code += e["test"]
-        human_eval_driver_code += """check_candidate()"""
-
-        code_translator.translate(
-            human_eval_py_code,
-            specify_out_file="humaneval.c",
-            desc_post=r"[INST]Only provide me with the #Output part. Check carefully with the escape characters, to make sure the Output code is correct.[\INST]",
-            reset_messages=False,
-        )
-        code_translator.translate(
-            human_eval_driver_code,
-            specify_out_file="humaneval_driver.c",
-            desc_pre=r'[INST]Continue to translate the driver function from Python to C.\nFor the Python function with its body pass, like "def foo()->int:\npass" we generate a function declaration in C, like "int foo();".[\INST]',
-            desc_post=r"[INST]Only provide me with the #Output part.[\INST]",
-        )
-        # llm compilation
-        compiler.compile("humaneval.c", out="humaneval_llm.s")
-
-        # gcc compile ref
-        ret = subprocess.run(
-            ["gcc", "-S", "humaneval_driver.c", "humaneval.c", "-o", "ref"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        if ret.returncode != 0:
-            logging.warning(f"Failed to compile the driver code!")
-            logging.info(
-                f"stdout: \n{ret.stdout.decode()}\nstderr: \n{ret.stderr.decode()}"
-            )
-            break
-        # gcc compile hyp
-        ret = subprocess.run(
-            ["gcc", "humaneval_driver.c", "humaneval_llm.s", "-o", "hyp"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        if ret.returncode != 0:
-            logging.warning(f"Failed to compile the driver code!")
-            logging.info(
-                f"stdout: \n{ret.stdout.decode()}\nstderr: \n{ret.stderr.decode()}"
-            )
-        case_id += 1
-        if case_id >= end_id:
-            break
-
-
-def python_c_translator(model="gpt-4o"):
-    translator = CodeTranslator(model=model, source="python", target="c")
-    translator.translate(
-        "/Users/zhangshuoming/workspace/LLM_CoT_compilation/LLM_Compiler/sandbox/humaneval_example/example.py"
-    )
-
-
-def arm_decompiler():
-    pass
-
-
-def x86_decompiler():
-    # decompiler = Decompiler()
-    # decompiler.decompile("/Users/zhangshuoming/workspace/LLM_CoT_compilation/LLM_Compiler/sandbox/example/hello_world.s")
-    pass
-
-
-def ir_optimizer():
-    pass
-
-
 if __name__ == "__main__":
     # 1. environment setup
     root_dir = get_env()
@@ -471,6 +612,10 @@ if __name__ == "__main__":
     parser.add_argument("--temperature", type=float, default=0.3)
     parser.add_argument("--peft_model", type=str, default="")
     parser.add_argument("--pass_k", type=int, default=1)
+    parser.add_argument("--self_correct", type=bool, default=False)
+    parser.add_argument("--correct_round", type=int, default=3)
+    parser.add_argument("--logging_level", type=str, default="INFO")
+    parser.add_argument("--do_analyze", type=bool, default=False)
     S = parser.parse_args()
     candidate_model = S.model
     begin_id = S.begin_id
@@ -481,12 +626,19 @@ if __name__ == "__main__":
     temperature = S.temperature
     peft_model = S.peft_model
     pass_k = S.pass_k
+    self_correct = S.self_correct
+    correct_round = S.correct_round
+    logging_level = S.logging_level
+    do_analyze = S.do_analyze
     if prompt_style == "one":
         use_one_shot_prompt = True
         use_zero_shot_prompt = False
     elif prompt_style == "zero":
         use_one_shot_prompt = False
         use_zero_shot_prompt = True
+    elif prompt_style == "cot":
+        use_one_shot_prompt = False
+        use_zero_shot_prompt = False
     else:
         use_one_shot_prompt = False
         use_zero_shot_prompt = False
@@ -509,17 +661,24 @@ if __name__ == "__main__":
         os.makedirs(temp_dir, exist_ok=True)
         os.chdir(temp_dir)
     log_file = os.path.join(log_dir, f"{temp_name}.log")
+
+    if logging_level == "DEBUG":
+        level = logging.DEBUG
+    elif logging_level == "INFO":
+        level = logging.INFO
+    elif logging_level == "WARNING":
+        level = logging.WARNING
+    elif logging_level == "ERROR":
+        level = logging.ERROR
+
     if need_log:
-        logging.basicConfig(filename=log_file, level=logging.INFO)
+        logging.basicConfig(filename=log_file, level=level)
     else:
-        logging.basicConfig(level=logging.INFO)
+        logging.basicConfig(level=level)
     logging.info("log file created!")
     logging.info("Start time: " + str(datetime.datetime.now()))
     logging.info("Current run:" + temp_name)
 
-    # CodeGeex4, ollama local models
-    # c_compiler(model="codestral", begin_id=200, end_id=210, use_one_shot_prompt=True)
-    # c_compiler(model="gpt-4o", begin_id=200, end_id=210, use_one_shot_prompt=True)
     c_compiler(
         model=candidate_model,
         begin_id=begin_id,
@@ -530,51 +689,9 @@ if __name__ == "__main__":
         temperature=temperature,
         peft_model=peft_model,
         pass_k=pass_k,
+        self_correct=self_correct,
+        self_correct_round=correct_round,
+        do_analyze=do_analyze,
     )
 
     logging.info("End time: " + str(datetime.datetime.now()))
-
-    # EMNLP additional experiments baselines:
-    # GPT-4o
-    # c_compiler(model="gpt-4o",begin_id=0, end_id=100, use_zero_shot_prompt=True)
-    # DeepSeek-Coder
-    # c_compiler(model="deepseek-coder", begin_id=0, end_id=100, use_zero_shot_prompt=True)
-    # CLAUDE-3: claude-3-opus-20240229
-    # CLAUDE-3.5: claude-3-5-sonnet-20240620
-    # c_compiler(model="claude-3-5-sonnet-20240620",begin_id=0, end_id=100, use_zero_shot_prompt=True)
-    # Mixtral-8x7b
-    # c_compiler(model="mixtral-8x7b-instruct", begin_id=0, end_id=1, use_one_shot_prompt=True)
-    # Llama3.1
-    # c_compiler(model="llama-3.1-70b-instruct", begin_id=0, end_id=10, use_one_shot_prompt=True)
-    # local models using transformers library to load(including our fine-tuned models)
-    # c_compiler(
-    #     model="deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct",
-    #     begin_id=0,
-    #     end_id=100,
-    #     use_one_shot_prompt=True,
-    #     use_local=True,
-    #     temperature=0.2,
-    #     peft_model="/root/workspace/LLM_Compiler/peft_trainer/lora_adapters/DeepSeek-Coder-V2-Lite-Instruct_c_x86_O0_lora64_32_0.02_none_b16_gpu4/checkpoint-5000",
-    # )
-    # c_compiler(
-    #     model="codellama/CodeLlama-7b-Instruct-hf",
-    #     begin_id=0,
-    #     end_id=100,
-    #     use_one_shot_prompt=True,
-    #     use_local=True,
-    #     temperature=0.4,
-    # )
-    # peft model
-    # c_compiler(
-    #     model="deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct",
-    #     begin_id=0,
-    #     end_id=2,
-    #     use_one_shot_prompt=True,
-    #     use_local=True,
-    #     temperature=0.4,
-    #     peft_model="/root/workspace/LLM_Compiler/peft_trainer/lora_adapters/DeepSeek-Coder-V2-Lite-Instruct_c_x86_O0_lora128_32_0_none_b16_gpu4/final_checkpoint",
-    # )
-    # python_c_translator(model="claude-3-haiku-20240307")
-    # python_compiler("claude-3-5-sonnet-20240620")
-    # logging.info("End time: " + str(datetime.datetime.now()))
-    # workspace_clear(sandbox_dir, log_dir)

@@ -4,5 +4,7 @@ models, IO Accuracy, FirstTry Accuracy, Pass@k,
 "codestral", 0.67, 0.67, 1
 "codestral:fp16", 0.71, 0.71, 1
 "codegeex4", 0.38, 0.38, 1
+"deepseek-coder-v2-lite", , , 1
 "deepseek-coder-v2-lite:fp16", 0.73, 0.73, 1
-"deepseek-coder(api):fp16", 0.91, 0.87, 5
+"deepseek-coder(api)", 0.91, 0.87, 5
+"llama3.1-sonar-huge-128k-online(api)", 0.78, 0.78, 1
