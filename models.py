@@ -293,7 +293,7 @@ input code will be inside "```c" and "```"tags, please also make sure the genera
         )
         query_size = num_tokens_from_messages(self.messages)
         logging.info(f"current LLM prompt size: {query_size}")
-        logging.debug(f"current LLM prompt: {self.messages}")
+        logging.debug(f"###current LLM prompt: {self.messages}")
         if query_size >= 8192:
             logging.warning(
                 "LLM prompt size exceeds the limit 8192, will truncate the prompt."
@@ -317,7 +317,7 @@ input code will be inside "```c" and "```"tags, please also make sure the genera
                 messages=self.messages,
             )
             rsp_content = response.choices[0].message.content
-        logging.debug(f"LLM response: \n{rsp_content}")
+        logging.debug(f"###LLM response: \n{rsp_content}")
         self.messages.append(
             {
                 "role": "assistant",
@@ -406,18 +406,52 @@ class Compiler(Chat):
             if code_file_name is not None:
                 with open(code_file_name, "r") as f:
                     code = f.read()
-        code = f"#Input:\n```c\n{code}\n```"
-        error_asm = f"#Output:\n```x86\n{error_asm}\n```"
-        error_prompt = (
-            fix_prompts["error_message_pre"]
-            + f"```plaintext\n{error_message}\n```"
-            + fix_prompts["error_message_post"]
-        )
-        prompt = (
-            f"{prompt_prefix}\n{code}\n{error_asm}\n{error_prompt}\n{prompt_postfix}"
-        )
+
+        # better design an analysis using LLM to get a error message
+        # that the next generation will be able to understand
+        # for repair, we don't need the one-shot prompt in generation.
+        # our focus is fixing the error.
+        prompt = f"""The following assembly code has an error, based on the error message, fix the error in the assembly code.
+we also provide the original C code for your reference.
+Majorly FOCUS on the error message, and fix the error in the assembly code.
+If it's an compilation error, based on the error message, only fix on the line that reports error.
+If it's a runtime error, think about the logic of the code line by line, and try to locate it.
+If it's a result error, simulate the execution of the code in your mind, and find where it goes wrong.
+Wrong assembly code:
+```x86
+{error_asm}
+```
+Original C code:
+```c
+{code}
+```
+The error message is:
+```plaintext
+{error_message}
+```
+Additionally, we provide potentially useful information for you to fix the error.
+```plaintext
+{prompt_postfix}
+```
+Now generate based on the error message, the assembly code and the original C code, fix the error in the assembly code. 
+Note that the error message and the helpful information is the key to fix the error. Check it carefully.
+Your generated fixed assembly code should be inside "```x86" and "```" tags.
+"""
+
+        # code = f"#Input:\n```c\n{code}\n```"
+        # error_asm = f"#Output:\n```x86\n{error_asm}\n```"
+        # error_prompt = (
+        #     fix_prompts["error_message_pre"]
+        #     + f"```plaintext\n{error_message}\n```"
+        #     + fix_prompts["error_message_post"]
+        # )
+        # prompt = (
+        #     f"{prompt_prefix}\n{code}\n{error_asm}\n{error_prompt}\n{prompt_postfix}"
+        # )
+        logging.debug(f"###User Input: \n{prompt}")
         self.chat(user_input=prompt, temperature=self.temperature)
         compiler_rsp = self.messages[-1]["content"]
+        logging.debug(f"###Compiler response: \n{compiler_rsp}")
         self.assemble(compiler_rsp, out=out)
         if reset_messages:
             self.message_reset()
@@ -472,42 +506,28 @@ class Compiler(Chat):
         else:
             logging.warning("Failed to find the x86 code!")
 
-    def analyze(self, code, temperature):
-        # 0. a general analysis on the code, find out what the code is doing
-        # 1. analyze if code contains numerical values
-        # 2. analyze if code contains string values
-        # 3. analyze if code contains function calls
-        # 4. analyze if code is recursive
+    def analyze(self, code, temperature, error_message):
         prompt = fix_prompts["analyze_pre"]
-        prompt += f"""Below is the code you need to analyze:
+        prompt += f"""Below is the **code** you need to analyze:
 ```c
 {code}
+```
+Extra information:
+```plaintext
+{error_message}
 ```
 {fix_prompts["analyze_post"]}
 """
         self.chat(user_input=prompt, temperature=temperature)
         # handle rsp, if error, return default values
         rsp = self.messages[-1]["content"]
-        numerical = False
-        hex_octal = False
-        functioncall = False
-        recursive = False
         try:
             # grep the rsp in ```plaintext and ```
-            rsp = rsp.split("```plaintext")[1].split("```")[0]
-            # rsp is "True/False, True/False, True/False, True/False"
-            rsp = rsp.split(",")
-            if len(rsp) == 4:
-                numerical = True if rsp[0].strip() == "True" else False
-                hex_octal = True if rsp[1].strip() == "True" else False
-                functioncall = True if rsp[2].strip() == "True" else False
-                recursive = True if rsp[3].strip() == "True" else False
-            else:
-                logging.warning(f"Failed to parse the analysis result! the response is {rsp}")
+            rsp = rsp.split("```plaintext")[1].split("```")[0].strip()
         except Exception as e:
             logging.warning(f"Failed to parse the analysis result: \n{e}")
         self.message_reset()
-        return numerical, hex_octal, functioncall, recursive
+        return rsp
 
 
 class Decompiler(Chat):

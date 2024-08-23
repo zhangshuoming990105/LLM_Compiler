@@ -145,7 +145,7 @@ stdout:
 stderr:
 {ret.stderr.decode()}
 """
-        logging.debug(f"error message: {error_message}")
+        logging.debug(f"###error message: {error_message}")
         return (
             False,
             error_message,
@@ -217,6 +217,8 @@ Run stderr:
             local_err += 1
             # for context length limit, we only report the last error
             error_message += f"""input {j} in case {case_id} failed because of output mismatch.
+Driver Code is:
+{open("tmp_driver.cpp", "r").read()}
 Inputs are: 
 {open(f"input/in{j}.json", "r").read()}
 Expected outputs are:
@@ -231,7 +233,7 @@ Actual outputs are:
         return True, error_message
     else:
         logging.info(f"{try_k}th try {round} round in {case_id} failed")
-        logging.debug(f"error message: {error_message}")
+        logging.info(f"error message: {error_message}")
         return False, error_message
 
 
@@ -439,24 +441,21 @@ def c_compiler(
                         functioncall = False
                         recursive = False
                         if do_analyze:
-                            numerical, hex_octal, functioncall, recursive = (
-                                compiler.analyze(code=c_code, temperature=temperature)
+                            # TODO: expand the analyzis to more types
+                            rsp = compiler.analyze(
+                                code=c_code,
+                                temperature=temperature,
+                                error_message=error_message,
                             )
-                            logging.info(f"Numerical: {numerical}")
-                            logging.info(f"Hex/Octal: {hex_octal}")
-                            logging.info(f"Function call: {functioncall}")
-                            logging.info(f"Recursive: {recursive}")
-                            # generate helpful message for LLM to generate
+                            logging.debug("Analyze response: " + rsp)
                             helper_message = ""
-                            if numerical:
-                                helper_message += fix_prompts["numerical"]
-                            if hex_octal:
-                                helper_message += fix_prompts["hex_octal"]
-                            if functioncall:
-                                helper_message += fix_prompts["functioncall"]
-                            if recursive:
-                                helper_message += fix_prompts["recursive"]
-                            logging.info(f"Helper message: {helper_message}")
+                            key_list = rsp.split(",")
+
+                            for item in key_list:
+                                item = item.strip()
+                                if item in fix_prompts.keys():
+                                    helper_message += fix_prompts[item]
+                            logging.debug(f"Helper message: {helper_message}")
 
                         for round in range(self_correct_round):
                             compiler.compile_with_error_message(
@@ -466,7 +465,7 @@ def c_compiler(
                                 prompt_postfix=helper_message,
                             )
                             correct_success, error_message = examine_exebench(
-                                input_count, case_id, try_k, round+1
+                                input_count, case_id, try_k, round + 1
                             )
                             x86_llm_code = open("tmp.s", "r").read()
                             if correct_success:
@@ -545,19 +544,19 @@ if __name__ == "__main__":
 
     # 3. parse command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", type=str, default="llama3.1")
-    parser.add_argument("--begin_id", type=int, default=0)
-    parser.add_argument("--end_id", type=int, default=100)
+    parser.add_argument("--model", type=str, default="deepseek-coder")
+    parser.add_argument("--begin_id", type=int, default=84)
+    parser.add_argument("--end_id", type=int, default=85)
     parser.add_argument("--prompt_style", type=str, default="one")
     parser.add_argument("--use_local", type=bool, default=False)
     parser.add_argument("--need_log", type=bool, default=True)
-    parser.add_argument("--temperature", type=float, default=0.3)
+    parser.add_argument("--temperature", type=float, default=0.8)
     parser.add_argument("--peft_model", type=str, default="")
     parser.add_argument("--pass_k", type=int, default=1)
-    parser.add_argument("--self_correct", type=bool, default=False)
+    parser.add_argument("--self_correct", type=bool, default=True)
     parser.add_argument("--correct_round", type=int, default=3)
     parser.add_argument("--logging_level", type=str, default="INFO")
-    parser.add_argument("--do_analyze", type=bool, default=False)
+    parser.add_argument("--do_analyze", type=bool, default=True)
     S = parser.parse_args()
     candidate_model = S.model
     begin_id = S.begin_id

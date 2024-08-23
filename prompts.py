@@ -320,19 +320,32 @@ def sum_list(arr: List[int], n: int) -> int:
 """,
 }
 
-
 fix_prompts = {
     "analyze_pre": """Please analyze the following C code to figure out 
 if the following features are included in the code:
-1. If the code contains numerical values, like 1.0, 2e-5, 3.14f, etc.
-2. If the code contains hex or octal values, like 0x3f, 077, etc.
-3. If the code contains other function calls.
-4. If the code is recursive.
+"numerical": If the code contains numerical values, like 1.0, 2e-5, 3.14f, etc.
+"hex_octal": If the code contains hex or octal values, like 0x3f, 077, etc.
+"funcall": If the code contains other function calls.
+"recursive": If the code is recursive.
+"long": If the code is pretty long and complex.(more than 50 lines)
+"cmp_ins": If the code uses comparison instructions, like >, <, >=, <=, ==, !=.
+"div_ins": If the code uses division instructions(/)
+"mod_ins": If the code uses modulo instructions(%)
+"str": If the code manipulates strings or char arrays.
+"order": If the code contains complicated expression(need many operations to evaluate), 
+be aware of the order of operations.
 """,
-    "analyze_post": """Return your answer with whether the code contains the above features or not(True/False).
-separate them with , the order should be the same as the above list. example output: 
+    "analyze_post": """Return your answer with whether the code contains the above features.
+If the code has some features, list them with the feature name and
+separate them with ",". 
+Before return, check the **Extra information**, analyze it, and only give the most relevant 2 features to this message.
+If you are not sure about the features, just return the certain features.
+Don't return more than 2 features.
+If the code doesn't have any of the features,
+just return ```plaintext\n```.
+example output: 
 ```plaintext
-True, False, True, False
+numerical, cmp_ins, div_ins
 ```""",
     "error_message_pre": """Previous output is not correct, please check the error message below and correct the code:""",
     "error_message_post": """Based on the **error message**(from stdout and stderr), analyze which part of the code is wrong and fix it.
@@ -356,53 +369,73 @@ Example:
 C: 
     int a = 0x23;
 x86:
-    movl $0x23, xxx(a's address)""",
-    "functioncall": """""",
+    movl $0x23, xxx(a's address)
+""",
+    "funcall": """""",
+    "cmp_ins": """cmp instructions in x86 assembly are used to compare two values, 
+and set the flags register accordingly.
+however, we cannot use two memory addresses to be compared,
+Example:'    cmpl -4(%rbp), -8(%rbp)' is not allowed,
+so you need to load the value from memory to register before comparing.
+""",
+    "mod_ins": """mod in x86 assembly are used to calculate the remainder of a division operation.
+many compilers will optimize such operation to other instructions with arithemetic operations.
+however, you are not good at arithemetic computation, so you need to use the mod instruction directly.
+for example: 'int a = 10 % 3;' -compile to-> 'movl $10, %eax\n movl $3, %ecx\n idivl %ecx\n movl %edx, xxx(a's address)'
+""",
+    "div_ins": """div in x86 assembly are used to calculate the quotient of a division operation.
+many compilers will optimize such operation to other instructions with arithemetic operations.
+however, you are not good at arithemetic computation, so you need to use the div instruction directly.
+for example: 'int a = 10 / 3;' -compile to-> 'movl $10, %eax\n movl $3, %ecx\n idivl %ecx\n movl %eax, xxx(a's address)'
+""",
     "recursive": """this is a recursive function, you need to generate the assembly with strict stack management.
 make sure you have the correct stack frame and stack pointer management.
-You can refer to the following code snippet:
-#Input:
-```c
-int fib(int n) {
-    if (n <= 1) {
-        return 1;
-    }
-    return fib(n - 1) + fib(n - 2);
-}
-```
-#Output:
-```x86
-	.text
-	.globl	fib
-	.type	fib, @function
-fib:
-.LFB0:
-	endbr64
-	pushq	%rbp
-	movq	%rsp, %rbp
-	pushq	%rbx
-	subq	$24, %rsp
-	movl	%edi, -20(%rbp)
-	cmpl	$1, -20(%rbp)
-	jg	.L2
-	movl	$1, %eax
-	jmp	.L3
-.L2:
-	movl	-20(%rbp), %eax
-	subl	$1, %eax
-	movl	%eax, %edi
-	call	fib
-	movl	%eax, %ebx
-	movl	-20(%rbp), %eax
-	subl	$2, %eax
-	movl	%eax, %edi
-	call	fib
-	addl	%ebx, %eax
-.L3:
-	movq	-8(%rbp), %rbx
-	leave
-	ret
-```""",
+""",
+#     "recursive": """this is a recursive function, you need to generate the assembly with strict stack management.
+# make sure you have the correct stack frame and stack pointer management.
+# You can refer to the following code snippet:
+# #Input:
+# ```c
+# int fib(int n) {
+#     if (n <= 1) {
+#         return 1;
+#     }
+#     return fib(n - 1) + fib(n - 2);
+# }
+# ```
+# #Output:
+# ```x86
+# 	.text
+# 	.globl	fib
+# 	.type	fib, @function
+# fib:
+# .LFB0:
+# 	endbr64
+# 	pushq	%rbp
+# 	movq	%rsp, %rbp
+# 	pushq	%rbx
+# 	subq	$24, %rsp
+# 	movl	%edi, -20(%rbp)
+# 	cmpl	$1, -20(%rbp)
+# 	jg	.L2
+# 	movl	$1, %eax
+# 	jmp	.L3
+# .L2:
+# 	movl	-20(%rbp), %eax
+# 	subl	$1, %eax
+# 	movl	%eax, %edi
+# 	call	fib
+# 	movl	%eax, %ebx
+# 	movl	-20(%rbp), %eax
+# 	subl	$2, %eax
+# 	movl	%eax, %edi
+# 	call	fib
+# 	addl	%ebx, %eax
+# .L3:
+# 	movq	-8(%rbp), %rbx
+# 	leave
+# 	ret
+# ```""",
     "order": """this is a function that contains complex arithmetic operations, be aware of the order of operations.
 You need to generate the assembly with strict arithmetic operation order.
 */% has higher priority than +-.
