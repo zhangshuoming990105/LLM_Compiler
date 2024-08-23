@@ -11,6 +11,7 @@ from prompts import (
     decompiler_prompts,
     code_translator_prompts,
     emnlp_baseline_prompts,
+    fix_prompts,
 )
 from config import (
     PPLX_AVAILABLE_MODELS,
@@ -407,14 +408,14 @@ class Compiler(Chat):
                     code = f.read()
         code = f"#Input:\n```c\n{code}\n```"
         error_asm = f"#Output:\n```x86\n{error_asm}\n```"
-        error_prompt = f"""Previous output is not correct, please check the error message below and correct the code:
-```plaintext
-{error_message}
-```
-First give your opinion on why the previous output is incorrect, generate them with "#Analysis" tag.
-Now regenerate the assembly from the "#Input" C code, 
-make sure the generated x86 assembly in the "#Output" be inside "```x86" and "```" tags."""
-        prompt = f"{prompt_prefix}\n{code}\n{error_asm}\n{error_prompt}\n{prompt_postfix}"
+        error_prompt = (
+            fix_prompts["error_message_pre"]
+            + f"```plaintext\n{error_message}\n```"
+            + fix_prompts["error_message_post"]
+        )
+        prompt = (
+            f"{prompt_prefix}\n{code}\n{error_asm}\n{error_prompt}\n{prompt_postfix}"
+        )
         self.chat(user_input=prompt, temperature=self.temperature)
         compiler_rsp = self.messages[-1]["content"]
         self.assemble(compiler_rsp, out=out)
@@ -477,31 +478,16 @@ make sure the generated x86 assembly in the "#Output" be inside "```x86" and "``
         # 2. analyze if code contains string values
         # 3. analyze if code contains function calls
         # 4. analyze if code is recursive
-        prompt = f"""Please analyze the following C code, what is it doing?
-And you need to analyze if the following features are included in the code:
-0. What is the code doing?
-1. If the code contains numerical values, like 1.0, 2e-5, 3.14f, etc.
-2. If the code contains hex or octal values, like 0x3f, 077, etc.
-3. If the code contains other function calls.
-4. If the code is recursive.
-Return your answer with the following format:
-```plaintext
-#summary: one sentence summary.
-#numerical: True/False
-#hex_octal: True/False
-#functioncall: True/False
-#recursive: True/False
-```
-
-Below is the code you need to analyze:
+        prompt = fix_prompts["analyze_pre"]
+        prompt += f"""Below is the code you need to analyze:
 ```c
 {code}
 ```
+{fix_prompts["analyze_post"]}
 """
         self.chat(user_input=prompt, temperature=temperature)
         # handle rsp, if error, return default values
         rsp = self.messages[-1]["content"]
-        summary = ""
         numerical = False
         hex_octal = False
         functioncall = False
@@ -509,22 +495,19 @@ Below is the code you need to analyze:
         try:
             # grep the rsp in ```plaintext and ```
             rsp = rsp.split("```plaintext")[1].split("```")[0]
-            # split the rsp into lines
-            rsp = rsp.split("\n")
-            if "#summary:" in rsp[0]:
-                summary = rsp[0].split("#summary:")[1]
-            if "#numerical: True" in rsp[1]:
-                numerical = True
-            if "#hex_octal: True" in rsp[2]:
-                hex_octal = True
-            if "#functioncall: True" in rsp[3]:
-                functioncall = True
-            if "#recursive: True" in rsp[4]:
-                recursive = True
+            # rsp is "True/False, True/False, True/False, True/False"
+            rsp = rsp.split(",")
+            if len(rsp) == 4:
+                numerical = True if rsp[0].strip() == "True" else False
+                hex_octal = True if rsp[1].strip() == "True" else False
+                functioncall = True if rsp[2].strip() == "True" else False
+                recursive = True if rsp[3].strip() == "True" else False
+            else:
+                logging.warning(f"Failed to parse the analysis result! the response is {rsp}")
         except Exception as e:
             logging.warning(f"Failed to parse the analysis result: \n{e}")
         self.message_reset()
-        return summary, numerical, hex_octal, functioncall, recursive
+        return numerical, hex_octal, functioncall, recursive
 
 
 class Decompiler(Chat):

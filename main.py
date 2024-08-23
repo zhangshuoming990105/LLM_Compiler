@@ -17,6 +17,7 @@ from config import (
     PPLX_AVAILABLE_MODELS,
     DEEPSEEK_AVAILABLE_MODELS,
 )
+from prompts import *
 
 
 def log_failed(
@@ -433,87 +434,28 @@ def c_compiler(
                     break
                 else:
                     if self_correct:
-                        summary = ""
                         numerical = False
                         hex_octal = False
                         functioncall = False
                         recursive = False
                         if do_analyze:
-                            summary, numerical, hex_octal, functioncall, recursive = (
+                            numerical, hex_octal, functioncall, recursive = (
                                 compiler.analyze(code=c_code, temperature=temperature)
                             )
-                            logging.info(f"Summary: {summary}")
                             logging.info(f"Numerical: {numerical}")
                             logging.info(f"Hex/Octal: {hex_octal}")
                             logging.info(f"Function call: {functioncall}")
                             logging.info(f"Recursive: {recursive}")
                             # generate helpful message for LLM to generate
                             helper_message = ""
-                            helper_message += "The following are some tips for you to generate the correct code:\n"
                             if numerical:
-                                helper_message += """For numerical values, you don't need to convert the value to IEEE754 format, 
-just keep them as they are, 
-C: double a = 23.0;
-x86: 
-label: 
-    .double 23.0
-"""
+                                helper_message += fix_prompts["numerical"]
                             if hex_octal:
-                                helper_message += """#For hexadecimal or octal values, you don't need to convert them to base-10 value,
-just keep them as they are,
-C: int a = 0x23;
-x86:
-    movl $0x23, xxx(a's address)
-"""
+                                helper_message += fix_prompts["hex_octal"]
                             if functioncall:
-                                helper_message += ""
+                                helper_message += fix_prompts["functioncall"]
                             if recursive:
-                                helper_message += """this is a recursive function, you need to generate the assembly with strict stack management.
-make sure you have the correct stack frame and stack pointer management.
-You can refer to the following code snippet:
-#Input:
-```c
-int fib(int n) {
-    if (n <= 1) {
-        return 1;
-    }
-    return fib(n - 1) + fib(n - 2);
-}
-```
-#Output:
-```x86
-	.text
-	.globl	fib
-	.type	fib, @function
-fib:
-.LFB0:
-	endbr64
-	pushq	%rbp
-	movq	%rsp, %rbp
-	pushq	%rbx
-	subq	$24, %rsp
-	movl	%edi, -20(%rbp)
-	cmpl	$1, -20(%rbp)
-	jg	.L2
-	movl	$1, %eax
-	jmp	.L3
-.L2:
-	movl	-20(%rbp), %eax
-	subl	$1, %eax
-	movl	%eax, %edi
-	call	fib
-	movl	%eax, %ebx
-	movl	-20(%rbp), %eax
-	subl	$2, %eax
-	movl	%eax, %edi
-	call	fib
-	addl	%ebx, %eax
-.L3:
-	movq	-8(%rbp), %rbx
-	leave
-	ret
-```
-"""
+                                helper_message += fix_prompts["recursive"]
                             logging.info(f"Helper message: {helper_message}")
 
                         for round in range(self_correct_round):
@@ -521,7 +463,7 @@ fib:
                                 "tmp.c",
                                 error_asm=x86_llm_code,
                                 error_message=error_message,
-                                prompt_prefix=helper_message,
+                                prompt_postfix=helper_message,
                             )
                             correct_success, error_message = examine_exebench(
                                 input_count, case_id, try_k, round+1

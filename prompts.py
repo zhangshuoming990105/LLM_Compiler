@@ -319,3 +319,99 @@ def sum_list(arr: List[int], n: int) -> int:
 ```[/INST]
 """,
 }
+
+
+fix_prompts = {
+    "analyze_pre": """Please analyze the following C code to figure out 
+if the following features are included in the code:
+1. If the code contains numerical values, like 1.0, 2e-5, 3.14f, etc.
+2. If the code contains hex or octal values, like 0x3f, 077, etc.
+3. If the code contains other function calls.
+4. If the code is recursive.
+""",
+    "analyze_post": """Return your answer with whether the code contains the above features or not(True/False).
+separate them with , the order should be the same as the above list. example output: 
+```plaintext
+True, False, True, False
+```""",
+    "error_message_pre": """Previous output is not correct, please check the error message below and correct the code:""",
+    "error_message_post": """Based on the **error message**(from stdout and stderr), analyze which part of the code is wrong and fix it.
+always remember the **error message**, it's quite important! Then generate your fixed code with proper comment on the code.
+FORMAT: make sure the generated x86 assembly in the "#Output" be inside "```x86" and "```" tags.""",
+    "numerical": """For numerical values, you don't need to convert the value to IEEE754 format, 
+just keep them as they are, float as .float, double as .double, no need to convert it to int value.
+Example:
+C:
+    double a = 23.0;
+    float b = 1.0f;
+x86: 
+label1: 
+    .double 23.0    # a's number
+label2:
+    .float 1.0      # b's number
+""",
+    "hex_octal": """For hexadecimal or octal values, you don't need to convert them to base-10 value,
+just keep them as they are,
+Example:
+C: 
+    int a = 0x23;
+x86:
+    movl $0x23, xxx(a's address)""",
+    "functioncall": """""",
+    "recursive": """this is a recursive function, you need to generate the assembly with strict stack management.
+make sure you have the correct stack frame and stack pointer management.
+You can refer to the following code snippet:
+#Input:
+```c
+int fib(int n) {
+    if (n <= 1) {
+        return 1;
+    }
+    return fib(n - 1) + fib(n - 2);
+}
+```
+#Output:
+```x86
+	.text
+	.globl	fib
+	.type	fib, @function
+fib:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	pushq	%rbx
+	subq	$24, %rsp
+	movl	%edi, -20(%rbp)
+	cmpl	$1, -20(%rbp)
+	jg	.L2
+	movl	$1, %eax
+	jmp	.L3
+.L2:
+	movl	-20(%rbp), %eax
+	subl	$1, %eax
+	movl	%eax, %edi
+	call	fib
+	movl	%eax, %ebx
+	movl	-20(%rbp), %eax
+	subl	$2, %eax
+	movl	%eax, %edi
+	call	fib
+	addl	%ebx, %eax
+.L3:
+	movq	-8(%rbp), %rbx
+	leave
+	ret
+```""",
+    "order": """this is a function that contains complex arithmetic operations, be aware of the order of operations.
+You need to generate the assembly with strict arithmetic operation order.
+*/% has higher priority than +-.
++= has higher priority than <<, >>
+<<, >> has higher priority than >, <, >=, <=.
+>, <, >=, <= has higher priority than ==, !=.
+==, != has higher priority than &&.
+&& has higher priority than ||.
+Note that () can change the priority of operations. so when generate assembly, think carefully about the order of operations.
+You can generate assembly together with comments to show the order of operations.
+"""
+}
