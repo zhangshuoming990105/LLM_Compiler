@@ -21,7 +21,7 @@ compiler_short_prompts = {
 you are going to help me to generate the corresponding x86 assembly.
 You will perform like a compiler with O0 optimization level, the architecture is x86_64.
 We can assume there will only be one function body to be compiled.[/INST]""",
-    "code_format": """[INST] input code will be insidde "```c" and "```"tags, please also make sure the generated x86 assembly be inside "```x86" and "```" tags.[/INST]""",
+    "code_format": """[INST] input code will be inside "```c" and "```"tags, please also make sure the generated x86 assembly be inside "```x86" and "```" tags.[/INST]""",
     "code_example": """[INST]Example:
 #Input:
 ```c

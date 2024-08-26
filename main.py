@@ -216,7 +216,7 @@ Run stderr:
         else:
             local_err += 1
             # for context length limit, we only report the last error
-            error_message += f"""input {j} in case {case_id} failed because of output mismatch.
+            error_message = f"""input {j} in case {case_id} failed because of output mismatch.
 Driver Code is:
 {open("tmp_driver.cpp", "r").read()}
 Inputs are: 
@@ -569,8 +569,8 @@ if __name__ == "__main__":
     # 3. parse command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", type=str, default="gpt-4o")
-    parser.add_argument("--begin_id", type=int, default=84)
-    parser.add_argument("--end_id", type=int, default=85)
+    parser.add_argument("--begin_id", type=int, default=456)
+    parser.add_argument("--end_id", type=int, default=457)
     parser.add_argument("--prompt_style", type=str, default="one")
     parser.add_argument("--use_local", type=bool, default=False)
     parser.add_argument("--need_log", type=bool, default=True)
@@ -581,6 +581,8 @@ if __name__ == "__main__":
     parser.add_argument("--correct_round", type=int, default=3)
     parser.add_argument("--logging_level", type=str, default="INFO")
     parser.add_argument("--do_analyze", type=bool, default=True)
+    parser.add_argument("--do_simulate", type=bool, default=False)
+    parser.add_argument("--clear_workspace", type=bool, default=False)
     S = parser.parse_args()
     candidate_model = S.model
     begin_id = S.begin_id
@@ -595,6 +597,8 @@ if __name__ == "__main__":
     correct_round = S.correct_round
     logging_level = S.logging_level
     do_analyze = S.do_analyze
+    do_simulate = S.do_simulate
+    clear_workspace = S.clear_workspace
     if prompt_style == "one":
         use_one_shot_prompt = True
         use_zero_shot_prompt = False
@@ -636,7 +640,7 @@ if __name__ == "__main__":
     elif logging_level == "ERROR":
         level = logging.ERROR
 
-    if need_log:
+    if need_log and not clear_workspace:
         logging.basicConfig(filename=log_file, level=level)
     else:
         logging.basicConfig(level=level)
@@ -644,30 +648,34 @@ if __name__ == "__main__":
     logging.info("Start time: " + str(datetime.datetime.now()))
     logging.info("Current run:" + temp_name)
 
-    # c_compiler(
-    #     model=candidate_model,
-    #     begin_id=begin_id,
-    #     end_id=end_id,
-    #     use_one_shot_prompt=use_one_shot_prompt,
-    #     use_zero_shot_prompt=use_zero_shot_prompt,
-    #     use_local=use_local,
-    #     temperature=temperature,
-    #     peft_model=peft_model,
-    #     pass_k=pass_k,
-    #     self_correct=self_correct,
-    #     self_correct_round=correct_round,
-    #     do_analyze=do_analyze,
-    # )
-    x86_simulate(
-        model=candidate_model,
-        temperature=temperature,
-        x86_src=open(
-            "/root/workspace/LLM_Compiler/temp/431_f94/llm.s", "r"
-        ).read(),
-        c_src=open(
-            "/root/workspace/LLM_Compiler/temp/431_f94/func.c", "r"
-        ).read(),
-        init_value="x=15, y=16",
-    )
+    if do_simulate:
+        x86_simulate(
+            model=candidate_model,
+            temperature=temperature,
+            x86_src=open(
+                "/root/workspace/LLM_Compiler/temp/431_f94/llm.s", "r"
+            ).read(),
+            c_src=open(
+                "/root/workspace/LLM_Compiler/temp/431_f94/func.c", "r"
+            ).read(),
+            init_value="x=15, y=16",
+        )
+    elif clear_workspace:
+        workspace_clear(sandbox_dir, log_dir)
+    else:
+        c_compiler(
+            model=candidate_model,
+            begin_id=begin_id,
+            end_id=end_id,
+            use_one_shot_prompt=use_one_shot_prompt,
+            use_zero_shot_prompt=use_zero_shot_prompt,
+            use_local=use_local,
+            temperature=temperature,
+            peft_model=peft_model,
+            pass_k=pass_k,
+            self_correct=self_correct,
+            self_correct_round=correct_round,
+            do_analyze=do_analyze,
+        )
 
     logging.info("End time: " + str(datetime.datetime.now()))
