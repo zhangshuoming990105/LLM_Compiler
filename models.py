@@ -325,7 +325,7 @@ input code will be inside "```c" and "```"tags, please also make sure the genera
             }
         )
 
-    def chat(self, temperature, user_input=None):
+    def chat(self, temperature=0.3, user_input=None):
         if self.use_local:
             self.local_chat(temperature=temperature, user_input=user_input)
         else:
@@ -528,6 +528,72 @@ Extra information:
             logging.warning(f"Failed to parse the analysis result: \n{e}")
         self.message_reset()
         return rsp
+
+    def simulate(self, code, c_src="",init_value=""):
+        prompt = """Below is a x86 assembly code that will be executed, 
+your job is to simulate the execution of the code from the entrypoint of the function.
+after every instruction simulation, output the (modified)register values and memory values.
+You should keep track of the register values and memory values all the time. For non-touching regs and mems,
+you don't need to output them.
+We can skip stack push and pop operations in the simulation.
+If the simulated function has parameters, 
+you should give an init value to the parameters using the correct register.
+If there's a branch instruction, you should simulate it with the correct branch condition.
+If there's a function call, if the function is defined in the code, you should simulate the function call.
+If not, you can treat it as a nop, or if you understand what the function does, you can simulate it with the correct return value.
+Below is an example of your simulation:
+Input:
+int ft_tolower(int c);
+```x86
+    .text
+	.globl	ft_tolower
+	.type	ft_tolower, @function
+ft_tolower:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	cmpl	$64, -4(%rbp)
+	jle	.L2
+	cmpl	$90, -4(%rbp)
+	jg	.L2
+	subl	$162, -4(%rbp)
+.L2:
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	ret
+```
+
+Simulation Output:
+```plaintext
+enter function int ft_tolower(int c); param int c=65 reg:{'edi': 65} mem:{}
+endbr64: no change
+pushq %rbp: no change
+movq %rsp, %rbp: reg: {'rsp': num1, 'rbp': num1, 'edi': 65} mem:{}
+movl %edi, -4(%rbp): reg: {'rsp': num1, 'rbp': num1, 'edi': 65} mem:{-4(%rbp): 65}
+cmpl $64, -4(%rbp): reg: {'rsp': num1, 'rbp': num1, 'edi': 65, 'eflag': GT, NE} mem:{-4(%rbp): 65}
+jle .L2: reg: {'rsp': num1, 'rbp': num1, 'edi': 65, 'eflag': (65<=>64) GT,NE} mem:{-4(%rbp): 65}. (No LE flag)Not taken
+cmpl $90, -4(%rbp): reg: {'rsp': num1, 'rbp': num1, 'edi': 65, 'eflag': (65<=>90) LT,LE,NE} mem:{-4(%rbp): 65}
+jg .L2: reg: {'rsp': num1, 'rbp': num1, 'edi': 65, 'eflag': (65<=>90) LT,LE,NE} mem:{-4(%rbp): 65}. (No GT flag)Not taken
+subl $162, -4(%rbp): reg: {'rsp': num1, 'rbp': num1, 'edi': 65, 'eflag': (65<=>90) LT,LE,NE} mem:{-4(%rbp): 65-162=-97}
+.L2: no change
+movl -4(%rbp), %eax: reg: {'rsp': num1, 'rbp': num1, 'edi': 65, 'eflag': (65<=>90) LT,LE,NE, 'eax': -97} mem:{-4(%rbp): -97}
+popq %rbp: reg: {'rsp': num1, 'rbp': num1, 'edi': 65, 'eflag': (65<=>90) LT,LE,NE, 'eax': -97} mem:{-4(%rbp): -97}
+ret: return eax=-97
+```
+"""
+        prompt = f"{prompt}\nInput:{c_src}\n```x86\n{code}\n```\nNow simulate with the initial value: {init_value}"
+        self.chat(user_input=prompt, temperature=self.temperature)
+        # handle rsp, if error, return default values
+        rsp = self.messages[-1]["content"]
+        try:
+            # grep the rsp in ```plaintext and ```
+            rsp = rsp.split("```plaintext")[1].split("```")[0].strip()
+            logging.info(f"Simulation result: \n{rsp}")
+        except Exception as e:
+            logging.warning(f"Failed to parse the simulation result: \n{e}")
+        # self.message_reset()
 
 
 class Decompiler(Chat):

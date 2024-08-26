@@ -1,0 +1,22 @@
+INFO:root:log file created!
+INFO:root:Start time: 2024-08-26 12:16:21.564171
+INFO:root:Current run:temp_deepseek-coder_84_85_2024-08-26-12-16-21_595583
+INFO:root:LLM default prompt size: 274
+INFO:root:current LLM prompt size: 1439
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Simulation output: 
+enter function int ft_tolower(int c); param int c=66 reg:{'edi': 66} mem:{}
+endbr64: no change
+pushq %rbp: no change
+movq %rsp, %rbp: reg: {'rsp': num1, 'rbp': num1, 'edi': 66} mem:{}
+movl %edi, -4(%rbp): reg: {'rsp': num1, 'rbp': num1, 'edi': 66} mem:{-4(%rbp): 66}
+cmpl $65, -4(%rbp): reg: {'rsp': num1, 'rbp': num1, 'edi': 66, 'eflag': GT, NE} mem:{-4(%rbp): 66}
+jl .L2: reg: {'rsp': num1, 'rbp': num1, 'edi': 66, 'eflag': (66<=>65) GT,NE} mem:{-4(%rbp): 66}. (No LT flag)Not taken
+cmpl $90, -4(%rbp): reg: {'rsp': num1, 'rbp': num1, 'edi': 66, 'eflag': (66<=>90) LT,LE,NE} mem:{-4(%rbp): 66}
+jg .L2: reg: {'rsp': num1, 'rbp': num1, 'edi': 66, 'eflag': (66<=>90) LT,LE,NE} mem:{-4(%rbp): 66}. (No GT flag)Not taken
+addl $32, -4(%rbp): reg: {'rsp': num1, 'rbp': num1, 'edi': 66, 'eflag': (66<=>90) LT,LE,NE} mem:{-4(%rbp): 66+32=98}
+.L2: no change
+movl -4(%rbp), %eax: reg: {'rsp': num1, 'rbp': num1, 'edi': 66, 'eflag': (66<=>90) LT,LE,NE, 'eax': 98} mem:{-4(%rbp): 98}
+popq %rbp: reg: {'rsp': num1, 'rbp': num1, 'edi': 66, 'eflag': (66<=>90) LT,LE,NE, 'eax': 98} mem:{-4(%rbp): 98}
+ret: return eax=98
+INFO:root:End time: 2024-08-26 12:16:59.940089

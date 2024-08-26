@@ -523,6 +523,30 @@ def c_compiler(
             f.close()
 
 
+def x86_simulate(model="gpt-4o", temperature=0.3, x86_src="", c_src="", init_value=""):
+    compiler = Compiler(
+        model,
+        temperature=temperature,
+        use_one_shot_prompt=True,
+    )
+    compiler.simulate(x86_src, c_src=c_src, init_value=init_value)
+    # ask it to fix the assembly code, make it equivalent to the C code
+    fix_prompts = """there are semantic difference between the C code and x86 code, 
+now try to simulate the C code to find out the expected output in the x86 code(don't trust the x86 code yet),
+then based on the expected output, fix the x86 code to make it semantically equal to the C code.
+think carefully on the C code execution to fix your x86 code output.
+After your fix, you can re-simulate the x86 code to check if it is correct.
+"""
+    compiler.chat(user_input=fix_prompts, temperature=compiler.temperature)
+    rsp = compiler.messages[-1]["content"]
+    logging.info(f"Fix response: {rsp}")
+    compiler.message_reset()
+    
+
+    
+    
+
+
 if __name__ == "__main__":
     # 1. environment setup
     root_dir = get_env()
@@ -544,7 +568,7 @@ if __name__ == "__main__":
 
     # 3. parse command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", type=str, default="deepseek-coder")
+    parser.add_argument("--model", type=str, default="gpt-4o")
     parser.add_argument("--begin_id", type=int, default=84)
     parser.add_argument("--end_id", type=int, default=85)
     parser.add_argument("--prompt_style", type=str, default="one")
@@ -620,19 +644,30 @@ if __name__ == "__main__":
     logging.info("Start time: " + str(datetime.datetime.now()))
     logging.info("Current run:" + temp_name)
 
-    c_compiler(
+    # c_compiler(
+    #     model=candidate_model,
+    #     begin_id=begin_id,
+    #     end_id=end_id,
+    #     use_one_shot_prompt=use_one_shot_prompt,
+    #     use_zero_shot_prompt=use_zero_shot_prompt,
+    #     use_local=use_local,
+    #     temperature=temperature,
+    #     peft_model=peft_model,
+    #     pass_k=pass_k,
+    #     self_correct=self_correct,
+    #     self_correct_round=correct_round,
+    #     do_analyze=do_analyze,
+    # )
+    x86_simulate(
         model=candidate_model,
-        begin_id=begin_id,
-        end_id=end_id,
-        use_one_shot_prompt=use_one_shot_prompt,
-        use_zero_shot_prompt=use_zero_shot_prompt,
-        use_local=use_local,
         temperature=temperature,
-        peft_model=peft_model,
-        pass_k=pass_k,
-        self_correct=self_correct,
-        self_correct_round=correct_round,
-        do_analyze=do_analyze,
+        x86_src=open(
+            "/root/workspace/LLM_Compiler/temp/431_f94/llm.s", "r"
+        ).read(),
+        c_src=open(
+            "/root/workspace/LLM_Compiler/temp/431_f94/func.c", "r"
+        ).read(),
+        init_value="x=15, y=16",
     )
 
     logging.info("End time: " + str(datetime.datetime.now()))
