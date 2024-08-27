@@ -451,7 +451,7 @@ Your generated fixed assembly code should be inside "```x86" and "```" tags.
         logging.debug(f"###User Input: \n{prompt}")
         self.chat(user_input=prompt, temperature=self.temperature)
         compiler_rsp = self.messages[-1]["content"]
-        logging.debug(f"###Compiler response: \n{compiler_rsp}")
+        logging.debug(f"###LLM response: \n{compiler_rsp}")
         self.assemble(compiler_rsp, out=out)
         if reset_messages:
             self.message_reset()
@@ -478,8 +478,10 @@ Your generated fixed assembly code should be inside "```x86" and "```" tags.
                     code = f.read()
         # warp code between ```c and ```
         code = f"#Input:\n```c\n{code}\n```"
+        logging.debug(f"###User Input: \n{code}")
         self.chat(user_input=code, temperature=self.temperature)
         compiler_rsp = self.messages[-1]["content"]
+        logging.debug(f"###LLM response: \n{compiler_rsp}")
         self.assemble(compiler_rsp, out=out)
         # reset the messages
         if reset_messages:

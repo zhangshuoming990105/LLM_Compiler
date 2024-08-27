@@ -216,9 +216,8 @@ Run stderr:
         else:
             local_err += 1
             # for context length limit, we only report the last error
+            # we don't need the driver code itself, because it is not the focus
             error_message = f"""input {j} in case {case_id} failed because of output mismatch.
-Driver Code is:
-{open("tmp_driver.cpp", "r").read()}
 Inputs are: 
 {open(f"input/in{j}.json", "r").read()}
 Expected outputs are:
@@ -442,6 +441,7 @@ def c_compiler(
                         recursive = False
                         if do_analyze:
                             # TODO: expand the analyzis to more types
+                            logging.debug("do_analyze = True, start analyzing")
                             rsp = compiler.analyze(
                                 code=c_code,
                                 temperature=temperature,
@@ -456,7 +456,8 @@ def c_compiler(
                                 if item in fix_prompts.keys():
                                     helper_message += fix_prompts[item]
                             logging.debug(f"Helper message: {helper_message}")
-
+                        else:
+                            logging.debug("do_analyze = False, skip analyzing")
                         for round in range(self_correct_round):
                             compiler.compile_with_error_message(
                                 "tmp.c",
@@ -564,19 +565,19 @@ if __name__ == "__main__":
 
     # 3. parse command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", type=str, default="gpt-4o")
-    parser.add_argument("--begin_id", type=int, default=9)
-    parser.add_argument("--end_id", type=int, default=10)
+    parser.add_argument("--model", type=str, default="llama3.1")
+    parser.add_argument("--begin_id", type=int, default=0)
+    parser.add_argument("--end_id", type=int, default=100)
     parser.add_argument("--prompt_style", type=str, default="one")
     parser.add_argument("--use_local", type=bool, default=False)
     parser.add_argument("--need_log", type=bool, default=True)
-    parser.add_argument("--temperature", type=float, default=0.8)
+    parser.add_argument("--temperature", type=float, default=0.5)
     parser.add_argument("--peft_model", type=str, default="")
     parser.add_argument("--pass_k", type=int, default=1)
-    parser.add_argument("--self_correct", type=bool, default=True)
+    parser.add_argument("--self_correct", type=bool, default=False)
     parser.add_argument("--correct_round", type=int, default=3)
     parser.add_argument("--logging_level", type=str, default="INFO")
-    parser.add_argument("--do_analyze", type=bool, default=True)
+    parser.add_argument("--do_analyze", type=bool, default=False)
     parser.add_argument("--do_simulate", type=bool, default=False)
     parser.add_argument("--clear_workspace", type=bool, default=False)
     S = parser.parse_args()
