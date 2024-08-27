@@ -353,15 +353,16 @@ always remember the **error message**, it's quite important! Then generate your 
 FORMAT: make sure the generated x86 assembly in the "#Output" be inside "```x86" and "```" tags.""",
     "numerical": """For numerical values, you don't need to convert the value to IEEE754 format, 
 just keep them as they are, float as .float, double as .double, no need to convert it to int value.
+Besides, using meaningful labels for the numbers is also helpful.
 Example:
 C:
     double a = 23.0;
-    float b = 1.0f;
+    float b = -1.0f;
 x86: 
-label1: 
+.LC_23:
     .double 23.0    # a's number
-label2:
-    .float 1.0      # b's number
+.LC_NEG_ONE:
+    .float -1.0     # b's number
 """,
     "hex_octal": """For hexadecimal or octal values, you don't need to convert them to base-10 value,
 just keep them as they are,
@@ -446,5 +447,7 @@ You need to generate the assembly with strict arithmetic operation order.
 && has higher priority than ||.
 Note that () can change the priority of operations. so when generate assembly, think carefully about the order of operations.
 You can generate assembly together with comments to show the order of operations.
-"""
+""",
+    "long": """this is a very long function. you should extract methods to make the code shorter and more readable.
+""",
 }
