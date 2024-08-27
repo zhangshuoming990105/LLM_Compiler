@@ -323,7 +323,7 @@ def sum_list(arr: List[int], n: int) -> int:
 fix_prompts = {
     "analyze_pre": """Please analyze the following C code to figure out 
 if the following features are included in the code:
-"numerical": If the code contains numerical values, like 1.0, 2e-5, 3.14f, etc.
+"numerical": If the code contains numerical values, like 1.0, 2e-5, 3.14f, etc, if the code only use integers, then don't include this feature.
 "hex_octal": If the code contains hex or octal values, like 0x3f, 077, etc.
 "funcall": If the code contains other function calls.
 "recursive": If the code is recursive.
@@ -338,9 +338,8 @@ be aware of the order of operations.
     "analyze_post": """Return your answer with whether the code contains the above features.
 If the code has some features, list them with the feature name and
 separate them with ",". 
-Before return, check the **Extra information**, analyze it, and only give the most relevant 2 features to this message.
+Before return, check the **Extra information**, analyze it, and only give the most relevant features to this message.
 If you are not sure about the features, just return the certain features.
-Don't return more than 2 features.
 If the code doesn't have any of the features,
 just return ```plaintext\n```.
 example output: 
@@ -351,7 +350,7 @@ numerical, cmp_ins, div_ins
     "error_message_post": """Based on the **error message**(from stdout and stderr), analyze which part of the code is wrong and fix it.
 always remember the **error message**, it's quite important! Then generate your fixed code with proper comment on the code.
 FORMAT: make sure the generated x86 assembly in the "#Output" be inside "```x86" and "```" tags.""",
-    "numerical": """For numerical values, you don't need to convert the value to IEEE754 format, 
+    "numerical": """For numerical values(double and float, not integers), you don't need to convert the value to IEEE754 format, 
 just keep them as they are, float as .float, double as .double, no need to convert it to int value.
 Besides, using meaningful labels for the numbers is also helpful.
 Example:
@@ -447,7 +446,7 @@ You need to generate the assembly with strict arithmetic operation order.
 && has higher priority than ||.
 Note that () can change the priority of operations. so when generate assembly, think carefully about the order of operations.
 You can generate assembly together with comments to show the order of operations.
+Use comments on the assembly to help you understand the computation order.
 """,
-    "long": """this is a very long function. you should extract methods to make the code shorter and more readable.
-""",
+    "long": """""",
 }

@@ -541,10 +541,6 @@ After your fix, you can re-simulate the x86 code to check if it is correct.
     rsp = compiler.messages[-1]["content"]
     logging.info(f"Fix response: {rsp}")
     compiler.message_reset()
-    
-
-    
-    
 
 
 if __name__ == "__main__":
@@ -569,8 +565,8 @@ if __name__ == "__main__":
     # 3. parse command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", type=str, default="gpt-4o")
-    parser.add_argument("--begin_id", type=int, default=456)
-    parser.add_argument("--end_id", type=int, default=457)
+    parser.add_argument("--begin_id", type=int, default=9)
+    parser.add_argument("--end_id", type=int, default=10)
     parser.add_argument("--prompt_style", type=str, default="one")
     parser.add_argument("--use_local", type=bool, default=False)
     parser.add_argument("--need_log", type=bool, default=True)
@@ -652,12 +648,8 @@ if __name__ == "__main__":
         x86_simulate(
             model=candidate_model,
             temperature=temperature,
-            x86_src=open(
-                "/root/workspace/LLM_Compiler/temp/431_f94/llm.s", "r"
-            ).read(),
-            c_src=open(
-                "/root/workspace/LLM_Compiler/temp/431_f94/func.c", "r"
-            ).read(),
+            x86_src=open("/root/workspace/LLM_Compiler/temp/431_f94/llm.s", "r").read(),
+            c_src=open("/root/workspace/LLM_Compiler/temp/431_f94/func.c", "r").read(),
             init_value="x=15, y=16",
         )
     elif clear_workspace:
