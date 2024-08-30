@@ -621,7 +621,10 @@ if __name__ == "__main__":
         print(f"Model {candidate_model} is not available!")
         exit(1)
 
-    temp_name = f"temp_{candidate_model}_{begin_id}_{end_id}_{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{random.randint(0, 1000000)}"
+    if do_simulate:
+        temp_name = f"temp_simulate_{candidate_model}_{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{random.randint(0, 1000000)}"
+    else:
+        temp_name = f"temp_{candidate_model}_{begin_id}_{end_id}_{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{random.randint(0, 1000000)}"
     temp_dir = os.path.join(sandbox_dir, temp_name)
     if not os.path.exists(temp_dir):
         os.makedirs(temp_dir, exist_ok=True)
