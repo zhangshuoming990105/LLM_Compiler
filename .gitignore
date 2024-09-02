@@ -8,3 +8,4 @@ peft_trainer/lora_adapters/*
 wandb
 playground
 temp
+sandbox/coremark_workspace/hyp

@@ -15,6 +15,102 @@ make sure the output assembly is within "```x86" and "```" tags.
 # [/INST]""",
 # }
 
+one_shot_prompts_for_languages = {
+    "python": """you are a professional code compiler, you can translate any code language into assembly code.
+Now your job is to compile the following python code into x86 assembly. Using AT&T syntax in the x86 assembly.
+You should first infer the type information in the input code, using type hints to rewrite the python code first, you can assume int for most integer values, unless explicit float values are used
+and then generate full compilable x86_64 assembly, make sure there are no missing 
+You don't need to explain the code.
+Example:
+#Input:
+```python
+if __name__ == "__main__":
+    print("Hello, World!")
+    exit(0)
+```
+#Output:
+```x86
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	leaq	.LC0(%rip), %rdi
+	call	puts@PLT
+	movl	$0, %eax
+	popq	%rbp
+	ret
+.LC0:
+	.string	"Hello, World!"
+
+```
+""",
+    "c++": """you are a professional code compiler, you can translate any code language into assembly code.
+Now your job is to compile the following C++ code into x86 assembly. Using AT&T syntax in the x86 assembly.
+There are name mangling and implicit std initializer/constructor/destructor issues that you may be difficult of, so your first job is to convert the C++ code into C code like a code translation. Then compile the C code into x86 assembly. 
+Example:
+#Input:
+```cpp
+int foo(vector<int> v) {
+    for(int i = 0; i < v.size();i++) {
+        printf("%d ", v[i]);
+    }
+}
+```
+#C code:
+```c
+int foo(int v[], int size) {
+    for(int i = 0; i < size; i++) {
+        printf("%d ", v[i]);
+    }
+}
+```
+#Output:
+```x86
+	.text
+	.globl	foo
+	.type	foo, @function
+foo:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movq	%rdi, -24(%rbp)
+	movl	%esi, -28(%rbp)
+	movl	$0, -4(%rbp)
+	jmp	.L2
+.L3:
+	movl	-4(%rbp), %eax
+	cltq
+	leaq	0(,%rax,4), %rdx
+	movq	-24(%rbp), %rax
+	addq	%rdx, %rax
+	movl	(%rax), %eax
+	movl	%eax, %esi
+	leaq	.LC0(%rip), %rax
+	movq	%rax, %rdi
+	movl	$0, %eax
+	call	printf@PLT
+	addl	$1, -4(%rbp)
+.L2:
+	movl	-4(%rbp), %eax
+	cmpl	-28(%rbp), %eax
+	jl	.L3
+	nop
+	leave
+	ret
+.LC0:
+	.string	"%d "
+```""",
+    "cuda": """""",
+}
+
+
+
 compiler_short_prompts = {
     "general": """[INST]you are a helpful AI assistant, you will think carefully and follow the instructions to assist the user.[/INST]""",
     "mission": """[INST]you are a professional AI assistant in code, based on the user input C code, 

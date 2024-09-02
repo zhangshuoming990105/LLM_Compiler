@@ -1,0 +1,3526 @@
+INFO:root:log file created!
+INFO:root:Start time: 2024-08-30 19:58:48.781582
+INFO:root:Current run:temp_coremark_gpt-4o_2024-08-30-19-58-48_683294
+INFO:root:LLM default prompt size: 272
+INFO:root:current LLM prompt size: 683
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"core_init_matrix.c"
+	.text
+	.globl	core_init_matrix
+	.type	core_init_matrix, @function
+core_init_matrix:
+.LFB0:
+	endbr64
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$80, %rsp
+	movl	%edi, -4(%rbp)
+	movq	%rsi, -16(%rbp)
+	movl	%edx, -20(%rbp)
+	movq	%rcx, -32(%rbp)
+	movl	$0, -36(%rbp)
+	movl	$1, -44(%rbp)
+	movl	$0, -48(%rbp)
+	movl	$0, -52(%rbp)
+	cmpl	$0, -20(%rbp)
+	jne	.L2
+	movl	$1, -20(%rbp)
+.L2:
+	movl	$0, -56(%rbp)
+	jmp	.L4
+.L3:
+	addl	$1, -48(%rbp)
+	movl	-48(%rbp), %eax
+	imull	%eax, %eax
+	sall	$3, %eax
+	movl	%eax, -56(%rbp)
+.L4:
+	movl	-56(%rbp), %eax
+	cmpl	-4(%rbp), %eax
+	jb	.L3
+	movl	-48(%rbp), %eax
+	subl	$1, %eax
+	movl	%eax, -36(%rbp)
+	movq	-16(%rbp), %rax
+	movq	%rax, %rdi
+	call	align_mem@PLT
+	movq	%rax, -24(%rbp)
+	movq	-24(%rbp), %rax
+	movl	-36(%rbp), %edx
+	imull	%edx, %edx
+	leaq	0(,%rdx,2), %rcx
+	addq	%rcx, %rax
+	movq	%rax, -40(%rbp)
+	movl	$0, -48(%rbp)
+	jmp	.L6
+.L5:
+	movl	$0, -52(%rbp)
+	jmp	.L8
+.L7:
+	movl	-44(%rbp), %eax
+	imull	-20(%rbp), %eax
+	movl	$65536, %ecx
+	cltd
+	idivl	%ecx
+	movl	%edx, -20(%rbp)
+	movl	-20(%rbp), %eax
+	addl	-44(%rbp), %eax
+	movw	%ax, -22(%rbp)
+	movzwl	-22(%rbp), %eax
+	andl	$255, %eax
+	movw	%ax, -22(%rbp)
+	movl	-52(%rbp), %edx
+	movl	-36(%rbp), %eax
+	imull	%edx, %eax
+	addl	-52(%rbp), %eax
+	movzwl	-22(%rbp), %edx
+	movw	%dx, -40(%rbp,%rax,2)
+	movw	-22(%rbp), %ax
+	addw	-44(%rbp), %ax
+	movw	%ax, -22(%rbp)
+	movzwl	-22(%rbp), %eax
+	andl	$255, %eax
+	movw	%ax, -22(%rbp)
+	movl	-52(%rbp), %edx
+	movl	-36(%rbp), %eax
+	imull	%edx, %eax
+	addl	-52(%rbp), %eax
+	movzwl	-22(%rbp), %edx
+	movw	%dx, -24(%rbp,%rax,2)
+	addl	$1, -44(%rbp)
+	addl	$1, -52(%rbp)
+.L8:
+	movl	-52(%rbp), %eax
+	cmpl	-36(%rbp), %eax
+	jb	.L7
+	addl	$1, -48(%rbp)
+.L6:
+	movl	-48(%rbp), %eax
+	cmpl	-36(%rbp), %eax
+	jb	.L5
+	movq	-40(%rbp), %rax
+	movq	%rax, %rdi
+	call	align_mem@PLT
+	movq	-32(%rbp), %rdx
+	movq	%rax, (%rdx)
+	movq	-24(%rbp), %rax
+	movq	%rax, -32(%rbp)
+	movq	-32(%rbp), %rax
+	movq	%rax, 8(%rdx)
+	movl	-36(%rbp), %eax
+	movl	%eax, 16(%rdx)
+	movl	-36(%rbp), %eax
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE0:
+	.size	core_init_matrix, .-core_init_matrix
+	.ident	"GCC: (GNU) 11.2.0"
+	.section	.note.GNU-stack,"",@progbits
+
+WARNING:root:Failed to compile the assembly hypothesis for core_init_matrix
+stdout: 
+stderr: /usr/bin/ld: /tmp/ccDaosLf.o: in function `core_init_matrix':
+core_init_matrix.c:(.text+0x75): undefined reference to `align_mem'
+/usr/bin/ld: core_init_matrix.c:(.text+0x13f): undefined reference to `align_mem'
+collect2: error: ld returned 1 exit status
+
+INFO:root:current LLM prompt size: 362
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"get_time.c"
+	.text
+	.globl	get_time
+	.type	get_time, @function
+get_time:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movq	start_time_val(%rip), %rax
+	movq	%rax, -8(%rbp)
+	movq	start_time_val+8(%rip), %rax
+	movq	%rax, -16(%rbp)
+	movq	stop_time_val(%rip), %rax
+	movq	%rax, %rdx
+	movq	stop_time_val+8(%rip), %rax
+	movq	%rax, %rcx
+	movq	-8(%rbp), %rax
+	subq	%rax, %rdx
+	movq	-16(%rbp), %rax
+	subq	%rax, %rcx
+	movq	%rdx, %rax
+	imulq	$1000, %rax, %rax
+	movq	%rcx, %rdx
+	movl	$1000000, %esi
+	movq	%rdx, %rdi
+	call	__divdi3@PLT
+	addq	%rax, %rdx
+	movq	%rdx, %rax
+	movq	%rax, %rdx
+	movq	%rdx, %rax
+	leave
+	ret
+	.size	get_time, .-get_time
+	.comm	start_time_val,16,8
+	.comm	stop_time_val,16,8
+
+WARNING:root:Failed to compile the assembly hypothesis for get_time
+stdout: 
+stderr: /usr/bin/ld: warning: /tmp/ccOjLQf4.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/ccOjLQf4.o: in function `get_time':
+get_time.c:(.text+0x5a): undefined reference to `__divdi3'
+collect2: error: ld returned 1 exit status
+
+INFO:root:current LLM prompt size: 334
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	portable_init
+	.type	portable_init, @function
+portable_init:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	-8(%rbp), %rax
+	movb	$1, (%rax)
+	nop
+	popq	%rbp
+	ret
+	.size	portable_init, .-portable_init
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 13999
+Total time (secs): 13.999000
+Iterations/Sec   : 4286.020430
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4286.020430 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:Pass for portable_init
+INFO:root:current LLM prompt size: 431
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	core_list_find
+	.type	core_list_find, @function
+core_list_find:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	-16(%rbp), %rax
+	movzwl	4(%rax), %eax
+	cmpw	$0, %ax
+	jl	.L2
+.L3:
+	movq	-8(%rbp), %rax
+	testq	%rax, %rax
+	je	.L4
+	movq	-8(%rbp), %rax
+	movq	(%rax), %rdx
+	movq	-16(%rbp), %rax
+	movzwl	4(%rax), %eax
+	movq	-8(%rbp), %rcx
+	movq	8(%rcx), %rcx
+	movzwl	4(%rcx), %ecx
+	cmpw	%ax, %cx
+	jne	.L5
+.L4:
+	movq	-8(%rbp), %rax
+	jmp	.L6
+.L5:
+	movq	-8(%rbp), %rax
+	movq	(%rax), %rax
+	movq	%rax, -8(%rbp)
+	jmp	.L3
+.L2:
+.L7:
+	movq	-8(%rbp), %rax
+	testq	%rax, %rax
+	je	.L8
+	movq	-8(%rbp), %rax
+	movq	(%rax), %rdx
+	movq	-16(%rbp), %rax
+	movzwl	(%rax), %eax
+	movq	-8(%rbp), %rcx
+	movq	8(%rcx), %rcx
+	movzwl	(%rcx), %ecx
+	andl	$255, %ecx
+	cmpw	%ax, %cx
+	jne	.L9
+.L8:
+	movq	-8(%rbp), %rax
+	jmp	.L6
+.L9:
+	movq	-8(%rbp), %rax
+	movq	(%rax), %rax
+	movq	%rax, -8(%rbp)
+	jmp	.L7
+.L6:
+	leave
+	ret
+	.size	core_list_find, .-core_list_find
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 14058
+Total time (secs): 14.058000
+Iterations/Sec   : 4268.032437
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4268.032437 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:Pass for core_list_find
+INFO:root:current LLM prompt size: 370
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"copy_info.c"
+	.text
+	.globl	copy_info
+	.type	copy_info, @function
+copy_info:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	-16(%rbp), %rax
+	movzwl	(%rax), %eax
+	movq	-8(%rbp), %rdx
+	movw	%ax, (%rdx)
+	movq	-16(%rbp), %rax
+	movzwl	2(%rax), %eax
+	movq	-8(%rbp), %rdx
+	movw	%ax, 2(%rdx)
+	leave
+	ret
+	.size	copy_info, .-copy_info
+	.ident	"GCC: (GNU) 11.2.0"
+	.section	.note.GNU-stack,"",@progbits
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 13991
+Total time (secs): 13.991000
+Iterations/Sec   : 4288.471160
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4288.471160 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:Pass for copy_info
+INFO:root:current LLM prompt size: 2387
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:openai._base_client:Retrying request to /chat/completions in 0.868034 seconds
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"main.c"
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$784, %rsp
+	movq	%rdi, -776(%rbp)
+	movl	$0, -4(%rbp)
+	movl	$0, -8(%rbp)
+	movl	$3, -12(%rbp)
+	movw	$-1, -14(%rbp)
+	movw	$0, -16(%rbp)
+	movw	$0, -18(%rbp)
+	movl	$0, -24(%rbp)
+	movq	$0, -32(%rbp)
+	movq	$0, -40(%rbp)
+	movq	$0, -48(%rbp)
+	movq	$0, -56(%rbp)
+	movq	$0, -64(%rbp)
+	movq	$0, -72(%rbp)
+	movq	$0, -80(%rbp)
+	movq	$0, -88(%rbp)
+	movl	$0, -92(%rbp)
+	movl	$0, -96(%rbp)
+	movl	$0, -100(%rbp)
+	movq	%rsi, -784(%rbp)
+	leaq	-776(%rbp), %rdi
+	call	portable_init
+	movw	$0, -776(%rbp)
+	movw	$0, -774(%rbp)
+	movw	$102, -772(%rbp)
+	movl	$0, -764(%rbp)
+	movl	$7, -760(%rbp)
+	movl	$2000, -768(%rbp)
+	leaq	-776(%rbp), %rdi
+	movl	$2000, %esi
+	call	portable_malloc
+	movq	%rax, -784(%rbp)
+	movw	$0, -770(%rbp)
+	movl	$666, -768(%rbp)
+	movl	$666, -764(%rbp)
+	movq	-784(%rbp), %rax
+	movq	%rax, -776(%rbp)
+	movl	$0, -12(%rbp)
+	movl	$0, -8(%rbp)
+.L2:
+	cmpl	$3, -12(%rbp)
+	jge	.L3
+	movl	$0, -20(%rbp)
+.L4:
+	cmpl	$1, -20(%rbp)
+	jge	.L5
+	movq	-776(%rbp), %rax
+	movl	-12(%rbp), %ecx
+	imulq	$666, %rcx, %rcx
+	addq	%rcx, %rax
+	movq	%rax, -784(%rbp)
+	movl	-20(%rbp), %eax
+	incq	%rax
+	movl	%eax, -20(%rbp)
+	jmp	.L4
+.L5:
+	movl	-12(%rbp), %eax
+	addl	$1, %eax
+	movl	%eax, -12(%rbp)
+	jmp	.L2
+.L3:
+	movq	-784(%rbp), %rax
+	movq	%rax, -776(%rbp)
+	movl	$666, %esi
+	movq	-784(%rbp), %rdi
+	call	core_list_init
+	movq	%rax, -784(%rbp)
+	movq	-784(%rbp), %rax
+	movq	%rax, -776(%rbp)
+	movl	$666, %esi
+	movq	-784(%rbp), %rdi
+	call	core_init_matrix
+	movq	-784(%rbp), %rax
+	movq	%rax, -776(%rbp)
+	movq	-784(%rbp), %rdi
+	call	core_init_state
+	movl	$0, -764(%rbp)
+	cmpl	$0, -764(%rbp)
+	jne	.L6
+	movl	$1, -764(%rbp)
+.L7:
+	call	start_time
+	movq	-784(%rbp), %rdi
+	call	iterate
+	call	stop_time
+	call	get_time
+	movq	%rax, -32(%rbp)
+	call	time_in_secs
+	movsd	%xmm0, -40(%rbp)
+	ldsd	-40(%rbp), %xmm0
+	ucomisd	.LC0(%rip), %xmm0
+	jbe	.L8
+	movl	$10, %eax
+	imulq	-764(%rbp), %rax, %rax
+	movq	%rax, -764(%rbp)
+	jmp	.L9
+.L8:
+	movl	$1, %eax
+	imulq	-764(%rbp), %rax, %rax
+	movq	%rax, -764(%rbp)
+.L9:
+	call	start_time
+	movq	-784(%rbp), %rdi
+	call	iterate
+	call	stop_time
+	call	get_time
+	movq	%rax, -32(%rbp)
+	call	time_in_secs
+	movsd	%xmm0, -40(%rbp)
+	ldsd	-40(%rbp), %xmm0
+	ucomisd	.LC0(%rip), %xmm0
+	jbe	.L7
+.L6:
+	call	start_time
+	movq	-784(%rbp), %rdi
+	call	iterate
+	call	stop_time
+	call	get_time
+	movq	%rax, -32(%rbp)
+	call	time_in_secs
+	movsd	%xmm0, -40(%rbp)
+	ldsd	-40(%rbp), %xmm0
+	ucomisd	.LC0(%rip), %xmm0
+	jbe	.L10
+	movl	$10, %eax
+	imulq	-764(%rbp), %rax, %rax
+	movq	%rax, -764(%rbp)
+	jmp	.L11
+.L10:
+	movl	$1, %eax
+	imulq	-764(%rbp), %rax, %rax
+	movq	%rax, -764(%rbp)
+.L11:
+	call	start_time
+	movq	-784(%rbp), %rdi
+	call	iterate
+	call	stop_time
+	call	get_time
+	movq	%rax, -32(%rbp)
+	call	time_in_secs
+	movsd	%xmm0, -40(%rbp)
+	ldsd	-40(%rbp), %xmm0
+	ucomisd	.LC0(%rip), %xmm0
+	jbe	.L6
+	movw	-776(%rbp), %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movw	%ax, %ax
+	movzwl	%ax, %eax
+	movw	%ax, %ax
+WARNING:root:Failed to compile the assembly hypothesis for main
+stdout: 
+stderr: hyp/main.s: Assembler messages:
+hyp/main.s: Warning: end of file not at end of a line; newline inserted
+hyp/main.s:101: Error: no such instruction: `ldsd -40(%rbp),%xmm0'
+hyp/main.s:121: Error: no such instruction: `ldsd -40(%rbp),%xmm0'
+hyp/main.s:133: Error: no such instruction: `ldsd -40(%rbp),%xmm0'
+hyp/main.s:153: Error: no such instruction: `ldsd -40(%rbp),%xmm0'
+
+INFO:root:current LLM prompt size: 568
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"cmp_complex.c"
+	.text
+	.globl	cmp_complex
+	.type	cmp_complex, @function
+cmp_complex:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movq	%rdi, -8(%rbp)  # store 'a' in -8(%rbp)
+	movq	%rsi, -16(%rbp) # store 'b' in -16(%rbp)
+	movq	%rdx, -24(%rbp) # store 'res' in -24(%rbp)
+	
+	# Calculate val1
+	movq	-8(%rbp), %rdi  # load 'a' into %rdi
+	movq	-24(%rbp), %rsi # load 'res' into %rsi
+	leaq	(%rdi), %rdi    # load address of a->data16 into %rdi
+	call	calc_func@PLT
+	movw	%ax, -26(%rbp)  # store result in val1
+	
+	# Calculate val2
+	movq	-16(%rbp), %rdi # load 'b' into %rdi
+	movq	-24(%rbp), %rsi # load 'res' into %rsi
+	leaq	(%rdi), %rdi    # load address of b->data16 into %rdi
+	call	calc_func@PLT
+	movw	%ax, -28(%rbp)  # store result in val2
+	
+	# Compute val1 - val2
+	movswl	-26(%rbp), %eax # load val1 into %eax
+	movswl	-28(%rbp), %edx # load val2 into %edx
+	subq	%rdx, %rax      # compute val1 - val2
+	
+	leave
+	ret
+	.size	cmp_complex, .-cmp_complex
+	.ident	"GCC: (GNU) 12.2.0"
+	.section	.note.GNU-stack,"",@progbits
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 14085
+Total time (secs): 14.085000
+Iterations/Sec   : 4259.850905
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4259.850905 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:Pass for cmp_complex
+INFO:root:current LLM prompt size: 325
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	stop_time
+	.type	stop_time, @function
+stop_time:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	leaq	stop_time_val(%rip), %rsi
+	movl	$0, %edi
+	call	clock_gettime@PLT
+	popq	%rbp
+	ret
+	.size	stop_time, .-stop_time
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 14122
+Total time (secs): 14.122000
+Iterations/Sec   : 4248.689987
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4248.689987 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:Pass for stop_time
+INFO:root:current LLM prompt size: 307
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	portable_free
+	.type	portable_free, @function
+portable_free:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	-8(%rbp), %rdi
+	call	free@PLT
+	nop
+	popq	%rbp
+	ret
+	.size	portable_free, .-portable_free
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 14126
+Total time (secs): 14.126000
+Iterations/Sec   : 4247.486904
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4247.486904 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:Pass for portable_free
+INFO:root:current LLM prompt size: 342
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	crc16
+	.type	crc16, @function
+crc16:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, %eax
+	movzwl	%ax, %edi
+	movl	%esi, %esi
+	call	crcu16@PLT
+	popq	%rbp
+	ret
+	.size	crc16, .-crc16
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 14032
+Total time (secs): 14.032000
+Iterations/Sec   : 4275.940707
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4275.940707 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:Pass for crc16
+INFO:root:current LLM prompt size: 838
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	calc_func
+	.type	calc_func, @function
+calc_func:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$48, %rsp
+	movq	%rdi, -8(%rbp)     # store pdata
+	movq	%rsi, -16(%rbp)    # store res
+
+	movq	-8(%rbp), %rax
+	movw	(%rax), %ax        # load *pdata
+	movw	%ax, -18(%rbp)     # store data
+
+	movw	-18(%rbp), %ax
+	movw	%ax, -20(%rbp)     # store retval
+
+	movw	-18(%rbp), %ax
+	sarw	$7, %ax            # data >> 7
+	andw	$1, %ax            # & 1
+	movb	%al, -22(%rbp)     # store optype
+
+	cmpb	$0, -22(%rbp)      # if optype
+	je	.L2
+
+	movw	-18(%rbp), %ax
+	andw	$127, %ax          # data & 0x007f
+	movw	%ax, %dx
+	jmp	.L3
+
+.L2:
+	movw	-18(%rbp), %ax
+	andw	$7, %ax            # data & 0x7
+	movw	%ax, -24(%rbp)     # store flag
+
+	movw	-18(%rbp), %ax
+	sarw	$3, %ax            # data >> 3
+	andw	$15, %ax           # & 0xf
+	movw	%ax, -26(%rbp)     # store dtype
+
+	movw	-26(%rbp), %ax
+	movw	%ax, %dx
+	movw	%ax, %cx
+	salw	$4, %cx            # dtype << 4
+	orw	%cx, %dx
+	movw	%dx, -26(%rbp)     # dtype |= dtype << 4
+
+	movw	-24(%rbp), %ax
+	cmpw	$0, %ax
+	je	.L4
+
+	cmpw	$1, %ax
+	je	.L5
+
+	movw	-18(%rbp), %ax
+	movw	%ax, -20(%rbp)     # retval = data
+	jmp	.L6
+
+.L4:
+	movw	-26(%rbp), %ax
+	cmpw	$34, %ax
+	jge	.L7
+	movw	$34, -26(%rbp)     # dtype = 0x22
+
+.L7:
+	movq	-16(%rbp), %rax
+	movl	(%rax), %eax       # res->size
+	movl	%eax, %edi
+
+	movq	-16(%rbp), %rax
+	movq	24(%rax), %rax     # res->memblock[3]
+	movq	%rax, %rsi
+
+	movq	-16(%rbp), %rax
+	movw	8(%rax), %ax       # res->seed1
+	movw	%ax, %dx
+
+	movq	-16(%rbp), %rax
+	movw	10(%rax), %ax      # res->seed2
+	movw	%ax, %cx
+
+	movw	-26(%rbp), %ax     # dtype
+	movw	%ax, %r8w
+
+	movq	-16(%rbp), %rax
+	movw	40(%rax), %ax      # res->crc
+	movw	%ax, %r9w
+
+	call	core_bench_state
+
+	movw	%ax, -20(%rbp)     # retval = core_bench_state()
+
+	movq	-16(%rbp), %rax
+	movw	56(%rax), %ax      # res->crcstate
+	cmpw	$0, %ax
+	jne	.L8
+
+	movq	-16(%rbp), %rax
+	movw	-20(%rbp), %dx
+	movw	%dx, 56(%rax)      # res->crcstate = retval
+
+.L8:
+	jmp	.L6
+
+.L5:
+	movq	-16(%rbp), %rdi
+	leaq	-26(%rbp), %rsi    # dtype
+	movw	(%rsi), %si
+	movq	-16(%rbp), %rdx
+	movw	40(%rdx), %dx      # res->crc
+	call	core_bench_matrix
+
+	movw	%ax, -20(%rbp)     # retval = core_bench_matrix()
+
+	movq	-16(%rbp), %rax
+	movw	58(%rax), %ax      # res->crcmatrix
+	cmpw	$0, %ax
+	jne	.L9
+
+	movq	-16(%rbp), %rax
+	movw	-20(%rbp), %dx
+	movw	%dx, 58(%rax)      # res->crcmatrix = retval
+
+.L9:
+	jmp	.L6
+
+.L6:
+	movq	-16(%rbp), %rdi
+	movw	-20(%rbp), %si
+	movw	40(%rdi), %dx      # res->crc
+	call	crcu16
+
+	movq	-16(%rbp), %rax
+	movw	%ax, 40(%rax)      # res->crc = crcu16(retval, res->crc)
+
+	movw	-20(%rbp), %ax
+	andw	$127, %ax          # retval &= 0x007f
+	movw	%ax, -20(%rbp)
+
+	movq	-8(%rbp), %rax
+	movw	-18(%rbp), %dx
+	andw	$65280, %dx        # data & 0xff00
+	orw	$128, %dx          # | 0x0080
+	movw	-20(%rbp), %cx
+	orw	%cx, %dx           # | retval
+	movw	%dx, (%rax)        # *pdata = (data & 0xff00) | 0x0080 | retval
+
+	movw	-20(%rbp), %ax
+	movw	%ax, %dx
+
+.L3:
+	movq	%rbp, %rsp
+	popq	%rbp
+	ret
+	.size	calc_func, .-calc_func
+
+INFO:root:stdout: CoreMark Size    : 35232
+Total ticks      : 11671
+Total time (secs): 11.671000
+Iterations/Sec   : 9425.070688
+Iterations       : 110000
+Compiler version : AICC 1.0
+seedcrc          : 0x2ea7
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Cannot validate operation for these seed values, please compare with results on a known platform.
+
+INFO:root:stderr: 
+INFO:root:Pass for calc_func
+INFO:root:current LLM prompt size: 513
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"core_list_insert_new.c"
+	.text
+	.globl	core_list_insert_new
+	.type	core_list_insert_new, @function
+core_list_insert_new:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, %rax
+	movq	%rax, -40(%rbp)
+	movq	%r9, %rax
+	movq	%rax, -48(%rbp)
+	movq	-24(%rbp), %rax
+	movq	(%rax), %rdx
+	addq	$1, %rdx
+	movq	-40(%rbp), %rax
+	cmpq	%rax, %rdx
+	jl	.L2
+	movl	$0, %eax
+	jmp	.L3
+.L2:
+	movq	-32(%rbp), %rax
+	movq	(%rax), %rdx
+	addq	$1, %rdx
+	movq	-48(%rbp), %rax
+	cmpq	%rax, %rdx
+	jl	.L4
+	movl	$0, %eax
+	jmp	.L3
+.L4:
+	movq	-24(%rbp), %rax
+	movq	(%rax), %rdx
+	movq	%rdx, -56(%rbp)
+	addq	$8, %rax
+	movq	%rax, -24(%rbp)
+	movq	-8(%rbp), %rax
+	movq	(%rax), %rdx
+	movq	-56(%rbp), %rsi
+	movq	%rdx, (%rsi)
+	movq	-56(%rbp), %rax
+	movq	-8(%rbp), %rdx
+	movq	%rax, 8(%rdx)
+	movq	-32(%rbp), %rax
+	movq	(%rax), %rdx
+	movq	%rdx, -64(%rbp)
+	addq	$8, %rax
+	movq	%rax, -32(%rbp)
+	movq	-56(%rbp), %rax
+	movq	-64(%rbp), %rdx
+	movq	%rdx, 8(%rax)
+	movq	-64(%rbp), %rsi
+	movq	-16(%rbp), %rdi
+	call	copy_info
+	movq	-56(%rbp), %rax
+.L3:
+	leave
+	ret
+	.size	core_list_insert_new, .-core_list_insert_new
+
+WARNING:root:Failed to execute the assembly hypothesis for core_list_insert_new
+INFO:root:current LLM prompt size: 335
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	portable_fini
+	.type	portable_fini, @function
+portable_fini:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	-8(%rbp), %rax
+	movb	$0, (%rax)
+	nop
+	popq	%rbp
+	ret
+	.size	portable_fini, .-portable_fini
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 14034
+Total time (secs): 14.034000
+Iterations/Sec   : 4275.331338
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4275.331338 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:Pass for portable_fini
+INFO:root:current LLM prompt size: 426
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"core_list_remove.c"
+	.text
+	.globl	core_list_remove
+	.type	core_list_remove, @function
+core_list_remove:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	-8(%rbp), %rax
+	movq	(%rax), %rax
+	movq	%rax, -16(%rbp)
+	movq	-8(%rbp), %rax
+	movq	8(%rax), %rax
+	movq	%rax, -24(%rbp)
+	movq	-24(%rbp), %rax
+	movq	%rax, %rdx
+	movq	-8(%rbp), %rax
+	movq	%rdx, 8(%rax)
+	movq	-8(%rbp), %rax
+	movq	-16(%rbp), %rdx
+	movq	%rdx, 8(%rax)
+	movq	-8(%rbp), %rax
+	movq	(%rax), %rax
+	movq	(%rax), %rax
+	movq	-8(%rbp), %rdx
+	movq	%rax, (%rdx)
+	movq	-24(%rbp), %rax
+	movq	$0, 8(%rax)
+	movq	-24(%rbp), %rax
+	leave
+	ret
+	.size	core_list_remove, .-core_list_remove
+
+WARNING:root:Failed to execute the assembly hypothesis for core_list_remove
+INFO:root:current LLM prompt size: 875
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"core_list_mergesort.c"
+	.text
+	.globl	core_list_mergesort
+	.type	core_list_mergesort, @function
+core_list_mergesort:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$144, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movl	$1, -28(%rbp)
+	jmp	.L2
+.L3:
+	movq	-8(%rbp), %rax
+	movq	%rax, -32(%rbp)
+	movq	$0, -8(%rbp)
+	movq	$0, -40(%rbp)
+	movl	$0, -36(%rbp)
+	jmp	.L4
+.L5:
+	addl	$1, -36(%rbp)
+	movq	-32(%rbp), %rax
+	movq	%rax, -48(%rbp)
+	movl	$0, -52(%rbp)
+	jmp	.L6
+.L7:
+	addl	$1, -52(%rbp)
+	movq	-48(%rbp), %rax
+	movq	(%rax), %rax
+	movq	%rax, -48(%rbp)
+	cmpq	$0, -48(%rbp)
+	je	.L8
+.L6:
+	movl	-52(%rbp), %eax
+	movl	-28(%rbp), %edx
+	cmpq	%rdx, %rax
+	jl	.L7
+.L8:
+	movl	-28(%rbp), %eax
+	movl	%eax, -56(%rbp)
+	jmp	.L9
+.L10:
+	cmpq	$0, -52(%rbp)
+	jle	.L11
+	cmpq	$0, -56(%rbp)
+	jle	.L12
+	movq	-48(%rbp), %rax
+	movq	(%rax), %rax
+	movq	%rax, -48(%rbp)
+	subl	$1, -56(%rbp)
+	jmp	.L10
+.L12:
+	movq	-32(%rbp), %rax
+	movq	(%rax), %rax
+	movq	%rax, -32(%rbp)
+	subl	$1, -52(%rbp)
+	jmp	.L10
+.L11:
+	movq	-40(%rbp), %rax
+	cmpq	$0, %rax
+	je	.L13
+	movq	-32(%rbp), %rax
+	movq	%rax, %rdx
+	movq	-40(%rbp), %rax
+	movq	%rdx, (%rax)
+	jmp	.L14
+.L13:
+	movq	-32(%rbp), %rax
+	movq	%rax, -8(%rbp)
+.L14:
+	movq	-32(%rbp), %rax
+	movq	%rax, -40(%rbp)
+	movq	-48(%rbp), %rax
+	movq	%rax, -32(%rbp)
+	jmp	.L5
+.L4:
+	movq	-32(%rbp), %rax
+	movq	%rax, -8(%rbp)
+	movq	$0, -40(%rbp)
+	movq	-40(%rbp), %rax
+	movq	-8(%rbp), %rdx
+	movq	%rdx, (%rax)
+	cmpq	$1, -36(%rbp)
+	jle	.L15
+	movl	-28(%rbp), %eax
+	addl	%eax, %eax
+	movl	%eax, -28(%rbp)
+.L2:
+	movq	-8(%rbp), %rax
+	cmpq	$0, %rax
+	jne	.L3
+.L15:
+	movq	-8(%rbp), %rax
+	leave
+	ret
+	.size	core_list_mergesort, .-core_list_mergesort
+	.ident	"GCC: (GNU) 12.2.0"
+	.section	.note.GNU-stack,"",@progbits
+
+WARNING:root:Failed to compile the assembly hypothesis for core_list_mergesort
+stdout: 
+stderr: /usr/bin/ld: /tmp/ccT4X6jW.o: in function `core_list_mergesort':
+core_list_mergesort.c:(.text+0x88): undefined reference to `.L9'
+collect2: error: ld returned 1 exit status
+
+INFO:root:current LLM prompt size: 361
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	crcu32
+	.type	crcu32, @function
+crcu32:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movl	%edi, -4(%rbp)
+	movw	%si, -6(%rbp)
+	movw	-6(%rbp), %ax
+	movw	%ax, %si
+	movl	-4(%rbp), %edi
+	call	crc16
+	movw	%ax, -8(%rbp)
+	movw	-8(%rbp), %ax
+	movw	%ax, %si
+	movl	-4(%rbp), %eax
+	sarl	$16, %eax
+	movw	%ax, %edi
+	call	crc16
+	movw	%ax, -10(%rbp)
+	movw	-10(%rbp), %ax
+	movw	%ax, %dx
+	movzwl	%dx, %eax
+	leave
+	ret
+	.size	crcu32, .-crcu32
+
+WARNING:root:Failed to compile the assembly hypothesis for crcu32
+stdout: 
+stderr: hyp/crcu32.s: Assembler messages:
+hyp/crcu32.s:22: Error: operand type mismatch for `mov'
+
+INFO:root:current LLM prompt size: 463
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	matrix_mul_matrix_bitextract
+	.type	matrix_mul_matrix_bitextract, @function
+matrix_mul_matrix_bitextract:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movl	$0, -4(%rbp)
+	jmp	.L2
+.L3:
+	movl	$0, -12(%rbp)
+	jmp	.L4
+.L5:
+	movq	-8(%rbp), %rax
+	movl	-4(%rbp), %edx
+	imull	-12(%rbp), %edx
+	movl	%edx, %eax
+	imull	-8(%rbp), %eax
+	movl	%eax, %edx
+	movq	-16(%rbp), %rax
+	leaq	(%rdx,%rax,4), %r8
+	movl	$0, (%r8)
+	movl	$0, -20(%rbp)
+	jmp	.L6
+.L7:
+	movq	-24(%rbp), %rax
+	movl	-4(%rbp), %edx
+	imull	-20(%rbp), %edx
+	movzwl	(%rax,%rdx,2), %edx
+	movl	%edx, %eax
+	movq	-32(%rbp), %rax
+	movl	-20(%rbp), %edx
+	movl	-12(%rbp), %ecx
+	imull	%edx, %ecx
+	movzwl	(%rax,%rcx,2), %ecx
+	imull	%ecx, %eax
+	movl	%eax, %edx
+	movl	%edx, %eax
+	sarl	$2, %eax
+	andl	$15, %eax
+	movl	%eax, %edx
+	movl	%edx, %eax
+	sarl	$5, %eax
+	andl	$127, %eax
+	movl	-16(%rbp), %edx
+	movl	-4(%rbp), %ecx
+	imull	-12(%rbp), %ecx
+	leaq	(%rdx,%rcx,4), %rdx
+	addl	%eax, (%rdx)
+	addl	$1, -20(%rbp)
+.L6:
+	movq	-8(%rbp), %rax
+	cmpl	%eax, -20(%rbp)
+	jl	.L7
+	addl	$1, -12(%rbp)
+.L4:
+	movq	-8(%rbp), %rax
+	cmpl	%eax, -12(%rbp)
+	jl	.L5
+	addl	$1, -4(%rbp)
+.L2:
+	movq	-8(%rbp), %rax
+	cmpl	%eax, -4(%rbp)
+	jl	.L3
+	leave
+	ret
+	.size	matrix_mul_matrix_bitextract, .-matrix_mul_matrix_bitextract
+
+WARNING:root:Failed to execute the assembly hypothesis for matrix_mul_matrix_bitextract
+INFO:root:current LLM prompt size: 454
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	crcu8
+	.type	crcu8, @function
+crcu8:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movb	%sil, -1(%rbp)
+	movw	%dx, -4(%rbp)
+	movb	$0, -5(%rbp)
+	movb	$0, -6(%rbp)
+	movb	$0, -7(%rbp)
+	jmp	.L2
+.L3:
+	movb	-1(%rbp), %al
+	andb	$1, %al
+	movzbl	-4(%rbp), %edx
+	andb	$1, %dl
+	xorb	%dl, %al
+	movb	%al, -6(%rbp)
+	movb	-1(%rbp), %al
+	shrb	%al
+	movb	%al, -1(%rbp)
+	cmpb	$1, -6(%rbp)
+	jne	.L4
+	movw	-4(%rbp), %ax
+	xorw	$16386, %ax
+	movw	%ax, -4(%rbp)
+	movb	$1, -7(%rbp)
+	jmp	.L5
+.L4:
+	movb	$0, -7(%rbp)
+.L5:
+	movw	-4(%rbp), %ax
+	shrw	%ax
+	movw	%ax, -4(%rbp)
+	cmpb	$0, -7(%rbp)
+	je	.L6
+	movw	-4(%rbp), %ax
+	orw	$32768, %ax
+	movw	%ax, -4(%rbp)
+	jmp	.L7
+.L6:
+	movw	-4(%rbp), %ax
+	andw	$32767, %ax
+	movw	%ax, -4(%rbp)
+.L7:
+	addb	$1, -5(%rbp)
+.L2:
+	movzbl	-5(%rbp), %eax
+	cmpb	$8, %al
+	jb	.L3
+	movw	-4(%rbp), %ax
+	movzwl	%ax, %eax
+	leave
+	ret
+
+INFO:root:stdout: CoreMark Size    : 666
+Total ticks      : 12442
+Total time (secs): 12.442000
+Iterations/Sec   : 4822.375824
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0x0000
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Cannot validate operation for these seed values, please compare with results on a known platform.
+
+INFO:root:stderr: 
+INFO:root:Pass for crcu8
+INFO:root:current LLM prompt size: 357
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	matrix_add_const
+	.type	matrix_add_const, @function
+matrix_add_const:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movl	%edi, -20(%rbp)
+	movq	%rsi, -32(%rbp)
+	movw	%dx, -34(%rbp)
+	movl	$0, -8(%rbp)
+	jmp	.L2
+.L3:
+	movl	$0, -12(%rbp)
+	jmp	.L4
+.L5:
+	movl	-8(%rbp), %eax
+	imull	-20(%rbp), %eax
+	addl	-12(%rbp), %eax
+	movslq	%eax, %rax
+	movq	-32(%rbp), %rdx
+	movzwl	(%rdx,%rax,2), %eax
+	addw	-34(%rbp), %ax
+	movq	-32(%rbp), %rdx
+	movl	-8(%rbp), %eax
+	imull	-20(%rbp), %eax
+	addl	-12(%rbp), %eax
+	movslq	%eax, %rax
+	movw	%ax, (%rdx,%rax,2)
+	addl	$1, -12(%rbp)
+.L4:
+	movl	-20(%rbp), %eax
+	cmpl	%eax, -12(%rbp)
+	jl	.L5
+	addl	$1, -8(%rbp)
+.L2:
+	movl	-20(%rbp), %eax
+	cmpl	%eax, -8(%rbp)
+	jl	.L3
+	leave
+	ret
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 13989
+Total time (secs): 13.989000
+Iterations/Sec   : 4289.084281
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4289.084281 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:Pass for matrix_add_const
+INFO:root:current LLM prompt size: 369
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	crcu16
+	.type	crcu16, @function
+crcu16:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movw	%di, -18(%rbp)   # Store newval in stack
+	movw	%si, -20(%rbp)   # Store crc in stack
+	movzwl	-18(%rbp), %edi  # Move newval to edi and zero-extend
+	movzwl	-20(%rbp), %esi  # Move crc to esi and zero-extend
+	call	crcu8@PLT
+	movw	%ax, -20(%rbp)   # Store result back to crc
+	movzwl	-18(%rbp), %edi  # Move newval to edi and zero-extend
+	shrq	$8, %rdi         # Shift newval right by 8 bits
+	movzwl	%di, %edi        # Zero-extend the shifted value
+	movzwl	-20(%rbp), %esi  # Move crc to esi and zero-extend
+	call	crcu8@PLT
+	movw	%ax, -20(%rbp)   # Store result back to crc
+	movzwl	-20(%rbp), %eax  # Move final crc to eax
+	leave
+	ret
+	.size	crcu16, .-crcu16
+
+INFO:root:stdout: CoreMark Size    : 666
+Total ticks      : 13861
+Total time (secs): 13.861000
+Iterations/Sec   : 4328.692014
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0x2874
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Cannot validate operation for these seed values, please compare with results on a known platform.
+
+INFO:root:stderr: 
+INFO:root:Pass for crcu16
+INFO:root:current LLM prompt size: 1039
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"core_list_init.c"
+	.text
+	.globl	core_list_init
+	.type	core_list_init, @function
+core_list_init:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$112, %rsp
+	movl	%edi, -4(%rbp)
+	movq	%rsi, -16(%rbp)
+	movw	%dx, -18(%rbp)
+	movl	-4(%rbp), %eax
+	movl	$24, %edx
+	cltd
+	idivl	%edx
+	subl	$2, %eax
+	movl	%eax, -8(%rbp)
+	movq	-16(%rbp), %rax
+	movl	-8(%rbp), %edx
+	leaq	(%rax,%rdx,16), %rax
+	movq	%rax, -24(%rbp)
+	movq	-24(%rbp), %rax
+	movq	%rax, -32(%rbp)
+	movq	-32(%rbp), %rax
+	movq	%rax, -40(%rbp)
+	movl	$0, -12(%rbp)
+	movq	-16(%rbp), %rax
+	movq	%rax, -56(%rbp)
+	movq	$0, -56(%rbp)
+	movq	-40(%rbp), %rax
+	movq	%rax, %rcx
+	movq	%rcx, -48(%rbp)
+	movw	$0, -48(%rbp)
+	movw	$-32768, -50(%rbp)
+	addq	$16, -16(%rbp)
+	addq	$16, -40(%rbp)
+	movw	$32767, -52(%rbp)
+	movw	$-1, -54(%rbp)
+	movq	-56(%rbp), %rdi
+	leaq	-52(%rbp), %rsi
+	movq	-16(%rbp), %rdx
+	movq	-40(%rbp), %rcx
+	movq	-24(%rbp), %r8
+	movq	-32(%rbp), %r9
+	call	core_list_insert_new
+	movl	$0, -12(%rbp)
+.L2:
+	movl	-12(%rbp), %eax
+	movl	-8(%rbp), %edx
+	cmpl	%edx, %eax
+	jge	.L3
+	movl	-12(%rbp), %eax
+	movw	-18(%rbp), %dx
+	xorl	%edx, %eax
+	andl	$15, %eax
+	movzwl	%ax, %edx
+	shll	$3, %edx
+	movl	-12(%rbp), %eax
+	andl	$7, %eax
+	orq	%rdx, %rax
+	movzwl	%ax, %eax
+	movw	%ax, %dx
+	shll	$8, %edx
+	orq	%rdx, %rax
+	movw	%ax, -54(%rbp)
+	movq	-56(%rbp), %rdi
+	leaq	-52(%rbp), %rsi
+	movq	-16(%rbp), %rdx
+	movq	-40(%rbp), %rcx
+	movq	-24(%rbp), %r8
+	movq	-32(%rbp), %r9
+	call	core_list_insert_new
+	addl	$1, -12(%rbp)
+	jmp	.L2
+.L3:
+	movq	-56(%rbp), %rax
+	movq	%rax, -72(%rbp)
+	movl	$1, -12(%rbp)
+.L4:
+	movq	-72(%rbp), %rax
+	movq	(%rax), %rax
+	testq	%rax, %rax
+	je	.L5
+	movl	-12(%rbp), %eax
+	movl	-8(%rbp), %edx
+	movl	%edx, %ecx
+	shrl	$2, %ecx
+	cmpl	%ecx, %eax
+	jge	.L6
+	movq	-72(%rbp), %rax
+	movl	-12(%rbp), %eax
+	movw	%ax, (%rax)
+	addl	$1, -12(%rbp)
+	jmp	.L7
+.L6:
+	movl	-12(%rbp), %eax
+	movw	-18(%rbp), %dx
+	xorl	%edx, %eax
+	movzwl	%ax, %eax
+	movzwl	%ax, %eax
+	movl	$16383, %edx
+	andl	%edx, %eax
+	movq	-72(%rbp), %rcx
+	movw	%ax, (%rcx)
+	addl	$1, -12(%rbp)
+.L7:
+	movq	-72(%rbp), %rax
+	movq	(%rax), %rax
+	movq	%rax, -72(%rbp)
+	jmp	.L4
+.L5:
+	movq	-56(%rbp), %rdi
+	movq	$cmp_idx, %rsi
+	movq	$0, %rdx
+	call	core_list_mergesort
+	movq	%rax, -80(%rbp)
+	movq	-80(%rbp), %rax
+	movq	%rax, %rsp
+	movq	%rbp, %rsp
+	popq	%rbp
+	ret
+	.size	core_list_init, .-core_list_init
+	.ident	"GCC: (GNU) 10.2.1 20210110"
+	.section	.note.GNU-stack,"",@progbits
+
+WARNING:root:Failed to compile the assembly hypothesis for core_list_init
+stdout: 
+stderr: hyp/core_list_init.s: Assembler messages:
+hyp/core_list_init.s:23: Error: expecting scale factor of 1, 2, 4, or 8: got `16'
+
+INFO:root:current LLM prompt size: 916
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"core_state_transition.c"
+	.text
+	.globl	core_state_transition
+	.type	core_state_transition, @function
+core_state_transition:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$64, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	-8(%rbp), %rax
+	movq	(%rax), %rax
+	movq	%rax, -24(%rbp)
+	movb	$0, -25(%rbp)
+	movl	$0, -28(%rbp)
+	jmp	.L2
+.L3:
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %eax
+	movb	%al, -25(%rbp)
+	movzbl	-25(%rbp), %eax
+	cmpb	$44, %al
+	jne	.L4
+	addq	$1, -24(%rbp)
+	jmp	.L5
+.L4:
+	movl	-28(%rbp), %eax
+	cmpl	$0, %eax
+	je	.L6
+	cmpl	$1, %eax
+	je	.L7
+	cmpl	$2, %eax
+	je	.L8
+	cmpl	$3, %eax
+	je	.L9
+	cmpl	$4, %eax
+	je	.L10
+	cmpl	$5, %eax
+	je	.L11
+	cmpl	$6, %eax
+	je	.L12
+	cmpl	$7, %eax
+	je	.L13
+	jmp	.L14
+.L6:
+	movzbl	-25(%rbp), %eax
+	movsbl	%al, %eax
+	movsbl	%al, %edi
+	call	ee_isdigit
+	testb	%al, %al
+	jne	.L15
+	movzbl	-25(%rbp), %eax
+	cmpb	$43, %al
+	je	.L16
+	cmpb	$45, %al
+	je	.L16
+	cmpb	$46, %al
+	je	.L17
+	movl	$1, -28(%rbp)
+	movq	-16(%rbp), %rax
+	addq	$4, %rax
+	movl	$1, (%rax)
+	jmp	.L2
+.L16:
+	movl	$2, -28(%rbp)
+	movq	-16(%rbp), %rax
+	addq	$4, %rax
+	addl	$1, (%rax)
+	jmp	.L2
+.L17:
+	movl	$5, -28(%rbp)
+	movq	-16(%rbp), %rax
+	addq	$20, %rax
+	addl	$1, (%rax)
+	jmp	.L2
+.L15:
+	movl	$4, -28(%rbp)
+	movq	-16(%rbp), %rax
+	addq	$8, %rax
+	addl	$1, (%rax)
+	movq	-16(%rbp), %rax
+	addq	$4, %rax
+	addl	$1, (%rax)
+	jmp	.L2
+.L7:
+	movzbl	-25(%rbp), %eax
+	movsbl	%al, %eax
+	movsbl	%al, %edi
+	call	ee_isdigit
+	testb	%al, %al
+	jne	.L18
+	movzbl	-25(%rbp), %eax
+	cmpb	$46, %al
+	je	.L19
+	movl	$1, -28(%rbp)
+	movq	-16(%rbp), %rax
+	addq	$8, %rax
+	addl	$1, (%rax)
+	jmp	.L2
+.L19:
+	movl	$5, -28(%rbp)
+	movq	-16(%rbp), %rax
+	addq	$8, %rax
+	addl	$1, (%rax)
+	jmp	.L2
+.L18:
+	movl	$4, -28(%rbp)
+	movq	-16(%rbp), %rax
+	addq	$8, %rax
+	addl	$1, (%rax)
+	jmp	.L2
+.L8:
+	movzbl	-25(%rbp), %eax
+	cmpb	$46, %al
+	je	.L20
+	movsbl	%al, %eax
+	movsbl	%al, %edi
+	call	ee_isdigit
+	testb	%al, %al
+	jne	.L2
+	movl	$4, -28(%rbp)
+	movq	-16(%rbp), %rax
+	addq	$12, %rax
+	addl	$1, (%rax)
+	jmp	.L2
+.L20:
+	movl	$5, -28(%rbp)
+	movq	-16(%rbp), %rax
+	addq	$12, %rax
+	addl	$1, (%rax)
+	jmp	.L2
+.L9:
+	movzbl	-25(%rbp), %eax
+	cmpb	$69, %al
+	je	.L21
+	cmpb	$101, %al
+	je	.L21
+	movsbl	%al, %eax
+	movsbl	%al, %edi
+	call	ee_isdigit
+	testb	%al, %al
+	jne	.L2
+	movl	$4, -28(%rbp)
+	movq	-16(%rbp), %rax
+	addq	$20, %rax
+	addl	$1, (%rax)
+	jmp	.L2
+.L21:
+	movl	$6, -28(%rbp)
+	movq	-16(%rbp), %rax
+	addq	$20, %rax
+	addl	$1, (%rax)
+	jmp	.L2
+.L10:
+	movzbl	-25(%rbp), %eax
+	cmpb	$43, %al
+	je	.L22
+	cmpb	$45, %al
+	je	.L22
+	movl	$4, -28(%rbp)
+	movq	-16(%rbp), %rax
+	addq	$24, %rax
+	addl	$1, (%rax)
+	jmp	.L2
+.L22:
+	movl	$7, -28(%rbp)
+	movq	-16(%rbp), %rax
+	addq	$24, %rax
+	addl	$1, (%rax)
+	jmp	.L2
+.L11:
+	movzbl	-25(%rbp), %eax
+	movsbl	%al, %eax
+	movsbl	%al, %edi
+	call	ee_isdigit
+	testb	%al, %al
+	jne	.L23
+	movl	$4, -28(%rbp)
+	movq	-16(%rbp), %rax
+	addq	$28, %rax
+	addl	$1, (%rax)
+	jmp	.L2
+.L23:
+	movl	$7, -28(%rbp)
+	movq	-16(%rbp), %rax
+	addq	$28, %rax
+	addl	$1, (%rax)
+	jmp	.L2
+.L12:
+	movzbl	-25(%rbp), %eax
+	movsbl	%al, %eax
+	movsbl	%al, %edi
+	call	ee_isdigit
+	testb	%al, %al
+	jne	.L2
+	movl	$4, -28(%rbp)
+	movq	-16(%rbp), %rax
+	addq	$32, %rax
+	addl	$1, (%rax)
+	jmp	.L2
+.L13:
+	movzbl	-25(%rbp), %eax
+	movsbl	%al, %eax
+	movsbl	%al, %edi
+	call	ee_isdigit
+	testb	%al, %al
+	jne	.L2
+	movl	$4, -28(%rbp)
+	movq	-16(%rbp), %rax
+	addq	$36, %rax
+	addl	$1, (%rax)
+	jmp	.L2
+.L14:
+.L2:
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	jne	.L3
+	movq	-8(%rbp), %rax
+	movq	-24(%rbp), %rdx
+	movq	%rdx, (%rax)
+	movl	-28(%rbp), %eax
+	leave
+	ret
+	.size	core_state_transition, .-core_state_transition
+	.ident	"GCC: (Ubuntu 10.3.0-1ubuntu1~20.04) 10.3.0"
+	.section	.note.GNU-stack,"",@progbits
+
+WARNING:root:Failed to compile the assembly hypothesis for core_state_transition
+stdout: 
+stderr: /usr/bin/ld: /tmp/ccXQ9cSe.o: in function `core_state_transition':
+core_state_transition.c:(.text+0x47): undefined reference to `.L5'
+collect2: error: ld returned 1 exit status
+
+INFO:root:current LLM prompt size: 460
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	core_bench_matrix
+	.type	core_bench_matrix, @function
+core_bench_matrix:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movq	%rdi, -8(%rbp)
+	movswl	%si, %eax
+	movw	%ax, -10(%rbp)
+	movzwl	%dx, %eax
+	movw	%ax, -12(%rbp)
+	movq	-8(%rbp), %rax
+	movl	(%rax), %edx
+	movq	-8(%rbp), %rax
+	movq	8(%rax), %rcx
+	movq	-8(%rbp), %rax
+	movq	16(%rax), %rsi
+	movq	-8(%rbp), %rax
+	movq	24(%rax), %rdi
+	movswl	-10(%rbp), %eax
+	movl	%edx, -16(%rbp)
+	movq	%rcx, -24(%rbp)
+	movq	%rsi, -32(%rbp)
+	movq	%rdi, -40(%rbp)
+	movw	%ax, -18(%rbp)
+	movl	-16(%rbp), %edi
+	movq	-24(%rbp), %rsi
+	movq	-32(%rbp), %rdx
+	movq	-40(%rbp), %rcx
+	movswl	-18(%rbp), %eax
+	movw	%ax, %r8w
+	call	matrix_test
+	movswl	%ax, %edi
+	movzwl	-12(%rbp), %esi
+	call	crc16
+	movw	%ax, -12(%rbp)
+	movzwl	-12(%rbp), %eax
+	leave
+	ret
+	.size	core_bench_matrix, .-core_bench_matrix
+
+WARNING:root:Failed to execute the assembly hypothesis for core_bench_matrix
+INFO:root:current LLM prompt size: 339
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	ee_isdigit
+	.type	ee_isdigit, @function
+ee_isdigit:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movb	%rdi, -1(%rbp)
+	movb	-1(%rbp), %al
+	cmpb	$48, %al
+	setge	%dl
+	movb	-1(%rbp), %al
+	cmpb	$57, %al
+	setle	%al
+	andb	%dl, %al
+	movzbl	%al, %eax
+	movb	%al, -2(%rbp)
+	movzbl	-2(%rbp), %eax
+	leave
+	ret
+
+WARNING:root:Failed to compile the assembly hypothesis for ee_isdigit
+stdout: 
+stderr: hyp/ee_isdigit.s: Assembler messages:
+hyp/ee_isdigit.s:11: Error: `%rdi' not allowed with `movb'
+
+INFO:root:current LLM prompt size: 864
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"core_init_state.c"
+	.text
+	.section	.rodata
+.LC0:
+	.string	"5012"
+.LC1:
+	.string	"1234"
+.LC2:
+	.string	"-874"
+.LC3:
+	.string	"+122"
+.LC4:
+	.string	"35.54400"
+.LC5:
+	.string	".1234500"
+.LC6:
+	.string	"-110.700"
+.LC7:
+	.string	"+0.64400"
+.LC8:
+	.string	"5.500e+3"
+.LC9:
+	.string	"-.123e-2"
+.LC10:
+	.string	"-87e+832"
+.LC11:
+	.string	"+0.6e-12"
+.LC12:
+	.string	"T0.3e-1F"
+.LC13:
+	.string	"-T.T++Tq"
+.LC14:
+	.string	"1T3.4e4z"
+.LC15:
+	.string	"34.0e-T^"
+	.data
+	.align 8
+	.type	intpat, @object
+	.size	intpat, 32
+intpat:
+	.quad	.LC0
+	.quad	.LC1
+	.quad	.LC2
+	.quad	.LC3
+	.align 8
+	.type	floatpat, @object
+	.size	floatpat, 32
+floatpat:
+	.quad	.LC4
+	.quad	.LC5
+	.quad	.LC6
+	.quad	.LC7
+	.align 8
+	.type	scipat, @object
+	.size	scipat, 32
+scipat:
+	.quad	.LC8
+	.quad	.LC9
+	.quad	.LC10
+	.quad	.LC11
+	.align 8
+	.type	errpat, @object
+	.size	errpat, 32
+errpat:
+	.quad	.LC12
+	.quad	.LC13
+	.quad	.LC14
+	.quad	.LC15
+	.text
+	.globl	core_init_state
+	.type	core_init_state, @function
+core_init_state:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movl	%edi, -20(%rbp)
+	movw	%si, -22(%rbp)
+	movq	%rdx, -32(%rbp)
+	movl	$0, -12(%rbp)
+	movl	$0, -8(%rbp)
+	movq	$0, -24(%rbp)
+	decl	-20(%rbp)
+.L2:
+	movl	-12(%rbp), %eax
+	addl	-8(%rbp), %eax
+	leal	1(%rax), %edx
+	movl	-20(%rbp), %eax
+	cmpl	%edx, %eax
+	jle	.L9
+	movl	-8(%rbp), %eax
+	testl	%eax, %eax
+	jle	.L4
+	movl	$0, %eax
+	movl	-12(%rbp), %edx
+	movl	-8(%rbp), %ecx
+.L5:
+	movq	-24(%rbp), %rsi
+	movzbl	(%rsi,%rax), %r8d
+	movq	-32(%rbp), %rsi
+	movb	%r8b, (%rsi,%rdx)
+	addl	$1, %eax
+	addl	$1, %edx
+	cmpl	-8(%rbp), %eax
+	jb	.L5
+	movl	-12(%rbp), %eax
+	addl	-8(%rbp), %eax
+	movq	-32(%rbp), %rdx
+	movb	$44, (%rdx,%rax)
+	movl	-12(%rbp), %eax
+	addl	-8(%rbp), %eax
+	addl	$1, %eax
+	movl	%eax, -12(%rbp)
+.L4:
+	movw	-22(%rbp), %ax
+	addw	$1, %ax
+	movw	%ax, -22(%rbp)
+	movzwl	-22(%rbp), %eax
+	andl	$7, %eax
+	leal	-3(%rax), %edx
+	cmpl	$5, %eax
+	ja	.L8
+	movq	intpat(,%rdx,8), %rax
+	movl	$4, -8(%rbp)
+	movq	%rax, -24(%rbp)
+	jmp	.L2
+.L8:
+	cmpl	$7, %eax
+	je	.L11
+	movq	floatpat(,%rdx,8), %rax
+	movl	$8, -8(%rbp)
+	movq	%rax, -24(%rbp)
+	jmp	.L2
+.L11:
+	movq	errpat(,%rdx,8), %rax
+	movl	$8, -8(%rbp)
+	movq	%rax, -24(%rbp)
+	jmp	.L2
+.L9:
+	incl	-20(%rbp)
+.L10:
+	movl	-12(%rbp), %eax
+	cmpl	-20(%rbp), %eax
+	jge	.L14
+	movl	-12(%rbp), %eax
+	movq	-32(%rbp), %rdx
+	movb	$0, (%rdx,%rax)
+	incl	-12(%rbp)
+	jmp	.L10
+.L14:
+	addq	$32, %rsp
+	popq	%rbp
+	ret
+	.size	core_init_state, .-core_init_state
+	.ident	"GCC: (GNU) 10.2.1 20210110"
+	.section	.note.GNU-stack,"",@progbits
+
+WARNING:root:Failed to compile the assembly hypothesis for core_init_state
+stdout: 
+stderr: /usr/bin/ld: /tmp/cco4ZVco.o: relocation R_X86_64_32S against `.data' can not be used when making a PIE object; recompile with -fPIE
+/usr/bin/ld: failed to set dynamic section sizes: bad value
+collect2: error: ld returned 1 exit status
+
+INFO:root:current LLM prompt size: 400
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"core_list_reverse.c"
+	.text
+	.globl	core_list_reverse
+	.type	core_list_reverse, @function
+core_list_reverse:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	$0, -16(%rbp)
+	jmp	.L2
+.L3:
+	movq	-8(%rbp), %rax
+	movq	(%rax), %rdx
+	movq	-8(%rbp), %rax
+	movq	-16(%rbp), %rcx
+	movq	%rcx, (%rax)
+	movq	-8(%rbp), %rax
+	movq	%rax, -16(%rbp)
+	movq	%rdx, -8(%rbp)
+.L2:
+	movq	-8(%rbp), %rax
+	testq	%rax, %rax
+	jne	.L3
+	movq	-16(%rbp), %rax
+	leave
+	ret
+	.size	core_list_reverse, .-core_list_reverse
+	.ident	"GCC: (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0"
+	.section	.note.GNU-stack,"",@progbits
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 12730
+Total time (secs): 12.730000
+Iterations/Sec   : 4713.275727
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4713.275727 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:Pass for core_list_reverse
+INFO:root:current LLM prompt size: 615
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"input.c"
+	.text
+	.globl	matrix_test
+	.type	matrix_test, @function
+matrix_test:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$48, %rsp
+	movl	%edi, -44(%rbp)
+	movq	%rsi, -56(%rbp)
+	movq	%rdx, -64(%rbp)
+	movq	%rcx, -72(%rbp)
+	movswl	%r8w, %eax
+	movw	%r8w, -46(%rbp)
+	movl	$0, -20(%rbp)
+	movzwl	-46(%rbp), %eax
+	or $61440, %eax
+	movw	%ax, -22(%rbp)
+	movl	-44(%rbp), %eax
+	movq	-64(%rbp), %rsi
+	movswl	-46(%rbp), %edx
+	movq	-56(%rbp), %rdi
+	call	matrix_add_const
+	movl	-44(%rbp), %eax
+	movswl	-46(%rbp), %edx
+	movq	-64(%rbp), %rsi
+	movq	-56(%rbp), %rdi
+	call	matrix_mul_const
+	movl	-44(%rbp), %eax
+	movswl	-22(%rbp), %edx
+	movq	-56(%rbp), %rsi
+	call	matrix_sum
+	movswl	%ax, %eax
+	movzwl	%ax, %eax
+	movw	%ax, -24(%rbp)
+	movzwl	-24(%rbp), %eax
+	movzwl	-20(%rbp), %edx
+	movq	-24(%rbp), %rsi
+	movq	-20(%rbp), %rdi
+	call	crc16
+	movw	%ax, -20(%rbp)
+	movl	-44(%rbp), %eax
+	movq	-72(%rbp), %rsi
+	movq	-64(%rbp), %rdx
+	movq	-56(%rbp), %rdi
+	call	matrix_mul_vect
+	movl	-44(%rbp), %eax
+	movswl	-22(%rbp), %edx
+	movq	-56(%rbp), %rsi
+	call	matrix_sum
+	movswl	%ax, %eax
+	movzwl	%ax, %eax
+	movw	%ax, -24(%rbp)
+	movzwl	-24(%rbp), %eax
+	movzwl	-20(%rbp), %edx
+	movq	-24(%rbp), %rsi
+	movq	-20(%rbp), %rdi
+	call	crc16
+	movw	%ax, -20(%rbp)
+	movl	-44(%rbp), %eax
+	movq	-72(%rbp), %rsi
+	movq	-64(%rbp), %rdx
+	movq	-56(%rbp), %rdi
+	call	matrix_mul_matrix
+	movl	-44(%rbp), %eax
+	movswl	-22(%rbp), %edx
+	movq	-56(%rbp), %rsi
+	call	matrix_sum
+	movswl	%ax, %eax
+	movzwl	%ax, %eax
+	movw	%ax, -24(%rbp)
+	movzwl	-24(%rbp), %eax
+	movzwl	-20(%rbp), %edx
+	movq	-24(%rbp), %rsi
+	movq	-20(%rbp), %rdi
+	call	crc16
+	movw	%ax, -20(%rbp)
+	movl	-44(%rbp), %eax
+	movq	-72(%rbp), %rsi
+	movq	-64(%rbp), %rdx
+	movq	-56(%rbp), %rdi
+	call	matrix_mul_matrix_bitextract
+	movl	-44(%rbp), %eax
+	movswl	-22(%rbp), %edx
+	movq	-56(%rbp), %rsi
+	call	matrix_sum
+	movswl	%ax, %eax
+	movzwl	%ax, %eax
+	movw	%ax, -24(%rbp)
+	movzwl	-24(%rbp), %eax
+	movzwl	-20(%rbp), %edx
+	movq	-24(%rbp), %rsi
+	movq	-20(%rbp), %rdi
+	call	crc16
+	movw	%ax, -20(%rbp)
+	movl	-44(%rbp), %eax
+	negw	%ax
+	movw	%ax, -46(%rbp)
+	movl	-44(%rbp), %eax
+	movq	-64(%rbp), %rsi
+	movswl	-46(%rbp), %edx
+	movq	-56(%rbp), %rdi
+	call	matrix_add_const
+	movzwl	-20(%rbp), %eax
+	leave
+	ret
+	.size	matrix_test, .-matrix_test
+
+WARNING:root:Failed to execute the assembly hypothesis for matrix_test
+INFO:root:current LLM prompt size: 1108
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"core_bench_list.c"
+	.text
+	.globl	core_bench_list
+	.type	core_bench_list, @function
+core_bench_list:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$96, %rsp
+	movq	%rdi, -8(%rbp)
+	movswl	%si, %eax
+	movw	%ax, -10(%rbp)
+	movw	$0, -12(%rbp)
+	movw	$0, -14(%rbp)
+	movq	-8(%rbp), %rax
+	movq	(%rax), %rax
+	movq	%rax, -16(%rbp)
+	movq	-8(%rbp), %rax
+	movswl	20(%rax), %eax
+	movw	%ax, -18(%rbp)
+	leaq	-32(%rbp), %rax
+	movq	$0, (%rax)
+	movw	-10(%rbp), %ax
+	movw	%ax, -30(%rbp)
+	movw	$0, -28(%rbp)
+	jmp	.L2
+.L3:
+	movzwl	-28(%rbp), %eax
+	andl	$255, %eax
+	movw	%ax, -32(%rbp)
+	leaq	-32(%rbp), %rax
+	movq	-16(%rbp), %rdi
+	movq	%rax, %rsi
+	call	core_list_find
+	movq	%rax, -40(%rbp)
+	movq	-16(%rbp), %rdi
+	call	core_list_reverse
+	movq	%rax, -16(%rbp)
+	cmpq	$0, -40(%rbp)
+	jne	.L4
+	addw	$1, -14(%rbp)
+	movq	-16(%rbp), %rax
+	movq	8(%rax), %rax
+	movq	(%rax), %rax
+	movzwl	(%rax), %eax
+	sarw	$8, %ax
+	andw	$1, %ax
+	addw	%ax, -12(%rbp)
+	jmp	.L5
+.L4:
+	addw	$1, -12(%rbp)
+	movq	-40(%rbp), %rax
+	movzwl	(%rax), %eax
+	andw	$1, %ax
+	cmpw	$0, %ax
+	je	.L6
+	movq	-40(%rbp), %rax
+	movzwl	(%rax), %eax
+	sarw	$9, %ax
+	andw	$1, %ax
+	addw	%ax, -12(%rbp)
+.L6:
+	movq	-40(%rbp), %rax
+	movq	8(%rax), %rax
+	cmpq	$0, %rax
+	je	.L5
+	movq	-40(%rbp), %rax
+	movq	8(%rax), %rdx
+	movq	%rdx, -48(%rbp)
+	movq	-40(%rbp), %rax
+	movq	-48(%rbp), %rdx
+	movq	8(%rdx), %rdx
+	movq	%rdx, 8(%rax)
+	movq	-48(%rbp), %rax
+	movq	-16(%rbp), %rdx
+	movq	8(%rdx), %rdx
+	movq	%rdx, 8(%rax)
+	movq	-48(%rbp), %rax
+	movq	-16(%rbp), %rdx
+	movq	%rax, 8(%rdx)
+.L5:
+	movswl	-30(%rbp), %eax
+	cmpw	$0, %ax
+	jl	.L7
+	addw	$1, -30(%rbp)
+.L7:
+	addw	$1, -28(%rbp)
+.L2:
+	movswl	-28(%rbp), %eax
+	movswl	-18(%rbp), %edx
+	cmpw	%dx, %ax
+	jl	.L3
+	movzwl	-12(%rbp), %eax
+	addw	%ax, %ax
+	addw	%ax, %ax
+	movzwl	-14(%rbp), %eax
+	subw	%ax, %ax
+	addw	%ax, -12(%rbp)
+	movswl	-10(%rbp), %eax
+	cmpw	$0, %ax
+	jle	.L8
+	movq	-16(%rbp), %rdi
+	movq	cmp_complex@GOTPCREL(%rip), %rdx
+	movq	-8(%rbp), %rsi
+	call	core_list_mergesort
+	movq	%rax, -16(%rbp)
+.L8:
+	movq	-16(%rbp), %rdi
+	movq	8(%rdi), %rdi
+	call	core_list_remove
+	movq	%rax, -56(%rbp)
+	leaq	-32(%rbp), %rax
+	movq	-16(%rbp), %rdi
+	movq	%rax, %rsi
+	call	core_list_find
+	movq	%rax, -64(%rbp)
+	cmpq	$0, -64(%rbp)
+	jne	.L9
+	movq	-16(%rbp), %rax
+	movq	8(%rax), %rax
+	movq	%rax, -64(%rbp)
+.L9:
+	movq	-64(%rbp), %rax
+	movq	%rax, -72(%rbp)
+	jmp	.L11
+.L12:
+	movq	-16(%rbp), %rax
+	movq	(%rax), %rax
+	movzwl	(%rax), %eax
+	movzwl	-12(%rbp), %edx
+	movw	%ax, %di
+	movw	%dx, %si
+	call	crc16
+	movw	%ax, -12(%rbp)
+	movq	-72(%rbp), %rax
+	movq	8(%rax), %rax
+	movq	%rax, -72(%rbp)
+.L11:
+	movq	-72(%rbp), %rax
+	cmpq	$0, %rax
+	jne	.L12
+	movq	-56(%rbp), %rdi
+	movq	-16(%rbp), %rax
+	movq	8(%rax), %rsi
+	call	core_list_undo_remove
+	movq	%rax, -16(%rbp)
+	movq	-16(%rbp), %rdi
+	movq	cmp_idx@GOTPCREL(%rip), %rdx
+	movq	$0, %rsi
+	call	core_list_mergesort
+	movq	%rax, -16(%rbp)
+	movq	-16(%rbp), %rdi
+	movq	8(%rdi), %rax
+	movq	%rax, -80(%rbp)
+	jmp	.L14
+.L15:
+	movq	-16(%rbp), %rax
+	movq	(%rax), %rax
+	movzwl	(%rax), %eax
+	movzwl	-12(%rbp), %edx
+	movw	%ax, %di
+	movw	%dx, %si
+	call	crc16
+	movw	%ax, -12(%rbp)
+	movq	-80(%rbp), %rax
+	movq	8(%rax), %rax
+	movq	%rax, -80(%rbp)
+.L14:
+	movq	-80(%rbp), %rax
+	cmpq	$0, %rax
+	jne	.L15
+	movzwl	-12(%rbp), %eax
+	leave
+	ret
+	.size	core_bench_list, .-core_bench_list
+
+WARNING:root:Failed to execute the assembly hypothesis for core_bench_list
+INFO:root:current LLM prompt size: 325
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"input.c"
+	.text
+	.globl	time_in_secs
+	.type	time_in_secs, @function
+time_in_secs:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movq	%rdi, -8(%rbp)
+	cvtsi2sdq	-8(%rbp), %xmm0
+	movsd	.LC0(%rip), %xmm1
+	divsd	%xmm1, %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	leave
+	ret
+.LC0:
+	.long	0x00000000
+	.long	0x3ff00000
+	.size	time_in_secs, .-time_in_secs
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 14
+Total time (secs): 14.000000
+Iterations/Sec   : 4.285714
+Iterations       : 60
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4.285714 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:Pass for time_in_secs
+INFO:root:current LLM prompt size: 603
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	cmp_idx
+	.type	cmp_idx, @function
+cmp_idx:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	-24(%rbp), %rax
+	testq	%rax, %rax
+	jne	.L2
+	movq	-8(%rbp), %rax
+	movzwl	(%rax), %eax
+	movl	%eax, %edx
+	shrl	$8, %edx
+	andl	$255, %edx
+	movq	-8(%rbp), %rax
+	movzwl	(%rax), %eax
+	andl	$65280, %eax
+	orl	%edx, %eax
+	movq	-8(%rbp), %rdx
+	movw	%ax, (%rdx)
+	movq	-16(%rbp), %rax
+	movzwl	(%rax), %eax
+	movl	%eax, %edx
+	shrl	$8, %edx
+	andl	$255, %edx
+	movq	-16(%rbp), %rax
+	movzwl	(%rax), %eax
+	andl	$65280, %eax
+	orl	%edx, %eax
+	movq	-16(%rbp), %rdx
+	movw	%ax, (%rdx)
+.L2:
+	movq	-8(%rbp), %rax
+	movzwl	4(%rax), %eax
+	movq	-16(%rbp), %rdx
+	movzwl	4(%rdx), %edx
+	subq	%rdx, %rax
+	movl	%eax, -4(%rbp)
+	movl	-4(%rbp), %eax
+	leave
+	ret
+	.size	cmp_idx, .-cmp_idx
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 13887
+Total time (secs): 13.887000
+Iterations/Sec   : 4320.587600
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4320.587600 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:Pass for cmp_idx
+INFO:root:current LLM prompt size: 436
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	matrix_sum
+	.type	matrix_sum, @function
+matrix_sum:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$64, %rsp
+	movl	%edi, -4(%rbp)
+	movq	%rsi, -16(%rbp)
+	movw	%dx, -18(%rbp)
+	movl	$0, -20(%rbp)     # tmp = 0
+	movl	$0, -24(%rbp)     # prev = 0
+	movl	$0, -28(%rbp)     # cur = 0
+	movw	$0, -32(%rbp)     # ret = 0
+	movl	$0, -36(%rbp)     # i = 0
+	jmp	.L2
+.L3:
+	movl	$0, -40(%rbp)     # j = 0
+	jmp	.L4
+.L5:
+	movl	-36(%rbp), %eax
+	imull	-4(%rbp), %eax
+	addl	-40(%rbp), %eax
+	cltq
+	movq	-16(%rbp), %rdx
+	movl	(%rdx,%rax,4), %eax
+	movl	%eax, -28(%rbp)   # cur = C[i * N + j]
+	movl	-20(%rbp), %eax
+	addl	-28(%rbp), %eax
+	movl	%eax, -20(%rbp)   # tmp += cur
+	movl	-20(%rbp), %eax
+	cmpw	-18(%rbp), %ax
+	jle	.L6
+	addw	$10, -32(%rbp)    # ret += 10
+	movl	$0, -20(%rbp)     # tmp = 0
+	jmp	.L7
+.L6:
+	movl	-28(%rbp), %eax
+	movl	-24(%rbp), %edx
+	cmpl	%edx, %eax
+	jle	.L8
+	addw	$1, -32(%rbp)     # ret += 1
+	jmp	.L7
+.L8:
+.L7:
+	movl	-28(%rbp), %eax
+	movl	%eax, -24(%rbp)   # prev = cur
+	addl	$1, -40(%rbp)     # j++
+.L4:
+	movl	-4(%rbp), %eax
+	cmpl	%eax, -40(%rbp)
+	jl	.L5
+	addl	$1, -36(%rbp)     # i++
+.L2:
+	movl	-4(%rbp), %eax
+	cmpl	%eax, -36(%rbp)
+	jl	.L3
+	movzwl	-32(%rbp), %eax   # return ret
+	movw	%ax, %dx
+	movzwl	%dx, %eax
+	leave
+	ret
+	.size	matrix_sum, .-matrix_sum
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 14072
+Total time (secs): 14.072000
+Iterations/Sec   : 4263.786242
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4263.786242 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:Pass for matrix_sum
+INFO:root:current LLM prompt size: 427
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	core_list_undo_remove
+	.type	core_list_undo_remove, @function
+core_list_undo_remove:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movq	%rdi, -8(%rbp)    # item_removed
+	movq	%rsi, -16(%rbp)   # item_modified
+
+	movq	-8(%rbp), %rax    # tmp = item_removed->info;
+	movq	(%rax), %rax
+	movq	%rax, -24(%rbp)
+
+	movq	-8(%rbp), %rax    # item_removed->info = item_modified->info;
+	movq	-16(%rbp), %rdx
+	movq	(%rdx), %rdx
+	movq	%rdx, (%rax)
+
+	movq	-16(%rbp), %rax   # item_modified->info = tmp;
+	movq	-24(%rbp), %rdx
+	movq	%rdx, (%rax)
+
+	movq	-8(%rbp), %rax    # item_removed->next = item_modified->next;
+	movq	-16(%rbp), %rdx
+	movq	8(%rdx), %rdx
+	movq	%rdx, 8(%rax)
+
+	movq	-16(%rbp), %rax   # item_modified->next = item_removed;
+	movq	-8(%rbp), %rdx
+	movq	%rdx, 8(%rax)
+
+	movq	-8(%rbp), %rax    # return item_removed;
+	leave
+	ret
+	.size	core_list_undo_remove, .-core_list_undo_remove
+
+WARNING:root:Failed to execute the assembly hypothesis for core_list_undo_remove
+INFO:root:current LLM prompt size: 690
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	core_bench_state
+	.type	core_bench_state, @function
+core_bench_state:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$208, %rsp
+	movl	%edi, -20(%rbp)
+	movq	%rsi, -32(%rbp)
+	movw	%dx, -34(%rbp)
+	movw	%cx, -36(%rbp)
+	movw	%r8w, -38(%rbp)
+	movw	%r9w, -40(%rbp)
+	movl	$0, -4(%rbp)
+	leaq	-204(%rbp), %rdi
+	movl	$0, %eax
+	movq	$9, %rcx
+	rep stosq
+	movq	-32(%rbp), %rax
+	movq	%rax, -48(%rbp)
+	movl	$0, -44(%rbp)
+	jmp	.L2
+.L3:
+	movl	-44(%rbp), %eax
+	movl	$0, -200(%rbp,%rax,4)
+	movl	-44(%rbp), %eax
+	movl	$0, -164(%rbp,%rax,4)
+	addl	$1, -44(%rbp)
+.L2:
+	cmpl	$8, -44(%rbp)
+	jle	.L3
+	movq	-48(%rbp), %rax
+	movq	%rax, -56(%rbp)
+	jmp	.L5
+.L6:
+	movq	-56(%rbp), %rax
+	movq	%rax, %rdi
+	leaq	-48(%rbp), %rsi
+	call	core_state_transition@PLT
+	movl	%eax, %edx
+	movq	-56(%rbp), %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	jne	.L6
+.L5:
+	movq	-32(%rbp), %rax
+	movq	%rax, -56(%rbp)
+	jmp	.L8
+.L9:
+	movq	-56(%rbp), %rax
+	movzbl	(%rax), %eax
+	cmpb	$44, %al
+	je	.L10
+	movq	-56(%rbp), %rax
+	movzbl	(%rax), %eax
+	movswl	-34(%rbp), %ecx
+	xorb	%cl, %al
+	movq	-56(%rbp), %rcx
+	movb	%al, (%rcx)
+.L10:
+	movq	-56(%rbp), %rax
+	movswl	-38(%rbp), %ecx
+	addq	%rcx, %rax
+	movq	%rax, -56(%rbp)
+.L8:
+	movq	-56(%rbp), %rax
+	movq	-32(%rbp), %rcx
+	movl	-20(%rbp), %edx
+	addq	%rcx, %rdx
+	cmpq	%rdx, %rax
+	jne	.L9
+	movq	-32(%rbp), %rax
+	movq	%rax, -56(%rbp)
+	jmp	.L12
+.L13:
+	movq	-56(%rbp), %rax
+	movq	%rax, %rdi
+	leaq	-48(%rbp), %rsi
+	call	core_state_transition@PLT
+	movl	%eax, %edx
+	movq	-56(%rbp), %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	jne	.L13
+.L12:
+	movq	-32(%rbp), %rax
+	movq	%rax, -56(%rbp)
+	jmp	.L15
+.L16:
+	movq	-56(%rbp), %rax
+	movzbl	(%rax), %eax
+	cmpb	$44, %al
+	je	.L17
+	movq	-56(%rbp), %rax
+	movzbl	(%rax), %eax
+	movswl	-36(%rbp), %ecx
+	xorb	%cl, %al
+	movq	-56(%rbp), %rcx
+	movb	%al, (%rcx)
+.L17:
+	movq	-56(%rbp), %rax
+	movswl	-38(%rbp), %ecx
+	addq	%rcx, %rax
+	movq	%rax, -56(%rbp)
+.L15:
+	movq	-56(%rbp), %rax
+	movq	-32(%rbp), %rcx
+	movl	-20(%rbp), %edx
+	addq	%rcx, %rdx
+	cmpq	%rdx, %rax
+	jne	.L16
+	movl	$0, -44(%rbp)
+	jmp	.L19
+.L20:
+	movl	-44(%rbp), %eax
+	movl	-200(%rbp,%rax,4), %edi
+	movzwl	-40(%rbp), %eax
+	movl	%eax, %esi
+	call	crcu32@PLT
+	movzwl	%ax, %eax
+	movw	%ax, -40(%rbp)
+	movl	-44(%rbp), %eax
+	movl	-164(%rbp,%rax,4), %edi
+	movzwl	-40(%rbp), %eax
+	movl	%eax, %esi
+	call	crcu32@PLT
+	movzwl	%ax, %eax
+	movw	%ax, -40(%rbp)
+	addl	$1, -44(%rbp)
+.L19:
+	cmpl	$8, -44(%rbp)
+	jle	.L20
+	movzwl	-40(%rbp), %eax
+	movw	%ax, %dx
+	leave
+	ret
+	.size	core_bench_state, .-core_bench_state
+
+WARNING:root:Failed to execute the assembly hypothesis for core_bench_state
+INFO:root:current LLM prompt size: 325
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"input.c"
+	.text
+	.globl	start_time
+	.type	start_time, @function
+start_time:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	leaq	start_time_val(%rip), %rsi
+	movl	$0, %edi
+	call	clock_gettime@PLT
+	nop
+	leave
+	ret
+	.size	start_time, .-start_time
+	.comm	start_time_val,16,8
+	.comm	stop_time_val,16,8
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 14075
+Total time (secs): 14.075000
+Iterations/Sec   : 4262.877442
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4262.877442 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:Pass for start_time
+INFO:root:current LLM prompt size: 310
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	portable_malloc
+	.type	portable_malloc, @function
+portable_malloc:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	-8(%rbp), %rdi
+	call	malloc@PLT
+	leave
+	ret
+	.size	portable_malloc, .-portable_malloc
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 14159
+Total time (secs): 14.159000
+Iterations/Sec   : 4237.587400
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4237.587400 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:Pass for portable_malloc
+INFO:root:current LLM prompt size: 381
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	matrix_mul_vect
+	.type	matrix_mul_vect, @function
+matrix_mul_vect:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movq	%rdi, -8(%rbp)       # Store N
+	movq	%rsi, -16(%rbp)      # Store C
+	movq	%rdx, -24(%rbp)      # Store A
+	movq	%rcx, -32(%rbp)      # Store B
+	movl	$0, -4(%rbp)         # i = 0
+	jmp	.L2
+.L3:
+	movl	-4(%rbp), %eax       # Load i
+	cltq
+	movq	-16(%rbp), %rdx      # Load C
+	leaq	(%rdx,%rax,4), %rdx
+	movl	$0, (%rdx)           # C[i] = 0
+	movl	$0, -12(%rbp)        # j = 0
+	jmp	.L4
+.L5:
+	movl	-4(%rbp), %eax       # Load i
+	cltq
+	movq	-8(%rbp), %r8        # Load N
+	imull	%r8d, %eax           # i * N
+	movl	-12(%rbp), %ecx      # Load j
+	addl	%ecx, %eax           # i * N + j
+	cltq
+	movq	-24(%rbp), %rcx      # Load A
+	movzwl	(%rcx,%rax,2), %eax  # Load A[i * N + j]
+	movsbl	%al, %eax            # Sign extend A[i * N + j]
+	movq	-32(%rbp), %rcx      # Load B
+	movl	-12(%rbp), %edx      # Load j
+	movzwl	(%rcx,%rdx,2), %ecx  # Load B[j]
+	movsbl	%cl, %ecx            # Sign extend B[j]
+	imull	%ecx, %eax           # A[i * N + j] * B[j]
+	movl	-4(%rbp), %ecx       # Load i
+	cltq
+	movq	-16(%rbp), %rdx      # Load C
+	leaq	(%rdx,%rax,4), %rdx  
+	addl	%eax, (%rdx)         # C[i] += A[i * N + j] * B[j]
+	addl	$1, -12(%rbp)        # j++
+.L4:
+	movq	-8(%rbp), %rax       # Load N
+	cmpq	-12(%rbp), %rax      # Compare j with N
+	jne	.L5
+	addl	$1, -4(%rbp)         # i++
+.L2:
+	movq	-8(%rbp), %rax       # Load N
+	cmpq	-4(%rbp), %rax       # Compare i with N
+	jne	.L3
+	leave
+	ret
+
+WARNING:root:Failed to execute the assembly hypothesis for matrix_mul_vect
+INFO:root:current LLM prompt size: 375
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	matrix_mul_const
+	.type	matrix_mul_const, @function
+matrix_mul_const:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movl	%edi, -20(%rbp)
+	movq	%rsi, -32(%rbp)
+	movq	%rdx, -40(%rbp)
+	movswl	%cx, %ecx
+	movl	%ecx, -44(%rbp)
+	movl	$0, -8(%rbp)
+	jmp	.L2
+.L3:
+	movl	$0, -12(%rbp)
+	jmp	.L4
+.L5:
+	movl	-8(%rbp), %eax
+	imull	-20(%rbp), %eax
+	movl	-12(%rbp), %edx
+	leaq	0(,%rax,4), %rax
+	addl	%edx, %eax
+	cltq
+	movq	-40(%rbp), %rdx
+	movzwl	(%rdx,%rax,2), %eax
+	movsbl	%ax, %eax
+	imull	-44(%rbp), %eax
+	movl	-8(%rbp), %edx
+	imull	-20(%rbp), %edx
+	movl	-12(%rbp), %ecx
+	leaq	0(,%rdx,4), %rdx
+	addl	%ecx, %edx
+	cltq
+	movq	-32(%rbp), %rcx
+	movl	%eax, (%rcx,%rdx,4)
+	addl	$1, -12(%rbp)
+.L4:
+	movl	-12(%rbp), %eax
+	cmpl	-20(%rbp), %eax
+	jl	.L5
+	addl	$1, -8(%rbp)
+.L2:
+	movl	-8(%rbp), %eax
+	cmpl	-20(%rbp), %eax
+	jl	.L3
+	leave
+	ret
+
+WARNING:root:Failed to compile the assembly hypothesis for matrix_mul_const
+stdout: 
+stderr: hyp/matrix_mul_const.s: Assembler messages:
+hyp/matrix_mul_const.s:30: Error: operand size mismatch for `movsb'
+
+INFO:root:current LLM prompt size: 660
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.file	"code.c"
+	.text
+	.globl	iterate
+	.type	iterate, @function
+iterate:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$48, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	-8(%rbp), %rax
+	movl	(%rax), %eax
+	movl	%eax, -12(%rbp)
+	movq	-8(%rbp), %rax
+	movl	$0, 40(%rax)
+	movq	-8(%rbp), %rax
+	movl	$0, 42(%rax)
+	movq	-8(%rbp), %rax
+	movl	$0, 44(%rax)
+	movq	-8(%rbp), %rax
+	movl	$0, 46(%rax)
+	movl	$0, -16(%rbp)
+	jmp	.L2
+.L3:
+	movq	-8(%rbp), %rax
+	movl	$1, %esi
+	movq	%rax, %rdi
+	call	core_bench_list@PLT
+	movw	%ax, -18(%rbp)
+	movq	-8(%rbp), %rax
+	movzwl	40(%rax), %ecx
+	movzwl	-18(%rbp), %edx
+	movl	%ecx, %esi
+	movw	%dx, %di
+	call	crcu16@PLT
+	movq	-8(%rbp), %rdx
+	movw	%ax, 40(%rdx)
+	movq	-8(%rbp), %rax
+	movl	$-1, %esi
+	movq	%rax, %rdi
+	call	core_bench_list@PLT
+	movw	%ax, -20(%rbp)
+	movq	-8(%rbp), %rax
+	movzwl	40(%rax), %ecx
+	movzwl	-20(%rbp), %edx
+	movl	%ecx, %esi
+	movw	%dx, %di
+	call	crcu16@PLT
+	movq	-8(%rbp), %rdx
+	movw	%ax, 40(%rdx)
+	cmpl	$0, -16(%rbp)
+	jne	.L4
+	movq	-8(%rbp), %rax
+	movzwl	40(%rax), %eax
+	movq	-8(%rbp), %rdx
+	movw	%ax, 42(%rdx)
+.L4:
+	addl	$1, -16(%rbp)
+.L2:
+	movl	-12(%rbp), %eax
+	cmpl	%eax, -16(%rbp)
+	jb	.L3
+	movl	$0, %eax
+	leave
+	ret
+	.size	iterate, .-iterate
+	.ident	"GCC: (GNU) 10.2.1 20210110"
+	.section	.note.GNU-stack,"",@progbits
+
+WARNING:root:Timeout for iterate
+INFO:root:current LLM prompt size: 562
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	check_data_types
+	.type	check_data_types, @function
+check_data_types:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movb	$0, -1(%rbp)            # u8 retval = 0;
+	cmpb	$1, $1                  # if (sizeof(u8) != 1)
+	je	.L2
+	leaq	.LC0(%rip), %rdi        # printf("ERROR: u8 is not an 8b datatype!\n");
+	call	puts@PLT
+	addb	$1, -1(%rbp)            # retval++;
+.L2:
+	cmpw	$2, $2                  # if (sizeof(u16) != 2)
+	je	.L3
+	leaq	.LC1(%rip), %rdi        # printf("ERROR: u16 is not a 16b datatype!\n");
+	call	puts@PLT
+	addb	$1, -1(%rbp)            # retval++;
+.L3:
+	cmpw	$2, $2                  # if (sizeof(short) != 2)
+	je	.L4
+	leaq	.LC2(%rip), %rdi        # printf("ERROR: short is not a 16b datatype!\n");
+	call	puts@PLT
+	addb	$1, -1(%rbp)            # retval++;
+.L4:
+	cmpl	$4, $4                  # if (sizeof(int) != 4)
+	je	.L5
+	leaq	.LC3(%rip), %rdi        # printf("ERROR: int is not a 32b datatype!\n");
+	call	puts@PLT
+	addb	$1, -1(%rbp)            # retval++;
+.L5:
+	cmpl	$4, $4                  # if (sizeof(unsigned) != 4)
+	je	.L6
+	leaq	.LC4(%rip), %rdi        # printf("ERROR: unsigned is not a 32b datatype!\n");
+	call	puts@PLT
+	addb	$1, -1(%rbp)            # retval++;
+.L6:
+	movq	%rbp, %rax
+	addq	$8, %rax
+	cmpq	%rax, %rax              # if (sizeof(uintptr_t) != sizeof(int *))
+	je	.L7
+	leaq	.LC5(%rip), %rdi        # printf("ERROR: uintptr_t is not a datatype that holds an int pointer!\n");
+	call	puts@PLT
+	addb	$1, -1(%rbp)            # retval++;
+.L7:
+	movzbl	-1(%rbp), %eax
+	testb	%al, %al
+	je	.L8
+	leaq	.LC6(%rip), %rdi        # printf("ERROR: Please modify the datatypes in core_portme.h!\n");
+	call	puts@PLT
+.L8:
+	movzbl	-1(%rbp), %eax
+	leave
+	ret
+.LC0:
+	.string	"ERROR: u8 is not an 8b datatype!"
+.LC1:
+	.string	"ERROR: u16 is not a 16b datatype!"
+.LC2:
+	.string	"ERROR: short is not a 16b datatype!"
+.LC3:
+	.string	"ERROR: int is not a 32b datatype!"
+.LC4:
+	.string	"ERROR: unsigned is not a 32b datatype!"
+.LC5:
+	.string	"ERROR: uintptr_t is not a datatype that holds an int pointer!"
+.LC6:
+	.string	"ERROR: Please modify the datatypes in core_portme.h!"
+	.size	check_data_types, .-check_data_types
+
+WARNING:root:Failed to compile the assembly hypothesis for check_data_types
+stdout: 
+stderr: hyp/check_data_types.s: Assembler messages:
+hyp/check_data_types.s:12: Error: operand type mismatch for `cmp'
+hyp/check_data_types.s:18: Error: operand type mismatch for `cmp'
+hyp/check_data_types.s:24: Error: operand type mismatch for `cmp'
+hyp/check_data_types.s:30: Error: operand type mismatch for `cmp'
+hyp/check_data_types.s:36: Error: operand type mismatch for `cmp'
+
+INFO:root:current LLM prompt size: 412
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	matrix_mul_matrix
+	.type	matrix_mul_matrix, @function
+matrix_mul_matrix:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$48, %rsp
+	movq	%rdi, -40(%rbp)    # store N
+	movq	%rsi, -48(%rbp)    # store C
+	movq	%rdx, -56(%rbp)    # store A
+	movq	%rcx, -64(%rbp)    # store B
+	movl	$0, -4(%rbp)       # i = 0
+	jmp	.L2
+.L3:
+	movl	$0, -8(%rbp)       # j = 0
+	jmp	.L4
+.L5:
+	movq	-48(%rbp), %rax
+	movl	-4(%rbp), %edx
+	movl	-8(%rbp), %ecx
+	imull	-40(%rbp), %edx
+	addl	%ecx, %edx
+	cltq
+	movl	$0, (%rax,%rdx,4)  # C[i * N + j] = 0
+	movl	$0, -12(%rbp)      # k = 0
+	jmp	.L6
+.L7:
+	movq	-48(%rbp), %rax
+	movl	-4(%rbp), %edx
+	imull	-40(%rbp), %edx
+	addl	-12(%rbp), %edx
+	cltq
+	movq	-56(%rbp), %r8
+	movzwl	(%r8,%rdx,2), %edx
+	movq	-64(%rbp), %r8
+	movl	-12(%rbp), %ecx
+	imull	-40(%rbp), %ecx
+	addl	-8(%rbp), %ecx
+	cltq
+	movzwl	(%r8,%rcx,2), %ecx
+	imull	%ecx, %edx
+	movq	-48(%rbp), %rax
+	movl	-4(%rbp), %ecx
+	imull	-40(%rbp), %ecx
+	addl	-8(%rbp), %ecx
+	cltq
+	addl	%edx, (%rax,%rcx,4)
+	addl	$1, -12(%rbp)      # k++
+.L6:
+	movq	-40(%rbp), %rax
+	movl	-12(%rbp), %edx
+	cmpq	%rax, %rdx
+	jb	.L7
+	addl	$1, -8(%rbp)       # j++
+.L4:
+	movq	-40(%rbp), %rax
+	movl	-8(%rbp), %edx
+	cmpq	%rax, %rdx
+	jb	.L5
+	addl	$1, -4(%rbp)       # i++
+.L2:
+	movq	-40(%rbp), %rax
+	movl	-4(%rbp), %edx
+	cmpq	%rax, %rdx
+	jb	.L3
+	leave
+	ret
+
+WARNING:root:Failed to execute the assembly hypothesis for matrix_mul_matrix
+INFO:root:Failed cases: ['core_bench_list', 'core_bench_state', 'core_init_matrix', 'main', 'core_list_mergesort', 'core_list_init', 'core_state_transition', 'core_init_state',]
+INFO:root:Fixed cases: ['core_list_insert_new', 'core_list_remove', 'matrix_mul_matrix_bitextract', 'core_bench_matrix', 'matrix_test', 'core_list_undo_remove', 'matrix_mul_vect', 'iterate', 'matrix_mul_matrix', 'get_time', 'crcu32', 'ee_isdigit', 'matrix_mul_const', 'check_data_types']
+INFO:root:Passed cases: ['portable_init', 'core_list_find', 'copy_info', 'cmp_complex', 'stop_time', 'portable_free', 'crc16', 'calc_func', 'portable_fini', 'crcu8', 'matrix_add_const', 'crcu16', 'core_list_reverse', 'time_in_secs', 'cmp_idx', 'matrix_sum', 'start_time', 'portable_malloc']
+INFO:root:Pass rate: 18/40
+INFO:root:Fixed Pass rate: 32/40
+INFO:root:End time: 2024-08-30 20:13:19.102316

@@ -236,7 +236,7 @@ Actual outputs are:
         return False, error_message
 
 
-def c_compiler(
+def c_compiler_exebench(
     model="gpt-4o",
     begin_id=0,
     end_id=100,
@@ -524,6 +524,105 @@ def c_compiler(
             f.close()
 
 
+def clean_hyp_dir():
+    if os.path.exists("hyp"):
+        shutil.rmtree("hyp")
+    os.mkdir("hyp")
+
+
+def c_compiler_coremark(
+    model="gpt-4o",
+    use_local=False,
+    temperature=0.3,
+    peft_model="",
+    pass_k=1,
+    self_correct=False,  # whether to use self-correcting mechanism
+    self_correct_round=3,  # the number of self-correcting rounds
+    do_analyze=False,
+    use_one_shot_prompt=True,
+    use_zero_shot_prompt=False,
+    
+):
+    ds = load_dataset("mistral0105/CoreMark_FunctionLevel")
+    compiler = Compiler(
+        model=model, use_local=use_local, temperature=temperature, peft_model=peft_model,
+        use_one_shot_prompt=use_one_shot_prompt,
+        use_zero_shot_prompt=use_zero_shot_prompt,
+    )
+    failed = []
+    passed = []
+    for e in tqdm(ds["train"]):
+        file_name = e["name"]
+        function_name = e["function_name"]
+        c_code = e["c_src"]
+        logging.info(f"Start to compile {function_name}\nC code:\n{c_code}")
+        # below is one try to neural compile on the current C code
+        compiler.compile(c_code, out=f"hyp/{function_name}.s")
+        # compile the other C code(exclude current file_name) with the assembly hypothesis to check the correctness
+        # first, mov all c_src except the current one to a new directory(out)
+        if not os.path.exists("out"):
+            os.mkdir("out")
+        for file in os.listdir("c_src"):
+            if file != file_name:
+                shutil.copy2(os.path.join("c_src", file), os.path.join("hyp", file))
+        # then, compile the other C code with the assembly hypothesis
+        
+        # manage src list
+        src_list = []
+        for file in os.listdir("hyp"):
+            if file.endswith(".c"):
+                src_list.append("hyp/" + file)
+            if file.endswith(".s"):
+                src_list.append("hyp/" + file)
+        run_param = ["gcc"]
+        run_param.extend(src_list)
+        run_param.extend(["-o", f"out/{function_name}_llm.exe"])
+        ret = subprocess.run(
+            run_param,
+            stderr=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+        )
+        if ret.returncode != 0:
+            logging.warning(
+                f"Failed to compile the assembly hypothesis for {function_name}\nstdout: {ret.stdout.decode()}\nstderr: {ret.stderr.decode()}"
+            )
+            failed.append(function_name)
+            clean_hyp_dir()
+            continue
+        # execute the exe file to check the correctness, timeout=60
+        try:
+            ret = subprocess.run(
+                [f"./out/{function_name}_llm.exe"],
+                stderr=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                timeout=60,
+            )
+            if ret.returncode != 0:
+                logging.warning(
+                    f"Failed to execute the assembly hypothesis for {function_name}"
+                )
+                failed.append(function_name)
+                clean_hyp_dir()
+                continue
+            else:
+                # log stdout and stderr
+                logging.info(f"stdout: {ret.stdout.decode()}")
+                logging.info(f"stderr: {ret.stderr.decode()}")
+                # assume it is correct, since it can be executed successfully
+                logging.info(f"Pass for {function_name}")
+                passed.append(function_name)
+                clean_hyp_dir()
+        except subprocess.TimeoutExpired:
+            logging.warning(f"Timeout for {function_name}")
+            failed.append(function_name)
+            continue
+
+    # print all
+    logging.info(f"Failed cases: {failed}")
+    logging.info(f"Passed cases: {passed}")
+    logging.info(f"Pass rate: {len(passed)*100 / (len(passed)+len(failed))}%")
+
+
 def x86_simulate(model="gpt-4o", temperature=0.3, x86_src="", c_src="", init_value=""):
     compiler = Compiler(
         model,
@@ -552,6 +651,7 @@ if __name__ == "__main__":
         exit(1)
     python_dir = os.path.join(root_dir, "python")
     sandbox_dir = os.path.join(root_dir, "sandbox/temp")
+    coremark_dir = os.path.join(root_dir, "sandbox/coremark_workspace")
     log_dir = os.path.join(root_dir, "logs")
 
     # 2. configure experiment parameters
@@ -565,7 +665,7 @@ if __name__ == "__main__":
 
     # 3. parse command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", type=str, default="llama3.1")
+    parser.add_argument("--model", type=str, default="deepseek-coder")
     parser.add_argument("--begin_id", type=int, default=0)
     parser.add_argument("--end_id", type=int, default=100)
     parser.add_argument("--prompt_style", type=str, default="one")
@@ -579,23 +679,25 @@ if __name__ == "__main__":
     parser.add_argument("--logging_level", type=str, default="INFO")
     parser.add_argument("--do_analyze", type=bool, default=False)
     parser.add_argument("--do_simulate", type=bool, default=False)
+    parser.add_argument("--eval_coremark", type=bool, default=True)
     parser.add_argument("--clear_workspace", type=bool, default=False)
     S = parser.parse_args()
-    candidate_model = S.model
-    begin_id = S.begin_id
-    end_id = S.end_id
-    prompt_style = S.prompt_style
-    use_local = S.use_local
-    need_log = S.need_log
-    temperature = S.temperature
-    peft_model = S.peft_model
-    pass_k = S.pass_k
-    self_correct = S.self_correct
-    correct_round = S.correct_round
-    logging_level = S.logging_level
-    do_analyze = S.do_analyze
-    do_simulate = S.do_simulate
-    clear_workspace = S.clear_workspace
+    candidate_model: str = S.model
+    begin_id: int = S.begin_id
+    end_id: int = S.end_id
+    prompt_style: str = S.prompt_style
+    use_local: bool = S.use_local
+    need_log: bool = S.need_log
+    temperature: float = S.temperature
+    peft_model: str = S.peft_model
+    pass_k: int = S.pass_k
+    self_correct: bool = S.self_correct
+    correct_round: int = S.correct_round
+    logging_level: str = S.logging_level
+    do_analyze: bool = S.do_analyze
+    do_simulate: bool = S.do_simulate
+    eval_coremark: bool = S.eval_coremark
+    clear_workspace: bool = S.clear_workspace
     if prompt_style == "one":
         use_one_shot_prompt = True
         use_zero_shot_prompt = False
@@ -623,6 +725,8 @@ if __name__ == "__main__":
 
     if do_simulate:
         temp_name = f"temp_simulate_{candidate_model}_{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{random.randint(0, 1000000)}"
+    elif eval_coremark:
+        temp_name = f"temp_coremark_{candidate_model}_{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{random.randint(0, 1000000)}"
     else:
         temp_name = f"temp_{candidate_model}_{begin_id}_{end_id}_{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{random.randint(0, 1000000)}"
     temp_dir = os.path.join(sandbox_dir, temp_name)
@@ -656,10 +760,24 @@ if __name__ == "__main__":
             c_src=open("/root/workspace/LLM_Compiler/temp/431_f94/func.c", "r").read(),
             init_value="x=15, y=16",
         )
+    elif eval_coremark:
+        os.chdir(coremark_dir)
+        c_compiler_coremark(
+            model=candidate_model,
+            use_local=use_local,
+            temperature=temperature,
+            peft_model=peft_model,
+            pass_k=pass_k,
+            self_correct=self_correct,
+            self_correct_round=correct_round,
+            do_analyze=do_analyze,
+            use_one_shot_prompt=use_one_shot_prompt,
+            use_zero_shot_prompt=use_zero_shot_prompt,
+        )
     elif clear_workspace:
         workspace_clear(sandbox_dir, log_dir)
     else:
-        c_compiler(
+        c_compiler_exebench(
             model=candidate_model,
             begin_id=begin_id,
             end_id=end_id,
