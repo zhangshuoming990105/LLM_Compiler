@@ -1,0 +1,5413 @@
+INFO:root:log file created!
+INFO:root:Start time: 2024-09-03 19:07:56.851893
+INFO:root:Current run:temp_coremark_deepseek-coder_2024-09-03-19-07-56_105033
+INFO:root:Model: deepseek-coder
+INFO:root:Temperature: 0.5
+INFO:root:Pass_k: 1
+INFO:root:Self-correct: False
+INFO:root:Correct round: 3
+INFO:root:Do analyze: False
+INFO:root:Do simulate: False
+INFO:root:Eval coremark: True
+INFO:root:Eval exebench: False
+INFO:root:LLM default prompt size: 272
+INFO:root:Start to compile core_init_matrix
+C code:
+#include <stdint.h>
+#include <stdio.h>
+typedef unsigned short u16;
+/* align an offset to point to a 32b value */
+#define align_mem(x) (void *)(4 + (((uintptr_t)(x)-1) & ~3))
+
+#define matrix_clip(x, y) ((y) ? (x) & 0x0ff : (x) & 0x0ffff)
+
+typedef struct MAT_PARAMS_S {
+  int N;
+  short *A;
+  short *B;
+  int *C;
+} mat_params;
+
+unsigned core_init_matrix(unsigned blksize, void *memblk, int seed,
+                          mat_params *p) {
+  unsigned N = 0;
+  short *A;
+  short *B;
+  int order = 1;
+  short val;
+  unsigned i = 0, j = 0;
+  if (seed == 0)
+    seed = 1;
+  while (j < blksize) {
+    i++;
+    j = i * i * 2 * 4;
+  }
+  N = i - 1;
+  A = (short *)align_mem(memblk);
+  B = A + N * N;
+
+  for (i = 0; i < N; i++) {
+    for (j = 0; j < N; j++) {
+      seed = ((order * seed) % 65536);
+      val = (seed + order);
+      val = matrix_clip(val, 0);
+      B[i * N + j] = val;
+      val = (val + order);
+      val = matrix_clip(val, 1);
+      A[i * N + j] = val;
+      order++;
+    }
+  }
+
+  p->A = A;
+  p->B = B;
+  p->C = (int *)align_mem(B + N * N);
+  p->N = N;
+  return N;
+}
+INFO:root:current LLM prompt size: 683
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	core_init_matrix
+	.type	core_init_matrix, @function
+core_init_matrix:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$96, %rsp
+	movl	%edi, -52(%rbp)
+	movq	%rsi, -64(%rbp)
+	movl	%edx, -68(%rbp)
+	movq	%rcx, -80(%rbp)
+	movl	$0, -4(%rbp)
+	movq	$0, -16(%rbp)
+	movq	$0, -24(%rbp)
+	movl	$1, -32(%rbp)
+	movw	$0, -34(%rbp)
+	movl	$0, -36(%rbp)
+	movl	$0, -40(%rbp)
+	cmpl	$0, -68(%rbp)
+	jne	.L2
+	movl	$1, -68(%rbp)
+.L2:
+	movl	-36(%rbp), %eax
+	imull	%eax, %eax
+	shll	$3, %eax
+	movl	%eax, -40(%rbp)
+.L3:
+	movl	-40(%rbp), %eax
+	cmpl	-52(%rbp), %eax
+	jnb	.L4
+	addl	$1, -36(%rbp)
+	movl	-36(%rbp), %eax
+	imull	%eax, %eax
+	shll	$3, %eax
+	movl	%eax, -40(%rbp)
+	jmp	.L3
+.L4:
+	subl	$1, -36(%rbp)
+	movl	-36(%rbp), %eax
+	movl	%eax, -4(%rbp)
+	movq	-64(%rbp), %rax
+	subq	$1, %rax
+	andq	$-4, %rax
+	addq	$4, %rax
+	movq	%rax, -16(%rbp)
+	movl	-4(%rbp), %eax
+	imull	%eax, %eax
+	movslq	%eax, %rdx
+	movq	-16(%rbp), %rax
+	addq	%rdx, %rax
+	movq	%rax, -24(%rbp)
+	movl	$0, -36(%rbp)
+	jmp	.L5
+.L8:
+	movl	$0, -40(%rbp)
+	jmp	.L6
+.L7:
+	movl	-32(%rbp), %eax
+	imull	-68(%rbp), %eax
+	movl	%eax, %edx
+	movl	$65536, %eax
+	cltd
+	idivl	%edx
+	movl	%edx, -68(%rbp)
+	movl	-68(%rbp), %eax
+	addl	-32(%rbp), %eax
+	movw	%ax, -34(%rbp)
+	movzwl	-34(%rbp), %eax
+	andl	$65535, %eax
+	movw	%ax, -34(%rbp)
+	movl	-4(%rbp), %eax
+	imull	%eax, %eax
+	movslq	%eax, %rdx
+	movq	-24(%rbp), %rax
+	addq	%rdx, %rax
+	movzwl	-34(%rbp), %edx
+	movw	%dx, (%rax)
+	movzwl	-34(%rbp), %eax
+	addl	-32(%rbp), %eax
+	movw	%ax, -34(%rbp)
+	movzwl	-34(%rbp), %eax
+	andl	$255, %eax
+	movw	%ax, -34(%rbp)
+	movl	-4(%rbp), %eax
+	imull	%eax, %eax
+	movslq	%eax, %rdx
+	movq	-16(%rbp), %rax
+	addq	%rdx, %rax
+	movzwl	-34(%rbp), %edx
+	movw	%dx, (%rax)
+	addl	$1, -32(%rbp)
+	addl	$1, -40(%rbp)
+.L6:
+	movl	-40(%rbp), %eax
+	cmpl	-4(%rbp), %eax
+	jb	.L7
+	addl	$1, -36(%rbp)
+.L5:
+	movl	-36(%rbp), %eax
+	cmpl	-4(%rbp), %eax
+	jb	.L8
+	movq	-16(%rbp), %rax
+	movq	%rax, %rdx
+	movq	-80(%rbp), %rax
+	movq	%rdx, (%rax)
+	movq	-24(%rbp), %rax
+	movq	%rax, %rdx
+	movq	-80(%rbp), %rax
+	movq	%rdx, 8(%rax)
+	movl	-4(%rbp), %eax
+	imull	%eax, %eax
+	movslq	%eax, %rdx
+	movq	-24(%rbp), %rax
+	addq	%rdx, %rax
+	subq	$1, %rax
+	andq	$-4, %rax
+	addq	$4, %rax
+	movq	%rax, %rdx
+	movq	-80(%rbp), %rax
+	movq	%rdx, 16(%rax)
+	movl	-4(%rbp), %eax
+	movq	-80(%rbp), %rdx
+	movl	%eax, 24(%rdx)
+	movl	-4(%rbp), %eax
+	leave
+	ret
+
+WARNING:root:0th try failed to execute the assembly hypothesis for core_init_matrix
+INFO:root:0th try failed at the first round
+INFO:root:core_init_matrix FAIL
+INFO:root:Start to compile get_time
+C code:
+#include <time.h>
+
+extern struct timespec start_time_val, stop_time_val;
+
+clock_t get_time(void) {
+  clock_t elapsed =
+      ((stop_time_val.tv_sec - start_time_val.tv_sec) * 1000 +
+       (stop_time_val.tv_nsec - start_time_val.tv_nsec) / 1000000);
+  return elapsed;
+}
+INFO:root:current LLM prompt size: 362
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	get_time
+	.type	get_time, @function
+get_time:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	start_time_val(%rip), %rax
+	movq	stop_time_val(%rip), %rdx
+	subq	%rax, %rdx
+	imulq	$1000, %rdx, %rdx
+	movq	start_time_val+8(%rip), %rax
+	movq	stop_time_val+8(%rip), %rcx
+	subq	%rax, %rcx
+	movq	%rcx, %rax
+	imulq	$-18014398509481984, %rax, %rax
+	movq	%rax, %rcx
+	shrq	$44, %rcx
+	addq	%rcx, %rdx
+	movq	%rdx, %rax
+	popq	%rbp
+	ret
+
+WARNING:root:0th try failed to compile the assembly hypothesis for get_time
+stdout: 
+stderr: hyp/get_time.s: Assembler messages:
+hyp/get_time.s:18: Error: operand type mismatch for `imul'
+
+INFO:root:0th try failed at the first round
+INFO:root:get_time FAIL
+INFO:root:Start to compile portable_init
+C code:
+typedef unsigned char u8;
+
+typedef struct CORE_PORTABLE_S {
+  u8 portable_id;
+} core_portable;
+void portable_init(core_portable *p) { p->portable_id = 1; }
+INFO:root:current LLM prompt size: 334
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	portable_init
+	.type	portable_init, @function
+portable_init:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	-8(%rbp), %rax
+	movb	$1, (%rax)
+	nop
+	popq	%rbp
+	ret
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 13978
+Total time (secs): 13.978000
+Iterations/Sec   : 4292.459579
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4292.459579 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:0th try passed for portable_init
+INFO:root:0th try passed at the first round
+INFO:root:portable_init PASS
+INFO:root:Start to compile core_list_find
+C code:
+typedef struct list_data_s {
+  short data16;
+  short idx;
+} list_data;
+
+typedef struct list_head_s {
+  struct list_head_s *next;
+  struct list_data_s *info;
+} list_head;
+
+list_head *core_list_find(list_head *list, list_data *info) {
+  if (info->idx >= 0) {
+    while (list && (list->info->idx != info->idx))
+      list = list->next;
+    return list;
+  } else {
+    while (list && ((list->info->data16 & 0xff) != info->data16))
+      list = list->next;
+    return list;
+  }
+}
+INFO:root:current LLM prompt size: 431
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	core_list_find
+	.type	core_list_find, @function
+core_list_find:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -24(%rbp)
+	movq	%rsi, -32(%rbp)
+	movq	-32(%rbp), %rax
+	movzwl	4(%rax), %eax
+	testw	%ax, %ax
+	js	.L2
+	jmp	.L3
+.L4:
+	movq	-24(%rbp), %rax
+	movq	(%rax), %rax
+	movq	%rax, -24(%rbp)
+.L3:
+	movq	-24(%rbp), %rax
+	testq	%rax, %rax
+	je	.L5
+	movq	-24(%rbp), %rax
+	movq	8(%rax), %rax
+	movzwl	4(%rax), %edx
+	movq	-32(%rbp), %rax
+	movzwl	4(%rax), %eax
+	cmpw	%ax, %dx
+	jne	.L4
+.L5:
+	movq	-24(%rbp), %rax
+	jmp	.L6
+.L2:
+	jmp	.L7
+.L8:
+	movq	-24(%rbp), %rax
+	movq	(%rax), %rax
+	movq	%rax, -24(%rbp)
+.L7:
+	movq	-24(%rbp), %rax
+	testq	%rax, %rax
+	je	.L9
+	movq	-24(%rbp), %rax
+	movq	8(%rax), %rax
+	movzwl	(%rax), %eax
+	andl	$255, %eax
+	movzwl	%ax, %edx
+	movq	-32(%rbp), %rax
+	movzwl	(%rax), %eax
+	cmpw	%ax, %dx
+	jne	.L8
+.L9:
+	movq	-24(%rbp), %rax
+.L6:
+	popq	%rbp
+	ret
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 13852
+Total time (secs): 13.852000
+Iterations/Sec   : 4331.504476
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4331.504476 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:0th try passed for core_list_find
+INFO:root:0th try passed at the first round
+INFO:root:core_list_find PASS
+INFO:root:Start to compile copy_info
+C code:
+typedef struct list_data_s {
+  short data16;
+  short idx;
+} list_data;
+
+typedef struct list_head_s {
+  struct list_head_s *next;
+  struct list_data_s *info;
+} list_head;
+
+void copy_info(list_data *to, list_data *from) {
+  to->data16 = from->data16;
+  to->idx = from->idx;
+}
+INFO:root:current LLM prompt size: 370
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	copy_info
+	.type	copy_info, @function
+copy_info:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	-16(%rbp), %rax
+	movzwl	(%rax), %edx
+	movq	-8(%rbp), %rax
+	movw	%dx, (%rax)
+	movq	-16(%rbp), %rax
+	movzwl	2(%rax), %edx
+	movq	-8(%rbp), %rax
+	movw	%dx, 2(%rax)
+	nop
+	popq	%rbp
+	ret
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 13999
+Total time (secs): 13.999000
+Iterations/Sec   : 4286.020430
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4286.020430 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:0th try passed for copy_info
+INFO:root:0th try passed at the first round
+INFO:root:copy_info PASS
+INFO:root:Start to compile main
+C code:
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+typedef unsigned short u16;
+typedef unsigned char u8;
+
+typedef struct CORE_PORTABLE_S {
+  u8 portable_id;
+} core_portable;
+
+typedef struct list_data_s {
+  short data16;
+  short idx;
+} list_data;
+
+typedef struct list_head_s {
+  struct list_head_s *next;
+  struct list_data_s *info;
+} list_head;
+
+typedef struct MAT_PARAMS_S {
+  int N;
+  short *A;
+  short *B;
+  int *C;
+} mat_params;
+
+typedef struct RESULTS_S {
+
+  short seed1;
+  short seed2;
+  short seed3;
+  void *memblock[4];
+  unsigned size;
+  unsigned iterations;
+  unsigned execs;
+  struct list_head_s *list;
+  mat_params mat;
+
+  u16 crc;
+  u16 crclist;
+  u16 crcmatrix;
+  u16 crcstate;
+  short err;
+
+  core_portable port;
+} core_results;
+
+u16 crc16(short newval, u16 crc);
+u16 crcu16(u16 newval, u16 crc);
+void portable_init(core_portable *p);
+void portable_fini(core_portable *p);
+void *portable_malloc(size_t size);
+void portable_free(void *p);
+u8 check_data_types();
+void *iterate(void *pres);
+
+void start_time(void);
+void stop_time(void);
+clock_t get_time(void);
+double time_in_secs(clock_t ticks);
+
+list_head *core_list_init(unsigned blksize, list_head *memblock, short seed);
+void core_init_state(unsigned size, short seed, u8 *p);
+unsigned core_init_matrix(unsigned blksize, void *memblk, int seed,
+                          mat_params *p);
+
+struct timespec start_time_val, stop_time_val;
+static u16 list_known_crc[] = {(u16)0xd4b0, (u16)0x3340, (u16)0x6a79,
+                               (u16)0xe714, (u16)0xe3c1};
+static u16 matrix_known_crc[] = {(u16)0xbe52, (u16)0x1199, (u16)0x5608,
+                                 (u16)0x1fd7, (u16)0x0747};
+static u16 state_known_crc[] = {(u16)0x5e47, (u16)0x39bf, (u16)0xe5a4,
+                                (u16)0x8e3a, (u16)0x8d84};
+
+int main() {
+  u16 i, j = 0, num_algorithms = 3;
+  short known_id = -1, total_errors = 0;
+  u16 seedcrc = 0;
+  clock_t total_time;
+  core_results results[1];
+  portable_init(&(results[0].port));
+  results[0].seed1 = 0;
+  results[0].seed2 = 0;
+  results[0].seed3 = 0x66;
+  results[0].iterations = 0;
+  results[0].execs = 7;
+  results[0].size = 2000;
+  results[0].memblock[0] = portable_malloc(results[i].size);
+  results[0].err = 0;
+  results[0].size = results[0].size / num_algorithms;
+  for (i = 0; i < 3; i++) {
+    unsigned ctx;
+    for (ctx = 0; ctx < 1; ctx++)
+      results[ctx].memblock[i + 1] =
+          (char *)(results[ctx].memblock[0]) + results[0].size * j;
+    j++;
+  }
+  results[0].list =
+      core_list_init(results[0].size, results[0].memblock[1], results[0].seed1);
+  core_init_matrix(results[0].size, results[0].memblock[2],
+                   (int)results[0].seed1 | (((int)results[0].seed2) << 16),
+                   &(results[0].mat));
+  core_init_state(results[0].size, results[0].seed1, results[0].memblock[3]);
+
+  /* automatically determine number of iterations if not set */
+  if (results[0].iterations == 0) {
+    double secs_passed = 0;
+    unsigned divisor;
+    results[0].iterations = 1;
+    while (secs_passed < (double)1) {
+      results[0].iterations *= 10;
+      start_time();
+      iterate(&results[0]);
+      stop_time();
+      secs_passed = time_in_secs(get_time());
+    }
+    /* now we know it executes for at least 1 sec, set actual run time at
+     * about 10 secs */
+    divisor = (unsigned)secs_passed;
+    if (divisor == 0) /* some machines cast float to int as 0 since this
+                         conversion is not defined by ANSI, but we know at
+                         least one second passed */
+      divisor = 1;
+    results[0].iterations *= 1 + 10 / divisor;
+  }
+  /* perform actual benchmark */
+  start_time();
+  iterate(&results[0]);
+  stop_time();
+  total_time = get_time();
+  /* get a function of the input to report */
+  seedcrc = crc16(results[0].seed1, seedcrc);
+  seedcrc = crc16(results[0].seed2, seedcrc);
+  seedcrc = crc16(results[0].seed3, seedcrc);
+  seedcrc = crc16(results[0].size, seedcrc);
+
+  switch (seedcrc) { /* test known output for common seeds */
+  case 0xe9f5:       /* seed1=0, seed2=0, seed3=0x66, size 666 per algorithm */
+    known_id = 3;
+    printf("2K performance run parameters for coremark.\n");
+    break;
+  default:
+    total_errors = -1;
+    break;
+  }
+  if (known_id >= 0) {
+    results[i].err = 0;
+    if ((results[i].execs & 1) &&
+        (results[i].crclist != list_known_crc[known_id])) {
+      printf("[%u]ERROR! list crc 0x%04x - should be 0x%04x\n", i,
+             results[i].crclist, list_known_crc[known_id]);
+      results[i].err++;
+    }
+    if ((results[i].execs & 2) &&
+        (results[i].crcmatrix != matrix_known_crc[known_id])) {
+      printf("[%u]ERROR! matrix crc 0x%04x - should be 0x%04x\n", i,
+             results[i].crcmatrix, matrix_known_crc[known_id]);
+      results[i].err++;
+    }
+    if ((results[i].execs & 4) &&
+        (results[i].crcstate != state_known_crc[known_id])) {
+      printf("[%u]ERROR! state crc 0x%04x - should be 0x%04x\n", i,
+             results[i].crcstate, state_known_crc[known_id]);
+      results[i].err++;
+    }
+    total_errors += results[i].err;
+  }
+  total_errors += check_data_types();
+  /* and report results */
+  printf("CoreMark Size    : %lu\n", (long unsigned)results[0].size);
+  printf("Total ticks      : %lu\n", (long unsigned)total_time);
+  printf("Total time (secs): %f\n", time_in_secs(total_time));
+  if (time_in_secs(total_time) > 0)
+    printf("Iterations/Sec   : %f\n",
+           1 * results[0].iterations / time_in_secs(total_time));
+  if (time_in_secs(total_time) < 10) {
+    printf("ERROR! Must execute for at least 10 secs for a valid result!\n");
+    total_errors++;
+  }
+
+  printf("Iterations       : %lu\n", (long unsigned)results[0].iterations);
+  printf("Compiler version : AICC 1.0\n");
+  /* output for verification */
+  printf("seedcrc          : 0x%04x\n", seedcrc);
+  if (results[0].execs & 1)
+    printf("[%d]crclist       : 0x%04x\n", i, results[i].crclist);
+  if (results[0].execs & 2)
+    printf("[%d]crcmatrix     : 0x%04x\n", i, results[i].crcmatrix);
+  if (results[0].execs & 4)
+    printf("[%d]crcstate      : 0x%04x\n", i, results[i].crcstate);
+  printf("[%d]crcfinal      : 0x%04x\n", i, results[i].crc);
+  if (total_errors == 0) {
+    printf("Correct operation validated. See README.md for run and reporting "
+           "rules.\n");
+    if (known_id == 3) {
+      printf("Function Level CoreMark 1.0 : %f by AICC 1.0",
+             results[0].iterations / time_in_secs(total_time));
+      printf(" / Heap");
+      printf("\n");
+    }
+  }
+  if (total_errors > 0)
+    printf("Errors detected\n");
+  if (total_errors < 0)
+    printf("Cannot validate operation for these seed values, please compare "
+           "with results on a known platform.\n");
+
+  portable_free(results[0].memblock[0]);
+  /* And last call any target specific code for finalizing */
+  portable_fini(&(results[0].port));
+
+  return 0;
+}
+INFO:root:current LLM prompt size: 2387
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movl	$0, -4(%rbp)
+	movl	$0, -8(%rbp)
+	movw	$102, -10(%rbp)
+	movl	$0, -12(%rbp)
+	movl	$7, -16(%rbp)
+	movl	$2000, -20(%rbp)
+	movl	-20(%rbp), %eax
+	movslq	%eax, %rdi
+	call	portable_malloc
+	movq	%rax, -32(%rbp)
+	movw	$0, -34(%rbp)
+	movl	-20(%rbp), %eax
+	movl	$3, %edx
+	divl	%edx
+	movl	%eax, -20(%rbp)
+	movl	$0, -36(%rbp)
+	jmp	.L2
+.L5:
+	movl	$0, -40(%rbp)
+	jmp	.L3
+.L4:
+	movl	-36(%rbp), %eax
+	cltq
+	leaq	0(,%rax,8), %rdx
+	movq	-32(%rbp), %rax
+	addq	%rdx, %rax
+	movq	%rax, -48(%rbp)
+	addl	$1, -40(%rbp)
+.L3:
+	cmpl	$0, -40(%rbp)
+	jle	.L4
+	addl	$1, -36(%rbp)
+.L2:
+	cmpl	$2, -36(%rbp)
+	jle	.L5
+	movl	-20(%rbp), %eax
+	movslq	%eax, %rdi
+	movq	-32(%rbp), %rsi
+	movswl	-10(%rbp), %edx
+	call	core_list_init
+	movq	%rax, -56(%rbp)
+	movl	-20(%rbp), %eax
+	movslq	%eax, %rdi
+	movq	-32(%rbp), %rsi
+	movswl	-10(%rbp), %edx
+	sall	$16, %edx
+	orl	-10(%rbp), %edx
+	movl	%edx, %ecx
+	leaq	-64(%rbp), %rdx
+	call	core_init_matrix
+	movl	-20(%rbp), %eax
+	movslq	%eax, %rdi
+	movq	-32(%rbp), %rsi
+	movswl	-10(%rbp), %edx
+	call	core_init_state
+	movl	$0, -68(%rbp)
+	jmp	.L6
+.L7:
+	movl	-68(%rbp), %eax
+	imull	$10, %eax, %eax
+	movl	%eax, -68(%rbp)
+	call	start_time
+	leaq	-80(%rbp), %rdi
+	call	iterate
+	call	stop_time
+	call	get_time
+	cvtsi2sdq	%rax, %xmm0
+	call	time_in_secs
+	movsd	%xmm0, -88(%rbp)
+.L6:
+	movsd	-88(%rbp), %xmm0
+	comisd	.LC0(%rip), %xmm0
+	jb	.L7
+	movsd	-88(%rbp), %xmm0
+	cvttsd2sil	%xmm0, %eax
+	testl	%eax, %eax
+	jne	.L8
+	movl	$1, %eax
+.L8:
+	movl	-68(%rbp), %edx
+	addl	$10, %edx
+	imull	%eax, %edx
+	movl	%edx, -68(%rbp)
+	call	start_time
+	leaq	-80(%rbp), %rdi
+	call	iterate
+	call	stop_time
+	call	get_time
+	movq	%rax, -96(%rbp)
+	movswl	-10(%rbp), %edx
+	movzwl	-100(%rbp), %eax
+	movw	%ax, -102(%rbp)
+	movswl	-10(%rbp), %edx
+	movzwl	-102(%rbp), %eax
+	movw	%ax, -104(%rbp)
+	movswl	-10(%rbp), %edx
+	movzwl	-104(%rbp), %eax
+	movw	%ax, -106(%rbp)
+	movl	-20(%rbp), %edx
+	movzwl	-106(%rbp), %eax
+	movw	%ax, -108(%rbp)
+	movzwl	-108(%rbp), %eax
+	cmpl	$59893, %eax
+	jne	.L9
+	movl	$3, -112(%rbp)
+	leaq	.LC1(%rip), %rdi
+	call	puts@PLT
+	jmp	.L10
+.L9:
+	movl	$-1, -116(%rbp)
+.L10:
+	cmpl	$0, -112(%rbp)
+	jl	.L11
+	movl	$0, -120(%rbp)
+	cmpl	$1, -16(%rbp)
+	jne	.L12
+	movl	-120(%rbp), %eax
+	movzwl	list_known_crc(,%rax,2), %eax
+	cmpw	-122(%rbp), %ax
+	je	.L12
+	movl	-120(%rbp), %eax
+	movzwl	list_known_crc(,%rax,2), %edx
+	movl	-120(%rbp), %eax
+	movzwl	-122(%rbp), %ecx
+	leaq	.LC2(%rip), %rsi
+	movl	%eax, %edi
+	movl	$0, %eax
+	call	printf@PLT
+	addl	$1, -120(%rbp)
+.L12:
+	cmpl	$2, -16(%rbp)
+	jne	.L13
+	movl	-120(%rbp), %eax
+	movzwl	matrix_known_crc(,%rax,2), %eax
+	cmpw	-124(%rbp), %ax
+	je	.L13
+	movl	-120(%rbp), %eax
+	movzwl	matrix_known_crc(,%rax,2), %edx
+	movl	-120(%rbp), %eax
+	movzwl	-124(%rbp), %ecx
+	leaq	.LC3(%rip), %rsi
+	movl	%eax, %edi
+	movl	$0, %eax
+	call	printf@PLT
+	addl	$1, -120(%rbp)
+.L13:
+	cmpl	$4, -16(%rbp)
+	jne	.L14
+	movl	-120(%rbp), %eax
+	movzwl	state_known_crc(,%rax,2), %eax
+	cmpw	-126(%rbp), %ax
+	je	.L14
+	movl	-120(%rbp), %eax
+	movzwl	state_known_crc(,%rax,2), %edx
+	movl	-120(%rbp), %eax
+	movzwl	-126(%rbp), %ecx
+	leaq	.LC4(%rip), %rsi
+	movl	%eax, %edi
+	movl	$0, %eax
+	call	printf@PLT
+	addl	$1, -120(%rbp)
+.L14:
+	addl	-120(%rbp), -116(%rbp)
+.L11:
+	call	check_data_types
+	addl	%eax, -116(%rbp)
+	movl	-20(%rbp), %eax
+	movslq	%eax, %rdx
+	leaq	.LC5(%rip), %rsi
+	movl	$0, %edi
+	movl	$0, %eax
+	call	printf@PLT
+	movq	-96(%rbp), %rdx
+	leaq	.LC6(%rip), %rsi
+	movl	$0, %edi
+	movl	$0, %eax
+	call	printf@PLT
+	movq	-96(%rbp), %rax
+	cvtsi2sdq	%rax, %xmm0
+	call	time_in_secs
+	movsd	%xmm0, -128(%rbp)
+	movsd	-128(%rbp), %xmm0
+	comisd	.LC0(%rip), %xmm0
+	jae	.L15
+	movl	-68(%rbp), %eax
+	cvtsi2sd	%eax, %xmm0
+	movsd	-128(%rbp), %xmm1
+	divsd	%xmm1, %xmm0
+	movsd	%xmm0, -136(%rbp)
+	movsd	-136(%rbp), %xmm0
+	leaq	.LC7(%rip), %rsi
+	movl	$0, %edi
+	movl	$1, %eax
+	call	printf@PLT
+.L15:
+	movsd	-128(%rbp), %xmm0
+	comisd	.LC8(%rip), %xmm0
+	jb	.L16
+	leaq	.LC9(%rip), %rsi
+	movl	$0, %edi
+	movl	$0, %eax
+	call	printf@PLT
+	addl	$1, -116(%rbp)
+.L16:
+	movl	-68(%rbp), %eax
+	movslq	%eax, %rdx
+	leaq	.LC10(%rip), %rsi
+	movl	$0, %edi
+	movl	$0, %eax
+	call	printf@PLT
+	leaq	.LC11(%rip), %rsi
+	movl	$0, %edi
+	movl	$0, %eax
+	call	printf@PLT
+	movzwl	-108(%rbp), %eax
+	movzwl	%ax, %edx
+	leaq	.LC12(%rip), %rsi
+	movl	$0, %edi
+	movl	$0, %eax
+	call	printf@PLT
+	cmpl	$1, -16(%rbp)
+	jne	.L17
+	movl	-120(%rbp), %eax
+	movzwl	-122(%rbp), %edx
+	leaq	.LC13(%rip), %rsi
+	movl	%eax, %edi
+	movl	$0, %eax
+	call	printf@PLT
+.L17:
+	cmpl	$2, -16(%rbp)
+	jne	.L18
+	movl	-120(%rbp), %eax
+	movzwl	-124(%rbp), %edx
+	leaq	.LC14(%rip), %rsi
+	movl	%eax, %edi
+	movl	$0, %eax
+	call	printf@PLT
+.L18:
+	cmpl	$4, -16(%rbp)
+	jne	.L19
+	movl	-120(%rbp), %eax
+	movzwl	-126(%rbp), %edx
+	leaq	.LC15(%rip), %rsi
+	movl	%eax, %edi
+	movl	$0, %eax
+	call	printf@PLT
+.L19:
+	movl	-120(%rbp), %eax
+	movzwl	-128(%rbp), %edx
+	leaq	.LC16(%rip), %rsi
+	movl	%eax, %edi
+	movl	$0, %eax
+	call	printf@PLT
+	cmpl	$0, -116(%rbp)
+	jne	.L20
+	leaq	.LC17(%rip), %rsi
+	movl	$0, %edi
+	movl	$0, %eax
+	call	printf@PLT
+	cmpl	$3, -112(%rbp)
+	jne	.L21
+	movl	-68(%rbp), %eax
+	cvtsi2sd	%eax, %xmm0
+	movsd	-128(%rbp), %xmm1
+	divsd	%xmm1, %xmm0
+	movsd	%xmm0, -144(%rbp)
+	movsd	-144(%rbp), %xmm0
+	leaq	.LC18(%rip), %rsi
+	movl	$0, %edi
+	movl	$1, %eax
+	call	printf@PLT
+	leaq	.LC19(%rip), %rsi
+	movl	$0, %edi
+	movl	$0, %eax
+	call	printf@PLT
+.L21:
+.L20:
+	cmpl	$0, -116(%rbp)
+	jle	.L22
+	leaq	.LC20(%rip), %rsi
+	movl	$0, %edi
+	movl	$0, %eax
+	call	printf@PLT
+.L22:
+	cmpl	$0, -116(%rbp)
+	jge	.L23
+	leaq	.LC21(%rip), %rsi
+	movl	$0, %edi
+	movl	$0, %eax
+	call	printf@PLT
+.L23:
+	movq	-32(%rbp), %rdi
+	call	portable_free
+	movq	-80(%rbp), %rdi
+	call	portable_fini
+	movl	$0, %eax
+	leave
+	ret
+.LC0:
+	.long	0
+	.long	1072693248
+.LC1:
+	.string	"2K performance run parameters for coremark."
+.LC2:
+	.string	"[%u]ERROR! list crc 0x%04x - should be 0x%04x\n"
+.LC3:
+	.string	"[%u]ERROR! matrix crc 0x%04x - should be 0x%04x\n"
+.LC4:
+	.string	"[%u]ERROR! state crc 0x%04x - should be 0x%04x\n"
+.LC5:
+	.string	"CoreMark Size    : %lu\n"
+.LC6:
+	.string	"Total ticks      : %lu\n"
+.LC7:
+	.string	"Iterations/Sec   : %f\n"
+.LC8:
+	.long	0
+	.long	1092616192
+.LC9:
+	.string	"ERROR! Must execute for at least 10 secs for a valid result!\n"
+.LC10:
+	.string	"Iterations       : %lu\n"
+.LC11:
+	.string	"Compiler version : AICC 1.0\n"
+.LC12:
+	.string	"seedcrc          : 0x%04x\n"
+.LC13:
+	.string	"[%d]crclist       : 0x%04x\n"
+.LC14:
+	.string	"[%d]crcmatrix     : 0x%04x\n"
+.LC15:
+	.string	"[%d]crcstate      : 0x%04x\n"
+.LC16:
+	.string	"[%d]crcfinal      : 0x%04x\n"
+.LC17:
+	.string	"Correct operation validated. See README.md for run and reporting rules.\n"
+.LC18:
+	.string	"Function Level CoreMark 1.0 : %f by AICC 1.0"
+.LC19:
+	.string	" / Heap"
+.LC20:
+	.string	"Errors detected\n"
+.LC21:
+	.string	"Cannot validate operation for these seed values, please compare with results on a known platform.\n"
+
+WARNING:root:0th try failed to compile the assembly hypothesis for main
+stdout: 
+stderr: hyp/main.s: Assembler messages:
+hyp/main.s:173: Error: operand size mismatch for `add'
+
+INFO:root:0th try failed at the first round
+INFO:root:main FAIL
+INFO:root:Start to compile cmp_complex
+C code:
+#include <stdio.h>
+
+typedef unsigned short u16;
+typedef unsigned char u8;
+typedef struct CORE_PORTABLE_S {
+  u8 portable_id;
+} core_portable;
+typedef struct list_data_s {
+  short data16;
+  short idx;
+} list_data;
+
+typedef struct list_head_s {
+  struct list_head_s *next;
+  struct list_data_s *info;
+} list_head;
+
+typedef struct MAT_PARAMS_S {
+  int N;
+  short *A;
+  short *B;
+  int *C;
+} mat_params;
+
+typedef struct RESULTS_S {
+  short seed1;           
+  short seed2;           
+  short seed3;           
+  void *memblock[4];   
+  unsigned size;       
+  unsigned iterations; 
+  unsigned execs;      
+  struct list_head_s *list;
+  mat_params mat;
+  u16 crc;
+  u16 crclist;
+  u16 crcmatrix;
+  u16 crcstate;
+  short err;
+  core_portable port;
+} core_results;
+
+extern short calc_func(short *pdata, core_results *res);
+
+int cmp_complex(list_data *a, list_data *b, core_results *res) {
+  short val1 = calc_func(&(a->data16), res);
+  short val2 = calc_func(&(b->data16), res);
+  return val1 - val2;
+}
+INFO:root:current LLM prompt size: 568
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	cmp_complex
+	.type	cmp_complex, @function
+cmp_complex:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$48, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	-8(%rbp), %rax
+	addq	$0, %rax
+	movq	%rax, %rdi
+	movq	-24(%rbp), %rsi
+	call	calc_func
+	movw	%ax, -26(%rbp)
+	movq	-16(%rbp), %rax
+	addq	$0, %rax
+	movq	%rax, %rdi
+	movq	-24(%rbp), %rsi
+	call	calc_func
+	movw	%ax, -28(%rbp)
+	movswl	-26(%rbp), %edx
+	movswl	-28(%rbp), %eax
+	subl	%eax, %edx
+	movl	%edx, %eax
+	leave
+	ret
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 14053
+Total time (secs): 14.053000
+Iterations/Sec   : 4269.550986
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4269.550986 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:0th try passed for cmp_complex
+INFO:root:0th try passed at the first round
+INFO:root:cmp_complex PASS
+INFO:root:Start to compile stop_time
+C code:
+#include <time.h>
+extern struct timespec start_time_val, stop_time_val;
+void stop_time(void) { clock_gettime(CLOCK_REALTIME, &stop_time_val); }
+INFO:root:current LLM prompt size: 325
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	stop_time
+	.type	stop_time, @function
+stop_time:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movl	$0, %edi
+	leaq	stop_time_val(%rip), %rsi
+	call	clock_gettime@PLT
+	nop
+	popq	%rbp
+	ret
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 14134
+Total time (secs): 14.134000
+Iterations/Sec   : 4245.082779
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4245.082779 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:0th try passed for stop_time
+INFO:root:0th try passed at the first round
+INFO:root:stop_time PASS
+INFO:root:Start to compile portable_free
+C code:
+#include <stdlib.h>
+void portable_free(void *p) { free(p); }
+INFO:root:current LLM prompt size: 307
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	portable_free
+	.type	portable_free, @function
+portable_free:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	-8(%rbp), %rdi
+	call	free@PLT
+	popq	%rbp
+	ret
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 14098
+Total time (secs): 14.098000
+Iterations/Sec   : 4255.922826
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4255.922826 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:0th try passed for portable_free
+INFO:root:0th try passed at the first round
+INFO:root:portable_free PASS
+INFO:root:Start to compile crc16
+C code:
+typedef unsigned short u16;
+typedef unsigned char u8;
+u16 crcu16(u16 newval, u16 crc);
+u16 crc16(short newval, u16 crc) { return crcu16((u16)newval, crc); }
+INFO:root:current LLM prompt size: 342
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	crc16
+	.type	crc16, @function
+crc16:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movw	%di, -4(%rbp)
+	movw	%si, -8(%rbp)
+	movzwl	-4(%rbp), %eax
+	movzwl	-8(%rbp), %edx
+	movw	%ax, %di
+	movw	%dx, %si
+	call	crcu16
+	popq	%rbp
+	ret
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 14060
+Total time (secs): 14.060000
+Iterations/Sec   : 4267.425320
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4267.425320 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:0th try passed for crc16
+INFO:root:0th try passed at the first round
+INFO:root:crc16 PASS
+INFO:root:Start to compile calc_func
+C code:
+typedef unsigned short u16;
+typedef unsigned char u8;
+
+typedef struct CORE_PORTABLE_S {
+  u8 portable_id;
+} core_portable;
+typedef struct list_data_s {
+  short data16;
+  short idx;
+} list_data;
+
+typedef struct list_head_s {
+  struct list_head_s *next;
+  struct list_data_s *info;
+} list_head;
+
+typedef struct MAT_PARAMS_S {
+  int N;
+  short *A;
+  short *B;
+  int *C;
+} mat_params;
+
+typedef struct RESULTS_S {
+  short seed1;
+  short seed2;
+  short seed3;
+  void *memblock[4];
+  unsigned size;
+  unsigned iterations;
+  unsigned execs;
+  struct list_head_s *list;
+  mat_params mat;
+  u16 crc;
+  u16 crclist;
+  u16 crcmatrix;
+  u16 crcstate;
+  short err;
+  core_portable port;
+} core_results;
+
+u16 crcu16(u16 newval, u16 crc);
+u16 core_bench_state(unsigned blksize, u8 *memblock, short seed1, short seed2,
+                     short step, u16 crc);
+u16 core_bench_matrix(mat_params *p, short seed, u16 crc);
+
+short calc_func(short *pdata, core_results *res) {
+  short data = *pdata;
+  short retval;
+  u8 optype = (data >> 7) & 1;
+  if (optype)
+    return (data & 0x007f);
+  else {
+    short flag = data & 0x7;
+    short dtype = ((data >> 3) & 0xf);
+    dtype |= dtype << 4;
+    switch (flag) {
+    case 0:
+      if (dtype < 0x22)
+        dtype = 0x22;
+      retval = core_bench_state(res->size, res->memblock[3], res->seed1,
+                                res->seed2, dtype, res->crc);
+      if (res->crcstate == 0)
+        res->crcstate = retval;
+      break;
+    case 1:
+      retval = core_bench_matrix(&(res->mat), dtype, res->crc);
+      if (res->crcmatrix == 0)
+        res->crcmatrix = retval;
+      break;
+    default:
+      retval = data;
+      break;
+    }
+    res->crc = crcu16(retval, res->crc);
+    retval &= 0x007f;
+    *pdata = (data & 0xff00) | 0x0080 | retval;
+    return retval;
+  }
+}
+INFO:root:current LLM prompt size: 838
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	calc_func
+	.type	calc_func, @function
+calc_func:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -24(%rbp)
+	movq	%rsi, -32(%rbp)
+	movq	-24(%rbp), %rax
+	movzwl	(%rax), %eax
+	movw	%ax, -4(%rbp)
+	movzwl	-4(%rbp), %eax
+	sarw	$7, %ax
+	andl	$1, %eax
+	movb	%al, -5(%rbp)
+	cmpb	$0, -5(%rbp)
+	je	.L2
+	movzwl	-4(%rbp), %eax
+	andl	$127, %eax
+	jmp	.L3
+.L2:
+	movzwl	-4(%rbp), %eax
+	andl	$7, %eax
+	movw	%ax, -6(%rbp)
+	movzwl	-4(%rbp), %eax
+	sarw	$3, %ax
+	andl	$15, %eax
+	movw	%ax, -8(%rbp)
+	movzwl	-8(%rbp), %eax
+	salw	$4, %ax
+	orw	%ax, -8(%rbp)
+	cmpw	$0, -6(%rbp)
+	jne	.L4
+	movzwl	-8(%rbp), %eax
+	cmpw	$34, %ax
+	jge	.L5
+	movw	$34, -8(%rbp)
+.L5:
+	movq	-32(%rbp), %rax
+	movzwl	104(%rax), %edx
+	movq	-32(%rbp), %rax
+	movzwl	96(%rax), %ecx
+	movq	-32(%rbp), %rax
+	movzwl	98(%rax), %esi
+	movq	-32(%rbp), %rax
+	movq	80(%rax), %rdi
+	movzwl	-8(%rbp), %eax
+	movzwl	%ax, %r8d
+	movq	-32(%rbp), %rax
+	movzwl	112(%rax), %eax
+	movzwl	%ax, %r9d
+	movl	%r8d, %r8d
+	movl	%ecx, %ecx
+	movl	%esi, %esi
+	movl	%edx, %edx
+	call	core_bench_state
+	movw	%ax, -10(%rbp)
+	movq	-32(%rbp), %rax
+	movzwl	114(%rax), %eax
+	testw	%ax, %ax
+	jne	.L6
+	movq	-32(%rbp), %rax
+	movzwl	-10(%rbp), %edx
+	movw	%dx, 114(%rax)
+.L6:
+	jmp	.L7
+.L4:
+	cmpw	$1, -6(%rbp)
+	jne	.L8
+	movq	-32(%rbp), %rax
+	leaq	56(%rax), %rdx
+	movzwl	-8(%rbp), %eax
+	movzwl	%ax, %esi
+	movq	-32(%rbp), %rax
+	movzwl	112(%rax), %eax
+	movzwl	%ax, %edi
+	movl	%esi, %esi
+	movl	%edi, %edi
+	call	core_bench_matrix
+	movw	%ax, -10(%rbp)
+	movq	-32(%rbp), %rax
+	movzwl	116(%rax), %eax
+	testw	%ax, %ax
+	jne	.L9
+	movq	-32(%rbp), %rax
+	movzwl	-10(%rbp), %edx
+	movw	%dx, 116(%rax)
+.L9:
+	jmp	.L7
+.L8:
+	movzwl	-4(%rbp), %eax
+	movw	%ax, -10(%rbp)
+.L7:
+	movzwl	-10(%rbp), %eax
+	movzwl	%ax, %edx
+	movq	-32(%rbp), %rax
+	movzwl	112(%rax), %eax
+	movzwl	%ax, %ecx
+	movl	%edx, %edx
+	movl	%ecx, %ecx
+	call	crcu16
+	movw	%ax, -10(%rbp)
+	movq	-32(%rbp), %rax
+	movzwl	-10(%rbp), %edx
+	movw	%dx, 112(%rax)
+	movzwl	-10(%rbp), %eax
+	andl	$127, %eax
+	movw	%ax, -10(%rbp)
+	movq	-24(%rbp), %rax
+	movzwl	-4(%rbp), %edx
+	andl	$65280, %edx
+	movw	%dx, (%rax)
+	movq	-24(%rbp), %rax
+	movzwl	-10(%rbp), %edx
+	orw	$128, %dx
+	movw	%dx, (%rax)
+	movzwl	-10(%rbp), %eax
+.L3:
+	popq	%rbp
+	ret
+	.size	calc_func, .-calc_func
+
+WARNING:root:0th try failed to execute the assembly hypothesis for calc_func
+INFO:root:0th try failed at the first round
+INFO:root:calc_func FAIL
+INFO:root:Start to compile core_list_insert_new
+C code:
+#include <stdio.h>
+typedef struct list_data_s {
+  short data16;
+  short idx;
+} list_data;
+
+typedef struct list_head_s {
+  struct list_head_s *next;
+  struct list_data_s *info;
+} list_head;
+
+void copy_info(list_data *to, list_data *from);
+
+list_head *core_list_insert_new(list_head *insert_point, list_data *info,
+                                list_head **memblock, list_data **datablock,
+                                list_head *memblock_end,
+                                list_data *datablock_end) {
+  list_head *newitem;
+
+  if ((*memblock + 1) >= memblock_end)
+    return NULL;
+  if ((*datablock + 1) >= datablock_end)
+    return NULL;
+
+  newitem = *memblock;
+  (*memblock)++;
+  newitem->next = insert_point->next;
+  insert_point->next = newitem;
+
+  newitem->info = *datablock;
+  (*datablock)++;
+  copy_info(newitem->info, info);
+
+  return newitem;
+}
+INFO:root:current LLM prompt size: 513
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	core_list_insert_new
+	.type	core_list_insert_new, @function
+core_list_insert_new:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$48, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	%r8, -40(%rbp)
+	movq	%r9, -48(%rbp)
+	movq	-24(%rbp), %rax
+	movq	(%rax), %rdx
+	addq	$8, %rdx
+	movq	-40(%rbp), %rax
+	cmpq	%rax, %rdx
+	jge	.L2
+	movq	-32(%rbp), %rax
+	movq	(%rax), %rdx
+	addq	$4, %rdx
+	movq	-48(%rbp), %rax
+	cmpq	%rax, %rdx
+	jl	.L3
+.L2:
+	movl	$0, %eax
+	jmp	.L4
+.L3:
+	movq	-24(%rbp), %rax
+	movq	(%rax), %rax
+	movq	%rax, -56(%rbp)
+	movq	-24(%rbp), %rax
+	movq	(%rax), %rax
+	addq	$8, %rax
+	movq	-24(%rbp), %rdx
+	movq	%rax, (%rdx)
+	movq	-56(%rbp), %rax
+	movq	-8(%rbp), %rdx
+	movq	8(%rdx), %rdx
+	movq	%rdx, 8(%rax)
+	movq	-8(%rbp), %rax
+	movq	-56(%rbp), %rdx
+	movq	%rdx, 8(%rax)
+	movq	-32(%rbp), %rax
+	movq	(%rax), %rax
+	movq	%rax, -64(%rbp)
+	movq	-32(%rbp), %rax
+	movq	(%rax), %rax
+	addq	$4, %rax
+	movq	-32(%rbp), %rdx
+	movq	%rax, (%rdx)
+	movq	-56(%rbp), %rax
+	movq	-64(%rbp), %rdx
+	movq	%rdx, 16(%rax)
+	movq	-64(%rbp), %rdx
+	movq	-16(%rbp), %rax
+	movq	%rdx, %rdi
+	movq	%rax, %rsi
+	call	copy_info
+	movq	-56(%rbp), %rax
+.L4:
+	leave
+	ret
+
+WARNING:root:0th try failed to execute the assembly hypothesis for core_list_insert_new
+INFO:root:0th try failed at the first round
+INFO:root:core_list_insert_new FAIL
+INFO:root:Start to compile portable_fini
+C code:
+typedef unsigned char u8;
+
+typedef struct CORE_PORTABLE_S {
+  u8 portable_id;
+} core_portable;
+void portable_fini(core_portable *p) { p->portable_id = 0; }
+INFO:root:current LLM prompt size: 335
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	portable_fini
+	.type	portable_fini, @function
+portable_fini:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	-8(%rbp), %rax
+	movb	$0, (%rax)
+	popq	%rbp
+	ret
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 14043
+Total time (secs): 14.043000
+Iterations/Sec   : 4272.591327
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4272.591327 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:0th try passed for portable_fini
+INFO:root:0th try passed at the first round
+INFO:root:portable_fini PASS
+INFO:root:Start to compile core_list_remove
+C code:
+#include <stdio.h>
+typedef struct list_data_s {
+  short data16;
+  short idx;
+} list_data;
+
+typedef struct list_head_s {
+  struct list_head_s *next;
+  struct list_data_s *info;
+} list_head;
+
+list_head *core_list_remove(list_head *item) {
+  list_data *tmp;
+  list_head *ret = item->next;
+  /* swap data pointers */
+  tmp = item->info;
+  item->info = ret->info;
+  ret->info = tmp;
+  /* and eliminate item */
+  item->next = item->next->next;
+  ret->next = NULL;
+  return ret;
+}
+INFO:root:current LLM prompt size: 426
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	core_list_remove
+	.type	core_list_remove, @function
+core_list_remove:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movq	%rdi, -24(%rbp)
+	movq	-24(%rbp), %rax
+	movq	8(%rax), %rax
+	movq	%rax, -8(%rbp)
+	movq	-24(%rbp), %rax
+	movq	8(%rax), %rdx
+	movq	-24(%rbp), %rax
+	movq	8(%rdx), %rdx
+	movq	%rdx, 8(%rax)
+	movq	-24(%rbp), %rax
+	movq	16(%rax), %rax
+	movq	%rax, -16(%rbp)
+	movq	-24(%rbp), %rax
+	movq	8(%rax), %rdx
+	movq	-24(%rbp), %rax
+	movq	16(%rdx), %rdx
+	movq	%rdx, 16(%rax)
+	movq	-24(%rbp), %rax
+	movq	8(%rax), %rdx
+	movq	-16(%rbp), %rax
+	movq	%rax, 16(%rdx)
+	movq	-8(%rbp), %rax
+	movq	$0, 8(%rax)
+	movq	-8(%rbp), %rax
+	leave
+	ret
+
+WARNING:root:0th try failed to execute the assembly hypothesis for core_list_remove
+INFO:root:0th try failed at the first round
+INFO:root:core_list_remove FAIL
+INFO:root:Start to compile core_list_mergesort
+C code:
+#include <stdio.h>
+
+typedef unsigned short u16;
+typedef unsigned char u8;
+
+typedef struct CORE_PORTABLE_S {
+  u8 portable_id;
+} core_portable;
+
+typedef struct list_data_s {
+  short data16;
+  short idx;
+} list_data;
+
+typedef struct list_head_s {
+  struct list_head_s *next;
+  struct list_data_s *info;
+} list_head;
+
+typedef struct MAT_PARAMS_S {
+  int N;
+  short *A;
+  short *B;
+  int *C;
+} mat_params;
+
+typedef struct RESULTS_S {
+  short seed1;
+  short seed2;
+  short seed3;
+  void *memblock[4];
+  unsigned size;
+  unsigned iterations;
+  unsigned execs;
+  struct list_head_s *list;
+  mat_params mat;
+  u16 crc;
+  u16 crclist;
+  u16 crcmatrix;
+  u16 crcstate;
+  short err;
+  core_portable port;
+} core_results;
+
+typedef int (*list_cmp)(list_data *a, list_data *b, core_results *res);
+
+list_head *core_list_mergesort(list_head *list, list_cmp cmp,
+                               core_results *res) {
+  list_head *p, *q, *e, *tail;
+  int insize, nmerges, psize, qsize, i;
+  insize = 1;
+  while (1) {
+    p = list;
+    list = NULL;
+    tail = NULL;
+    nmerges = 0;
+    while (p) {
+      nmerges++;
+      q = p;
+      psize = 0;
+      for (i = 0; i < insize; i++) {
+        psize++;
+        q = q->next;
+        if (!q)
+          break;
+      }
+      qsize = insize;
+      while (psize > 0 || (qsize > 0 && q)) {
+        if (psize == 0) {
+          e = q;
+          q = q->next;
+          qsize--;
+        } else if (qsize == 0 || !q) {
+          e = p;
+          p = p->next;
+          psize--;
+        } else if (cmp(p->info, q->info, res) <= 0) {
+          e = p;
+          p = p->next;
+          psize--;
+        } else {
+          e = q;
+          q = q->next;
+          qsize--;
+        }
+        if (tail) {
+          tail->next = e;
+        } else {
+          list = e;
+        }
+        tail = e;
+      }
+      p = q;
+    }
+    tail->next = NULL;
+    if (nmerges <= 1)
+      return list;
+    insize *= 2;
+  }
+}
+INFO:root:current LLM prompt size: 875
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	core_list_mergesort
+	.type	core_list_mergesort, @function
+core_list_mergesort:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$64, %rsp
+	movq	%rdi, -24(%rbp)
+	movq	%rsi, -32(%rbp)
+	movq	%rdx, -40(%rbp)
+	movl	$1, -44(%rbp)
+	jmp	.L2
+.L11:
+	movq	-24(%rbp), %rax
+	movq	%rax, -8(%rbp)
+	movq	$0, -24(%rbp)
+	movq	$0, -16(%rbp)
+	movl	$0, -48(%rbp)
+	jmp	.L3
+.L10:
+	addl	$1, -48(%rbp)
+	movq	-8(%rbp), %rax
+	movq	%rax, -56(%rbp)
+	movl	$0, -60(%rbp)
+	movl	$0, -64(%rbp)
+	jmp	.L4
+.L6:
+	addl	$1, -60(%rbp)
+	movq	-56(%rbp), %rax
+	movq	8(%rax), %rax
+	movq	%rax, -56(%rbp)
+	cmpq	$0, -56(%rbp)
+	je	.L5
+.L4:
+	cmpl	-44(%rbp), %eax
+	jl	.L6
+.L5:
+	movl	-44(%rbp), %eax
+	movl	%eax, -64(%rbp)
+	jmp	.L7
+.L9:
+	cmpl	$0, -60(%rbp)
+	je	.L8
+	cmpl	$0, -64(%rbp)
+	je	.L8
+	movq	-56(%rbp), %rax
+	cmpq	$0, %rax
+	je	.L8
+	movq	-8(%rbp), %rax
+	movq	16(%rax), %rdx
+	movq	-56(%rbp), %rax
+	movq	16(%rax), %rax
+	movq	-32(%rbp), %rcx
+	movq	-40(%rbp), %rsi
+	movq	%rax, %rdi
+	call	*%rcx
+	testl	%eax, %eax
+	jg	.L8
+	movq	-8(%rbp), %rax
+	movq	%rax, -72(%rbp)
+	movq	8(%rax), %rax
+	movq	%rax, -8(%rbp)
+	subl	$1, -60(%rbp)
+	jmp	.L9
+.L8:
+	movq	-56(%rbp), %rax
+	movq	%rax, -72(%rbp)
+	movq	8(%rax), %rax
+	movq	%rax, -56(%rbp)
+	subl	$1, -64(%rbp)
+.L7:
+	cmpl	$0, -60(%rbp)
+	jne	.L9
+	cmpl	$0, -64(%rbp)
+	jne	.L9
+	cmpq	$0, -56(%rbp)
+	jne	.L9
+	movq	-56(%rbp), %rax
+	movq	%rax, -8(%rbp)
+.L3:
+	cmpq	$0, -8(%rbp)
+	jne	.L10
+	movq	-16(%rbp), %rax
+	movq	$0, 8(%rax)
+	cmpl	$1, -48(%rbp)
+	jle	.L12
+	movl	-44(%rbp), %eax
+	shll	$1, %eax
+	movl	%eax, -44(%rbp)
+.L2:
+	jmp	.L11
+.L12:
+	movq	-24(%rbp), %rax
+	leave
+	ret
+
+WARNING:root:0th try failed to execute the assembly hypothesis for core_list_mergesort
+INFO:root:0th try failed at the first round
+INFO:root:core_list_mergesort FAIL
+INFO:root:Start to compile crcu32
+C code:
+typedef unsigned short u16;
+typedef unsigned char u8;
+u16 crc16(short newval, u16 crc);
+u16 crcu32(unsigned newval, u16 crc) {
+  crc = crc16((short)newval, crc);
+  crc = crc16((short)(newval >> 16), crc);
+  return crc;
+}
+INFO:root:current LLM prompt size: 361
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	crcu32
+	.type	crcu32, @function
+crcu32:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movl	%edi, -4(%rbp)
+	movw	%si, -6(%rbp)
+	movl	-4(%rbp), %eax
+	movswl	%ax, %edi
+	movzwl	-6(%rbp), %esi
+	call	crc16
+	movw	%ax, -6(%rbp)
+	movl	-4(%rbp), %eax
+	sarl	$16, %eax
+	movswl	%ax, %edi
+	movzwl	-6(%rbp), %esi
+	call	crc16
+	movw	%ax, -6(%rbp)
+	movzwl	-6(%rbp), %eax
+	leave
+	ret
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 14072
+Total time (secs): 14.072000
+Iterations/Sec   : 4263.786242
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4263.786242 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:0th try passed for crcu32
+INFO:root:0th try passed at the first round
+INFO:root:crcu32 PASS
+INFO:root:Start to compile matrix_mul_matrix_bitextract
+C code:
+#define bit_extract(x, from, to) (((x) >> (from)) & (~(0xffffffff << (to))))
+
+void matrix_mul_matrix_bitextract(unsigned N, int *C, short *A, short *B) {
+  unsigned i, j, k;
+  for (i = 0; i < N; i++) {
+    for (j = 0; j < N; j++) {
+      C[i * N + j] = 0;
+      for (k = 0; k < N; k++) {
+        int tmp = (int)A[i * N + k] * (int)B[k * N + j];
+        C[i * N + j] += bit_extract(tmp, 2, 4) * bit_extract(tmp, 5, 7);
+      }
+    }
+  }
+}
+INFO:root:current LLM prompt size: 463
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	matrix_mul_matrix_bitextract
+	.type	matrix_mul_matrix_bitextract, @function
+matrix_mul_matrix_bitextract:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	pushq	%rbx
+	subq	$72, %rsp
+	movl	%edi, -52(%rbp)
+	movq	%rsi, -64(%rbp)
+	movq	%rdx, -72(%rbp)
+	movq	%rcx, -80(%rbp)
+	movl	$0, -36(%rbp)
+	jmp	.L2
+.L11:
+	movl	$0, -32(%rbp)
+	jmp	.L3
+.L10:
+	movl	-36(%rbp), %eax
+	imull	-52(%rbp), %eax
+	movl	%eax, %edx
+	movl	-32(%rbp), %eax
+	addl	%edx, %eax
+	cltq
+	leaq	0(,%rax,4), %rdx
+	movq	-64(%rbp), %rax
+	addq	%rdx, %rax
+	movl	$0, (%rax)
+	movl	$0, -28(%rbp)
+	jmp	.L4
+.L9:
+	movl	-36(%rbp), %eax
+	imull	-52(%rbp), %eax
+	movl	%eax, %edx
+	movl	-28(%rbp), %eax
+	addl	%edx, %eax
+	cltq
+	leaq	0(,%rax,2), %rdx
+	movq	-72(%rbp), %rax
+	addq	%rdx, %rax
+	movzwl	(%rax), %eax
+	movswl	%ax, %ebx
+	movl	-28(%rbp), %eax
+	imull	-52(%rbp), %eax
+	movl	%eax, %edx
+	movl	-32(%rbp), %eax
+	addl	%edx, %eax
+	cltq
+	leaq	0(,%rax,2), %rdx
+	movq	-80(%rbp), %rax
+	addq	%rdx, %rax
+	movzwl	(%rax), %eax
+	movswl	%ax, %eax
+	imull	%ebx, %eax
+	movl	%eax, -40(%rbp)
+	movl	-40(%rbp), %eax
+	sarl	$2, %eax
+	movl	%eax, %edx
+	movl	$4294967280, %eax
+	andl	%edx, %eax
+	movl	%eax, -44(%rbp)
+	movl	-40(%rbp), %eax
+	sarl	$5, %eax
+	movl	%eax, %edx
+	movl	$4294967264, %eax
+	andl	%edx, %eax
+	movl	%eax, -48(%rbp)
+	movl	-36(%rbp), %eax
+	imull	-52(%rbp), %eax
+	movl	%eax, %edx
+	movl	-32(%rbp), %eax
+	addl	%edx, %eax
+	cltq
+	leaq	0(,%rax,4), %rdx
+	movq	-64(%rbp), %rax
+	addq	%rdx, %rax
+	movl	(%rax), %ebx
+	movl	-44(%rbp), %eax
+	imull	-48(%rbp), %eax
+	addl	%ebx, %eax
+	movl	%eax, %ecx
+	movl	-36(%rbp), %eax
+	imull	-52(%rbp), %eax
+	movl	%eax, %edx
+	movl	-32(%rbp), %eax
+	addl	%edx, %eax
+	cltq
+	leaq	0(,%rax,4), %rdx
+	movq	-64(%rbp), %rax
+	addq	%rdx, %rax
+	movl	%ecx, (%rax)
+	addl	$1, -28(%rbp)
+.L4:
+	movl	-28(%rbp), %eax
+	cmpl	-52(%rbp), %eax
+	jb	.L9
+	addl	$1, -32(%rbp)
+.L3:
+	movl	-32(%rbp), %eax
+	cmpl	-52(%rbp), %eax
+	jb	.L10
+	addl	$1, -36(%rbp)
+.L2:
+	movl	-36(%rbp), %eax
+	cmpl	-52(%rbp), %eax
+	jb	.L11
+	nop
+	nop
+	leaq	-8(%rbp), %rsp
+	popq	%rbx
+	popq	%rbp
+	ret
+	.size	matrix_mul_matrix_bitextract, .-matrix_mul_matrix_bitextract
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 13841
+Total time (secs): 13.841000
+Iterations/Sec   : 4334.946897
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4334.946897 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:0th try passed for matrix_mul_matrix_bitextract
+INFO:root:0th try passed at the first round
+INFO:root:matrix_mul_matrix_bitextract PASS
+INFO:root:Start to compile crcu8
+C code:
+typedef unsigned short u16;
+typedef unsigned char u8;
+u16 crcu8(u8 data, u16 crc) {
+  u8 i = 0, x16 = 0, carry = 0;
+
+  for (i = 0; i < 8; i++) {
+    x16 = (u8)((data & 1) ^ ((u8)crc & 1));
+    data >>= 1;
+
+    if (x16 == 1) {
+      crc ^= 0x4002;
+      carry = 1;
+    } else
+      carry = 0;
+    crc >>= 1;
+    if (carry)
+      crc |= 0x8000;
+    else
+      crc &= 0x7fff;
+  }
+  return crc;
+}
+INFO:root:current LLM prompt size: 454
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	crcu8
+	.type	crcu8, @function
+crcu8:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movb	%dil, -4(%rbp)
+	movw	%si, -6(%rbp)
+	movb	$0, -1(%rbp)
+	movb	$0, -2(%rbp)
+	movb	$0, -3(%rbp)
+	movb	$0, -1(%rbp)
+	jmp	.L2
+.L5:
+	movzbl	-4(%rbp), %eax
+	andl	$1, %eax
+	movzbl	%al, %edx
+	movzwl	-6(%rbp), %eax
+	andl	$1, %eax
+	movzbl	%al, %eax
+	xorl	%edx, %eax
+	movb	%al, -2(%rbp)
+	shrb	-4(%rbp)
+	cmpb	$1, -2(%rbp)
+	jne	.L3
+	movw	$16386, %ax
+	xorw	%ax, -6(%rbp)
+	movb	$1, -3(%rbp)
+	jmp	.L4
+.L3:
+	movb	$0, -3(%rbp)
+.L4:
+	shrw	-6(%rbp)
+	cmpb	$1, -3(%rbp)
+	jne	.L5
+	movw	$32768, %ax
+	orw	%ax, -6(%rbp)
+	jmp	.L6
+.L5:
+	movw	$32767, %ax
+	andw	%ax, -6(%rbp)
+.L6:
+	addb	$1, -1(%rbp)
+.L2:
+	cmpb	$7, -1(%rbp)
+	jbe	.L5
+	movzwl	-6(%rbp), %eax
+	popq	%rbp
+	ret
+
+WARNING:root:0th try failed to compile the assembly hypothesis for crcu8
+stdout: 
+stderr: hyp/crcu8.s: Assembler messages:
+hyp/crcu8.s:42: Error: symbol `.L5' is already defined
+
+INFO:root:0th try failed at the first round
+INFO:root:crcu8 FAIL
+INFO:root:Start to compile matrix_add_const
+C code:
+void matrix_add_const(unsigned N, short *A, short val) {
+  unsigned i, j;
+  for (i = 0; i < N; i++) {
+    for (j = 0; j < N; j++) {
+      A[i * N + j] += val;
+    }
+  }
+}
+INFO:root:current LLM prompt size: 357
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	matrix_add_const
+	.type	matrix_add_const, @function
+matrix_add_const:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -20(%rbp)
+	movq	%rsi, -32(%rbp)
+	movw	%dx, -34(%rbp)
+	movl	$0, -4(%rbp)
+	jmp	.L2
+.L5:
+	movl	$0, -8(%rbp)
+	jmp	.L3
+.L4:
+	movl	-4(%rbp), %eax
+	imull	-20(%rbp), %eax
+	movl	%eax, %edx
+	movl	-8(%rbp), %eax
+	addl	%edx, %eax
+	cltq
+	leaq	0(,%rax,2), %rdx
+	movq	-32(%rbp), %rax
+	addq	%rdx, %rax
+	movzwl	(%rax), %eax
+	movswl	%ax, %edx
+	movzwl	-34(%rbp), %eax
+	cwtl
+	addl	%eax, %edx
+	movl	%edx, %eax
+	movw	%ax, (%rax)
+	addl	$1, -8(%rbp)
+.L3:
+	movl	-8(%rbp), %eax
+	cmpl	-20(%rbp), %eax
+	jb	.L4
+	addl	$1, -4(%rbp)
+.L2:
+	movl	-4(%rbp), %eax
+	cmpl	-20(%rbp), %eax
+	jb	.L5
+	nop
+	nop
+	popq	%rbp
+	ret
+
+WARNING:root:0th try failed to execute the assembly hypothesis for matrix_add_const
+INFO:root:0th try failed at the first round
+INFO:root:matrix_add_const FAIL
+INFO:root:Start to compile crcu16
+C code:
+typedef unsigned short u16;
+typedef unsigned char u8;
+u16 crcu8(u8 data, u16 crc);
+u16 crcu16(u16 newval, u16 crc) {
+  crc = crcu8((u8)(newval), crc);
+  crc = crcu8((u8)((newval) >> 8), crc);
+  return crc;
+}
+INFO:root:current LLM prompt size: 369
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	crcu16
+	.type	crcu16, @function
+crcu16:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movw	%di, -4(%rbp)
+	movw	%si, -8(%rbp)
+	movzwl	-4(%rbp), %eax
+	movzbl	%al, %edi
+	movzwl	-8(%rbp), %esi
+	call	crcu8
+	movw	%ax, -8(%rbp)
+	movzwl	-4(%rbp), %eax
+	shrw	$8, %ax
+	movzbl	%al, %edi
+	movzwl	-8(%rbp), %esi
+	call	crcu8
+	movw	%ax, -8(%rbp)
+	movzwl	-8(%rbp), %eax
+	leave
+	ret
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 13855
+Total time (secs): 13.855000
+Iterations/Sec   : 4330.566582
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4330.566582 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:0th try passed for crcu16
+INFO:root:0th try passed at the first round
+INFO:root:crcu16 PASS
+INFO:root:Start to compile core_list_init
+C code:
+#include <stdint.h>
+#include <stdio.h>
+typedef unsigned short u16;
+typedef unsigned char u8;
+typedef struct list_data_s {
+  short data16;
+  short idx;
+} list_data;
+
+typedef struct list_head_s {
+  struct list_head_s *next;
+  struct list_data_s *info;
+} list_head;
+
+typedef struct MAT_PARAMS_S {
+  int N;
+  short *A;
+  short *B;
+  int *C;
+} mat_params;
+
+typedef struct CORE_PORTABLE_S {
+  u8 portable_id;
+} core_portable;
+
+typedef struct RESULTS_S {
+  short seed1;
+  short seed2;
+  short seed3;
+  void *memblock[4];
+  unsigned size;
+  unsigned iterations;
+  unsigned execs;
+  struct list_head_s *list;
+  mat_params mat;
+  u16 crc;
+  u16 crclist;
+  u16 crcmatrix;
+  u16 crcstate;
+  short err;
+  core_portable port;
+} core_results;
+
+list_head *core_list_insert_new(list_head *insert_point, list_data *info,
+                                list_head **memblock, list_data **datablock,
+                                list_head *memblock_end,
+                                list_data *datablock_end);
+typedef int (*list_cmp)(list_data *a, list_data *b, core_results *res);
+list_head *core_list_mergesort(list_head *list, list_cmp cmp,
+                               core_results *res);
+int cmp_idx(list_data *a, list_data *b, core_results *res);
+
+list_head *core_list_init(unsigned blksize, list_head *memblock, short seed) {
+  unsigned per_item = 16 + sizeof(struct list_data_s);
+  unsigned size = (blksize / per_item) - 2;
+  list_head *memblock_end = memblock + size;
+  list_data *datablock = (list_data *)(memblock_end);
+  list_data *datablock_end = datablock + size;
+  unsigned i;
+  list_head *finder, *list = memblock;
+  list_data info;
+  list->next = NULL;
+  list->info = datablock;
+  list->info->idx = 0x0000;
+  list->info->data16 = (short)0x8080;
+  memblock++;
+  datablock++;
+  info.idx = 0x7fff;
+  info.data16 = (short)0xffff;
+  core_list_insert_new(list, &info, &memblock, &datablock, memblock_end,
+                       datablock_end);
+  for (i = 0; i < size; i++) {
+    u16 datpat = ((u16)(seed ^ i) & 0xf);
+    u16 dat = (datpat << 3) | (i & 0x7);
+    info.data16 = (dat << 8) | dat;
+    core_list_insert_new(list, &info, &memblock, &datablock, memblock_end,
+                         datablock_end);
+  }
+  finder = list->next;
+  i = 1;
+  while (finder->next != NULL) {
+    if (i < size / 5)
+      finder->info->idx = i++;
+    else {
+      u16 pat = (u16)(i++ ^ seed);
+      finder->info->idx = 0x3fff & (((i & 0x07) << 8) | pat);
+    }
+    finder = finder->next;
+  }
+  list = core_list_mergesort(list, cmp_idx, NULL);
+  return list;
+}
+INFO:root:current LLM prompt size: 1039
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	core_list_init
+	.type	core_list_init, @function
+core_list_init:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$96, %rsp
+	movl	%edi, -36(%rbp)
+	movq	%rsi, -48(%rbp)
+	movw	%dx, -50(%rbp)
+	movl	$16, %eax
+	movl	%eax, %edx
+	movl	$24, %eax
+	cltd
+	idivl	%edx
+	movl	%eax, %ecx
+	movl	-36(%rbp), %eax
+	cltd
+	idivl	%ecx
+	movl	%eax, %edx
+	movl	$2, %eax
+	subl	%eax, %edx
+	movl	%edx, %eax
+	movl	%eax, -20(%rbp)
+	movl	-20(%rbp), %eax
+	cltq
+	leaq	0(,%rax,8), %rdx
+	movq	-48(%rbp), %rax
+	addq	%rdx, %rax
+	movq	%rax, -16(%rbp)
+	movq	-16(%rbp), %rax
+	movq	%rax, -8(%rbp)
+	movq	-8(%rbp), %rax
+	movq	%rax, -64(%rbp)
+	movq	-64(%rbp), %rax
+	movq	%rax, -72(%rbp)
+	movq	-48(%rbp), %rax
+	movq	%rax, -80(%rbp)
+	movq	-80(%rbp), %rax
+	movq	%rax, -88(%rbp)
+	movq	-88(%rbp), %rax
+	movq	%rax, -96(%rbp)
+	movq	-96(%rbp), %rax
+	movq	%rax, -104(%rbp)
+	movq	-104(%rbp), %rax
+	movq	%rax, -112(%rbp)
+	movq	-112(%rbp), %rax
+	movq	%rax, -120(%rbp)
+	movq	-120(%rbp), %rax
+	movq	%rax, -128(%rbp)
+	movq	-128(%rbp), %rax
+	movq	%rax, -136(%rbp)
+	movq	-136(%rbp), %rax
+	movq	%rax, -144(%rbp)
+	movq	-144(%rbp), %rax
+	movq	%rax, -152(%rbp)
+	movq	-152(%rbp), %rax
+	movq	%rax, -160(%rbp)
+	movq	-160(%rbp), %rax
+	movq	%rax, -168(%rbp)
+	movq	-168(%rbp), %rax
+	movq	%rax, -176(%rbp)
+	movq	-176(%rbp), %rax
+	movq	%rax, -184(%rbp)
+	movq	-184(%rbp), %rax
+	movq	%rax, -192(%rbp)
+	movq	-192(%rbp), %rax
+	movq	%rax, -200(%rbp)
+	movq	-200(%rbp), %rax
+	movq	%rax, -208(%rbp)
+	movq	-208(%rbp), %rax
+	movq	%rax, -216(%rbp)
+	movq	-216(%rbp), %rax
+	movq	%rax, -224(%rbp)
+	movq	-224(%rbp), %rax
+	movq	%rax, -232(%rbp)
+	movq	-232(%rbp), %rax
+	movq	%rax, -240(%rbp)
+	movq	-240(%rbp), %rax
+	movq	%rax, -248(%rbp)
+	movq	-248(%rbp), %rax
+	movq	%rax, -256(%rbp)
+	movq	-256(%rbp), %rax
+	movq	%rax, -264(%rbp)
+	movq	-264(%rbp), %rax
+	movq	%rax, -272(%rbp)
+	movq	-272(%rbp), %rax
+	movq	%rax, -280(%rbp)
+	movq	-280(%rbp), %rax
+	movq	%rax, -288(%rbp)
+	movq	-288(%rbp), %rax
+	movq	%rax, -296(%rbp)
+	movq	-296(%rbp), %rax
+	movq	%rax, -304(%rbp)
+	movq	-304(%rbp), %rax
+	movq	%rax, -312(%rbp)
+	movq	-312(%rbp), %rax
+	movq	%rax, -320(%rbp)
+	movq	-320(%rbp), %rax
+	movq	%rax, -328(%rbp)
+	movq	-328(%rbp), %rax
+	movq	%rax, -336(%rbp)
+	movq	-336(%rbp), %rax
+	movq	%rax, -344(%rbp)
+	movq	-344(%rbp), %rax
+	movq	%rax, -352(%rbp)
+	movq	-352(%rbp), %rax
+	movq	%rax, -360(%rbp)
+	movq	-360(%rbp), %rax
+	movq	%rax, -368(%rbp)
+	movq	-368(%rbp), %rax
+	movq	%rax, -376(%rbp)
+	movq	-376(%rbp), %rax
+	movq	%rax, -384(%rbp)
+	movq	-384(%rbp), %rax
+	movq	%rax, -392(%rbp)
+	movq	-392(%rbp), %rax
+	movq	%rax, -400(%rbp)
+	movq	-400(%rbp), %rax
+	movq	%rax, -408(%rbp)
+	movq	-408(%rbp), %rax
+	movq	%rax, -416(%rbp)
+	movq	-416(%rbp), %rax
+	movq	%rax, -424(%rbp)
+	movq	-424(%rbp), %rax
+	movq	%rax, -432(%rbp)
+	movq	-432(%rbp), %rax
+	movq	%rax, -440(%rbp)
+	movq	-440(%rbp), %rax
+	movq	%rax, -448(%rbp)
+	movq	-448(%rbp), %rax
+	movq	%rax, -456(%rbp)
+	movq	-456(%rbp), %rax
+	movq	%rax, -464(%rbp)
+	movq	-464(%rbp), %rax
+	movq	%rax, -472(%rbp)
+	movq	-472(%rbp), %rax
+	movq	%rax, -480(%rbp)
+	movq	-480(%rbp), %rax
+	movq	%rax, -488(%rbp)
+	movq	-488(%rbp), %rax
+	movq	%rax, -496(%rbp)
+	movq	-496(%rbp), %rax
+	movq	%rax, -504(%rbp)
+	movq	-504(%rbp), %rax
+	movq	%rax, -512(%rbp)
+	movq	-512(%rbp), %rax
+	movq	%rax, -520(%rbp)
+	movq	-520(%rbp), %rax
+	movq	%rax, -528(%rbp)
+	movq	-528(%rbp), %rax
+	movq	%rax, -536(%rbp)
+	movq	-536(%rbp), %rax
+	movq	%rax, -544(%rbp)
+	movq	-544(%rbp), %rax
+	movq	%rax, -552(%rbp)
+	movq	-552(%rbp), %rax
+	movq	%rax, -560(%rbp)
+	movq	-560(%rbp), %rax
+	movq	%rax, -568(%rbp)
+	movq	-568(%rbp), %rax
+	movq	%rax, -576(%rbp)
+	movq	-576(%rbp), %rax
+	movq	%rax, -584(%rbp)
+	movq	-584(%rbp), %rax
+	movq	%rax, -592(%rbp)
+	movq	-592(%rbp), %rax
+	movq	%rax, -600(%rbp)
+	movq	-600(%rbp), %rax
+	movq	%rax, -608(%rbp)
+	movq	-608(%rbp), %rax
+	movq	%rax, -616(%rbp)
+	movq	-616(%rbp), %rax
+	movq	%rax, -624(%rbp)
+	movq	-624(%rbp), %rax
+	movq	%rax, -632(%rbp)
+	movq	-632(%rbp), %rax
+	movq	%rax, -640(%rbp)
+	movq	-640(%rbp), %rax
+	movq	%rax, -648(%rbp)
+	movq	-648(%rbp), %rax
+	movq	%rax, -656(%rbp)
+	movq	-656(%rbp), %rax
+	movq	%rax, -664(%rbp)
+	movq	-664(%rbp), %rax
+	movq	%rax, -672(%rbp)
+	movq	-672(%rbp), %rax
+	movq	%rax, -680(%rbp)
+	movq	-680(%rbp), %rax
+	movq	%rax, -688(%rbp)
+	movq	-688(%rbp), %rax
+	movq	%rax, -696(%rbp)
+	movq	-696(%rbp), %rax
+	movq	%rax, -704(%rbp)
+	movq	-704(%rbp), %rax
+	movq	%rax, -712(%rbp)
+	movq	-712(%rbp), %rax
+	movq	%rax, -720(%rbp)
+	movq	-720(%rbp), %rax
+	movq	%rax, -728(%rbp)
+	movq	-728(%rbp), %rax
+	movq	%rax, -736(%rbp)
+	movq	-736(%rbp), %rax
+	movq	%rax, -744(%rbp)
+	movq	-744(%rbp), %rax
+	movq	%rax, -752(%rbp)
+	movq	-752(%rbp), %rax
+	movq	%rax, -760(%rbp)
+	movq	-760(%rbp), %rax
+	movq	%rax, -768(%rbp)
+	movq	-768(%rbp), %rax
+	movq	%rax, -776(%rbp)
+	movq	-776(%rbp), %rax
+	movq	%rax, -784(%rbp)
+	movq	-784(%rbp), %rax
+	movq	%rax, -792(%rbp)
+	movq	-792(%rbp), %rax
+	movq	%rax, -800(%rbp)
+	movq	-800(%rbp), %rax
+	movq	%rax, -808(%rbp)
+	movq	-808(%rbp), %rax
+	movq	%rax, -816(%rbp)
+	movq	-816(%rbp), %rax
+	movq	%rax, -824(%rbp)
+	movq	-824(%rbp), %rax
+	movq	%rax, -832(%rbp)
+	movq	-832(%rbp), %rax
+	movq	%rax, -840(%rbp)
+	movq	-840(%rbp), %rax
+	movq	%rax, -848(%rbp)
+	movq	-848(%rbp), %rax
+	movq	%rax, -856(%rbp)
+	movq	-856(%rbp), %rax
+	movq	%rax, -864(%rbp)
+	movq	-864(%rbp), %rax
+	movq	%rax, -872(%rbp)
+	movq	-872(%rbp), %rax
+	movq	%rax, -880(%rbp)
+	movq	-880(%rbp), %rax
+	movq	%rax, -888(%rbp)
+	movq	-888(%rbp), %rax
+	movq	%rax, -896(%rbp)
+	movq	-896(%rbp), %rax
+	movq	%rax, -904(%rbp)
+	movq	-904(%rbp), %rax
+	movq	%rax, -912(%rbp)
+	movq	-912(%rbp), %rax
+	movq	%rax, -920(%rbp)
+	movq	-920(%rbp), %rax
+	movq	%rax, -928(%rbp)
+	movq	-928(%rbp), %rax
+	movq	%rax, -936(%rbp)
+	movq	-936(%rbp), %rax
+	movq	%rax, -944(%rbp)
+	movq	-944(%rbp), %rax
+	movq	%rax, -952(%rbp)
+	movq	-952(%rbp), %rax
+	movq	%rax, -960(%rbp)
+	movq	-960(%rbp), %rax
+	movq	%rax, -968(%rbp)
+	movq	-968(%rbp), %rax
+	movq	%rax, -976(%rbp)
+	movq	-976(%rbp), %rax
+	movq	%rax, -984(%rbp)
+	movq	-984(%rbp), %rax
+	movq	%rax, -992(%rbp)
+	movq	-992(%rbp), %rax
+	movq	%rax, -1000(%rbp)
+	movq	-1000(%rbp), %rax
+	movq	%rax, -1008(%rbp)
+	movq	-1008(%rbp), %rax
+	movq	%rax, -1016(%rbp)
+	movq	-1016(%rbp), %rax
+	movq	%rax, -1024(%rbp)
+	movq	-1024(%rbp), %rax
+	movq	%rax, -1032(%rbp)
+	movq	-1032(%rbp), %rax
+	movq	%rax, -1040(%rbp)
+	movq	-1040(%rbp), %rax
+	movq	%rax, -1048(%rbp)
+	movq	-1048(%rbp), %rax
+	movq	%rax, -1056(%rbp)
+	movq	-1056(%rbp), %rax
+	movq	%rax, -1064(%rbp)
+	movq	-1064(%rbp), %rax
+	movq	%rax, -1072(%rbp)
+	movq	-1072(%rbp), %rax
+	movq	%rax, -1080(%rbp)
+	movq	-1080(%rbp), %rax
+	movq	%rax,
+WARNING:root:0th try failed to compile the assembly hypothesis for core_list_init
+stdout: 
+stderr: hyp/core_list_init.s: Assembler messages:
+hyp/core_list_init.s: Warning: end of file not at end of a line; newline inserted
+hyp/core_list_init.s:293: Error: expecting operand after ','; got nothing
+
+INFO:root:0th try failed at the first round
+INFO:root:core_list_init FAIL
+INFO:root:Start to compile core_state_transition
+C code:
+#include <stdint.h>
+#include <stdio.h>
+typedef unsigned char u8;
+
+typedef enum CORE_STATE {
+  CORE_START = 0,
+  CORE_INVALID,
+  CORE_S1,
+  CORE_S2,
+  CORE_INT,
+  CORE_FLOAT,
+  CORE_EXPONENT,
+  CORE_SCIENTIFIC,
+  NUM_CORE_STATES
+} core_state_e;
+
+u8 ee_isdigit(u8 c);
+
+enum CORE_STATE core_state_transition(u8 **instr, unsigned *transition_count) {
+  u8 *str = *instr;
+  u8 NEXT_SYMBOL;
+  enum CORE_STATE state = CORE_START;
+  for (; *str && state != CORE_INVALID; str++) {
+    NEXT_SYMBOL = *str;
+    if (NEXT_SYMBOL == ',') {
+      str++;
+      break;
+    }
+    switch (state) {
+    case CORE_START:
+      if (ee_isdigit(NEXT_SYMBOL)) {
+        state = CORE_INT;
+      } else if (NEXT_SYMBOL == '+' || NEXT_SYMBOL == '-') {
+        state = CORE_S1;
+      } else if (NEXT_SYMBOL == '.') {
+        state = CORE_FLOAT;
+      } else {
+        state = CORE_INVALID;
+        transition_count[CORE_INVALID]++;
+      }
+      transition_count[CORE_START]++;
+      break;
+    case CORE_S1:
+      if (ee_isdigit(NEXT_SYMBOL)) {
+        state = CORE_INT;
+        transition_count[CORE_S1]++;
+      } else if (NEXT_SYMBOL == '.') {
+        state = CORE_FLOAT;
+        transition_count[CORE_S1]++;
+      } else {
+        state = CORE_INVALID;
+        transition_count[CORE_S1]++;
+      }
+      break;
+    case CORE_INT:
+      if (NEXT_SYMBOL == '.') {
+        state = CORE_FLOAT;
+        transition_count[CORE_INT]++;
+      } else if (!ee_isdigit(NEXT_SYMBOL)) {
+        state = CORE_INVALID;
+        transition_count[CORE_INT]++;
+      }
+      break;
+    case CORE_FLOAT:
+      if (NEXT_SYMBOL == 'E' || NEXT_SYMBOL == 'e') {
+        state = CORE_S2;
+        transition_count[CORE_FLOAT]++;
+      } else if (!ee_isdigit(NEXT_SYMBOL)) {
+        state = CORE_INVALID;
+        transition_count[CORE_FLOAT]++;
+      }
+      break;
+    case CORE_S2:
+      if (NEXT_SYMBOL == '+' || NEXT_SYMBOL == '-') {
+        state = CORE_EXPONENT;
+        transition_count[CORE_S2]++;
+      } else {
+        state = CORE_INVALID;
+        transition_count[CORE_S2]++;
+      }
+      break;
+    case CORE_EXPONENT:
+      if (ee_isdigit(NEXT_SYMBOL)) {
+        state = CORE_SCIENTIFIC;
+        transition_count[CORE_EXPONENT]++;
+      } else {
+        state = CORE_INVALID;
+        transition_count[CORE_EXPONENT]++;
+      }
+      break;
+    case CORE_SCIENTIFIC:
+      if (!ee_isdigit(NEXT_SYMBOL)) {
+        state = CORE_INVALID;
+        transition_count[CORE_INVALID]++;
+      }
+      break;
+    default:
+      break;
+    }
+  }
+  *instr = str;
+  return state;
+}
+INFO:root:current LLM prompt size: 916
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	core_state_transition
+	.type	core_state_transition, @function
+core_state_transition:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$64, %rsp
+	movq	%rdi, -40(%rbp)
+	movq	%rsi, -48(%rbp)
+	movq	-40(%rbp), %rax
+	movq	(%rax), %rax
+	movq	%rax, -8(%rbp)
+	movl	$0, -12(%rbp)
+	jmp	.L2
+.L19:
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %eax
+	movb	%al, -13(%rbp)
+	cmpb	$44, -13(%rbp)
+	jne	.L3
+	addq	$1, -8(%rbp)
+	jmp	.L4
+.L3:
+	movl	-12(%rbp), %eax
+	cmpl	$0, %eax
+	je	.L5
+	movl	-12(%rbp), %eax
+	cmpl	$1, %eax
+	je	.L7
+	movl	-12(%rbp), %eax
+	cmpl	$2, %eax
+	je	.L9
+	movl	-12(%rbp), %eax
+	cmpl	$3, %eax
+	je	.L11
+	movl	-12(%rbp), %eax
+	cmpl	$4, %eax
+	je	.L13
+	movl	-12(%rbp), %eax
+	cmpl	$5, %eax
+	je	.L15
+	movl	-12(%rbp), %eax
+	cmpl	$6, %eax
+	je	.L17
+	jmp	.L6
+.L5:
+	movzbl	-13(%rbp), %eax
+	movzbl	%al, %edi
+	call	ee_isdigit
+	testl	%eax, %eax
+	je	.L8
+	movl	$5, -12(%rbp)
+	jmp	.L10
+.L8:
+	cmpb	$43, -13(%rbp)
+	je	.L12
+	cmpb	$45, -13(%rbp)
+	jne	.L14
+.L12:
+	movl	$1, -12(%rbp)
+	jmp	.L16
+.L14:
+	cmpb	$46, -13(%rbp)
+	jne	.L18
+.L16:
+	movl	$3, -12(%rbp)
+	jmp	.L20
+.L18:
+	movl	$1, -12(%rbp)
+	movq	-48(%rbp), %rax
+	addq	$4, %rax
+	movl	$1, (%rax)
+	jmp	.L20
+.L10:
+	movq	-48(%rbp), %rax
+	movl	$1, (%rax)
+	jmp	.L20
+.L7:
+	movzbl	-13(%rbp), %eax
+	movzbl	%al, %edi
+	call	ee_isdigit
+	testl	%eax, %eax
+	je	.L21
+	movl	$5, -12(%rbp)
+	jmp	.L22
+.L21:
+	cmpb	$46, -13(%rbp)
+	jne	.L23
+.L22:
+	movl	$3, -12(%rbp)
+	jmp	.L24
+.L23:
+	movl	$1, -12(%rbp)
+	jmp	.L25
+.L24:
+	movq	-48(%rbp), %rax
+	addq	$4, %rax
+	movl	$1, (%rax)
+	jmp	.L25
+.L9:
+	cmpb	$46, -13(%rbp)
+	jne	.L26
+	movl	$3, -12(%rbp)
+	jmp	.L27
+.L26:
+	movzbl	-13(%rbp), %eax
+	movzbl	%al, %edi
+	call	ee_isdigit
+	testl	%eax, %eax
+	jne	.L28
+	movl	$1, -12(%rbp)
+	jmp	.L29
+.L27:
+	movq	-48(%rbp), %rax
+	addq	$8, %rax
+	movl	$1, (%rax)
+	jmp	.L29
+.L11:
+	cmpb	$69, -13(%rbp)
+	je	.L30
+	cmpb	$101, -13(%rbp)
+	jne	.L31
+.L30:
+	movl	$4, -12(%rbp)
+	jmp	.L32
+.L31:
+	movzbl	-13(%rbp), %eax
+	movzbl	%al, %edi
+	call	ee_isdigit
+	testl	%eax, %eax
+	jne	.L33
+	movl	$1, -12(%rbp)
+	jmp	.L34
+.L32:
+	movq	-48(%rbp), %rax
+	addq	$12, %rax
+	movl	$1, (%rax)
+	jmp	.L34
+.L13:
+	cmpb	$43, -13(%rbp)
+	je	.L35
+	cmpb	$45, -13(%rbp)
+	jne	.L36
+.L35:
+	movl	$5, -12(%rbp)
+	jmp	.L37
+.L36:
+	movl	$1, -12(%rbp)
+	jmp	.L38
+.L37:
+	movq	-48(%rbp), %rax
+	addq	$16, %rax
+	movl	$1, (%rax)
+	jmp	.L38
+.L15:
+	movzbl	-13(%rbp), %eax
+	movzbl	%al, %edi
+	call	ee_isdigit
+	testl	%eax, %eax
+	je	.L39
+	movl	$6, -12(%rbp)
+	jmp	.L40
+.L39:
+	movl	$1, -12(%rbp)
+	jmp	.L41
+.L40:
+	movq	-48(%rbp), %rax
+	addq	$20, %rax
+	movl	$1, (%rax)
+	jmp	.L41
+.L17:
+	movzbl	-13(%rbp), %eax
+	movzbl	%al, %edi
+	call	ee_isdigit
+	testl	%eax, %eax
+	jne	.L42
+	movl	$1, -12(%rbp)
+	jmp	.L43
+.L42:
+	movq	-48(%rbp), %rax
+	addq	$24, %rax
+	movl	$1, (%rax)
+	jmp	.L43
+.L6:
+	nop
+.L20:
+	addq	$1, -8(%rbp)
+.L2:
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	je	.L4
+	cmpl	$1, -12(%rbp)
+	jne	.L19
+.L4:
+	movq	-40(%rbp), %rax
+	movq	-8(%rbp), %rdx
+	movq	%rdx, (%rax)
+	movl	-12(%rbp), %eax
+	leave
+	ret
+
+WARNING:root:0th try failed to compile the assembly hypothesis for core_state_transition
+stdout: 
+stderr: /usr/bin/ld: warning: /tmp/ccchx00P.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/ccchx00P.o: in function `core_state_transition':
+(.text+0x133): undefined reference to `.L25'
+/usr/bin/ld: (.text+0x146): undefined reference to `.L25'
+/usr/bin/ld: (.text+0x169): undefined reference to `.L28'
+/usr/bin/ld: (.text+0x175): undefined reference to `.L29'
+/usr/bin/ld: (.text+0x188): undefined reference to `.L29'
+/usr/bin/ld: (.text+0x1b1): undefined reference to `.L33'
+/usr/bin/ld: (.text+0x1bd): undefined reference to `.L34'
+/usr/bin/ld: (.text+0x1d0): undefined reference to `.L34'
+/usr/bin/ld: (.text+0x1f1): undefined reference to `.L38'
+/usr/bin/ld: (.text+0x204): undefined reference to `.L38'
+/usr/bin/ld: (.text+0x229): undefined reference to `.L41'
+/usr/bin/ld: (.text+0x23c): undefined reference to `.L41'
+/usr/bin/ld: (.text+0x258): undefined reference to `.L43'
+/usr/bin/ld: (.text+0x26b): undefined reference to `.L43'
+collect2: error: ld returned 1 exit status
+
+INFO:root:0th try failed at the first round
+INFO:root:core_state_transition FAIL
+INFO:root:Start to compile core_bench_matrix
+C code:
+#include <time.h>
+#include <stdint.h>
+#include <stdio.h>
+typedef unsigned short u16;
+typedef struct MAT_PARAMS_S {
+  int N;
+  short *A;
+  short *B;
+  int *C;
+} mat_params;
+u16 crc16(short newval, u16 crc);
+short matrix_test(unsigned N, int *C, short *A, short *B, short val);
+
+u16 core_bench_matrix(mat_params *p, short seed, u16 crc) {
+  unsigned N = p->N;
+  int *C = p->C;
+  short *A = p->A;
+  short *B = p->B;
+  short val = (short)seed;
+
+  crc = crc16(matrix_test(N, C, A, B, val), crc);
+
+  return crc;
+}
+INFO:root:current LLM prompt size: 460
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	core_bench_matrix
+	.type	core_bench_matrix, @function
+core_bench_matrix:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$32, %rsp
+	movq	%rdi, -8(%rbp)
+	movw	%si, -10(%rbp)
+	movw	%dx, -12(%rbp)
+	movq	-8(%rbp), %rax
+	movl	(%rax), %eax
+	movl	%eax, -16(%rbp)
+	movq	-8(%rbp), %rax
+	movq	16(%rax), %rax
+	movq	%rax, -24(%rbp)
+	movq	-8(%rbp), %rax
+	movq	8(%rax), %rax
+	movq	%rax, -32(%rbp)
+	movq	-8(%rbp), %rax
+	movq	24(%rax), %rax
+	movq	%rax, -40(%rbp)
+	movswl	-10(%rbp), %eax
+	movw	%ax, -42(%rbp)
+	movl	-16(%rbp), %eax
+	movq	-40(%rbp), %rdx
+	movq	-32(%rbp), %rcx
+	movq	-24(%rbp), %rsi
+	movswl	-42(%rbp), %edi
+	movl	%eax, %r8d
+	call	matrix_test
+	movswl	%ax, %edi
+	movzwl	-12(%rbp), %edx
+	call	crc16
+	movw	%ax, -2(%rbp)
+	movzwl	-2(%rbp), %eax
+	leave
+	ret
+
+WARNING:root:0th try failed to execute the assembly hypothesis for core_bench_matrix
+INFO:root:0th try failed at the first round
+INFO:root:core_bench_matrix FAIL
+INFO:root:Start to compile ee_isdigit
+C code:
+typedef unsigned char u8;
+u8 ee_isdigit(u8 c) {
+  u8 retval;
+  retval = ((c >= '0') & (c <= '9')) ? 1 : 0;
+  return retval;
+}
+INFO:root:current LLM prompt size: 339
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	ee_isdigit
+	.type	ee_isdigit, @function
+ee_isdigit:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movb	%dil, -4(%rbp)
+	movb	-4(%rbp), %al
+	cmpb	$48, %al
+	jb	.L2
+	movb	-4(%rbp), %al
+	cmpb	$57, %al
+	ja	.L2
+	movb	$1, -1(%rbp)
+	jmp	.L3
+.L2:
+	movb	$0, -1(%rbp)
+.L3:
+	movb	-1(%rbp), %al
+	popq	%rbp
+	ret
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 13984
+Total time (secs): 13.984000
+Iterations/Sec   : 4290.617849
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4290.617849 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:0th try passed for ee_isdigit
+INFO:root:0th try passed at the first round
+INFO:root:ee_isdigit PASS
+INFO:root:Start to compile core_init_state
+C code:
+typedef unsigned short u16;
+typedef unsigned char u8;
+
+/* Default initialization patterns */
+static u8 *intpat[4] = {(u8 *)"5012", (u8 *)"1234", (u8 *)"-874", (u8 *)"+122"};
+static u8 *floatpat[4] = {(u8 *)"35.54400", (u8 *)".1234500", (u8 *)"-110.700",
+                          (u8 *)"+0.64400"};
+static u8 *scipat[4] = {(u8 *)"5.500e+3", (u8 *)"-.123e-2", (u8 *)"-87e+832",
+                        (u8 *)"+0.6e-12"};
+static u8 *errpat[4] = {(u8 *)"T0.3e-1F", (u8 *)"-T.T++Tq", (u8 *)"1T3.4e4z",
+                        (u8 *)"34.0e-T^"};
+
+void core_init_state(unsigned size, short seed, u8 *p) {
+  unsigned total = 0, next = 0, i;
+  u8 *buf = 0;
+  size--;
+  next = 0;
+  while ((total + next + 1) < size) {
+    if (next > 0) {
+      for (i = 0; i < next; i++)
+        *(p + total + i) = buf[i];
+      *(p + total + i) = ',';
+      total += next + 1;
+    }
+    seed++;
+    switch (seed & 0x7) {
+    case 0: /* int */
+    case 1: /* int */
+    case 2: /* int */
+      buf = intpat[(seed >> 3) & 0x3];
+      next = 4;
+      break;
+    case 3: /* float */
+    case 4: /* float */
+      buf = floatpat[(seed >> 3) & 0x3];
+      next = 8;
+      break;
+    case 5: /* scientific */
+    case 6: /* scientific */
+      buf = scipat[(seed >> 3) & 0x3];
+      next = 8;
+      break;
+    case 7: /* invalid */
+      buf = errpat[(seed >> 3) & 0x3];
+      next = 8;
+      break;
+    default: /* Never happen, just to make some compilers happy */
+      break;
+    }
+  }
+  size++;
+  while (total < size) { /* fill the rest with 0 */
+    *(p + total) = 0;
+    total++;
+  }
+}
+INFO:root:current LLM prompt size: 864
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	core_init_state
+	.type	core_init_state, @function
+core_init_state:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$48, %rsp
+	movl	%edi, -20(%rbp)
+	movw	%si, -22(%rbp)
+	movq	%rdx, -32(%rbp)
+	movl	-20(%rbp), %eax
+	subl	$1, %eax
+	movl	%eax, -4(%rbp)
+	movl	$0, -8(%rbp)
+	movl	$0, -12(%rbp)
+	jmp	.L2
+.L6:
+	cmpl	$0, -12(%rbp)
+	jle	.L3
+	movl	-8(%rbp), %eax
+	movl	%eax, -16(%rbp)
+	jmp	.L4
+.L5:
+	movl	-16(%rbp), %eax
+	cltq
+	addq	-32(%rbp), %rax
+	movl	-16(%rbp), %edx
+	movslq	%edx, %rdx
+	movzbl	-48(%rbp,%rdx), %edx
+	movb	%dl, (%rax)
+	addl	$1, -16(%rbp)
+.L4:
+	movl	-16(%rbp), %eax
+	cmpl	-12(%rbp), %eax
+	jl	.L5
+	movl	-8(%rbp), %eax
+	cltq
+	addq	-32(%rbp), %rax
+	movb	$44, (%rax)
+	movl	-12(%rbp), %eax
+	addl	$1, %eax
+	addl	%eax, -8(%rbp)
+.L3:
+	movzwl	-22(%rbp), %eax
+	addw	$1, %ax
+	movw	%ax, -22(%rbp)
+	movzwl	-22(%rbp), %eax
+	andl	$7, %eax
+	movl	%eax, %edx
+	shrl	$3, %edx
+	andl	$3, %edx
+	movl	%eax, %eax
+	cmpl	$2, %eax
+	jbe	.L7
+	cmpl	$4, %eax
+	je	.L8
+	cmpl	$6, %eax
+	jbe	.L9
+	cmpl	$7, %eax
+	je	.L10
+	jmp	.L2
+.L7:
+	leaq	intpat(%rip), %rax
+	movslq	%edx, %rdx
+	movq	(%rax,%rdx,8), %rax
+	movq	%rax, -48(%rbp)
+	movl	$4, -12(%rbp)
+	jmp	.L2
+.L8:
+	leaq	floatpat(%rip), %rax
+	movslq	%edx, %rdx
+	movq	(%rax,%rdx,8), %rax
+	movq	%rax, -48(%rbp)
+	movl	$8, -12(%rbp)
+	jmp	.L2
+.L9:
+	leaq	scipat(%rip), %rax
+	movslq	%edx, %rdx
+	movq	(%rax,%rdx,8), %rax
+	movq	%rax, -48(%rbp)
+	movl	$8, -12(%rbp)
+	jmp	.L2
+.L10:
+	leaq	errpat(%rip), %rax
+	movslq	%edx, %rdx
+	movq	(%rax,%rdx,8), %rax
+	movq	%rax, -48(%rbp)
+	movl	$8, -12(%rbp)
+.L2:
+	movl	-8(%rbp), %eax
+	addl	-12(%rbp), %eax
+	addl	$1, %eax
+	cmpl	-4(%rbp), %eax
+	jb	.L6
+	movl	-4(%rbp), %eax
+	addl	$1, %eax
+	movl	%eax, -4(%rbp)
+	jmp	.L11
+.L12:
+	movl	-8(%rbp), %eax
+	cltq
+	addq	-32(%rbp), %rax
+	movb	$0, (%rax)
+	addl	$1, -8(%rbp)
+.L11:
+	movl	-8(%rbp), %eax
+	cmpl	-4(%rbp), %eax
+	jb	.L12
+	leave
+	ret
+	.size	core_init_state, .-core_init_state
+	.data
+	.align 32
+	.type	intpat, @object
+	.size	intpat, 32
+intpat:
+	.quad	.LC0
+	.quad	.LC1
+	.quad	.LC2
+	.quad	.LC3
+	.align 32
+	.type	floatpat, @object
+	.size	floatpat, 32
+floatpat:
+	.quad	.LC4
+	.quad	.LC5
+	.quad	.LC6
+	.quad	.LC7
+	.align 32
+	.type	scipat, @object
+	.size	scipat, 32
+scipat:
+	.quad	.LC8
+	.quad	.LC9
+	.quad	.LC10
+	.quad	.LC11
+	.align 32
+	.type	errpat, @object
+	.size	errpat, 32
+errpat:
+	.quad	.LC12
+	.quad	.LC13
+	.quad	.LC14
+	.quad	.LC15
+	.section	.rodata
+.LC0:
+	.string	"5012"
+.LC1:
+	.string	"1234"
+.LC2:
+	.string	"-874"
+.LC3:
+	.string	"+122"
+.LC4:
+	.string	"35.54400"
+.LC5:
+	.string	".1234500"
+.LC6:
+	.string	"-110.700"
+.LC7:
+	.string	"+0.64400"
+.LC8:
+	.string	"5.500e+3"
+.LC9:
+	.string	"-.123e-2"
+.LC10:
+	.string	"-87e+832"
+.LC11:
+	.string	"+0.6e-12"
+.LC12:
+	.string	"T0.3e-1F"
+.LC13:
+	.string	"-T.T++Tq"
+.LC14:
+	.string	"1T3.4e4z"
+.LC15:
+	.string	"34.0e-T^"
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 12390
+Total time (secs): 12.390000
+Iterations/Sec   : 4842.615012
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4842.615012 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:0th try passed for core_init_state
+INFO:root:0th try passed at the first round
+INFO:root:core_init_state PASS
+INFO:root:Start to compile core_list_reverse
+C code:
+#include <stdio.h>
+typedef struct list_data_s {
+  short data16;
+  short idx;
+} list_data;
+
+typedef struct list_head_s {
+  struct list_head_s *next;
+  struct list_data_s *info;
+} list_head;
+
+list_head *core_list_reverse(list_head *list) {
+  list_head *next = NULL, *tmp;
+  while (list) {
+    tmp = list->next;
+    list->next = next;
+    next = list;
+    list = tmp;
+  }
+  return next;
+}
+INFO:root:current LLM prompt size: 400
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	core_list_reverse
+	.type	core_list_reverse, @function
+core_list_reverse:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -24(%rbp)
+	movq	$0, -8(%rbp)
+	jmp	.L2
+.L3:
+	movq	-24(%rbp), %rax
+	movq	8(%rax), %rax
+	movq	%rax, -16(%rbp)
+	movq	-24(%rbp), %rax
+	movq	-8(%rbp), %rdx
+	movq	%rdx, 8(%rax)
+	movq	-24(%rbp), %rax
+	movq	%rax, -8(%rbp)
+	movq	-16(%rbp), %rax
+	movq	%rax, -24(%rbp)
+.L2:
+	cmpq	$0, -24(%rbp)
+	jne	.L3
+	movq	-8(%rbp), %rax
+	popq	%rbp
+	ret
+
+WARNING:root:0th try failed to execute the assembly hypothesis for core_list_reverse
+INFO:root:0th try failed at the first round
+INFO:root:core_list_reverse FAIL
+INFO:root:Start to compile matrix_test
+C code:
+#include <stdint.h>
+#include <stdio.h>
+typedef unsigned short u16;
+
+#define matrix_big(x) (0xf000 | (x))
+
+u16 crc16(short newval, u16 crc);
+short matrix_sum(unsigned N, int *C, short clipval);
+void matrix_mul_const(unsigned N, int *C, short *A, short val);
+void matrix_mul_vect(unsigned N, int *C, short *A, short *B);
+void matrix_mul_matrix(unsigned N, int *C, short *A, short *B);
+void matrix_mul_matrix_bitextract(unsigned N, int *C, short *A, short *B);
+void matrix_add_const(unsigned N, short *A, short val);
+
+short matrix_test(unsigned N, int *C, short *A, short *B, short val) {
+  u16 crc = 0;
+  short clipval = matrix_big(val);
+
+  matrix_add_const(N, A, val);
+  matrix_mul_const(N, C, A, val);
+  crc = crc16(matrix_sum(N, C, clipval), crc);
+  matrix_mul_vect(N, C, A, B);
+  crc = crc16(matrix_sum(N, C, clipval), crc);
+  matrix_mul_matrix(N, C, A, B);
+  crc = crc16(matrix_sum(N, C, clipval), crc);
+  matrix_mul_matrix_bitextract(N, C, A, B);
+  crc = crc16(matrix_sum(N, C, clipval), crc);
+
+  matrix_add_const(N, A, -val);
+  return crc;
+}
+INFO:root:current LLM prompt size: 615
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	matrix_test
+	.type	matrix_test, @function
+matrix_test:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$48, %rsp
+	movl	%edi, -4(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movw	%r8w, -36(%rbp)
+	movw	$0, -2(%rbp)
+	movswl	-36(%rbp), %eax
+	orl	$61440, %eax
+	movw	%ax, -4(%rbp)
+	movl	-4(%rbp), %edx
+	movq	-24(%rbp), %rcx
+	movl	-4(%rbp), %esi
+	movl	-4(%rbp), %edi
+	call	matrix_add_const
+	movl	-4(%rbp), %edx
+	movq	-24(%rbp), %rcx
+	movq	-16(%rbp), %rsi
+	movl	-4(%rbp), %edi
+	call	matrix_mul_const
+	movzwl	-4(%rbp), %edx
+	movq	-16(%rbp), %rsi
+	movl	-4(%rbp), %edi
+	call	matrix_sum
+	movzwl	-2(%rbp), %esi
+	movl	%eax, %edi
+	call	crc16
+	movw	%ax, -2(%rbp)
+	movq	-32(%rbp), %rdx
+	movq	-24(%rbp), %rcx
+	movq	-16(%rbp), %rsi
+	movl	-4(%rbp), %edi
+	call	matrix_mul_vect
+	movzwl	-4(%rbp), %edx
+	movq	-16(%rbp), %rsi
+	movl	-4(%rbp), %edi
+	call	matrix_sum
+	movzwl	-2(%rbp), %esi
+	movl	%eax, %edi
+	call	crc16
+	movw	%ax, -2(%rbp)
+	movq	-32(%rbp), %rdx
+	movq	-24(%rbp), %rcx
+	movq	-16(%rbp), %rsi
+	movl	-4(%rbp), %edi
+	call	matrix_mul_matrix
+	movzwl	-4(%rbp), %edx
+	movq	-16(%rbp), %rsi
+	movl	-4(%rbp), %edi
+	call	matrix_sum
+	movzwl	-2(%rbp), %esi
+	movl	%eax, %edi
+	call	crc16
+	movw	%ax, -2(%rbp)
+	movq	-32(%rbp), %rdx
+	movq	-24(%rbp), %rcx
+	movq	-16(%rbp), %rsi
+	movl	-4(%rbp), %edi
+	call	matrix_mul_matrix_bitextract
+	movzwl	-4(%rbp), %edx
+	movq	-16(%rbp), %rsi
+	movl	-4(%rbp), %edi
+	call	matrix_sum
+	movzwl	-2(%rbp), %esi
+	movl	%eax, %edi
+	call	crc16
+	movw	%ax, -2(%rbp)
+	movl	-4(%rbp), %edx
+	movq	-24(%rbp), %rcx
+	movl	-4(%rbp), %esi
+	movl	-4(%rbp), %edi
+	call	matrix_add_const
+	movzwl	-2(%rbp), %eax
+	leave
+	ret
+
+WARNING:root:0th try failed to execute the assembly hypothesis for matrix_test
+INFO:root:0th try failed at the first round
+INFO:root:matrix_test FAIL
+INFO:root:Start to compile core_bench_list
+C code:
+#include <stdint.h>
+#include <stdio.h>
+typedef unsigned short u16;
+typedef unsigned char u8;
+typedef struct list_data_s {
+  short data16;
+  short idx;
+} list_data;
+
+typedef struct list_head_s {
+  struct list_head_s *next;
+  struct list_data_s *info;
+} list_head;
+
+typedef struct MAT_PARAMS_S {
+  int N;
+  short *A;
+  short *B;
+  int *C;
+} mat_params;
+
+typedef struct CORE_PORTABLE_S {
+  u8 portable_id;
+} core_portable;
+
+typedef struct RESULTS_S {
+  short seed1;
+  short seed2;
+  short seed3;
+  void *memblock[4];
+  unsigned size;
+  unsigned iterations;
+  unsigned execs;
+  struct list_head_s *list;
+  mat_params mat;
+  u16 crc;
+  u16 crclist;
+  u16 crcmatrix;
+  u16 crcstate;
+  short err;
+  core_portable port;
+} core_results;
+
+u16 crc16(short newval, u16 crc);
+u16 crcu16(u16 newval, u16 crc);
+list_head *core_list_find(list_head *list, list_data *info);
+list_head *core_list_reverse(list_head *list);
+list_head *core_list_remove(list_head *item);
+list_head *core_list_undo_remove(list_head *item_removed,
+                                 list_head *item_modified);
+typedef int (*list_cmp)(list_data *a, list_data *b, core_results *res);
+list_head *core_list_mergesort(list_head *list, list_cmp cmp,
+                               core_results *res);
+int cmp_idx(list_data *a, list_data *b, core_results *res);
+int cmp_complex(list_data *a, list_data *b, core_results *res);
+
+u16 core_bench_list(core_results *res, short finder_idx) {
+  u16 retval = 0;
+  u16 found = 0, missed = 0;
+  list_head *list = res->list;
+  short find_num = res->seed3;
+  list_head *this_find;
+  list_head *finder, *remover;
+  list_data info = {0};
+  short i;
+
+  info.idx = finder_idx;
+  for (i = 0; i < find_num; i++) {
+    info.data16 = (i & 0xff);
+    this_find = core_list_find(list, &info);
+    list = core_list_reverse(list);
+    if (this_find == NULL) {
+      missed++;
+      retval += (list->next->info->data16 >> 8) & 1;
+    } else {
+      found++;
+      if (this_find->info->data16 & 0x1)
+        retval += (this_find->info->data16 >> 9) & 1;
+      if (this_find->next != NULL) {
+        finder = this_find->next;
+        this_find->next = finder->next;
+        finder->next = list->next;
+        list->next = finder;
+      }
+    }
+    if (info.idx >= 0)
+      info.idx++;
+  }
+  retval += found * 4 - missed;
+  if (finder_idx > 0)
+    list = core_list_mergesort(list, cmp_complex, res);
+  remover = core_list_remove(list->next);
+  finder = core_list_find(list, &info);
+  if (!finder)
+    finder = list->next;
+  while (finder) {
+    retval = crc16(list->info->data16, retval);
+    finder = finder->next;
+  }
+  remover = core_list_undo_remove(remover, list->next);
+  list = core_list_mergesort(list, cmp_idx, NULL);
+  finder = list->next;
+  while (finder) {
+    retval = crc16(list->info->data16, retval);
+    finder = finder->next;
+  }
+  return retval;
+}
+INFO:root:current LLM prompt size: 1108
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	core_bench_list
+	.type	core_bench_list, @function
+core_bench_list:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$112, %rsp
+	movq	%rdi, -104(%rbp)
+	movw	%si, -108(%rbp)
+	movw	$0, -4(%rbp)
+	movw	$0, -6(%rbp)
+	movw	$0, -8(%rbp)
+	movq	-104(%rbp), %rax
+	movq	120(%rax), %rax
+	movq	%rax, -16(%rbp)
+	movq	-104(%rbp), %rax
+	movzwl	6(%rax), %eax
+	movw	%ax, -18(%rbp)
+	movq	$0, -24(%rbp)
+	movq	$0, -32(%rbp)
+	movq	$0, -40(%rbp)
+	movw	$0, -42(%rbp)
+	movw	$0, -44(%rbp)
+	movl	$0, -48(%rbp)
+	movw	-108(%rbp), %ax
+	movw	%ax, -44(%rbp)
+	movl	$0, -52(%rbp)
+	jmp	.L2
+.L11:
+	movl	-52(%rbp), %eax
+	andl	$255, %eax
+	movw	%ax, -42(%rbp)
+	movq	-16(%rbp), %rax
+	leaq	-44(%rbp), %rdx
+	movq	%rdx, %rsi
+	movq	%rax, %rdi
+	call	core_list_find
+	movq	%rax, -24(%rbp)
+	movq	-16(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_list_reverse
+	movq	%rax, -16(%rbp)
+	cmpq	$0, -24(%rbp)
+	jne	.L3
+	addw	$1, -8(%rbp)
+	movq	-16(%rbp), %rax
+	movq	8(%rax), %rax
+	movzwl	4(%rax), %eax
+	sarw	$8, %ax
+	andw	$1, %ax
+	addw	%ax, -4(%rbp)
+	jmp	.L4
+.L3:
+	addw	$1, -6(%rbp)
+	movq	-24(%rbp), %rax
+	movzwl	4(%rax), %eax
+	andw	$1, %ax
+	testw	%ax, %ax
+	je	.L5
+	movq	-24(%rbp), %rax
+	movzwl	4(%rax), %eax
+	sarw	$9, %ax
+	andw	$1, %ax
+	addw	%ax, -4(%rbp)
+.L5:
+	movq	-24(%rbp), %rax
+	movq	8(%rax), %rax
+	testq	%rax, %rax
+	je	.L4
+	movq	-24(%rbp), %rax
+	movq	8(%rax), %rax
+	movq	%rax, -32(%rbp)
+	movq	-24(%rbp), %rax
+	movq	8(%rax), %rdx
+	movq	-24(%rbp), %rax
+	movq	%rdx, 8(%rax)
+	movq	-32(%rbp), %rax
+	movq	-16(%rbp), %rdx
+	movq	8(%rdx), %rdx
+	movq	%rdx, 8(%rax)
+	movq	-16(%rbp), %rax
+	movq	-32(%rbp), %rdx
+	movq	%rdx, 8(%rax)
+.L4:
+	movzwl	-44(%rbp), %eax
+	testw	%ax, %ax
+	jle	.L6
+	addw	$1, -44(%rbp)
+.L6:
+	addl	$1, -52(%rbp)
+.L2:
+	movzwl	-18(%rbp), %eax
+	cmpl	%eax, -52(%rbp)
+	jl	.L11
+	movzwl	-6(%rbp), %eax
+	shlw	$2, %ax
+	subw	-8(%rbp), %ax
+	addw	%ax, -4(%rbp)
+	movzwl	-108(%rbp), %eax
+	testw	%ax, %ax
+	jle	.L7
+	movq	-16(%rbp), %rax
+	leaq	-104(%rbp), %rdx
+	movl	$cmp_complex, %esi
+	movq	%rax, %rdi
+	call	core_list_mergesort
+	movq	%rax, -16(%rbp)
+.L7:
+	movq	-16(%rbp), %rax
+	movq	8(%rax), %rax
+	movq	%rax, -40(%rbp)
+	leaq	-44(%rbp), %rdx
+	movq	-16(%rbp), %rax
+	movq	%rdx, %rsi
+	movq	%rax, %rdi
+	call	core_list_find
+	movq	%rax, -32(%rbp)
+	cmpq	$0, -32(%rbp)
+	jne	.L8
+	movq	-16(%rbp), %rax
+	movq	8(%rax), %rax
+	movq	%rax, -32(%rbp)
+.L8:
+	jmp	.L9
+.L10:
+	movq	-16(%rbp), %rax
+	movzwl	4(%rax), %edx
+	movzwl	-4(%rbp), %eax
+	movw	%dx, %di
+	movw	%ax, %si
+	call	crc16
+	movw	%ax, -4(%rbp)
+	movq	-32(%rbp), %rax
+	movq	8(%rax), %rax
+	movq	%rax, -32(%rbp)
+.L9:
+	cmpq	$0, -32(%rbp)
+	jne	.L10
+	movq	-40(%rbp), %rax
+	movq	-16(%rbp), %rdx
+	movq	8(%rdx), %rdx
+	movq	%rdx, %rdi
+	movq	%rax, %rsi
+	call	core_list_undo_remove
+	movq	-16(%rbp), %rax
+	movl	$cmp_idx, %esi
+	movq	$0, %rdi
+	call	core_list_mergesort
+	movq	%rax, -16(%rbp)
+	movq	-16(%rbp), %rax
+	movq	8(%rax), %rax
+	movq	%rax, -32(%rbp)
+	jmp	.L12
+.L13:
+	movq	-16(%rbp), %rax
+	movzwl	4(%rax), %edx
+	movzwl	-4(%rbp), %eax
+	movw	%dx, %di
+	movw	%ax, %si
+	call	crc16
+	movw	%ax, -4(%rbp)
+	movq	-32(%rbp), %rax
+	movq	8(%rax), %rax
+	movq	%rax, -32(%rbp)
+.L12:
+	cmpq	$0, -32(%rbp)
+	jne	.L13
+	movzwl	-4(%rbp), %eax
+	leave
+	ret
+
+WARNING:root:0th try failed to compile the assembly hypothesis for core_bench_list
+stdout: 
+stderr: /usr/bin/ld: /tmp/cc9EbAev.o: relocation R_X86_64_32 against symbol `cmp_complex' can not be used when making a PIE object; recompile with -fPIE
+/usr/bin/ld: failed to set dynamic section sizes: bad value
+collect2: error: ld returned 1 exit status
+
+INFO:root:0th try failed at the first round
+INFO:root:core_bench_list FAIL
+INFO:root:Start to compile time_in_secs
+C code:
+#include <time.h>
+double time_in_secs(clock_t ticks) {
+  double retval = ((double)ticks) / (double)1000;
+  return retval;
+}
+INFO:root:current LLM prompt size: 325
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	time_in_secs
+	.type	time_in_secs, @function
+time_in_secs:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -24(%rbp)
+	movq	-24(%rbp), %rax
+	movq	%rax, -16(%rbp)
+	cvtsi2sdq	-16(%rbp), %xmm0
+	movsd	.LC0(%rip), %xmm1
+	divsd	%xmm1, %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	popq	%rbp
+	ret
+.LC0:
+	.long	0
+	.long	1079574528
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 1407
+Total time (secs): 14.070000
+Iterations/Sec   : 426.439232
+Iterations       : 6000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 426.439232 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:0th try passed for time_in_secs
+INFO:root:0th try passed at the first round
+INFO:root:time_in_secs PASS
+INFO:root:Start to compile cmp_idx
+C code:
+#include <stdio.h>
+
+typedef unsigned short u16;
+typedef unsigned char u8;
+typedef struct CORE_PORTABLE_S {
+  u8 portable_id;
+} core_portable;
+typedef struct list_data_s {
+  short data16;
+  short idx;
+} list_data;
+
+typedef struct list_head_s {
+  struct list_head_s *next;
+  struct list_data_s *info;
+} list_head;
+
+typedef struct MAT_PARAMS_S {
+  int N;
+  short *A;
+  short *B;
+  int *C;
+} mat_params;
+
+typedef struct RESULTS_S {
+  short seed1;           
+  short seed2;           
+  short seed3;           
+  void *memblock[4];   
+  unsigned size;       
+  unsigned iterations; 
+  unsigned execs;      
+  struct list_head_s *list;
+  mat_params mat;
+  u16 crc;
+  u16 crclist;
+  u16 crcmatrix;
+  u16 crcstate;
+  short err;
+  core_portable port;
+} core_results;
+int cmp_idx(list_data *a, list_data *b, core_results *res) {
+  if (res == NULL) {
+    a->data16 = (a->data16 & 0xff00) | (0x00ff & (a->data16 >> 8));
+    b->data16 = (b->data16 & 0xff00) | (0x00ff & (b->data16 >> 8));
+  }
+  return a->idx - b->idx;
+}
+INFO:root:current LLM prompt size: 603
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	cmp_idx
+	.type	cmp_idx, @function
+cmp_idx:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -24(%rbp)
+	movq	%rsi, -32(%rbp)
+	movq	%rdx, -40(%rbp)
+	cmpq	$0, -40(%rbp)
+	jne	.L2
+	movq	-24(%rbp), %rax
+	movzwl	(%rax), %eax
+	movzwl	%ax, %edx
+	shrl	$8, %edx
+	andl	$255, %edx
+	sall	$8, %edx
+	andl	$65280, %eax
+	orl	%edx, %eax
+	movw	%ax, (%rax)
+	movq	-32(%rbp), %rax
+	movzwl	(%rax), %eax
+	movzwl	%ax, %edx
+	shrl	$8, %edx
+	andl	$255, %edx
+	sall	$8, %edx
+	andl	$65280, %eax
+	orl	%edx, %eax
+	movw	%ax, (%rax)
+.L2:
+	movq	-24(%rbp), %rax
+	movzwl	4(%rax), %eax
+	movzwl	%ax, %edx
+	movq	-32(%rbp), %rax
+	movzwl	4(%rax), %eax
+	movzwl	%ax, %eax
+	subl	%eax, %edx
+	movl	%edx, %eax
+	popq	%rbp
+	ret
+	.size	cmp_idx, .-cmp_idx
+
+WARNING:root:0th try failed to execute the assembly hypothesis for cmp_idx
+INFO:root:0th try failed at the first round
+INFO:root:cmp_idx FAIL
+INFO:root:Start to compile matrix_sum
+C code:
+short matrix_sum(unsigned N, int *C, short clipval) {
+  int tmp = 0, prev = 0, cur = 0;
+  short ret = 0;
+  unsigned i, j;
+  for (i = 0; i < N; i++) {
+    for (j = 0; j < N; j++) {
+      cur = C[i * N + j];
+      tmp += cur;
+      if (tmp > clipval) {
+        ret += 10;
+        tmp = 0;
+      } else {
+        ret += (cur > prev) ? 1 : 0;
+      }
+      prev = cur;
+    }
+  }
+  return ret;
+}
+INFO:root:current LLM prompt size: 436
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	matrix_sum
+	.type	matrix_sum, @function
+matrix_sum:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$64, %rsp
+	movl	%edi, -36(%rbp)
+	movq	%rsi, -48(%rbp)
+	movw	%dx, -50(%rbp)
+	movl	$0, -8(%rbp)
+	movl	$0, -12(%rbp)
+	movl	$0, -16(%rbp)
+	movw	$0, -18(%rbp)
+	movl	$0, -20(%rbp)
+	jmp	.L2
+.L7:
+	movl	$0, -24(%rbp)
+	jmp	.L3
+.L6:
+	movl	-20(%rbp), %eax
+	imull	-36(%rbp), %eax
+	addl	-24(%rbp), %eax
+	cltq
+	leaq	0(,%rax,4), %rdx
+	movq	-48(%rbp), %rax
+	addq	%rdx, %rax
+	movl	(%rax), %eax
+	movl	%eax, -16(%rbp)
+	movl	-8(%rbp), %edx
+	movl	-16(%rbp), %eax
+	addl	%edx, %eax
+	movl	%eax, -8(%rbp)
+	movzwl	-50(%rbp), %eax
+	cwtl
+	cmpl	%eax, -8(%rbp)
+	jle	.L4
+	movw	-18(%rbp), %ax
+	addw	$10, %ax
+	movw	%ax, -18(%rbp)
+	movl	$0, -8(%rbp)
+	jmp	.L5
+.L4:
+	movl	-16(%rbp), %eax
+	cmpl	-12(%rbp), %eax
+	jle	.L5
+	movw	-18(%rbp), %ax
+	addw	$1, %ax
+	movw	%ax, -18(%rbp)
+.L5:
+	movl	-16(%rbp), %eax
+	movl	%eax, -12(%rbp)
+	addl	$1, -24(%rbp)
+.L3:
+	movl	-24(%rbp), %eax
+	cmpl	-36(%rbp), %eax
+	jb	.L6
+	addl	$1, -20(%rbp)
+.L2:
+	movl	-20(%rbp), %eax
+	cmpl	-36(%rbp), %eax
+	jb	.L7
+	movzwl	-18(%rbp), %eax
+	leave
+	ret
+
+WARNING:root:0th try failed to execute the assembly hypothesis for matrix_sum
+INFO:root:0th try failed at the first round
+INFO:root:matrix_sum FAIL
+INFO:root:Start to compile core_list_undo_remove
+C code:
+typedef struct list_data_s {
+  short data16;
+  short idx;
+} list_data;
+
+typedef struct list_head_s {
+  struct list_head_s *next;
+  struct list_data_s *info;
+} list_head;
+
+list_head *core_list_undo_remove(list_head *item_removed,
+                                 list_head *item_modified) {
+  list_data *tmp;
+  /* swap data pointers */
+  tmp = item_removed->info;
+  item_removed->info = item_modified->info;
+  item_modified->info = tmp;
+  /* and insert item */
+  item_removed->next = item_modified->next;
+  item_modified->next = item_removed;
+  return item_removed;
+}
+INFO:root:current LLM prompt size: 427
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	core_list_undo_remove
+	.type	core_list_undo_remove, @function
+core_list_undo_remove:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -24(%rbp)
+	movq	%rsi, -32(%rbp)
+	movq	-24(%rbp), %rax
+	movq	(%rax), %rax
+	movq	%rax, -8(%rbp)
+	movq	-32(%rbp), %rax
+	movq	(%rax), %rdx
+	movq	-24(%rbp), %rax
+	movq	%rdx, (%rax)
+	movq	-32(%rbp), %rax
+	movq	-8(%rbp), %rdx
+	movq	%rdx, (%rax)
+	movq	-24(%rbp), %rax
+	movq	8(%rax), %rdx
+	movq	-32(%rbp), %rax
+	movq	8(%rax), %rcx
+	movq	-24(%rbp), %rax
+	movq	%rcx, 8(%rax)
+	movq	-32(%rbp), %rax
+	movq	-24(%rbp), %rdx
+	movq	%rdx, 8(%rax)
+	movq	-24(%rbp), %rax
+	popq	%rbp
+	ret
+
+WARNING:root:0th try failed to execute the assembly hypothesis for core_list_undo_remove
+INFO:root:0th try failed at the first round
+INFO:root:core_list_undo_remove FAIL
+INFO:root:Start to compile core_bench_state
+C code:
+typedef unsigned short u16;
+typedef unsigned char u8;
+typedef enum CORE_STATE {
+  CORE_START = 0,
+  CORE_INVALID,
+  CORE_S1,
+  CORE_S2,
+  CORE_INT,
+  CORE_FLOAT,
+  CORE_EXPONENT,
+  CORE_SCIENTIFIC,
+  NUM_CORE_STATES
+} core_state_e;
+
+u16 crcu32(unsigned newval, u16 crc);
+enum CORE_STATE core_state_transition(u8 **instr, unsigned *transition_count);
+
+u16 core_bench_state(unsigned blksize, u8 *memblock, short seed1, short seed2,
+                     short step, u16 crc) {
+  unsigned final_counts[NUM_CORE_STATES];
+  unsigned track_counts[NUM_CORE_STATES];
+  u8 *p = memblock;
+  unsigned i;
+
+  for (i = 0; i < NUM_CORE_STATES; i++) {
+    final_counts[i] = track_counts[i] = 0;
+  }
+  while (*p != 0) {
+    enum CORE_STATE fstate = core_state_transition(&p, track_counts);
+    final_counts[fstate]++;
+  }
+  p = memblock;
+  while (p < (memblock + blksize)) {
+    if (*p != ',')
+      *p ^= (u8)seed1;
+    p += step;
+  }
+  p = memblock;
+  while (*p != 0) {
+    enum CORE_STATE fstate = core_state_transition(&p, track_counts);
+    final_counts[fstate]++;
+  }
+  p = memblock;
+  while (p < (memblock +
+              blksize)) {
+    if (*p != ',')
+      *p ^= (u8)seed2;
+    p += step;
+  }
+  for (i = 0; i < NUM_CORE_STATES; i++) {
+    crc = crcu32(final_counts[i], crc);
+    crc = crcu32(track_counts[i], crc);
+  }
+  return crc;
+}
+INFO:root:current LLM prompt size: 690
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	core_bench_state
+	.type	core_bench_state, @function
+core_bench_state:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$160, %rsp
+	movl	%edi, -100(%rbp)
+	movq	%rsi, -112(%rbp)
+	movw	%dx, -116(%rbp)
+	movw	%cx, -120(%rbp)
+	movw	%r8w, -124(%rbp)
+	movw	%r9w, -128(%rbp)
+	movl	$0, -4(%rbp)
+	jmp	.L2
+.L3:
+	movl	-4(%rbp), %eax
+	cltq
+	movl	$0, -80(%rbp,%rax,4)
+	movl	-4(%rbp), %eax
+	cltq
+	movl	$0, -160(%rbp,%rax,4)
+	addl	$1, -4(%rbp)
+.L2:
+	cmpl	$8, -4(%rbp)
+	jle	.L3
+	movq	-112(%rbp), %rax
+	movq	%rax, -8(%rbp)
+	jmp	.L4
+.L5:
+	leaq	-80(%rbp), %rdx
+	leaq	-8(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rsi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rdi
+	call	core_state_transition
+	movl	%eax, %edx
+	movq	-8(%rbp), %rax
+	movl	%edx, %ecx
+	movq	%rax, %rdx
+	leaq	-80(%rbp), %rax
+	mov
+WARNING:root:0th try failed to compile the assembly hypothesis for core_bench_state
+stdout: 
+stderr: hyp/core_bench_state.s: Assembler messages:
+hyp/core_bench_state.s: Warning: end of file not at end of a line; newline inserted
+hyp/core_bench_state.s:379: Error: number of operands mismatch for `mov'
+
+INFO:root:0th try failed at the first round
+INFO:root:core_bench_state FAIL
+INFO:root:Start to compile start_time
+C code:
+#include <time.h>
+extern struct timespec start_time_val, stop_time_val;
+void start_time(void) { clock_gettime(CLOCK_REALTIME, &start_time_val); }
+INFO:root:current LLM prompt size: 325
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	start_time
+	.type	start_time, @function
+start_time:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movl	$0, %edi
+	leaq	start_time_val(%rip), %rsi
+	call	clock_gettime@PLT
+	popq	%rbp
+	ret
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 14081
+Total time (secs): 14.081000
+Iterations/Sec   : 4261.061004
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4261.061004 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:0th try passed for start_time
+INFO:root:0th try passed at the first round
+INFO:root:start_time PASS
+INFO:root:Start to compile portable_malloc
+C code:
+#include <stdlib.h>
+void *portable_malloc(size_t size) { return malloc(size); }
+INFO:root:current LLM prompt size: 310
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	portable_malloc
+	.type	portable_malloc, @function
+portable_malloc:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	-8(%rbp), %rdi
+	call	malloc@PLT
+	popq	%rbp
+	ret
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 14130
+Total time (secs): 14.130000
+Iterations/Sec   : 4246.284501
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4246.284501 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:0th try passed for portable_malloc
+INFO:root:0th try passed at the first round
+INFO:root:portable_malloc PASS
+INFO:root:Start to compile matrix_mul_vect
+C code:
+void matrix_mul_vect(unsigned N, int *C, short *A, short *B) {
+  unsigned i, j;
+  for (i = 0; i < N; i++) {
+    C[i] = 0;
+    for (j = 0; j < N; j++) {
+      C[i] += (int)A[i * N + j] * (int)B[j];
+    }
+  }
+}
+INFO:root:current LLM prompt size: 381
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	matrix_mul_vect
+	.type	matrix_mul_vect, @function
+matrix_mul_vect:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	pushq	%rbx
+	subq	$56, %rsp
+	movl	%edi, -36(%rbp)
+	movq	%rsi, -48(%rbp)
+	movq	%rdx, -56(%rbp)
+	movq	%rcx, -64(%rbp)
+	movl	$0, -20(%rbp)
+	jmp	.L2
+.L5:
+	movl	-20(%rbp), %eax
+	cltq
+	leaq	0(,%rax,4), %rdx
+	movq	-48(%rbp), %rax
+	addq	%rdx, %rax
+	movl	$0, (%rax)
+	movl	$0, -24(%rbp)
+	jmp	.L3
+.L4:
+	movl	-20(%rbp), %eax
+	imull	-36(%rbp), %eax
+	movl	%eax, %edx
+	movl	-24(%rbp), %eax
+	addl	%edx, %eax
+	cltq
+	leaq	0(,%rax,2), %rdx
+	movq	-56(%rbp), %rax
+	addq	%rdx, %rax
+	movzwl	(%rax), %ebx
+	movl	-24(%rbp), %eax
+	cltq
+	leaq	0(,%rax,2), %rdx
+	movq	-64(%rbp), %rax
+	addq	%rdx, %rax
+	movzwl	(%rax), %eax
+	imull	%ebx, %eax
+	movl	%eax, %edx
+	movl	-20(%rbp), %eax
+	cltq
+	leaq	0(,%rax,4), %rcx
+	movq	-48(%rbp), %rax
+	addq	%rcx, %rax
+	movl	(%rax), %eax
+	addl	%edx, %eax
+	movl	%eax, %edx
+	movl	-20(%rbp), %eax
+	cltq
+	leaq	0(,%rax,4), %rcx
+	movq	-48(%rbp), %rax
+	addq	%rcx, %rax
+	movl	%edx, (%rax)
+	addl	$1, -24(%rbp)
+.L3:
+	movl	-24(%rbp), %eax
+	cmpl	-36(%rbp), %eax
+	jb	.L4
+	addl	$1, -20(%rbp)
+.L2:
+	movl	-20(%rbp), %eax
+	cmpl	-36(%rbp), %eax
+	jb	.L5
+	nop
+	nop
+	addq	$56, %rsp
+	popq	%rbx
+	popq	%rbp
+	ret
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 14176
+Total time (secs): 14.176000
+Iterations/Sec   : 4232.505643
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4232.505643 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:0th try passed for matrix_mul_vect
+INFO:root:0th try passed at the first round
+INFO:root:matrix_mul_vect PASS
+INFO:root:Start to compile matrix_mul_const
+C code:
+void matrix_mul_const(unsigned N, int *C, short *A, short val) {
+  unsigned i, j;
+  for (i = 0; i < N; i++) {
+    for (j = 0; j < N; j++) {
+      C[i * N + j] = (int)A[i * N + j] * (int)val;
+    }
+  }
+}
+INFO:root:current LLM prompt size: 375
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	matrix_mul_const
+	.type	matrix_mul_const, @function
+matrix_mul_const:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -20(%rbp)
+	movq	%rsi, -32(%rbp)
+	movq	%rdx, -40(%rbp)
+	movw	%cx, -42(%rbp)
+	movl	$0, -4(%rbp)
+	jmp	.L2
+.L5:
+	movl	$0, -8(%rbp)
+	jmp	.L3
+.L4:
+	movl	-4(%rbp), %eax
+	imull	-20(%rbp), %eax
+	movl	%eax, %edx
+	movl	-8(%rbp), %eax
+	addl	%edx, %eax
+	cltq
+	leaq	0(,%rax,2), %rdx
+	movq	-40(%rbp), %rax
+	addq	%rdx, %rax
+	movzwl	(%rax), %eax
+	cwtl
+	movw	-42(%rbp), %dx
+	movswl	%dx, %edx
+	imull	%edx, %eax
+	movl	-4(%rbp), %edx
+	imull	-20(%rbp), %edx
+	movl	%edx, %ecx
+	movl	-8(%rbp), %edx
+	addl	%ecx, %edx
+	movslq	%edx, %rdx
+	leaq	0(,%rdx,4), %rcx
+	movq	-32(%rbp), %rdx
+	addq	%rcx, %rdx
+	movl	%eax, (%rdx)
+	addl	$1, -8(%rbp)
+.L3:
+	movl	-8(%rbp), %eax
+	cmpl	-20(%rbp), %eax
+	jb	.L4
+	addl	$1, -4(%rbp)
+.L2:
+	movl	-4(%rbp), %eax
+	cmpl	-20(%rbp), %eax
+	jb	.L5
+	nop
+	nop
+	popq	%rbp
+	ret
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 14093
+Total time (secs): 14.093000
+Iterations/Sec   : 4257.432768
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4257.432768 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:0th try passed for matrix_mul_const
+INFO:root:0th try passed at the first round
+INFO:root:matrix_mul_const PASS
+INFO:root:Start to compile iterate
+C code:
+#include <stdio.h>
+
+typedef unsigned short u16;
+typedef unsigned char u8;
+
+typedef struct CORE_PORTABLE_S {
+  u8 portable_id;
+} core_portable;
+
+
+typedef struct MAT_PARAMS_S {
+  int N;
+  short *A;
+  short *B;
+  int *C;
+} mat_params;
+
+typedef struct RESULTS_S {
+  
+  short seed1;           
+  short seed2;           
+  short seed3;           
+  void *memblock[4];   
+  unsigned size;       
+  unsigned iterations; 
+  unsigned execs;      
+  struct list_head_s *list;
+  mat_params mat;
+  u16 crc;
+  u16 crclist;
+  u16 crcmatrix;
+  u16 crcstate;
+  short err;
+  core_portable port;
+} core_results;
+
+u16 crc16(short newval, u16 crc);
+u16 crcu16(u16 newval, u16 crc);
+u16 core_bench_list(core_results *res, short finder_idx);
+
+void *iterate(void *pres) {
+  unsigned i;
+  u16 crc;
+  core_results *res = (core_results *)pres;
+  unsigned iterations = res->iterations;
+  res->crc = 0;
+  res->crclist = 0;
+  res->crcmatrix = 0;
+  res->crcstate = 0;
+
+  for (i = 0; i < iterations; i++) {
+    crc = core_bench_list(res, 1);
+    res->crc = crcu16(crc, res->crc);
+    crc = core_bench_list(res, -1);
+    res->crc = crcu16(crc, res->crc);
+    if (i == 0)
+      res->crclist = res->crc;
+  }
+  return NULL;
+}
+INFO:root:current LLM prompt size: 660
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	iterate
+	.type	iterate, @function
+iterate:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$48, %rsp
+	movq	%rdi, -40(%rbp)
+	movq	-40(%rbp), %rax
+	movl	40(%rax), %eax
+	movl	%eax, -4(%rbp)
+	movq	-40(%rbp), %rax
+	movw	$0, 56(%rax)
+	movq	-40(%rbp), %rax
+	movw	$0, 58(%rax)
+	movq	-40(%rbp), %rax
+	movw	$0, 60(%rax)
+	movq	-40(%rbp), %rax
+	movw	$0, 62(%rax)
+	movl	$0, -8(%rbp)
+	jmp	.L2
+.L5:
+	movq	-40(%rbp), %rax
+	movl	$1, %esi
+	movq	%rax, %rdi
+	call	core_bench_list
+	movw	%ax, -10(%rbp)
+	movq	-40(%rbp), %rax
+	movzwl	56(%rax), %edx
+	movzwl	-10(%rbp), %eax
+	movzwl	%dx, %esi
+	movl	%eax, %edi
+	call	crcul16
+	movq	-40(%rbp), %rdx
+	movw	%ax, 56(%rdx)
+	movq	-40(%rbp), %rax
+	movl	$-1, %esi
+	movq	%rax, %rdi
+	call	core_bench_list
+	movw	%ax, -10(%rbp)
+	movq	-40(%rbp), %rax
+	movzwl	56(%rax), %edx
+	movzwl	-10(%rbp), %eax
+	movzwl	%dx, %esi
+	movl	%eax, %edi
+	call	crcul16
+	movq	-40(%rbp), %rdx
+	movw	%ax, 56(%rdx)
+	cmpl	$0, -8(%rbp)
+	jne	.L3
+	movq	-40(%rbp), %rax
+	movzwl	56(%rax), %eax
+	movq	-40(%rbp), %rdx
+	movw	%ax, 58(%rdx)
+.L3:
+	addl	$1, -8(%rbp)
+.L2:
+	movl	-8(%rbp), %eax
+	cmpl	-4(%rbp), %eax
+	jb	.L5
+	movl	$0, %eax
+	leave
+	ret
+
+WARNING:root:0th try failed to compile the assembly hypothesis for iterate
+stdout: 
+stderr: /usr/bin/ld: warning: /tmp/ccyUEPDZ.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/usr/bin/ld: /tmp/ccyUEPDZ.o: in function `iterate':
+(.text+0x75): undefined reference to `crcul16'
+/usr/bin/ld: (.text+0xa8): undefined reference to `crcul16'
+collect2: error: ld returned 1 exit status
+
+INFO:root:0th try failed at the first round
+INFO:root:iterate FAIL
+INFO:root:Start to compile check_data_types
+C code:
+#include <stdio.h>
+#include <stdint.h>
+
+typedef unsigned short u16;
+typedef unsigned char u8;
+
+u8 check_data_types() {
+  u8 retval = 0;
+  if (sizeof(u8) != 1) {
+    printf("ERROR: u8 is not an 8b datatype!\n");
+    retval++;
+  }
+  if (sizeof(u16) != 2) {
+    printf("ERROR: u16 is not a 16b datatype!\n");
+    retval++;
+  }
+  if (sizeof(short) != 2) {
+    printf("ERROR: short is not a 16b datatype!\n");
+    retval++;
+  }
+  if (sizeof(int) != 4) {
+    printf("ERROR: int is not a 32b datatype!\n");
+    retval++;
+  }
+  if (sizeof(unsigned) != 4) {
+    printf("ERROR: unsigned is not a 32b datatype!\n");
+    retval++;
+  }
+  if (sizeof(uintptr_t) != sizeof(int *)) {
+    printf("ERROR: uintptr_t is not a datatype that holds an int pointer!\n");
+    retval++;
+  }
+  if (retval > 0) {
+    printf("ERROR: Please modify the datatypes in core_portme.h!\n");
+  }
+  return retval;
+}
+INFO:root:current LLM prompt size: 562
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	check_data_types
+	.type	check_data_types, @function
+check_data_types:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
+	movb	$0, -1(%rbp)
+	cmpb	$1, %al
+	je	.L2
+	leaq	.LC0(%rip), %rdi
+	call	puts@PLT
+	movzbl	-1(%rbp), %eax
+	addl	$1, %eax
+	movb	%al, -1(%rbp)
+.L2:
+	cmpw	$2, %ax
+	je	.L3
+	leaq	.LC1(%rip), %rdi
+	call	puts@PLT
+	movzbl	-1(%rbp), %eax
+	addl	$1, %eax
+	movb	%al, -1(%rbp)
+.L3:
+	cmpw	$2, %ax
+	je	.L4
+	leaq	.LC2(%rip), %rdi
+	call	puts@PLT
+	movzbl	-1(%rbp), %eax
+	addl	$1, %eax
+	movb	%al, -1(%rbp)
+.L4:
+	cmpl	$4, %eax
+	je	.L5
+	leaq	.LC3(%rip), %rdi
+	call	puts@PLT
+	movzbl	-1(%rbp), %eax
+	addl	$1, %eax
+	movb	%al, -1(%rbp)
+.L5:
+	cmpl	$4, %eax
+	je	.L6
+	leaq	.LC4(%rip), %rdi
+	call	puts@PLT
+	movzbl	-1(%rbp), %eax
+	addl	$1, %eax
+	movb	%al, -1(%rbp)
+.L6:
+	movq	%rax, %rdx
+	movq	%rax, %rcx
+	cmpq	%rcx, %rdx
+	je	.L7
+	leaq	.LC5(%rip), %rdi
+	call	puts@PLT
+	movzbl	-1(%rbp), %eax
+	addl	$1, %eax
+	movb	%al, -1(%rbp)
+.L7:
+	cmpb	$0, -1(%rbp)
+	je	.L8
+	leaq	.LC6(%rip), %rdi
+	call	puts@PLT
+.L8:
+	movzbl	-1(%rbp), %eax
+	leave
+	ret
+.LC0:
+	.string	"ERROR: u8 is not an 8b datatype!"
+.LC1:
+	.string	"ERROR: u16 is not a 16b datatype!"
+.LC2:
+	.string	"ERROR: short is not a 16b datatype!"
+.LC3:
+	.string	"ERROR: int is not a 32b datatype!"
+.LC4:
+	.string	"ERROR: unsigned is not a 32b datatype!"
+.LC5:
+	.string	"ERROR: uintptr_t is not a datatype that holds an int pointer!"
+.LC6:
+	.string	"ERROR: Please modify the datatypes in core_portme.h!"
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+ERROR: u8 is not an 8b datatype!
+ERROR: u16 is not a 16b datatype!
+ERROR: int is not a 32b datatype!
+ERROR: unsigned is not a 32b datatype!
+ERROR: Please modify the datatypes in core_portme.h!
+CoreMark Size    : 666
+Total ticks      : 14076
+Total time (secs): 14.076000
+Iterations/Sec   : 4262.574595
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Errors detected
+
+INFO:root:stderr: 
+INFO:root:0th try passed for check_data_types
+INFO:root:0th try passed at the first round
+INFO:root:check_data_types PASS
+INFO:root:Start to compile matrix_mul_matrix
+C code:
+void matrix_mul_matrix(unsigned N, int *C, short *A, short *B) {
+  unsigned i, j, k;
+  for (i = 0; i < N; i++) {
+    for (j = 0; j < N; j++) {
+      C[i * N + j] = 0;
+      for (k = 0; k < N; k++) {
+        C[i * N + j] += (int)A[i * N + k] * (int)B[k * N + j];
+      }
+    }
+  }
+}
+INFO:root:current LLM prompt size: 412
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	matrix_mul_matrix
+	.type	matrix_mul_matrix, @function
+matrix_mul_matrix:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	pushq	%rbx
+	subq	$56, %rsp
+	movl	%edi, -36(%rbp)
+	movq	%rsi, -48(%rbp)
+	movq	%rdx, -56(%rbp)
+	movq	%rcx, -64(%rbp)
+	movl	$0, -20(%rbp)
+	jmp	.L2
+.L7:
+	movl	$0, -24(%rbp)
+	jmp	.L3
+.L6:
+	movl	-20(%rbp), %eax
+	imull	-36(%rbp), %eax
+	movl	%eax, %edx
+	movl	-24(%rbp), %eax
+	addl	%edx, %eax
+	cltq
+	leaq	0(,%rax,4), %rdx
+	movq	-48(%rbp), %rax
+	addq	%rdx, %rax
+	movl	$0, (%rax)
+	movl	$0, -28(%rbp)
+	jmp	.L4
+.L5:
+	movl	-20(%rbp), %eax
+	imull	-36(%rbp), %eax
+	movl	%eax, %edx
+	movl	-28(%rbp), %eax
+	addl	%edx, %eax
+	cltq
+	leaq	0(,%rax,2), %rdx
+	movq	-56(%rbp), %rax
+	addq	%rdx, %rax
+	movzwl	(%rax), %ebx
+	movl	-28(%rbp), %eax
+	imull	-36(%rbp), %eax
+	movl	%eax, %edx
+	movl	-24(%rbp), %eax
+	addl	%edx, %eax
+	cltq
+	leaq	0(,%rax,2), %rdx
+	movq	-64(%rbp), %rax
+	addq	%rdx, %rax
+	movzwl	(%rax), %eax
+	imull	%ebx, %eax
+	movl	-20(%rbp), %edx
+	imull	-36(%rbp), %edx
+	movl	-24(%rbp), %ecx
+	addl	%ecx, %edx
+	movslq	%edx, %rdx
+	leaq	0(,%rdx,4), %rcx
+	movq	-48(%rbp), %rdx
+	addq	%rcx, %rdx
+	movl	(%rdx), %ecx
+	addl	%eax, %ecx
+	movl	%ecx, (%rdx)
+	addl	$1, -28(%rbp)
+.L4:
+	movl	-28(%rbp), %eax
+	cmpl	-36(%rbp), %eax
+	jb	.L5
+	addl	$1, -24(%rbp)
+.L3:
+	movl	-24(%rbp), %eax
+	cmpl	-36(%rbp), %eax
+	jb	.L6
+	addl	$1, -20(%rbp)
+.L2:
+	movl	-20(%rbp), %eax
+	cmpl	-36(%rbp), %eax
+	jb	.L7
+	nop
+	nop
+	addq	$56, %rsp
+	popq	%rbx
+	popq	%rbp
+	ret
+
+INFO:root:stdout: 2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 13801
+Total time (secs): 13.801000
+Iterations/Sec   : 4347.511050
+Iterations       : 60000
+Compiler version : AICC 1.0
+seedcrc          : 0xe9f5
+[3]crclist       : 0x0000
+[3]crcmatrix     : 0x0000
+[3]crcstate      : 0x0000
+[3]crcfinal      : 0x0000
+Correct operation validated. See README.md for run and reporting rules.
+Function Level CoreMark 1.0 : 4347.511050 by AICC 1.0 / Heap
+
+INFO:root:stderr: 
+INFO:root:0th try passed for matrix_mul_matrix
+INFO:root:0th try passed at the first round
+INFO:root:matrix_mul_matrix PASS
+INFO:root:Failed cases: ['core_init_matrix', 'get_time', 'main', 'calc_func', 'core_list_insert_new', 'core_list_remove', 'core_list_mergesort', 'crcu8', 'matrix_add_const', 'core_list_init', 'core_state_transition', 'core_bench_matrix', 'core_list_reverse', 'matrix_test', 'core_bench_list', 'cmp_idx', 'matrix_sum', 'core_list_undo_remove', 'core_bench_state', 'iterate']
+INFO:root:Passed cases: ['portable_init', 'core_list_find', 'copy_info', 'cmp_complex', 'stop_time', 'portable_free', 'crc16', 'portable_fini', 'crcu32', 'matrix_mul_matrix_bitextract', 'crcu16', 'ee_isdigit', 'core_init_state', 'time_in_secs', 'start_time', 'portable_malloc', 'matrix_mul_vect', 'matrix_mul_const', 'check_data_types', 'matrix_mul_matrix']
+INFO:root:Pass rate: 20/40=50.0%
+INFO:root:End time: 2024-09-03 19:45:26.067796

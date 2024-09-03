@@ -835,6 +835,16 @@ if __name__ == "__main__":
     logging.info("log file created!")
     logging.info("Start time: " + str(datetime.datetime.now()))
     logging.info("Current run:" + temp_name)
+    # print all config
+    logging.info(f"Model: {candidate_model}")
+    logging.info(f"Temperature: {temperature}")
+    logging.info(f"Pass_k: {pass_k}")
+    logging.info(f"Self-correct: {self_correct}")
+    logging.info(f"Correct round: {correct_round}")
+    logging.info(f"Do analyze: {do_analyze}")
+    logging.info(f"Do simulate: {do_simulate}")
+    logging.info(f"Eval coremark: {eval_coremark}")
+    logging.info(f"Eval exebench: {not eval_coremark}")
 
     if do_simulate:
         x86_simulate(
