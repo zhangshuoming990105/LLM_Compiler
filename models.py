@@ -487,7 +487,7 @@ Your generated fixed assembly code should be inside "```x86" and "```" tags.
         if reset_messages:
             self.message_reset()
 
-    def assemble(self, compiler_rsp, out="output.s", generate_binary=False):
+    def assemble(self, compiler_rsp, out="tmp.s", generate_binary=False):
         if "```x86" in compiler_rsp:
             x86_code = compiler_rsp.split("```x86")[1].split("```")
             if len(x86_code) > 0:

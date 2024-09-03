@@ -1,0 +1,1 @@
+python main.py --model $1 --temperature 0.5 --eval_coremark True --pass_k 5 --self_correct False --correct_round 3

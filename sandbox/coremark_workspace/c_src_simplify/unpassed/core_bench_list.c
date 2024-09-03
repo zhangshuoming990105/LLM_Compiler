@@ -56,7 +56,6 @@ int cmp_complex(list_data *a, list_data *b, core_results *res);
 
 u16 process_find_operations(core_results *res, list_head **list, short find_num, short finder_idx, u16 *found, u16 *missed);
 u16 process_list_operations(core_results *res, list_head **list, short finder_idx, u16 retval);
-u16 calculate_final_crc(list_head *finder, u16 retval);
 
 u16 core_bench_list(core_results *res, short finder_idx) {
     u16 retval = 0;
@@ -116,13 +115,19 @@ u16 process_list_operations(core_results *res, list_head **list, short finder_id
     if (!finder)
         finder = (*list)->next;
     
-    retval = calculate_final_crc(finder, retval);
+    while (finder) {
+        retval = crc16(finder->info->data16, retval);
+        finder = finder->next;
+    }
 
     remover = core_list_undo_remove(remover, (*list)->next);
     *list = core_list_mergesort(*list, cmp_idx, NULL);
     finder = (*list)->next;
     
-    retval = calculate_final_crc(finder, retval);
+    while (finder) {
+        retval = crc16(finder->info->data16, retval);
+        finder = finder->next;
+    }
 
     return retval;
 }

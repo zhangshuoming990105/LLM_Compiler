@@ -530,6 +530,81 @@ def clean_hyp_dir():
     os.mkdir("hyp")
 
 
+def examine_coremark(try_i, file_name, function_name):
+    # compile the other C code(exclude current file_name) with the assembly hypothesis to check the correctness
+    # first, mov all c_src except the current one to a new directory(out)
+    error_message = ""
+    if not os.path.exists("out"):
+        os.mkdir("out")
+    for file in os.listdir("c_src"):
+        if file != file_name:
+            shutil.copy2(os.path.join("c_src", file), os.path.join("hyp", file))
+    # then, compile the other C code with the assembly hypothesis
+    src_list = []
+    for file in os.listdir("hyp"):
+        if file.endswith(".c"):
+            src_list.append("hyp/" + file)
+        if file.endswith(".s"):
+            src_list.append("hyp/" + file)
+    run_param = ["gcc"]
+    run_param.extend(src_list)
+    run_param.extend(["-o", f"out/{function_name}_llm.exe"])
+    ret = subprocess.run(
+        run_param,
+        stderr=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+    )
+    if ret.returncode != 0:
+        logging.warning(
+            f"{try_i}th try failed to compile the assembly hypothesis for {function_name}\nstdout: {ret.stdout.decode()}\nstderr: {ret.stderr.decode()}"
+        )
+        error_message = f"""Compilation error: Failed to assemble the assembly code to executable!
+where compilation error is:
+stdout:
+{ret.stdout.decode()}
+stderr:
+{ret.stderr.decode()}
+"""
+        logging.debug(f"###error message: {error_message}")
+        clean_hyp_dir()
+        return (False, error_message)
+    # execute the exe file to check the correctness, timeout=60
+    try:
+        ret = subprocess.run(
+            [f"./out/{function_name}_llm.exe"],
+            stderr=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            timeout=60,
+        )
+        if ret.returncode != 0:
+            error_message = f"""Runtime error: Failed to execute the assembly hypothesis for {function_name}!
+where runtime error is:
+stdout:
+{ret.stdout.decode()}
+stderr:
+{ret.stderr.decode()}
+"""
+            logging.debug(f"###error message: {error_message}")
+            logging.warning(
+                f"{try_i}th try failed to execute the assembly hypothesis for {function_name}"
+            )
+            clean_hyp_dir()
+            return (False, error_message)
+        else:
+            # log stdout and stderr
+            logging.info(f"stdout: {ret.stdout.decode()}")
+            logging.info(f"stderr: {ret.stderr.decode()}")
+            # assume it is correct, since it can be executed successfully
+            logging.info(f"{try_i}th try passed for {function_name}")
+            clean_hyp_dir()
+            return (True, error_message)
+    except subprocess.TimeoutExpired:
+        error_message = f"""Runtime error: Timeout for executing the assembly hypothesis for {function_name}!"""
+        logging.warning(f"{try_i}th try timeout for {function_name}")
+        clean_hyp_dir()
+        return (False, error_message)
+
+
 def c_compiler_coremark(
     model="gpt-4o",
     use_local=False,
@@ -541,86 +616,95 @@ def c_compiler_coremark(
     do_analyze=False,
     use_one_shot_prompt=True,
     use_zero_shot_prompt=False,
-    
 ):
     ds = load_dataset("mistral0105/CoreMark_FunctionLevel")
     compiler = Compiler(
-        model=model, use_local=use_local, temperature=temperature, peft_model=peft_model,
+        model=model,
+        use_local=use_local,
+        temperature=temperature,
+        peft_model=peft_model,
         use_one_shot_prompt=use_one_shot_prompt,
         use_zero_shot_prompt=use_zero_shot_prompt,
     )
     failed = []
+    failed_c = []
+    failed_asm = []
     passed = []
+    try_round = pass_k
     for e in tqdm(ds["train"]):
         file_name = e["name"]
         function_name = e["function_name"]
         c_code = e["c_src"]
         logging.info(f"Start to compile {function_name}\nC code:\n{c_code}")
         # below is one try to neural compile on the current C code
-        compiler.compile(c_code, out=f"hyp/{function_name}.s")
-        # compile the other C code(exclude current file_name) with the assembly hypothesis to check the correctness
-        # first, mov all c_src except the current one to a new directory(out)
-        if not os.path.exists("out"):
-            os.mkdir("out")
-        for file in os.listdir("c_src"):
-            if file != file_name:
-                shutil.copy2(os.path.join("c_src", file), os.path.join("hyp", file))
-        # then, compile the other C code with the assembly hypothesis
-        
-        # manage src list
-        src_list = []
-        for file in os.listdir("hyp"):
-            if file.endswith(".c"):
-                src_list.append("hyp/" + file)
-            if file.endswith(".s"):
-                src_list.append("hyp/" + file)
-        run_param = ["gcc"]
-        run_param.extend(src_list)
-        run_param.extend(["-o", f"out/{function_name}_llm.exe"])
-        ret = subprocess.run(
-            run_param,
-            stderr=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-        )
-        if ret.returncode != 0:
-            logging.warning(
-                f"Failed to compile the assembly hypothesis for {function_name}\nstdout: {ret.stdout.decode()}\nstderr: {ret.stderr.decode()}"
-            )
-            failed.append(function_name)
-            clean_hyp_dir()
-            continue
-        # execute the exe file to check the correctness, timeout=60
-        try:
-            ret = subprocess.run(
-                [f"./out/{function_name}_llm.exe"],
-                stderr=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                timeout=60,
-            )
-            if ret.returncode != 0:
-                logging.warning(
-                    f"Failed to execute the assembly hypothesis for {function_name}"
-                )
-                failed.append(function_name)
-                clean_hyp_dir()
+        success = False
+        for i in range(try_round):
+            compiler.compile(c_code, out=f"hyp/{function_name}.s")
+            try:
+                x86_llm_code = open(f"hyp/{function_name}.s", "r").read()
+            except FileNotFoundError:
+                logging.warning("Failed to find the assembly hypothesis file!")
                 continue
+            success, error_message = examine_coremark(i, file_name, function_name)
+            if success:
+                logging.info(f"{i}th try passed at the first round")
+                break
             else:
-                # log stdout and stderr
-                logging.info(f"stdout: {ret.stdout.decode()}")
-                logging.info(f"stderr: {ret.stderr.decode()}")
-                # assume it is correct, since it can be executed successfully
-                logging.info(f"Pass for {function_name}")
-                passed.append(function_name)
-                clean_hyp_dir()
-        except subprocess.TimeoutExpired:
-            logging.warning(f"Timeout for {function_name}")
+                logging.info(f"{i}th try failed at the first round")
+            if self_correct:
+                logging.info(f"Self-correcting mechanism is enabled")
+                for j in range(self_correct_round):
+                    compiler.compile_with_error_message(
+                        c_code,
+                        out=f"hyp/{function_name}.s",
+                        error_asm=x86_llm_code,
+                        error_message=error_message,
+                        prompt_postfix="",
+                    )
+                    try:
+                        x86_llm_code = open(f"hyp/{function_name}.s", "r").read()
+                    except FileNotFoundError:
+                        logging.warning("Failed to find the assembly hypothesis file during fixing!")
+                        logging.info(f"Self-correcting round {j} failed in {i}th try")
+                        continue
+                    correct_success, error_message = examine_coremark(
+                        i, file_name, function_name
+                    )
+                    if correct_success:
+                        success = True
+                        logging.info(f"Self-correcting round {j} passed in {i}th try")
+                        break
+                    else:
+                        logging.info(f"Self-correcting round {j} failed in {i}th try")
+
+        if success:
+            passed.append(function_name)
+            logging.info(f"{function_name} PASS")
+        else:
             failed.append(function_name)
-            continue
+            failed_c.append(c_code)
+            failed_asm.append(x86_llm_code)
+            logging.info(f"{function_name} FAIL")
 
     # print all
     logging.info(f"Failed cases: {failed}")
     logging.info(f"Passed cases: {passed}")
-    logging.info(f"Pass rate: {len(passed)*100 / (len(passed)+len(failed))}%")
+    logging.info(
+        f"Pass rate: {len(passed)}/{len(passed)+len(failed)}={len(passed)*100 / (len(passed)+len(failed))}%"
+    )
+    # save failed cases to a new directory named failed under current
+    if not os.path.exists("failed"):
+        os.mkdir("failed")
+    os.chdir("failed")
+    for i in range(len(failed)):
+        function_name = failed[i]
+        with open(f"{function_name}.c", "w") as f:
+            f.write(failed_c[i])
+            f.close()
+        with open(f"{function_name}_llm.s", "w") as f:
+            f.write(failed_asm[i])
+            f.close()
+    os.chdir("..")
 
 
 def x86_simulate(model="gpt-4o", temperature=0.3, x86_src="", c_src="", init_value=""):

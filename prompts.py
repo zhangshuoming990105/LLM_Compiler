@@ -546,3 +546,414 @@ Use comments on the assembly to help you understand the computation order.
 """,
     "long": """""",
 }
+
+subtask_prompts = {
+    "struct_annotate": """below is a c program that use plenty customized structs, in order to translate the program, i need you to annotate the code. First, find out all structs in this program, annotate every element's offset and size using comments.
+example:
+typedef struct MAT_PARAMS_S {
+  int N;
+  short *A;
+  short *B;
+  int *C;
+} mat_params;
+-->
+typedef struct MAT_PARAMS_S {
+  int N; // offset 0, size 4, pad 4
+  short *A; // offset 8, size 8,
+  short *B; // offset 16, size 8
+  int *C; // offset 24, size 8
+} mat_params; // total size 32, alignment 8, 32%8=0
+alignment requirement:
+pointer/double/long need to be 8 byte aligned, int/float need 4, short need 2, char need 1, 
+and >8 struct need 8 byte aligned.
+So when calculate the final padding of struct(with >8 size), make sure it is pad to multiple of 8.
+C program is below, think carefully and annotate, make sure you return the full code, do not omit any part.
+You only need to annotate the struct definition part, no need to annotate the function part.
+""",
+    "stack_allocation":"""Your ultimate goal is to translate the c program into x86_64 assembly. Now from your annotation, you currently need to assign the stack allocation for these variables appeared in the program based on the annotated structs. make sure every variable uses the proper size and offset.
+Now you don't need to compile it, just return the stack you assigned for local variables.
+example:
+```c
+void foo() {
+    char c = 1;
+    int b = 2;
+    double d[4] = {1.0, 2.0, 0.0, 2.0};
+}
+```
+-->
+allocation:
+```plaintext
+c: -1(%rbp), [0, -1), size 1, 
+b: -8(%rbp), [-8, -16), size 8, pad 7 to 8 byte alignment
+d: -48(%rbp), [-16, -48), size 32
+```""",
+    "complicated_example":"""
+```c
+#include <stdint.h>
+#include <stdio.h>
+typedef unsigned short u16;
+typedef unsigned char u8;
+typedef struct list_data_s {
+  short data16;
+  short idx;
+} list_data;
+
+typedef struct list_head_s {
+  struct list_head_s *next;
+  struct list_data_s *info;
+} list_head;
+
+typedef struct MAT_PARAMS_S {
+  int N;
+  short *A;
+  short *B;
+  int *C;
+} mat_params;
+
+typedef struct CORE_PORTABLE_S {
+  u8 portable_id;
+} core_portable;
+
+typedef struct RESULTS_S {
+  short seed1;
+  short seed2;
+  short seed3;
+  void *memblock[4];
+  unsigned size;
+  unsigned iterations;
+  unsigned execs;
+  struct list_head_s *list;
+  mat_params mat;
+  u16 crc;
+  u16 crclist;
+  u16 crcmatrix;
+  u16 crcstate;
+  short err;
+  core_portable port;
+} core_results;
+
+u16 crc16(short newval, u16 crc);
+u16 crcu16(u16 newval, u16 crc);
+list_head *core_list_find(list_head *list, list_data *info);
+list_head *core_list_reverse(list_head *list);
+list_head *core_list_remove(list_head *item);
+list_head *core_list_undo_remove(list_head *item_removed,
+                                 list_head *item_modified);
+typedef int (*list_cmp)(list_data *a, list_data *b, core_results *res);
+list_head *core_list_mergesort(list_head *list, list_cmp cmp,
+                               core_results *res);
+int cmp_idx(list_data *a, list_data *b, core_results *res);
+int cmp_complex(list_data *a, list_data *b, core_results *res);
+
+u16 core_bench_list(core_results *res, short finder_idx) {
+  u16 retval = 0;
+  u16 found = 0, missed = 0;
+  list_head *list = res->list;
+  short find_num = res->seed3;
+  list_head *this_find;
+  list_head *finder, *remover;
+  list_data info = {0};
+  short i;
+
+  info.idx = finder_idx;
+  for (i = 0; i < find_num; i++) {
+    info.data16 = (i & 0xff);
+    this_find = core_list_find(list, &info);
+    list = core_list_reverse(list);
+    if (this_find == NULL) {
+      missed++;
+      retval += (list->next->info->data16 >> 8) & 1;
+    } else {
+      found++;
+      if (this_find->info->data16 & 0x1)
+        retval += (this_find->info->data16 >> 9) & 1;
+      if (this_find->next != NULL) {
+        finder = this_find->next;
+        this_find->next = finder->next;
+        finder->next = list->next;
+        list->next = finder;
+      }
+    }
+    if (info.idx >= 0)
+      info.idx++;
+  }
+  retval += found * 4 - missed;
+  if (finder_idx > 0)
+    list = core_list_mergesort(list, cmp_complex, res);
+  remover = core_list_remove(list->next);
+  finder = core_list_find(list, &info);
+  if (!finder)
+    finder = list->next;
+  while (finder) {
+    retval = crc16(list->info->data16, retval);
+    finder = finder->next;
+  }
+  remover = core_list_undo_remove(remover, list->next);
+  list = core_list_mergesort(list, cmp_idx, NULL);
+  finder = list->next;
+  while (finder) {
+    retval = crc16(list->info->data16, retval);
+    finder = finder->next;
+  }
+  return retval;
+}
+```    
+```x86
+    .text
+    .globl    core_bench_list
+    .type   core_bench_list, @function
+core_bench_list:
+.LFB0:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $80, %rsp
+    movq    %rdi, -72(%rbp)  # Store res (first argument) on stack
+    movl    %esi, %eax
+    movw    %ax, -76(%rbp)   # Store finder_idx (second argument) on stack
+
+    # Initialize local variables
+    movw    $0, -2(%rbp)     # retval = 0
+    movw    $0, -4(%rbp)     # found = 0
+    movw    $0, -6(%rbp)     # missed = 0
+
+    # list = res->list
+    movq    -72(%rbp), %rax
+    movq    56(%rax), %rax
+    movq    %rax, -16(%rbp)
+
+    # find_num = res->seed3
+    movq    -72(%rbp), %rax
+    movzwl  4(%rax), %eax
+    movw    %ax, -28(%rbp)
+
+    # Initialize info struct
+    movl    $0, -52(%rbp)    # info.data16 = 0
+    movzwl  -76(%rbp), %eax
+    movw    %ax, -50(%rbp)   # info.idx = finder_idx
+
+    # Start of for loop
+    movw    $0, -26(%rbp)    # i = 0
+    jmp     .L2
+
+.L7:  # Loop body
+    # info.data16 = (i & 0xff)
+    movzwl  -26(%rbp), %eax
+    movzbl  %al, %eax
+    movw    %ax, -52(%rbp)
+
+    # this_find = core_list_find(list, &info)
+    leaq    -52(%rbp), %rdx
+    movq    -16(%rbp), %rax
+    movq    %rdx, %rsi
+    movq    %rax, %rdi
+    call    core_list_find@PLT
+    movq    %rax, -48(%rbp)
+
+    # list = core_list_reverse(list)
+    movq    -16(%rbp), %rax
+    movq    %rax, %rdi
+    call    core_list_reverse@PLT
+    movq    %rax, -16(%rbp)
+
+    # if (this_find == NULL)
+    cmpq    $0, -48(%rbp)
+    jne     .L3
+
+    # missed++
+    movzwl  -6(%rbp), %eax
+    addl    $1, %eax
+    movw    %ax, -6(%rbp)
+
+    # retval += (list->next->info->data16 >> 8) & 1
+    movq    -16(%rbp), %rax
+    movq    (%rax), %rax
+    movq    8(%rax), %rax
+    movzwl  (%rax), %eax
+    sarw    $8, %ax
+    andl    $1, %eax
+    addw    %ax, -2(%rbp)
+    jmp     .L4
+
+.L3:  # else branch
+    # found++
+    movzwl  -4(%rbp), %eax
+    addl    $1, %eax
+    movw    %ax, -4(%rbp)
+
+    # if (this_find->info->data16 & 0x1)
+    movq    -48(%rbp), %rax
+    movq    8(%rax), %rax
+    movzwl  (%rax), %eax
+    cwtl
+    andl    $1, %eax
+    testl   %eax, %eax
+    je      .L5
+
+    # retval += (this_find->info->data16 >> 9) & 1
+    movq    -48(%rbp), %rax
+    movq    8(%rax), %rax
+    movzwl  (%rax), %eax
+    sarw    $9, %ax
+    andl    $1, %eax
+    addw    %ax, -2(%rbp)
+
+.L5:
+    # if (this_find->next != NULL)
+    movq    -48(%rbp), %rax
+    movq    (%rax), %rax
+    testq   %rax, %rax
+    je      .L4
+
+    # Rearrange list (finder = this_find->next; ...)
+    movq    -48(%rbp), %rax
+    movq    (%rax), %rax
+    movq    %rax, -24(%rbp)
+    movq    -24(%rbp), %rax
+    movq    (%rax), %rdx
+    movq    -48(%rbp), %rax
+    movq    %rdx, (%rax)
+    movq    -16(%rbp), %rax
+    movq    (%rax), %rdx
+    movq    -24(%rbp), %rax
+    movq    %rdx, (%rax)
+    movq    -16(%rbp), %rax
+    movq    -24(%rbp), %rdx
+    movq    %rdx, (%rax)
+
+.L4:
+    # if (info.idx >= 0) info.idx++
+    movzwl  -50(%rbp), %eax
+    testw   %ax, %ax
+    js      .L6
+    movzwl  -50(%rbp), %eax
+    addl    $1, %eax
+    movw    %ax, -50(%rbp)
+
+.L6:
+    # i++
+    movzwl  -26(%rbp), %eax
+    addl    $1, %eax
+    movw    %ax, -26(%rbp)
+
+.L2:  # Loop condition
+    movzwl  -26(%rbp), %eax
+    cmpw    -28(%rbp), %ax
+    jl      .L7
+
+    # retval += found * 4 - missed
+    movzwl  -4(%rbp), %eax
+    sall    $2, %eax
+    subw    -6(%rbp), %ax
+    addw    %ax, -2(%rbp)
+
+    # if (finder_idx > 0)
+    cmpw    $0, -76(%rbp)
+    jle     .L8
+
+    # list = core_list_mergesort(list, cmp_complex, res)
+    movq    -72(%rbp), %rdx
+    movq    -16(%rbp), %rax
+    movq    cmp_complex@GOTPCREL(%rip), %rcx
+    movq    %rcx, %rsi
+    movq    %rax, %rdi
+    call    core_list_mergesort@PLT
+    movq    %rax, -16(%rbp)
+
+.L8:
+    # remover = core_list_remove(list->next)
+    movq    -16(%rbp), %rax
+    movq    (%rax), %rax
+    movq    %rax, %rdi
+    call    core_list_remove@PLT
+    movq    %rax, -40(%rbp)
+
+    # finder = core_list_find(list, &info)
+    leaq    -52(%rbp), %rdx
+    movq    -16(%rbp), %rax
+    movq    %rdx, %rsi
+    movq    %rax, %rdi
+    call    core_list_find@PLT
+    movq    %rax, -24(%rbp)
+
+    # if (!finder) finder = list->next
+    cmpq    $0, -24(%rbp)
+    jne     .L10
+    movq    -16(%rbp), %rax
+    movq    (%rax), %rax
+    movq    %rax, -24(%rbp)
+    jmp     .L10
+
+.L11:  # while (finder) loop
+    # retval = crc16(list->info->data16, retval)
+    movzwl  -2(%rbp), %edx
+    movq    -16(%rbp), %rax
+    movq    8(%rax), %rax
+    movzwl  (%rax), %eax
+    cwtl
+    movl    %edx, %esi
+    movl    %eax, %edi
+    call    crc16@PLT
+    movw    %ax, -2(%rbp)
+
+    # finder = finder->next
+    movq    -24(%rbp), %rax
+    movq    (%rax), %rax
+    movq    %rax, -24(%rbp)
+
+.L10:
+    cmpq    $0, -24(%rbp)
+    jne     .L11
+
+    # remover = core_list_undo_remove(remover, list->next)
+    movq    -16(%rbp), %rax
+    movq    (%rax), %rdx
+    movq    -40(%rbp), %rax
+    movq    %rdx, %rsi
+    movq    %rax, %rdi
+    call    core_list_undo_remove@PLT
+    movq    %rax, -40(%rbp)
+
+    # list = core_list_mergesort(list, cmp_idx, NULL)
+    movq    -16(%rbp), %rax
+    movl    $0, %edx
+    movq    cmp_idx@GOTPCREL(%rip), %rcx
+    movq    %rcx, %rsi
+    movq    %rax, %rdi
+    call    core_list_mergesort@PLT
+    movq    %rax, -16(%rbp)
+
+    # finder = list->next
+    movq    -16(%rbp), %rax
+    movq    (%rax), %rax
+    movq    %rax, -24(%rbp)
+    jmp     .L12
+
+.L13:  # while (finder) loop
+    # retval = crc16(list->info->data16, retval)
+    movzwl  -2(%rbp), %edx
+    movq    -16(%rbp), %rax
+    movq    8(%rax), %rax
+    movzwl  (%rax), %eax
+    cwtl
+    movl    %edx, %esi
+    movl    %eax, %edi
+    call    crc16@PLT
+    movw    %ax, -2(%rbp)
+
+    # finder = finder->next
+    movq    -24(%rbp), %rax
+    movq    (%rax), %rax
+    movq    %rax, -24(%rbp)
+
+.L12:
+    cmpq    $0, -24(%rbp)
+    jne     .L13
+
+    # return retval
+    movzwl  -2(%rbp), %eax
+    leave
+    ret
+```
+""",
+}
