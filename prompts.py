@@ -956,4 +956,450 @@ core_bench_list:
     ret
 ```
 """,
+    "direct_with_cot": """I want you to act like a compiler that translate C code into x86 assembly. However, I don't want you to do it directly because that's memorizing. I want you to do so by strictly follow my guide and examples.
+###Example:
+In order to compile the following code into assembly, we need:
+1. first analyze the customized structs types and give them correct offset, size and padding, note that each struct follows the largest alignment basic type in its elements.
+2. collect all the constants, name their labels with meaningful names.
+3. compile the code using the above help messages. generate AT&T syntax x86_64 assembly.
+# Input:
+```c
+#include <stdint.h>
+#include <stdio.h>
+#include <stddef.h>
+
+typedef struct {
+    int company_id;
+    char company_name[10];
+} Company;
+
+typedef struct {
+    int person_age;
+    char person_name[10];
+    long person_id;
+    Company *person_company;
+} Person;
+
+int main() {
+    Company company = {10, "Company A"};
+    Person person = {20, "Alice", 10086, &company};
+    printf("person name: %s\n", person.person_name);
+    printf("person age: %d\n", person.person_age);
+    printf("person id: %ld\n", person.person_id);
+    printf("person company id: %d\n", person.person_company->company_id);
+    printf("person company name: %s\n", person.person_company->company_name);
+    person.person_age += 5;
+    company.company_id -=5;
+    printf("person age: %d\n", person.person_age);
+    printf("person company id: %d\n", person.person_company->company_id);
+
+    return 0;
+}
+
+
+```
+# Output:
+```x86
+	.text
+# Struct definitions:
+# Company {
+#     int company_id;        // offset 0, size 4
+#     char company_name[10]; // offset 4, size 10
+# }; // total size 16 (14 + 2 padding), aligned to 4 bytes
+
+# Person {
+#     int person_age;        // offset 0, size 4
+#     char person_name[10];  // offset 4, size 10
+#     long person_id;        // offset 16, size 8
+#     Company *person_company; // offset 24, size 8
+# }; // total size 32, aligned to 8 bytes
+
+# String constants
+	.section	.rodata
+.LC_print_person_name_str:
+	.string	"person name: %s\n"
+.LC_print_person_age_str:
+	.string	"person age: %d\n"
+.LC_print_person_id_str:
+	.string	"person id: %ld\n"
+.LC_print_person_company_id_str:
+	.string	"person company id: %d\n"
+.LC_print_person_comany_name_str:
+	.string	"person company name: %s\n"
+.LC_company_name:
+	.string "Company A"
+.LC_person_name:
+	.string "Alice"
+
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB6:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$48, %rsp
+
+    # Initialize Company struct
+	movl	$10, -16(%rbp)           # company.company_id = 10
+	movq	.LC_company_name(%rip), %rax
+	movq	%rax, -12(%rbp)          # Copy "Company A" to company.company_name
+	movw	$65, -4(%rbp)            # Null-terminate company.company_name
+
+    # Initialize Person struct
+	movl	$20, -48(%rbp)           # person.person_age = 20
+	movq	.LC_person_name(%rip), %rax
+	movq	%rax, -44(%rbp)          # Copy "Alice" to person.person_name
+	movw	$0, -36(%rbp)            # Null-terminate person.person_name
+	movq	$10086, -32(%rbp)        # person.person_id = 10086
+	leaq	-16(%rbp), %rax
+	movq	%rax, -24(%rbp)          # person.person_company = &company
+
+    # printf("person name: %s\n", person.person_name);
+	leaq	-48(%rbp), %rax
+	addq	$4, %rax                 # Calculate address of person.person_name
+	movq	%rax, %rsi
+	leaq	.LC_print_person_name_str(%rip), %rax
+	movq	%rax, %rdi
+	movl	$0, %eax
+	call	printf@PLT
+
+    # printf("person age: %d\n", person.person_age);
+	movl	-48(%rbp), %eax          # Load person.person_age
+	movl	%eax, %esi
+	leaq	.LC_print_person_age_str(%rip), %rax
+	movq	%rax, %rdi
+	movl	$0, %eax
+	call	printf@PLT
+
+    # printf("person id: %ld\n", person.person_id);
+	movq	-32(%rbp), %rax          # Load person.person_id
+	movq	%rax, %rsi
+	leaq	.LC_print_person_id_str(%rip), %rax
+	movq	%rax, %rdi
+	movl	$0, %eax
+	call	printf@PLT
+
+    # printf("person company id: %d\n", person.person_company->company_id);
+	movq	-24(%rbp), %rax          # Load person.person_company
+	movl	(%rax), %eax             # Load company_id
+	movl	%eax, %esi
+	leaq	.LC_print_person_company_id_str(%rip), %rax
+	movq	%rax, %rdi
+	movl	$0, %eax
+	call	printf@PLT
+
+    # printf("person company name: %s\n", person.person_company->company_name);
+	movq	-24(%rbp), %rax          # Load person.person_company
+	addq	$4, %rax                 # Calculate address of company_name
+	movq	%rax, %rsi
+	leaq	.LC_print_person_comany_name_str(%rip), %rax
+	movq	%rax, %rdi
+	movl	$0, %eax
+	call	printf@PLT
+
+    # person.person_age += 5;
+	movl	-48(%rbp), %eax
+	addl	$5, %eax
+	movl	%eax, -48(%rbp)
+
+    # company.company_id -= 5;
+	movl	-16(%rbp), %eax
+	subl	$5, %eax
+	movl	%eax, -16(%rbp)
+
+    # printf("person age: %d\n", person.person_age);
+	movl	-48(%rbp), %eax          # Load updated person.person_age
+	movl	%eax, %esi
+	leaq	.LC_print_person_age_str(%rip), %rax
+	movq	%rax, %rdi
+	movl	$0, %eax
+	call	printf@PLT
+
+    # printf("person company id: %d\n", person.person_company->company_id);
+	movq	-24(%rbp), %rax          # Load person.person_company
+	movl	(%rax), %eax             # Load updated company_id
+	movl	%eax, %esi
+	leaq	.LC_print_person_company_id_str(%rip), %rax
+	movq	%rax, %rdi
+	movl	$0, %eax
+	call	printf@PLT
+
+    # return 0;
+	movl	$0, %eax
+	leave
+	ret
+```
+if you understand all above, say a word YES.
+""",
+    "direct_followup": "now try to compile another code following the above guidelines. make sure you use the proper comments to help you generate.",
+    "incremental":"""I want you to act like a compiler that translate C code into x86 assembly. However, I don't want you to do it directly because that's memorizing. I want you to do so by strictly follow my guide and examples.
+###Example:
+In order to compile the following code into assembly, we need:
+1. first analyze the customized structs types and give them correct offset, size and padding, note that each struct follows the largest alignment basic type in its elements.
+2. collect all the constants, name their labels with meaningful names.
+3. compile the code using the above help messages. generate AT&T syntax x86_64 assembly.
+When you generate assembly, i want you to generate it incrementally, you should first generate the control flow, then each implementation in each basicblock.
+we will first have an assembly OUTPUT1 that implement the controlflow correctly, then fill each basicblock to get FINALOUTPUT. To do that, we also need the results in 1 and 2.
+
+#Example Input:
+```c
+#include <stdio.h>
+
+typedef struct {
+    int company_id;
+    char company_name[10];
+} Company;
+
+typedef struct {
+    int person_age;
+    char person_name[10];
+    long person_id;
+    Company *person_company;
+} Person;
+
+void foo(Person *person1, Person *person2) {
+    printf("enter foo\n");
+    if(person1->person_age > person2->person_age) {
+        person1->person_age += 5;
+    } else {
+        person2->person_age += 5;
+    }
+    printf("exit foo\n");
+}
+```
+# Example OUTPUT1:
+```x86
+	.text
+# Struct definitions:
+# Company {
+#     int company_id;        // offset 0, size 4
+#     char company_name[10]; // offset 4, size 10
+# }; // total size 16 (14 + 2 padding), aligned to 4 bytes
+
+# Person {
+#     int person_age;        // offset 0, size 4
+#     char person_name[10];  // offset 4, size 10
+#     long person_id;        // offset 16, size 8
+#     Company *person_company; // offset 24, size 8
+# }; // total size 32, aligned to 8 bytes
+    .section    .rodata
+.LC_print_enter:
+    .string    "enter foo"
+.LC_print_exit:
+    .string    "exit foo"
+    .text
+    .globl    foo
+    .type    foo, @function
+foo:
+.L_foo_entry:
+	# Function prologue
+
+    # printf("enter foo\n");
+
+    # if(person1->person_age > person2->person_age)
+    #COMPARISON, le->else_branch, gt->if_branch
+    jle     .L_else_branch
+
+.L_if_branch:
+    # person1->person_age += 5;
+    jmp     .L_end_if
+
+.L_else_branch:
+    # person2->person_age += 5;
+
+
+.L_end_if:
+    # printf("exit foo\n");
+
+    # Function epilogue
+    nop
+    leave
+    ret
+```
+
+#FINALOUTPUT:
+```x86
+	.text
+# Struct definitions:
+# Company {
+#     int company_id;        // offset 0, size 4
+#     char company_name[10]; // offset 4, size 10
+# }; // total size 16 (14 + 2 padding), aligned to 4 bytes
+
+# Person {
+#     int person_age;        // offset 0, size 4
+#     char person_name[10];  // offset 4, size 10
+#     long person_id;        // offset 16, size 8
+#     Company *person_company; // offset 24, size 8
+# }; // total size 32, aligned to 8 bytes
+    .section    .rodata
+.LC_print_enter:
+    .string    "enter foo"
+.LC_print_exit:
+    .string    "exit foo"
+    .text
+    .globl    foo
+    .type    foo, @function
+foo:
+.L_foo_entry:
+	# Function prologue
+    endbr64
+    pushq    %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp
+    movq    %rdi, -8(%rbp)     # Store person1 pointer
+    movq    %rsi, -16(%rbp)    # Store person2 pointer
+
+    # printf("enter foo\n");
+    leaq    .LC_print_enter(%rip), %rax
+    movq    %rax, %rdi
+    call    printf@PLT
+
+    # if(person1->person_age > person2->person_age)
+    movq    -8(%rbp), %rax     # Load person1 pointer
+    movl    (%rax), %edx       # Load person1->person_age
+    movq    -16(%rbp), %rax    # Load person2 pointer
+    movl    (%rax), %eax       # Load person2->person_age
+    #COMPARISON, le->else_branch, gt->if_branch
+    cmpl    %eax, %edx
+    jle     .L_else_branch
+
+.L_if_branch:
+    # person1->person_age += 5;
+    movq    -8(%rbp), %rax     # Load person1 pointer
+    movl    (%rax), %eax       # Load person1->person_age
+    leal    5(%rax), %edx      # Add 5 to person1->person_age
+    movq    -8(%rbp), %rax     # Load person1 pointer
+    movl    %edx, (%rax)       # Store updated person1->person_age
+    jmp     .L_end_if
+
+.L_else_branch:
+    # person2->person_age += 5;
+    movq    -16(%rbp), %rax    # Load person2 pointer
+    movl    (%rax), %eax       # Load person2->person_age
+    leal    5(%rax), %edx      # Add 5 to person2->person_age
+    movq    -16(%rbp), %rax    # Load person2 pointer
+    movl    %edx, (%rax)       # Store updated person2->person_age
+
+.L_end_if:
+    # printf("exit foo\n");
+    leaq    .LC_print_exit(%rip), %rax
+    movq    %rax, %rdi
+    call    printf@PLT
+
+    # Function epilogue
+    nop
+    leave
+    ret
+```
+If you fully understand, say a word YES""",
+    "incremental_followup": """now try to compile another code using the above guidelines. You should now generate only until the OUTPUT1, make sure you check carefully on the control flow, and contains annotation comments that reflecting the code snippet that need to be generated later.
+###help message: when dealing with switch-case, generate in if-else style. Don't use jump tables.
+```c
+#include <stdint.h>
+#include <stdio.h>
+typedef unsigned char u8;
+
+typedef enum CORE_STATE {
+  CORE_START = 0,
+  CORE_INVALID,
+  CORE_S1,
+  CORE_S2,
+  CORE_INT,
+  CORE_FLOAT,
+  CORE_EXPONENT,
+  CORE_SCIENTIFIC,
+  NUM_CORE_STATES
+} core_state_e;
+
+u8 ee_isdigit(u8 c);
+
+enum CORE_STATE core_state_transition(u8 **instr, unsigned *transition_count) {
+  u8 *str = *instr;
+  u8 NEXT_SYMBOL;
+  enum CORE_STATE state = CORE_START;
+  for (; *str && state != CORE_INVALID; str++) {
+    NEXT_SYMBOL = *str;
+    if (NEXT_SYMBOL == ',') {
+      str++;
+      break;
+    }
+    switch (state) {
+    case CORE_START:
+      if (ee_isdigit(NEXT_SYMBOL)) {
+        state = CORE_INT;
+      } else if (NEXT_SYMBOL == '+' || NEXT_SYMBOL == '-') {
+        state = CORE_S1;
+      } else if (NEXT_SYMBOL == '.') {
+        state = CORE_FLOAT;
+      } else {
+        state = CORE_INVALID;
+        transition_count[CORE_INVALID]++;
+      }
+      transition_count[CORE_START]++;
+      break;
+    case CORE_S1:
+      if (ee_isdigit(NEXT_SYMBOL)) {
+        state = CORE_INT;
+        transition_count[CORE_S1]++;
+      } else if (NEXT_SYMBOL == '.') {
+        state = CORE_FLOAT;
+        transition_count[CORE_S1]++;
+      } else {
+        state = CORE_INVALID;
+        transition_count[CORE_S1]++;
+      }
+      break;
+    case CORE_INT:
+      if (NEXT_SYMBOL == '.') {
+        state = CORE_FLOAT;
+        transition_count[CORE_INT]++;
+      } else if (!ee_isdigit(NEXT_SYMBOL)) {
+        state = CORE_INVALID;
+        transition_count[CORE_INT]++;
+      }
+      break;
+    case CORE_FLOAT:
+      if (NEXT_SYMBOL == 'E' || NEXT_SYMBOL == 'e') {
+        state = CORE_S2;
+        transition_count[CORE_FLOAT]++;
+      } else if (!ee_isdigit(NEXT_SYMBOL)) {
+        state = CORE_INVALID;
+        transition_count[CORE_FLOAT]++;
+      }
+      break;
+    case CORE_S2:
+      if (NEXT_SYMBOL == '+' || NEXT_SYMBOL == '-') {
+        state = CORE_EXPONENT;
+        transition_count[CORE_S2]++;
+      } else {
+        state = CORE_INVALID;
+        transition_count[CORE_S2]++;
+      }
+      break;
+    case CORE_EXPONENT:
+      if (ee_isdigit(NEXT_SYMBOL)) {
+        state = CORE_SCIENTIFIC;
+        transition_count[CORE_EXPONENT]++;
+      } else {
+        state = CORE_INVALID;
+        transition_count[CORE_EXPONENT]++;
+      }
+      break;
+    case CORE_SCIENTIFIC:
+      if (!ee_isdigit(NEXT_SYMBOL)) {
+        state = CORE_INVALID;
+        transition_count[CORE_INVALID]++;
+      }
+      break;
+    default:
+      break;
+    }
+  }
+  *instr = str;
+  return state;
+}
+```""",
 }

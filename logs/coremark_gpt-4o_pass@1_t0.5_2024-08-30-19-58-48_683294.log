@@ -3518,9 +3518,10 @@ matrix_mul_matrix:
 	ret
 
 WARNING:root:Failed to execute the assembly hypothesis for matrix_mul_matrix
-INFO:root:Failed cases: ['core_bench_list', 'core_bench_state', 'core_init_matrix', 'main', 'core_list_mergesort', 'core_list_init', 'core_state_transition', 'core_init_state',]
-INFO:root:Fixed cases: ['core_list_insert_new', 'core_list_remove', 'matrix_mul_matrix_bitextract', 'core_bench_matrix', 'matrix_test', 'core_list_undo_remove', 'matrix_mul_vect', 'iterate', 'matrix_mul_matrix', 'get_time', 'crcu32', 'ee_isdigit', 'matrix_mul_const', 'check_data_types']
+INFO:root:Failed cases: ['core_bench_state', 'main',]
+INFO:root:Fixed cases: ['core_list_insert_new', 'core_list_remove', 'matrix_mul_matrix_bitextract', 'core_bench_matrix', 'matrix_test', 'core_list_undo_remove', 'matrix_mul_vect', 'iterate', 'matrix_mul_matrix', 'get_time', 'crcu32', 'ee_isdigit', 'matrix_mul_const', 'check_data_types', 'core_init_matrix', 'core_list_mergesort', 'core_list_init', 'core_bench_list',  'core_state_transition', 'core_init_state',]
 INFO:root:Passed cases: ['portable_init', 'core_list_find', 'copy_info', 'cmp_complex', 'stop_time', 'portable_free', 'crc16', 'calc_func', 'portable_fini', 'crcu8', 'matrix_add_const', 'crcu16', 'core_list_reverse', 'time_in_secs', 'cmp_idx', 'matrix_sum', 'start_time', 'portable_malloc']
 INFO:root:Pass rate: 18/40
-INFO:root:Fixed Pass rate: 32/40
+INFO:root:Fixed Pass rate: 32/40, Sep 2rd, 2024
+INFO:root:Fixed Pass rate: 38/40, Sep, 4th, 2024
 INFO:root:End time: 2024-08-30 20:13:19.102316
