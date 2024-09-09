@@ -1,0 +1,1 @@
+csmith --no-pointers --no-volatile-pointers --no-builtins --no-volatiles --no-unions --no-checksum --no-jumps --no-bitfields --no-packed-struct --no-safe-math --no-global-variables --max-pointer-depth 1 --max-expr-complexity 2 --max-block-depth 3 --max-block-size 2 --max-funcs 1 > random4.c

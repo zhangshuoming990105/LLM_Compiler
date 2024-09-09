@@ -3524,4 +3524,5 @@ INFO:root:Passed cases: ['portable_init', 'core_list_find', 'copy_info', 'cmp_co
 INFO:root:Pass rate: 18/40
 INFO:root:Fixed Pass rate: 32/40, Sep 2rd, 2024
 INFO:root:Fixed Pass rate: 38/40, Sep, 4th, 2024
+INFO:root:Fixed Pass rate: 40/40, Sep, 5th, 2024
 INFO:root:End time: 2024-08-30 20:13:19.102316
