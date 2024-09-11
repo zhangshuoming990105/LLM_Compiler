@@ -1,26 +1,22 @@
+#--------------  DATA PART1 Struct definitions:
     .text
-# Struct definitions:
 # CORE_PORTABLE_S {
 #     u8 portable_id;        // offset 0, size 1
 # }; // total size 1, aligned to 1 byte
-
 # list_data_s {
 #     short data16;          // offset 0, size 2
 #     short idx;             // offset 2, size 2
 # }; // total size 4, aligned to 2 bytes
-
 # list_head_s {
 #     struct list_head_s *next; // offset 0, size 8
 #     struct list_data_s *info; // offset 8, size 8
 # }; // total size 16, aligned to 8 bytes
-
 # MAT_PARAMS_S {
 #     int N;                 // offset 0, size 4
 #     short *A;              // offset 8, size 8
 #     short *B;              // offset 16, size 8
 #     int *C;                // offset 24, size 8
 # }; // total size 32, aligned to 8 bytes
-
 # RESULTS_S {
 #     short seed1;           // offset 0, size 2
 #     short seed2;           // offset 2, size 2
@@ -38,9 +34,9 @@
 #     short err;             // offset 104, size 2
 #     core_portable port;    // offset 106, size 1
 # }; // total size 112, aligned to 8 bytes
-
+ 
+#-------------- DATA PART2 Global variables
     .data
-# Global variables
     .globl	start_time_val
     .type	start_time_val, @object
 	.size	start_time_val, 16
@@ -52,7 +48,7 @@ start_time_val:
 stop_time_val:
     .zero 16    # struct timespec (8 bytes for tv_sec, 8 bytes for tv_nsec)
 
-# Static variables
+#-------------- DATA PART3 Static variables
 list_known_crc:
     .word 0xd4b0, 0x3340, 0x6a79, 0xe714, 0xe3c1
 
@@ -63,7 +59,7 @@ state_known_crc:
     .word 0x5e47, 0x39bf, 0xe5a4, 0x8e3a, 0x8d84
 
     .section    .rodata
-# String literals
+#-------------- DATA PART4 String literals
 .LC_2K_performance:
     .string "2K performance run parameters for coremark.\n"
 .LC_error_list:
@@ -109,7 +105,7 @@ state_known_crc:
 .LC_cannot_validate:
     .string "Cannot validate operation for these seed values, please compare with results on a known platform.\n"
 
-# Numeric constants
+#-------------- DATA PART5 Numeric constants
 .LC_zero:
     .long 0
 .LC_one:
@@ -131,18 +127,18 @@ state_known_crc:
 .LC_ten_float:
     .float 10.0
 
+#-------------- PART1 Function begin and prologue
     .text
     .globl    main
     .type    main, @function
 main:
 .L_main_entry:
-    # Function prologue
     endbr64
     pushq   %rbp
     movq    %rsp, %rbp
-    subq    $168, %rsp    # Adjust stack for local variables
+    subq    $176, %rsp    # Adjust stack for local variables
 
-    # Initialize variables
+#-------------- PART2 Initialize variables
     movw    $0, -10(%rbp)     # j = 0
     movw    $3, -12(%rbp)     # num_algorithms = 3
     movw    $-1, -16(%rbp)    # known_id = -1
@@ -173,7 +169,7 @@ main:
     divl    %ecx                # Divide eax by ecx
     movl    %eax, -104(%rbp)    # Store result back to results[0].size (666)
 
-    # Assign addresses for results[0].memblock[1], [2], and [3]
+#-------------- PART3 Loop to assign addresses for results[0].memblock[1], [2], and [3]
     movl    $0, -8(%rbp)        # i = 0
 .L_memblock_loop:
     cmpl    $3, -8(%rbp)
@@ -193,7 +189,7 @@ main:
     incl    -8(%rbp)            # i++
     jmp     .L_memblock_loop
 .L_memblock_loop_end:
-    # Now use the correct memblock for core_list_init
+#-------------- PART4 Call functions to initialize list, matrix, and state
     movl    -104(%rbp), %edi      # Load results[0].size (666)
     movq    -128(%rbp), %rsi      # Load results[0].memblock[1]
     movzwl  -144(%rbp), %edx      # Load results[0].seed1
@@ -214,10 +210,63 @@ main:
     movq    -112(%rbp), %rdx      # Load results[0].memblock[3]
     call    core_init_state@PLT
 
-    # Skip iteration determination and set iterations directly to 60000
-    movl    $60000, -100(%rbp)    # results[0].iterations = 60000
+    # Set iterations to 60000
+    movl    $60000, -100(%rbp)
 
-    # Perform actual benchmark
+#-------------- PART5 Check if iterations is 0
+    # Check if iterations is 0
+    
+    cmpl    $0, -100(%rbp)
+    jne     .L_iterations_set
+
+    # Determine number of iterations
+    movsd   .LC_zero(%rip), %xmm0
+    movsd   %xmm0, -160(%rbp)    # secs_passed = 0
+    movl    $1, -100(%rbp)       # results[0].iterations = 1
+
+.L_iteration_loop:
+    movsd   -160(%rbp), %xmm0
+    ucomisd .LC_one(%rip), %xmm0
+    jae     .L_iteration_loop_end
+
+    # Multiply iterations by 10
+    movl    -100(%rbp), %eax
+    imull   $10, %eax
+    movl    %eax, -100(%rbp)
+
+    # Perform iteration and measure time
+    call    start_time@PLT
+    leaq    -144(%rbp), %rdi
+    call	iterate@PLT
+	call	stop_time@PLT
+	call	get_time@PLT
+	movq	%rax, %rdi
+	call	time_in_secs@PLT
+    movsd   %xmm0, -160(%rbp)    # Update secs_passed
+    jmp     .L_iteration_loop
+
+.L_iteration_loop_end:
+    # Calculate final number of iterations
+    call    get_time@PLT
+    movq    %rax, %rdi
+    call    time_in_secs@PLT
+    cvttsd2si %xmm0, %eax
+    movl    %eax, -164(%rbp)     # divisor = (unsigned)secs_passed
+
+    cmpl    $0, -164(%rbp)
+    jne     .L_divisor_not_zero
+    movl    $1, -164(%rbp)       # if (divisor == 0) divisor = 1
+
+.L_divisor_not_zero:
+    movl    $10, %eax
+    cltd
+    idivl   -164(%rbp)
+    addl    $1, %eax
+    imull   -100(%rbp), %eax
+    movl    %eax, -100(%rbp)     # results[0].iterations *= 1 + 10 / divisor
+
+.L_iterations_set:
+#-------------- PART6 Perform iterations and calculate seedcrc
     call    start_time@PLT
     leaq    -144(%rbp), %rdi
     call    iterate@PLT
@@ -245,7 +294,7 @@ main:
     call    crc16@PLT
     movw    %ax, -24(%rbp)      # Store result in seedcrc
 
-    # Switch based on seedcrc
+#-------------- PART7 Switch based on seedcrc
     cmpw    $0xe9f5, -24(%rbp)
     je      .L_known_seed
     jmp     .L_unknown_seed
@@ -260,7 +309,7 @@ main:
     movl    $-1, -20(%rbp)      # total_errors = -1
 
 .L_seed_check_end:
-    # Check for errors if known_id >= 0
+#-------------- PART8 Check for errors
     cmpw    $0, -16(%rbp)
     jl      .L_skip_error_check
 
@@ -344,24 +393,19 @@ main:
     addl    %edx, -20(%rbp)     # total_errors += results[0].err
 
 .L_skip_error_check:
+#-------------- PART9 Print results1
     # Add data type check errors
     call    check_data_types@PLT
     addl    %eax, -20(%rbp)
 
     # Print results
-    # Print CoreMark Size
-    movl    -104(%rbp), %eax      # Load results[0].size (32-bit)
-    movl    %eax, %esi            # Move to %esi for printf
-    movq    %rsi, %rdx            # Zero-extend to 64-bit in %rdx
     leaq    .LC_coremark_size(%rip), %rdi
-    movl    $0, %eax              # No floating point arguments
+    movl    -104(%rbp), %esi
+    movl    $0, %eax
     call    printf@PLT
 
-
-    # Print Total ticks
-    movq    -32(%rbp), %rax       # Load total_time (already 64-bit)
-    movq    %rax, %rsi
     leaq    .LC_total_ticks(%rip), %rdi
+    movq    -32(%rbp), %rsi
     movl    $0, %eax
     call    printf@PLT
 
@@ -413,6 +457,7 @@ main:
     movl    $0, %eax
     call    printf@PLT
 
+#-------------- PART10 Print results2
     movl    -96(%rbp), %eax
     andl    $1, %eax
     testl   %eax, %eax
@@ -503,6 +548,7 @@ main:
     leaq    -38(%rbp), %rdi
     call    portable_fini@PLT
 
+#-------------- PART11 Function end and epilogue
     movl    $0, %eax
     leave
     ret
