@@ -1,0 +1,438 @@
+INFO:root:log file created!
+INFO:root:Start time: 2024-09-16 02:44:39.851545
+INFO:root:Current run:temp_codestral:22b-v0.1-f16_0_500_2024-09-16-02-44-39_834767
+INFO:root:Model: codestral:22b-v0.1-f16
+INFO:root:Temperature: 0.6
+INFO:root:Pass_k: 5
+INFO:root:Self-correct: False
+INFO:root:Correct round: 3
+INFO:root:Do analyze: False
+INFO:root:Do simulate: False
+INFO:root:Eval coremark: False
+INFO:root:Eval exebench: True
+INFO:root:Use Mask: True
+INFO:root:Mask stage: baseline
+INFO:root:LLM default prompt size: 272
+INFO:root:LLM default prompt: [INST]you are a helpful AI assistant, you will think carefully and follow the instructions to assist the user.[/INST][INST]you are a professional AI assistant in code, based on the user input C code, 
+you are going to help me to generate the corresponding x86 assembly.
+You will perform like a compiler with O0 optimization level, the architecture is x86_64.
+We can assume there will only be one function body to be compiled.[/INST][INST] input code will be inside "```c" and "```"tags, please also make sure the generated x86 assembly be inside "```x86" and "```" tags.[/INST][INST]Example:
+#Input:
+```c
+int main() {
+    printf("Hello, World!
+");
+    return 0;
+}
+```
+#Output:
+```x86
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	leaq	.LC0(%rip), %rdi
+	call	puts@PLT
+	movl	$0, %eax
+	popq	%rbp
+	ret
+.LC0:
+	.string	"Hello, World!"
+
+```[/INST]
+INFO:root:Found previous cached results for codestral:22b-v0.1-f16: baseline
+INFO:root:Masked ids: [0, 2, 3, 4, 6, 7, 8, 10, 11, 12, 13, 14, 15, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31, 32, 35, 36, 37, 38, 40, 41, 43, 44, 46, 47, 48, 49, 50, 52, 54, 55, 56, 57, 58, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 75, 77, 78, 79, 80, 81, 82, 83, 85, 89, 90, 91, 92, 94, 96, 97, 99, 100, 102, 103, 104, 105, 106, 107, 108, 111, 112, 115, 116, 117, 118, 119, 120, 122, 123, 125, 127, 129, 130, 131, 132, 134, 135, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 149, 151, 152, 153, 154, 155, 156, 157, 158, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 184, 185, 186, 189, 190, 192, 193, 195, 197, 199, 200, 201, 203, 204, 205, 206, 210, 211, 212, 213, 215, 217, 218, 221, 222, 223, 225, 227, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 241, 242, 243, 244, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 257, 259, 262, 263, 264, 265, 267, 268, 269, 271, 272, 273, 275, 276, 279, 280, 281, 282, 283, 286, 288, 289, 290, 291, 292, 295, 296, 298, 302, 303, 304, 305, 306, 307, 308, 309, 310, 312, 313, 314, 315, 316, 317, 319, 321, 325, 326, 327, 328, 330, 331, 332, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 345, 346, 348, 350, 351, 352, 354, 355, 357, 360, 361, 364, 366, 369, 370, 371, 372, 374, 375, 377, 378, 382, 383, 384, 386, 387, 388, 389, 390, 391, 392, 393, 394, 396, 397, 398, 399, 401, 402, 403, 405, 406, 407, 408, 411, 412, 414, 415, 418, 419, 421, 423, 424, 426, 427, 428, 432, 433, 435, 436, 437, 438, 439, 440, 443, 444, 445, 446, 447, 448, 449, 450, 451, 452, 453, 454, 457, 460, 462, 463, 464, 466, 467, 469, 470, 471, 472, 474, 476, 477, 478, 479, 481, 482, 483, 485, 487, 488, 492, 494, 496, 498, 499]
+INFO:root:CASE 0 is masked, so it is correct
+INFO:root:C code :
+
+double QuinticEaseIn(double p)
+{
+    return p * p * p * p * p;
+}
+INFO:root:current LLM prompt size: 312
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	QuinticEaseIn
+	.type	QuinticEaseIn, @function
+QuinticEaseIn:
+.LFB0:
+	endbr64
+	pushq  %rbp                   # Save old base pointer value
+	movq   %rsp, %rbp            # Set new base pointer value as current stack pointer
+	double    %xmm0               # Put the input value into xmm0 for floating point multiplication
+
+	# Calculation p * p (squaring the value)
+	mulsd  %xmm0, %xmm0           # Multiply xmm0 by itself into result is in xmm0
+
+	# Then calculating (p * p) * (p * p) (fourth power of base value).
+	mulsd   %xmm0, %xmm0          # xmm0 = xmm0 * xmm0
+
+	# Finally multiply one more time to end result.
+	mulsd  %xmm0, %xmm0          # xmm0 = xmm0 * xmm0 => p^5
+
+	# Restoring stack pointer and pop base pointer before returning.
+	movq    %rbp, %rsp           # set the stack pointer back to base pointer
+	popq   %rbp                  # restoring old base pointer from stack
+	ret
+
+WARNING:root:0th try 0 round in 1 failed to assemble the code to executable!
+INFO:root:current LLM prompt size: 312
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	QuinticEaseIn
+	.type	QuinticEaseIn, @function
+QuinticEaseIn:
+.LFB0:
+	fld    %xmm0     # load argument 'p' onto the FPU stack
+	fmul   %st(0)    # multiply 'p', st(1)= 'p'*'p'
+	fmul   %st(0)    # multiply 'p*p', now have 'p^3': st(1)='p'*'p'*'p'; 'p^2': st(0)'=p'*'p'
+	fmul   %st(0)    # multiply 'p^3', now have 'p^4': st(1)='p'*'p'*'p'*'p; 'p^3': st(0)'=p'*p*p'
+	fmul   %st       # multiply last two, final result: ST(0)=st(0)*st(1), 'p^5'
+	ret
+
+WARNING:root:1th try 0 round in 1 failed to assemble the code to executable!
+INFO:root:current LLM prompt size: 312
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+   .file	"quintic.c"
+	.text
+	.globl	QuinticEaseIn
+	.type	QuinticEaseIn, @function
+QuinticEaseIn:
+.LFB0:
+.LFIB0:
+    pushq %rbp       // Store the base pointer on the stack.
+    movq  %rsp, %rbp
+    .cfi_offset 6, -16 // Set frame pointer to current stack pointer for debugging information.
+    movsd qword (%rdi), %xmm0 // Move Double(P) from argument list into xmm0 register.
+    mulsd %xmm0, %xmm0 // multiply by p (xmm0 * xmm0).
+    mulsd %xmm0, %xmm0 // then again multiply by p (xmm0 * xmm0) thrice in total to get p^5.
+    mulsd %xmm0, %xmm0
+    mulsd %xmm0, %xmm0
+    leave             // restore stack pointer and base pointer for function prologue. Restore calling context by restoring RBP and rest of previous frame's variables from the stack, releasing memory back to the stack as we go.
+    ret                // return with xmm0 value, i.e., p^5 , on top of the stack. Return address is popped off the end, thus restoring this value too.
+  
+WARNING:root:2th try 0 round in 1 failed to assemble the code to executable!
+INFO:root:current LLM prompt size: 312
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+    .globl  QuinticEaseIn
+    .type   QuinticEaseIn, @function
+QuinticEaseIn:
+    movsd %xmm0, -8(%rsp)                     # Move the parameter 'p' to the 'rbp-8' position in stack
+    movsd -8(%rsp), %xmm1                    # Load 'p' into register XMM1
+    mulsd %xmm1, %xmm1                       # Square of 'p' (second power)
+    mulsd %xmm1, %xmm1                       # Fourth power of 'p '(as p^4 = p^2 * p^2)
+    mulsd %xmm1, %xmm0                      # Finally multiply once more to get the value in XMM0 which is 'p*p*p*p*p'
+    ret
+
+INFO:root:Local error rate: 10.0%
+INFO:root:3th try 0 round in 1 failed
+INFO:root:error message: input 3 in case 1 failed because of output mismatch.
+Inputs are: 
+{
+    "p": 27.1950800407
+}
+Expected outputs are:
+{
+    "returnv": 14874819.582607776
+}
+
+Actual outputs are:
+{
+    "returnv": 14874819.582607774
+}
+
+----------
+
+INFO:root:current LLM prompt size: 312
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	QuinticEaseIn
+	.type	QuinticEaseIn, @function
+QuinticEaseIn:
+        xorps   %xmm2, %xmm2
+        movsd   %xmm0, %xmm1          # Moving the value of p to another register for calculation
+        mulsd   %xmm0, %xmm1          # Calculating p*p
+        mulsd   %xmm1, %xmm0          # Calculating (p*p)*p
+        mulsd   %xmm0, %xmm1          # Calculating ((p*p)*p)*p
+        mulsd   %xmm1, %xmm0          # Calculating (((p*p)*p)*p)*p
+        addsd   %xmm2, %xmm0          # Adding 0 to ensure the result is in xmm0 for return
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:4th try 0 round in 1 failed
+INFO:root:error message: input 9 in case 1 failed because of output mismatch.
+Inputs are: 
+{
+    "p": 16.3311550309
+}
+Expected outputs are:
+{
+    "returnv": 1161674.6380025982
+}
+
+Actual outputs are:
+{
+    "returnv": 5059821691.281026
+}
+
+----------
+
+INFO:root:CASE 1 fail
+INFO:root:CASE 2 is masked, so it is correct
+INFO:root:CASE 3 is masked, so it is correct
+INFO:root:CASE 4 is masked, so it is correct
+INFO:root:C code :
+
+void vec_mpy(int y[], const short x[], short scaler)
+{
+ int i;
+
+ for (i = 0; i < 150; i++)
+   y[i] += ((scaler * x[i]) >> 31);
+}
+INFO:root:current LLM prompt size: 339
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl vec_mpy
+	.type  vec_mpy, @function
+vec_mpy:
+    pushq   %rbp
+    movq    %rsp, %rbp
+
+    xor     %rdx, %rdx       # i=0
+.L2:                         # Starting point of the loop
+    imulw   %cx, (%rsi,%rdx,4), %ax  # scaler*x[i] (cx has 'scaler', rsi is x)
+    shrl    $31, %eax      # Shifting right by 31 bits to get the LSB value
+    addl    %eax, (%rdi,%rdx,4) # Add with y[i] and store (rdi in y)
+    incq    %rdx            # i++
+    cmp     $150, %rdx       # Check loop condition
+    jl      .L2              # Jump back to L2 if loop condition is true
+
+    nop                      # Placeholder for alignment
+    popq    %rbp              # Restore frame pointer
+    ret                       # Return from function
+
+WARNING:root:0th try 0 round in 5 failed to assemble the code to executable!
+INFO:root:current LLM prompt size: 339
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+	.globl	vec_mpy
+	.type	vec_mpy, @function
+vec_mpy:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp
+    movq 	%rdi, -8(%rbp) # y array
+    movq     %rsi, -16(%rbp) # x array
+    movw 	%dx, -2(%rbp) # scaler
+    xorl    %eax, %eax
+.L2:
+    cmpl    $150, %eax# loop boundary
+    jge .L3
+    movslq	%eax, %rdx
+    movw     -2(%rbp), %dx # load scaler
+    imull   -16(%rdx), %dx # multiply x with scalar
+    sarl	$31, %edx# shift right 31 bits
+    cltq
+    addl    -8(,%rax,4), %edx # add to y[i]
+    movl    %edx, -8(,%rax,4) # store back to y[i]
+    incl	%eax# increment loop counter
+    jmp .L2
+.L3:
+    leave
+    ret
+
+WARNING:root:1th try 0 round in 5 failed to assemble the code to executable!
+INFO:root:current LLM prompt size: 339
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	vec_mpy
+	.type	vec_mpy, @function
+vec_mpy:
+.LFB0:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    xorl    %ecx, %ecx
+.L2:
+    movswll (%rsi,%rcx,2), %eax              # load value from array x[]
+    imulw   %dx, %ax                        # multiply by scaler
+    sarl    $31, %eax                       # shift right logical by 31
+    addl    (%rdi,%rcx,4), %eax              # add to existing value from array y[]
+    movl    %eax, (%rdi,%rcx,4)              # save back to the array y[]
+    incl    %ecx                            # increment counter
+    cmpl    $150, %ecx                      # compare with loop limit
+    jl      .L2                             # jump if not equal - start new iteration
+    popq    %rbp                            # restore base pointer
+    ret                                     # return from function
+
+
+WARNING:root:2th try 0 round in 5 failed to assemble the code to executable!
+INFO:root:current LLM prompt size: 339
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+	.globl	vec_mpy
+	.type	vec_mpy, @function
+vec_mpy:
+.LFB0:
+	pushq	%rbp
+	movq	 %rsp, %rbp
+	movq	 %rdi, -24(%rbp) # store y[] address in `-24(%rbp)`
+	movq 	 %rsi, -32(%rbp) # store x[] address in `-32(%rbp)`
+	movw    %dx, -28(%rbp)   # store scaler in `-28(%rbp)` as a word(2 bytes) value
+	movl    $0, -4(%rbp)     # initialize i=0
+	jmp	 .L2
+.L3:
+	movb 	$-1, %al // prepare for the sign extension of `x[i]` to `eax`
+	movq  	-32(%rbp), %rcx // load x[] address into rcx
+	sarl	 $0, -4(%rbp)     # sign extend i to 64-bits and prepare for indexing x[] with it.
+	movswl	(%rcx,%rax,2), %eax // `scaler * x[i]`, scaler should be zero extended by compiler
+        imulw   -28(%rbp), %ax // complete multiplication operation
+        sar     $31, %eax      // `(scaler * x[i]) >> 31`
+	cltq    // sign-extend eax to rax. So we can add it to y elements correctly
+	addl	%eax, (%rcx)
+	incl	-4(%rbp)            # i++
+.L2:
+	cmpl  $150, -4(%rbp)        # check the loop termination condition. "i<150"
+	jl     .L3                   # if not met jump to`.L3` label (loop again).
+	popq    %rbp
+	ret
+
+WARNING:root:3th try 0 round in 5 failed to assemble the code to executable!
+INFO:root:current LLM prompt size: 339
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl vec_mpy
+    .type vec_mpy, @function
+vec_mpy:
+    pushq %rbp       # Save old base pointer value
+    movq %rsp, %rbp  # Set up new base pointer
+    subq $16, %rsp   # Allocate space for local variables
+    movq %rdi, -8(%rbp) # y[]
+    movq %rsi, -16(%rbp) # x[]
+    movw %dx, -12(%rbp)  # scaler
+    movl $0, -4(%rbp) # Initialize i to 0
+.loop:
+    cmpl $150, -4(%rbp)   # Check limit of loop (i < N)
+    jge .end            # End the loop if condition is not met
+    movl -4(%rbp), %edx
+    movslq %edx, %rdx
+    salq $2, %rdx         # Index * sizeof(int) for y[]
+    movq -8(%rbp), %rax   # Address of y[i]
+    addq %rdx, %rax
+    movl (%rax), %edx     # Load value at address y[i] to edx register
+    movswl -12(%rbp),%eax  # Sign-extend short scaler to eax register.
+    imul -4(%rbp), %eax   # Multiply i by eax(implicit sign extend) which effectively multiplies it by scalers and store in eax, because short*short can be out of range for a short
+                           # This gives the result to scale x[i] with the current iteration number.
+    movw %dx, %cx         # Save y[i] to cx register
+	sar $31, %eax        # Shift right by 31 bits (equivilent of "/2" if positive)
+                           # This line performs round by -inf for floating point.
+    cbw                   # Convert already shifted ax lowest byte to short, sign extending result into 4 bytes in eax register
+    addl %eax, %ecx       # cx += eax (final step of calculation)
+    movl %ecx, (%rax)     # Store result back to y[i]
+    addl $1, -4(%rbp)     # Increment i by 1 for the next iteration
+    jmp .loop             # Repeat the loop
+.end:
+    leave                 # Restore old base pointer and clean up local variables
+    ret                   # Exit function
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 5
+INFO:root:Local error rate: 10.0%
+INFO:root:4th try 0 round in 5 failed
+INFO:root:error message: input 0 in case 5 failed because of runtime error.
+Inputs are: 
+{
+    "y": [39, 72, 88, 91, 123, 65, 31, 88, 87, 36, 81, 24, 20, 17, 64, 83, 88, 33, 33, 122, 86, 11, 115, 14, 12, 96, 114, 11, 96, 54, 102, 6],
+    "x": [118, 70, 94, 52, 74, 53, 66, 85, 23, 23, 124, 16, 90, 37, 20, 74, 124, 87, 51, 11, 105, 42, 115, 51, 27, 80, 92, 66, 106, 1, 84, 50],
+    "scaler": 101
+}
+Expected outputs are:
+{
+    "x": [118, 70, 94, 52, 74, 53, 66, 85, 23, 23, 124, 16, 90, 37, 20, 74, 124, 87, 51, 11, 105, 42, 115, 51, 27, 80, 92, 66, 106, 1, 84, 50],
+    "y": [39, 72, 88, 91, 123, 65, 31, 88, 87, 36, 81, 24, 20, 17, 64, 83, 88, 33, 33, 122, 86, 11, 115, 14, 12, 96, 114, 11, 96, 54, 102, 6]
+}
+
+Run stdout:
+
+Run stderr:
+
+----------
+
+INFO:root:CASE 5 fail
+INFO:root:CASE 6 is masked, so it is correct
+INFO:root:CASE 7 is masked, so it is correct
+INFO:root:CASE 8 is masked, so it is correct
+INFO:root:C code :
+
+extern inline int
+JKMarray_idx (const int J, const int K, const int M)
+{
+  return (((4 * J * J + 5) * J) / 3 + 2 * J * J + K * (2 * J + 1) + M);
+}
+INFO:root:current LLM prompt size: 352
+INFO:httpx:HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+.text
+	.globl	JKMarray_idx
+        .type   JKMarray_idx, @function
+JKMarray_idx:
+    .LFB0:
+        pushq %rbp
+        movq  %rsp, %rbp
+
+        # Copy input parameters to registers for calc
+        movl  	%edi, %ecx          /* J */
+    	movl  	%esi, %edx      /* K */
+    	movl  	%edx, %esi       /* M => EDX (save a register) */
+
+        # J * J calculation
+        imull  %ecx, %ecx        /* J^2 */
+    	imull	$5, %ecx          /* J^2 * 5 (temporary result for following equation part) */
+
+   	# (4 * J * J + 5) * J / 3 calc
+  	movl	%ecx, %eax
+        imull   $4, %eax           /* 4 * J^2 * 5 */
+    	addq	%rcx, %rax         /* (4 * J^2 + 5) * J */
+       idiv	$3               /* / 3 */
+
+    # Full expression calculation
+    	leal   (%rdi,(%rdi)), %ecx  /* 2 * J */
+     	imull  $2, %ecx          /* => save result for later use (used twice) -> ECX = 2 * J now */
+      	addl	%ecx, %eax           /* + 2 * J^2 */
+        imull  %edx, %esi          /* K * M */
+   	leal   (%rdi,%rcx), %edx      /* 2 * J + 1 */
+      	imull  %edx, %edx          /* K * (2* J + 1) */
+        addl    %esi, %edx         /* K * M + K * (2 * J + 1) */
+        addl   %edx, %eax         /* The final expression */
+
+     # Return statement
+     	popq  %rbp           /* restore the old frame pointer */
+        ret                     /* return value from function is stored in EAX */
+
+WARNING:root:0th try 0 round in 9 failed to assemble the code to executable!
+INFO:root:current LLM prompt size: 352
