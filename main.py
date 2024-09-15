@@ -18,6 +18,50 @@ from config import (
     DEEPSEEK_AVAILABLE_MODELS,
 )
 from prompts import *
+cached_pass_id: dict = {
+    "gpt-4o": {
+        "baseline": [0, 1, 2, 5, 9, 16, 20, 23, 30, 32, 33, 34, 38, 40, 42, 45, 51, 56, 59, 63, 70, 73, 76, 78, 81, 84, 87, 88, 95, 98],
+        "pass@5": [1, 2, 5, 9, 20, 30, 32, 42, 59, 95, 98],
+        "fix": [9, 30, 32, 42, 95],
+        "annotation": [95],
+        "LEGO": None,
+    },
+    "deepseek-coder": {
+        "baseline": [7, 33, 42, 53, 59, 60, 73, 84, 86, 95, 98],
+        "pass@5": [33, 42, 59, 60, 73, 86, 95, 98],
+        "fix": None,
+        "annotation": None,
+        "LEGO": None,
+    },
+    "claude-3-5-sonnet-20240620": {
+        "baseline": [4, 9, 30, 33, 42, 53, 55, 59, 73, 92, 95, 98],
+        "pass@5": [9, 30, 42, 95],
+        "fix": [],
+        "annotation": [],
+        "LEGO": [],
+    },
+    "gpt-4o-mini": {
+        "baseline": [0, 1, 2, 4, 5, 7, 9, 15, 20, 30, 32, 33, 34, 39, 40, 51, 54, 56, 59, 60, 63, 71, 73, 74, 75, 76, 78, 80, 81, 84, 86, 87, 88, 89, 92, 93, 95, 98, 100, 103, 109, 113, 115, 124, 126, 127, 129, 137, 139, 140, 142, 148, 150, 151, 154, 159, 160, 161, 170, 174, 175, 180, 182, 183, 185, 187, 188, 194, 195, 198, 199, 202, 207, 209, 210, 212, 216, 217, 218, 219, 220, 222, 223, 224, 228, 230, 231, 232, 233, 234, 237, 238, 239, 240, 241, 246, 249, 252, 256, 258, 260, 261, 262, 263, 267, 270, 277, 278, 281, 284, 290, 291, 293, 296, 300, 301, 303, 311, 318, 320, 322, 323, 324, 329, 331, 333, 335, 336, 343, 344, 347, 348, 349, 352, 353, 354, 355, 356, 358, 359, 362, 363, 365, 366, 368, 373, 375, 380, 381, 382, 385, 386, 395, 397, 399, 404, 407, 409, 410, 416, 421, 422, 427, 428, 429, 430, 431, 433, 434, 441, 442, 444, 445, 447, 452, 454, 455, 456, 458, 459, 460, 461, 463, 464, 468, 470, 473, 474, 475, 478, 479, 480, 481, 483, 485, 486, 489, 490, 492, 493, 495, 496, 497, 498, 499],
+        "pass@5": None,
+        "fix": None,
+        "annotation": None,
+        "LEGO": None,
+    },
+    "claude-3-haiku-20240307": {
+        "baseline": [4, 7, 9, 32, 33, 39, 40, 42, 53, 54, 59, 66, 73, 83, 84, 86, 87, 88, 89, 93, 95, 98, 100, 101, 107, 109, 113, 114, 119, 127, 136, 137, 139, 150, 159, 161, 170, 174, 180, 182, 187, 190, 191, 194, 202, 207, 208, 209, 212, 214, 216, 218, 219, 220, 222, 223, 224, 228, 231, 234, 239, 240, 241, 243, 245, 246, 252, 256, 258, 260, 261, 266, 270, 277, 284, 287, 288, 290, 293, 295, 298, 299, 300, 301, 304, 307, 311, 318, 324, 333, 347, 348, 349, 351, 353, 356, 358, 359, 362, 363, 364, 365, 367, 368, 373, 375, 380, 381, 382, 387, 391, 404, 407, 409, 410, 413, 417, 422, 427, 428, 429, 430, 431, 433, 441, 442, 445, 454, 455, 456, 458, 459, 460, 461, 462, 463, 464, 468, 470, 471, 473, 475, 480, 481, 482, 484, 491, 492, 493, 495, 496, 497, 498],
+        "pass@5": [4, 7, 9, 32, 42, 54, 59, 73, 83, 86, 87, 88, 89, 93, 95, 98, 101, 107, 109, 113, 119, 136, 137, 150, 159, 161, 170, 180, 187, 191, 202, 207, 208, 216, 218, 219, 224, 228, 231, 234, 239, 240, 245, 246, 252, 256, 260, 261, 270, 277, 287, 288, 290, 295, 299, 300, 301, 311, 318, 324, 333, 347, 348, 349, 353, 356, 358, 359, 362, 363, 364, 365, 367, 368, 375, 380, 381, 382, 387, 404, 407, 409, 410, 413, 417, 422, 428, 431, 433, 441, 442, 455, 456, 458, 459, 461, 463, 464, 468, 471, 473, 475, 480, 484, 491, 492, 493, 495, 497, 498],
+        "fix": [32, 73, 86, 87, 95, 98],
+        "annotation": None,
+        "LEGO": None,
+    },
+    "codestral:22b-v0.1-f16": {
+        "baseline": [1, 5, 9, 16, 19, 20, 30, 33, 34, 39, 42, 45, 51, 53, 59, 60, 73, 74, 76, 84, 86, 87, 88, 93, 95, 98, 101, 109, 110, 113, 114, 121, 124, 126, 128, 133, 136, 148, 150, 159, 170, 183, 187, 188, 191, 194, 196, 198, 202, 207, 208, 209, 214, 216, 219, 220, 224, 226, 228, 240, 245, 256, 258, 260, 261, 266, 270, 274, 277, 278, 284, 285, 287, 293, 294, 297, 299, 300, 301, 311, 318, 320, 322, 323, 324, 329, 333, 344, 347, 349, 353, 356, 358, 359, 362, 363, 365, 367, 368, 373, 376, 379, 380, 381, 385, 395, 400, 404, 409, 410, 413, 416, 417, 420, 422, 425, 429, 430, 431, 434, 441, 442, 455, 456, 458, 459, 461, 465, 468, 473, 475, 480, 484, 486, 489, 490, 491, 493, 495, 497],
+        "pass@5": None,
+        "fix": None,
+        "annotation": None,
+        "LEGO": None,
+    }
+}
 
 
 def log_failed(
@@ -249,6 +293,8 @@ def c_compiler_exebench(
     self_correct=False,  # whether to use self-correcting mechanism
     self_correct_round=3,  # the number of self-correcting rounds
     do_analyze=False,
+    use_mask=False,
+    mask_stage="baseline",
 ):
     """
     Compile the C code of ExeBench to assembly code and then to executable code.
@@ -264,7 +310,9 @@ def c_compiler_exebench(
         peft_model=peft_model,
     )
     # ds = load_dataset("jordiae/exebench")["train_real_simple_io"]
-    ds = load_dataset("mistral0105/exebench_io_validated_full_cleaned")["train"]
+    ds = load_dataset("mistral0105/exebench_io_validated_full_cleaned")[
+        "train"
+    ]  # this ds is already shuffled, so use it directly
     # select validate example to a new dataset, by checking compile status and execution status
     passed_id = []
     failed_id = []
@@ -274,19 +322,36 @@ def c_compiler_exebench(
     first_pass_id = []
     case_id = 0
     total_id = end_id - begin_id
-
+    progress_bar = tqdm(
+        total=total_id,
+        initial=0,
+        dynamic_ncols=True,
+    )
     # ds = ds[begin_id:end_id]
+    if use_mask:
+        failed_ids = [i for i in range(begin_id, end_id)]
+        if cached_pass_id[model][mask_stage] is not None:
+            logging.info(f"Found previous cached results for {model}: {mask_stage}")
+            failed_ids = cached_pass_id[model][mask_stage]      
+        else:
+            failed_ids = [i for i in range(begin_id, end_id)]
+        mask_ids = [i for i in range(begin_id, end_id) if i not in failed_ids]
+    else:
+        mask_ids = []
+    logging.info(f"Masked ids: {mask_ids}")
     for e in ds:
         # we want to use case_id-begin_id/total_id as the progress bar
-        progress_bar = tqdm(
-            total=total_id,
-            initial=case_id - begin_id,
-            dynamic_ncols=True,
-        )
-        progress_bar.update(1)
         if case_id < begin_id:
             case_id += 1
             continue
+        if case_id in mask_ids:
+            progress_bar.update(1)
+            logging.info(f"CASE {case_id} is masked, so it is correct")
+            passed_id.append(case_id)
+            first_pass_id.append(case_id)
+            case_id += 1
+            continue
+        progress_bar.update(1)
         if case_id >= end_id:
             break
         try:
@@ -439,6 +504,7 @@ def c_compiler_exebench(
                         hex_octal = False
                         functioncall = False
                         recursive = False
+                        helper_message = ""
                         if do_analyze:
                             # TODO: expand the analyzis to more types
                             logging.debug("do_analyze = True, start analyzing")
@@ -448,7 +514,6 @@ def c_compiler_exebench(
                                 error_message=error_message,
                             )
                             logging.debug("Analyze response: " + rsp)
-                            helper_message = ""
                             key_list = rsp.split(",")
 
                             for item in key_list:
@@ -616,6 +681,8 @@ def c_compiler_coremark(
     do_analyze=False,
     use_one_shot_prompt=True,
     use_zero_shot_prompt=False,
+    use_mask=False,
+    mask_stage="baseline",
 ):
     ds = load_dataset("mistral0105/CoreMark_FunctionLevel")
     compiler = Compiler(
@@ -664,7 +731,9 @@ def c_compiler_coremark(
                     try:
                         x86_llm_code = open(f"hyp/{function_name}.s", "r").read()
                     except FileNotFoundError:
-                        logging.warning("Failed to find the assembly hypothesis file during fixing!")
+                        logging.warning(
+                            "Failed to find the assembly hypothesis file during fixing!"
+                        )
                         logging.info(f"Self-correcting round {j} failed in {i}th try")
                         continue
                     correct_success, error_message = examine_coremark(
@@ -763,8 +832,10 @@ if __name__ == "__main__":
     parser.add_argument("--logging_level", type=str, default="INFO")
     parser.add_argument("--do_analyze", type=bool, default=False)
     parser.add_argument("--do_simulate", type=bool, default=False)
-    parser.add_argument("--eval_coremark", type=bool, default=True)
+    parser.add_argument("--eval_coremark", type=bool, default=False)
     parser.add_argument("--clear_workspace", type=bool, default=False)
+    parser.add_argument("--use_mask", type=bool, default=False)
+    parser.add_argument("--mask_stage", type=str, default="baseline")
     S = parser.parse_args()
     candidate_model: str = S.model
     begin_id: int = S.begin_id
@@ -782,6 +853,8 @@ if __name__ == "__main__":
     do_simulate: bool = S.do_simulate
     eval_coremark: bool = S.eval_coremark
     clear_workspace: bool = S.clear_workspace
+    use_mask: bool = S.use_mask
+    mask_stage: str = S.mask_stage
     if prompt_style == "one":
         use_one_shot_prompt = True
         use_zero_shot_prompt = False
@@ -845,6 +918,8 @@ if __name__ == "__main__":
     logging.info(f"Do simulate: {do_simulate}")
     logging.info(f"Eval coremark: {eval_coremark}")
     logging.info(f"Eval exebench: {not eval_coremark}")
+    logging.info(f"Use Mask: {use_mask}")
+    logging.info(f"Mask stage: {mask_stage}")
 
     if do_simulate:
         x86_simulate(
@@ -867,6 +942,8 @@ if __name__ == "__main__":
             do_analyze=do_analyze,
             use_one_shot_prompt=use_one_shot_prompt,
             use_zero_shot_prompt=use_zero_shot_prompt,
+            use_mask=use_mask,
+            mask_stage=mask_stage,
         )
     elif clear_workspace:
         workspace_clear(sandbox_dir, log_dir)
@@ -884,6 +961,8 @@ if __name__ == "__main__":
             self_correct=self_correct,
             self_correct_round=correct_round,
             do_analyze=do_analyze,
+            use_mask=use_mask,
+            mask_stage=mask_stage,
         )
 
     logging.info("End time: " + str(datetime.datetime.now()))

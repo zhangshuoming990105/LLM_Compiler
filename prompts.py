@@ -109,6 +109,204 @@ foo:
     "cuda": """""",
 }
 
+compiler_annotation_prompts = {
+    "description": """[INST]I want you to act like a compiler that translate C code into x86 assembly. 
+However, I don't want you to do it directly because that's memorizing. I want you to do so by strictly follow my guide and examples.
+In order to compile the following code into assembly, we need:
+1. first analyze the customized structs types and give them correct offset, size and padding, note that each struct follows the largest alignment basic type in its elements.
+2. collect all the constants, name their labels with meaningful names, and all variables with their type to form a SymbolTable.
+3. compile the code using the above SymbolTable. generate AT&T syntax x86_64 assembly.
+[/INST]""",
+    "example": """[INST]###Example:
+#Input:
+```c
+#include <stdio.h>
+
+typedef struct {
+    int company_id;
+    char company_name[10];
+} Company;
+
+typedef struct {
+    int person_age;
+    char person_name[10];
+    long person_id;
+    Company *person_company;
+} Person;
+
+double dval = 1.0;
+static int arr[5] = {1, 2, 3, 4, 5};
+
+void foo(Person *person1, Person *person2) {
+    printf("enter foo\n");
+    if(person1->person_age > person2->person_age) {
+        double d = -1.0;
+        dval += d;
+        person1->person_age += 5;
+    } else {
+        person2->person_age += 5;
+    }
+    dval += 2.0;
+    arr[0] += 1;
+    printf("exit foo\n");
+}
+
+```
+#Step1, Let's first get the struct annotation:
+# 1. struct annotation:
+```plaintext
+typedef struct {
+    int company_id; // offset 0, size 4
+    char company_name[10]; // offset 4, size 10, pad 2 to 4 byte alignment
+} Company;  // total size 16, alignment 4, 16%4=0
+typedef struct {
+    int person_age; // offset 0, size 4
+    char person_name[10]; // offset 4, size 10, pad 2 to 4 byte alignment
+    long person_id; // offset 16, size 8
+    Company *person_company; // offset 24, size 8
+} Person; // total size 32, alignment 8, 32%8=0
+```
+#Step2, we should based on the struct annotation, find all symbol instances to generate the SymbolTable:
+# 2. SymbolTable:
+```plaintext
+- Constants:
+-- literals:
+.LC_enter_foo_str: 
+    .string "enter foo\n"
+.LC_exit_foo_str:
+    .string "exit foo\n"
+-- float and double values:
+double: 1.0, 2.0, -1.0
+float: none
+
+- Variables:
+-- Global variables: 
+    double dval
+-- Static variables: 
+    int arr[10]
+-- Local variables:
+    double d
+-- Function arguments:
+person1: Person *, size 8
+person2: Person *, size 8
+
+- Warp these values to generate STACK ALLOCATION(local + arguments):
+#double d: -8(%rbp), [-8, 0), size 8
+#Person *person1: -16(%rbp), [-16, -8), size 8
+#Person *person2: -24(%rbp), [-24, -16), size 8
+```
+#Step3, now we can compile the code using the SymbolTable.
+```x86
+    .text
+# Global variables
+    .globl  dval
+    .data
+    .align 8
+    .type   dval, @object
+    .size   dval, 8
+dval:
+    .double 1.0  # double dval = 1.0;
+
+# Static variables
+    .align 16
+    .type   arr, @object
+    .size   arr, 20
+arr:
+    .long   1  # static int arr[5] = {1, 2, 3, 4, 5};
+    .long   2
+    .long   3
+    .long   4
+    .long   5
+
+# Local constants in function
+    .section    .rodata
+# String literals
+.LC_enter_foo_str:
+    .string "enter foo\n"  # For printf("enter foo\n");
+.LC_exit_foo_str:
+    .string "exit foo\n"   # For printf("exit foo\n");
+    .align 8
+# Numeric constants
+.LC_neg_one:
+    .double -1.0  # For double d = -1.0;
+
+    .align 8
+.LC_two:
+    .double 2.0  # For dval += 2.0;
+
+# Function body
+    .text
+    .globl  foo
+    .type   foo, @function
+foo:
+.LF_foo_entry:
+	# Prologue
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $24, %rsp
+    movq    %rdi, -16(%rbp)  # Store person1 pointer
+    movq    %rsi, -24(%rbp)  # Store person2 pointer
+    
+    # printf("enter foo\n");
+    leaq    .LC_enter_foo_str(%rip), %rdi
+    movb	$0, %al
+    call    printf@PLT
+    
+    # if(person1->person_age > person2->person_age)
+    movq    -16(%rbp), %rax
+    movl    (%rax), %edx  # person1->person_age
+    movq    -24(%rbp), %rax
+    movl    (%rax), %eax  # person2->person_age
+    cmpl    %eax, %edx
+    jle     .L_if1_else
+    
+    # Inside if block
+    movsd   .LC_neg_one(%rip), %xmm0
+    movsd   %xmm0, -8(%rbp)  # double d = -1.0;
+    movsd   dval(%rip), %xmm0
+    addsd   -8(%rbp), %xmm0
+    movsd   %xmm0, dval(%rip)  # dval += d;
+    
+    movq    -16(%rbp), %rax
+    movl    (%rax), %eax
+    leal    5(%rax), %edx
+    movq    -16(%rbp), %rax
+    movl    %edx, (%rax)  # person1->person_age += 5;
+    jmp     .L_if1_end
+    
+.L_if1_else:
+    # Inside else block
+    movq    -24(%rbp), %rax
+    movl    (%rax), %eax
+    leal    5(%rax), %edx
+    movq    -24(%rbp), %rax
+    movl    %edx, (%rax)  # person2->person_age += 5;
+
+.L_if1_end:
+    # After if-else block
+    movsd   dval(%rip), %xmm1
+    movsd   .LC_two(%rip), %xmm0
+    addsd   %xmm1, %xmm0
+    movsd   %xmm0, dval(%rip)  # dval += 2.0;
+    
+    movl    arr(%rip), %eax
+    addl    $1, %eax
+    movl    %eax, arr(%rip)  # arr[0] += 1;
+    
+    # printf("exit foo\n");
+    leaq    .LC_exit_foo_str(%rip), %rdi
+    movb	$0, %al
+    call    printf@PLT
+    nop
+	
+	# Epilogue
+    leave
+    ret
+
+```
+[/INST]""",
+}
 
 
 compiler_short_prompts = {

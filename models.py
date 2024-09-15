@@ -6,6 +6,7 @@ import os
 import logging
 import subprocess
 from prompts import (
+    compiler_annotation_prompts,
     compiler_prompts,
     compiler_short_prompts,
     decompiler_prompts,
@@ -354,15 +355,16 @@ class Compiler(Chat):
             model, use_local=use_local, temperature=temperature, peft_model=peft_model
         )
         self.full_prompt = (
-            compiler_prompts["general"]
-            + compiler_prompts["mission"]
-            + compiler_prompts["step1"]
-            + compiler_prompts["step1_example"]
-            + compiler_prompts["step2"]
-            + compiler_prompts["step2_example"]
-            + compiler_prompts["step3"]
-            + compiler_prompts["step3_example"]
-            + compiler_prompts["recap"]
+            compiler_annotation_prompts["description"] + compiler_annotation_prompts["example"]
+            # compiler_prompts["general"]
+            # + compiler_prompts["mission"]
+            # + compiler_prompts["step1"]
+            # + compiler_prompts["step1_example"]
+            # + compiler_prompts["step2"]
+            # + compiler_prompts["step2_example"]
+            # + compiler_prompts["step3"]
+            # + compiler_prompts["step3_example"]
+            # + compiler_prompts["recap"]
         )
         self.simplified_prompt = (
             compiler_short_prompts["general"]
@@ -383,6 +385,7 @@ class Compiler(Chat):
 
         query_size = num_token_from_string(self.system_prompt)
         logging.info(f"LLM default prompt size: {query_size}")
+        logging.info(f"LLM default prompt: {self.system_prompt}")
         self.message_reset()
 
     def compile_with_error_message(
