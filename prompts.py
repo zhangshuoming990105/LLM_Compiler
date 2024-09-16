@@ -619,8 +619,8 @@ fix_prompts = {
 if the following features are included in the code:
 "numerical": If the code contains numerical values, like 1.0, 2e-5, 3.14f, etc, if the code only use integers, then don't include this feature.
 "hex_octal": If the code contains hex or octal values, like 0x3f, 077, etc.
-"funcall": If the code contains other function calls.
 "recursive": If the code is recursive.
+"irregular": If the code has some needle-in-the-haystack, that differs from the normal code.
 "long": If the code is pretty long and complex.(more than 50 lines)
 "cmp_ins": If the code uses comparison instructions, like >, <, >=, <=, ==, !=.
 "div_ins": If the code uses division instructions(/)
@@ -632,21 +632,38 @@ be aware of the order of operations.
     "analyze_post": """Return your answer with whether the code contains the above features.
 If the code has some features, list them with the feature name and
 separate them with ",". 
-Before return, check the **Extra information**, analyze it, and only give the most relevant features to this message.
+Before return, check the **Extra information**, analyze it, and give all possible relevant features to this message.
 If you are not sure about the features, just return the certain features.
 If the code doesn't have any of the features,
 just return ```plaintext\n```.
 example output: 
 ```plaintext
-numerical, cmp_ins, div_ins
+numerical, cmp_ins, div_ins, irregular
 ```""",
     "error_message_pre": """Previous output is not correct, please check the error message below and correct the code:""",
     "error_message_post": """Based on the **error message**(from stdout and stderr), analyze which part of the code is wrong and fix it.
+There are three types, if its a **syntax error**, you should focus on the syntax error and fix it, it's usually your misused of syntax.
+if its a **runtime error**, not syntax and no output, you should focus on the logic and find possible segmentation fault, null pointer dereference, etc.
+if its a **result error**, where the expected output mismatch with the actual output, you should focus on the logic and find the wrong part of the assembly code.
+Remember, the source code is always correct, the error is always on the generated assembly code. You should revise the code logic carefully, pay attention to the details.
+When you try to fix the assembly, always recap the source code to make sure you are following the source code logic. That's where you can find the error.
+NEVER add logic that is not in the source code, always follow the source code logic.
+Like the order of operations, the type usage of instructions(do they have implicit conversion), and the irregular part of code(like the needle-in-the-haystack).
 always remember the **error message**, it's quite important! Then generate your fixed code with proper comment on the code.
 FORMAT: make sure the generated x86 assembly in the "#Output" be inside "```x86" and "```" tags.""",
+    "irregular": """For the irregular code, you need to think carefully on the code logic, line by line,
+to prevent the code from being miscompiled, for example, for a code snippet like:
+```c
+if(a == 0 || a == 1 || a== 2 || a== 3 || ... || a == 14 || 15 || a == 16) {
+...
+```the irregular part is || 15 ||, you should always follow what the code logic is, and generate the assembly accordingly.
+here, '||' a none-zero value is always true, you should strictly follow the code logic here to or True, do not compare with a.
+""",
     "numerical": """For numerical values(double and float, not integers), you don't need to convert the value to IEEE754 format, 
 just keep them as they are, float as .float, double as .double, no need to convert it to int value.
-Besides, using meaningful labels for the numbers is also helpful.
+Besides, using meaningful labels for the numbers is also helpful. Also, if the value is like 23.0/1.5, etc, you should generate two values instead of precomputed value.
+Also, 23.0f is a float value, 23.0 is a double value, you should generate them with the correct type.
+When computing different types of numerical values, if not explicitly converted, always promote the smaller type to the larger type, then saved the result to the result type.
 Example:
 C:
     double a = 23.0;
@@ -665,7 +682,6 @@ C:
 x86:
     movl $0x23, xxx(a's address)
 """,
-    "funcall": """""",
     "cmp_ins": """cmp instructions in x86 assembly are used to compare two values, 
 and set the flags register accordingly.
 however, we cannot use two memory addresses to be compared,
@@ -685,51 +701,6 @@ for example: 'int a = 10 / 3;' -compile to-> 'movl $10, %eax\n movl $3, %ecx\n i
     "recursive": """this is a recursive function, you need to generate the assembly with strict stack management.
 make sure you have the correct stack frame and stack pointer management.
 """,
-#     "recursive": """this is a recursive function, you need to generate the assembly with strict stack management.
-# make sure you have the correct stack frame and stack pointer management.
-# You can refer to the following code snippet:
-# #Input:
-# ```c
-# int fib(int n) {
-#     if (n <= 1) {
-#         return 1;
-#     }
-#     return fib(n - 1) + fib(n - 2);
-# }
-# ```
-# #Output:
-# ```x86
-# 	.text
-# 	.globl	fib
-# 	.type	fib, @function
-# fib:
-# .LFB0:
-# 	endbr64
-# 	pushq	%rbp
-# 	movq	%rsp, %rbp
-# 	pushq	%rbx
-# 	subq	$24, %rsp
-# 	movl	%edi, -20(%rbp)
-# 	cmpl	$1, -20(%rbp)
-# 	jg	.L2
-# 	movl	$1, %eax
-# 	jmp	.L3
-# .L2:
-# 	movl	-20(%rbp), %eax
-# 	subl	$1, %eax
-# 	movl	%eax, %edi
-# 	call	fib
-# 	movl	%eax, %ebx
-# 	movl	-20(%rbp), %eax
-# 	subl	$2, %eax
-# 	movl	%eax, %edi
-# 	call	fib
-# 	addl	%ebx, %eax
-# .L3:
-# 	movq	-8(%rbp), %rbx
-# 	leave
-# 	ret
-# ```""",
     "order": """this is a function that contains complex arithmetic operations, be aware of the order of operations.
 You need to generate the assembly with strict arithmetic operation order.
 */% has higher priority than +-.
@@ -742,7 +713,9 @@ Note that () can change the priority of operations. so when generate assembly, t
 You can generate assembly together with comments to show the order of operations.
 Use comments on the assembly to help you understand the computation order.
 """,
-    "long": """""",
+    "str": """for string in C, char *, its length is the string length + 1, because c string ends with \0,
+keep in mind with that to avoid string operation mismatch.""", # TBD
+    "long": """""", # TBD
 }
 
 subtask_prompts = {
