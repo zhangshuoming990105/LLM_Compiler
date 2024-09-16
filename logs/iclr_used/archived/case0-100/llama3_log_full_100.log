@@ -1,0 +1,4213 @@
+INFO:root:log file created!
+INFO:root:Start time: 2024-07-03 17:25:16.112356
+INFO:root:LLM default prompt size: 2175
+INFO:root:C code :
+
+
+
+double linear_interp(double x,double lx,double ux,double ly,double uy) {
+  return((x-lx)/(ux-lx)*(uy-ly)+ly);
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  linear_interp
+linear_interp:
+    pushq    %rbp
+    movq     %rsp, %rbp
+    movsd    %xmm0, -8(%rbp)     # x
+    movsd    %xmm1, -16(%rbp)    # lx
+    movsd    %xmm2, -24(%rbp)    # ux
+    movsd    %xmm3, -32(%rbp)    # ly
+    movsd    %xmm4, -40(%rbp)    # uy
+
+    movsd    -8(%rbp), %xmm0     # x
+    subsd    -16(%rbp), %xmm0    # x - lx
+    movsd    -24(%rbp), %xmm1    # ux
+    subsd    -16(%rbp), %xmm1    # ux - lx
+    divsd    %xmm1, %xmm0       # (x - lx) / (ux - lx)
+    movsd    -32(%rbp), %xmm1    # ly
+    subsd    -40(%rbp), %xmm1    # ly - uy
+    mulsd    %xmm0, %xmm1       # ((x - lx) / (ux - lx)) * (ly - uy)
+    addsd    -32(%rbp), %xmm1    # ((x - lx) / (ux - lx)) * (ly - uy) + ly
+    movsd    %xmm1, %xmm0       # return value
+
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 0 failed
+INFO:root:C code :
+
+double QuinticEaseIn(double p)
+{
+    return p * p * p * p * p;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	QuinticEaseIn
+	.type	QuinticEaseIn, @function
+QuinticEaseIn:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm1
+	mulsd	-8(%rbp), %xmm1
+	mulsd	-8(%rbp), %xmm1
+	mulsd	-8(%rbp), %xmm1
+	mulsd	-8(%rbp), %xmm1
+	movsd	%xmm1, %xmm0
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 1 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int dec_lv(char x, char c, int lv)
+{
+ if (x == c)
+  --lv;
+
+ return lv;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	dec_lv
+	.type	dec_lv, @function
+dec_lv:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movb	%dl, -4(%rbp)
+	movb	%sil, -8(%rbp)
+	movl	%edx, -12(%rbp)
+	movsbl	-4(%rbp), %eax
+	cmpb	-8(%rbp), %al
+	jne	.L2
+	movl	-12(%rbp), %eax
+	leal	-1(%rax), %edx
+	jmp	.L3
+.L2:
+	movl	-12(%rbp), %edx
+.L3:
+	movl	%edx, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 2 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <unistd.h>
+
+#include <limits.h>
+
+#include <errno.h>
+
+#include <stdarg.h>
+
+#include <fcntl.h>
+
+#include <time.h>
+
+#include <signal.h>
+
+#include <dirent.h>
+
+#include <pwd.h>
+
+#include <sys/types.h>
+
+#include <sys/stat.h>
+
+#include <sys/wait.h>
+
+int
+prefix_of(char *special, char *s)
+{
+ for (; *special != '\0'; ++special)
+  if (*special != *s++)
+   return 0;
+ return (*s == '=' || *s == '\0');
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	prefix_of
+	.type	prefix_of, @function
+prefix_of:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -24(%rbp)
+	movq	%rsi, -32(%rbp)
+	jmp	.L2
+.L3:
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %edx
+	movq	-32(%rbp), %rax
+	movzbl	(%rax), %eax
+	cmpb	%dl, %al
+	jne	.L4
+	addq	$1, -24(%rbp)
+	addq	$1, -32(%rbp)
+.L2:
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	jne	.L3
+	movq	-32(%rbp), %rax
+	movzbl	(%rax), %eax
+	cmpb	$61, %al
+	je	.L5
+	cmpb	$0, %al
+	sete	%al
+.L5:
+	movzbl	%al, %eax
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 3 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/cci1bw5V.o: in function `prefix_of':
+(.text+0x24): undefined reference to `.L4'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <memory.h>
+
+int* sub(int* a, int sizeA, int* b, int sizeB, int* resultSize){
+
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	sub
+	.type	sub, @function
+sub:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$48, %rsp
+	movq	%rdi, -24(%rbp)
+	movq	%rsi, -32(%rbp)
+	movq	%rdx, -40(%rbp)
+	movq	%rcx, -48(%rbp)
+	movq	%r8, -56(%rbp)
+	movq	$0, -8(%rbp)
+	leave
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 4 succeeded
+INFO:root:C code :
+
+void vec_mpy(int y[], const short x[], short scaler)
+{
+ int i;
+
+ for (i = 0; i < 150; i++)
+   y[i] += ((scaler * x[i]) >> 31);
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	vec_mpy
+	.type	vec_mpy, @function
+vec_mpy:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -24(%rbp)  # y
+	movq	%rsi, -32(%rbp)  # x
+	movw	%dx, -4(%rbp)   # scaler
+	movl	$0, -8(%rbp)    # i
+	jmp	.L2
+.L3:
+	movl	-8(%rbp), %eax
+	cltq
+	leal	0(,%rax,4), %rdx
+	movq	-24(%rbp), %rax
+	addq	%rdx, %rax
+	movzwl	-32(%rbp), %edx
+	movzwl	-4(%rbp), %ecx
+	imull	%ecx, %edx
+	sarl	$31, %edx
+	movl	-8(%rbp), %ecx
+	cltq
+	leal	0(,%rcx,4), %rsi
+	movq	-24(%rbp), %rcx
+	addq	%rsi, %rcx
+	movl	(%rcx), %esi
+	addl	%edx, %esi
+	movl	%esi, (%rcx)
+	addl	$1, -8(%rbp)
+.L2:
+	cmpl	$149, -8(%rbp)
+	jle	.L3
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 5 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:18: Error: incorrect register `%rdx' used with `l' suffix
+tmp.s:27: Error: incorrect register `%rsi' used with `l' suffix
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int sign_int(int num)
+{
+  return (( ((((num))) <= (((0)))) ? ( ((((num))) < (((0)))) ? ((-1)) : ((0)) ) : ((1)) ));
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	sign_int
+	.type	sign_int, @function
+sign_int:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	cmpl	$0, %eax
+	jle	.L2
+	movl	$1, %eax
+	jmp	.L3
+.L2:
+	cmpl	$0, %eax
+	jl	.L4
+	movl	$0, %eax
+	jmp	.L3
+.L4:
+	movl	$-1, %eax
+.L3:
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 6 succeeded
+INFO:root:C code :
+
+int big_endian(
+    void)
+{
+    union {
+        long l;
+        char c[sizeof(long)];
+    } u;
+
+    u.l = 1;
+
+    return (u.c[sizeof(long) - 1] == 1);
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	big_endian
+	.type	big_endian, @function
+big_endian:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$1, %eax
+	movq	%rax, -16(%rbp)
+	movzbl	-1(%rbp), %eax
+	cmpl	$1, %eax
+	sete	%al
+	movzbl	%al, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 7 succeeded
+INFO:root:C code :
+
+int _isatty(int fd)
+{
+  (void)fd;
+  return (1);
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	_isatty
+	.type	_isatty, @function
+_isatty:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$1, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 8 succeeded
+INFO:root:C code :
+
+extern inline int
+JKMarray_idx (const int J, const int K, const int M)
+{
+  return (((4 * J * J + 5) * J) / 3 + 2 * J * J + K * (2 * J + 1) + M);
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	JKMarray_idx
+	.type	JKMarray_idx, @function
+JKMarray_idx:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -20(%rbp)  # J
+	movl	%esi, -24(%rbp)  # K
+	movl	%edx, -28(%rbp)  # M
+	movl	-20(%rbp), %eax  # J
+	imull	$4, %eax, %eax  # 4 * J
+	imull	-20(%rbp), %eax  # 4 * J * J
+	addl	$5, %eax         # 4 * J * J + 5
+	imull	-20(%rbp), %eax  # (4 * J * J + 5) * J
+	movl	$3, %ecx         # 3
+	cltd
+	idivl	%ecx            # (4 * J * J + 5) * J / 3
+	movl	-20(%rbp), %edx  # J
+	imull	$2, %edx, %edx  # 2 * J
+	imull	-20(%rbp), %edx  # 2 * J * J
+	addl	%edx, %eax       # (4 * J * J + 5) * J / 3 + 2 * J * J
+	movl	-24(%rbp), %edx  # K
+	movl	-20(%rbp), %ecx  # J
+	addl	$1, %ecx         # J + 1
+	imull	$2, %ecx, %ecx  # 2 * (J + 1)
+	imull	%ecx, %edx       # K * (2 * J + 1)
+	addl	%edx, %eax       # (4 * J * J + 5) * J / 3 + 2 * J * J + K * (2 * J + 1)
+	movl	-28(%rbp), %edx  # M
+	addl	%edx, %eax       # (4 * J * J + 5) * J / 3 + 2 * J * J + K * (2 * J + 1) + M
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 9 failed
+INFO:root:C code :
+
+long sign_long(long num)
+{
+  return (( ((((num))) <= (((0)))) ? ( ((((num))) < (((0)))) ? ((-1)) : ((0)) ) : ((1)) ));
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	sign_long
+	.type	sign_long, @function
+sign_long:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	-8(%rbp), %rax
+	cmpq	$0, %rax
+	jle	.L2
+	movl	$1, %eax
+	jmp	.L3
+.L2:
+	cmpq	$0, %rax
+	jl	.L4
+	movl	$0, %eax
+	jmp	.L3
+.L4:
+	movl	$-1, %eax
+.L3:
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 10 succeeded
+INFO:root:C code :
+
+int dmp_cm_edit_config(void)
+{
+ return 0;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	dmp_cm_edit_config
+	.type	dmp_cm_edit_config, @function
+dmp_cm_edit_config:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 11 succeeded
+INFO:root:C code :
+
+int _cmp (int _a, int _b) {
+ int a = _a;
+ int b = _b;
+ return (a > b ? (-1) : (1));
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	_cmp
+	.type	_cmp, @function
+_cmp:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -20(%rbp)
+	movl	%esi, -24(%rbp)
+	movl	-20(%rbp), %eax
+	movl	-24(%rbp), %edx
+	cmpl	%edx, %eax
+	jle	.L2
+	movl	$-1, %eax
+	jmp	.L3
+.L2:
+	movl	$1, %eax
+.L3:
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 12 succeeded
+INFO:root:C code :
+
+int safe(void) {
+    extern int q;
+    int lp;
+    return 0;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	safe
+	.type	safe, @function
+safe:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 13 succeeded
+INFO:root:C code :
+
+int HelpItem146( void )
+{
+
+ return 0;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	HelpItem146
+	.type	HelpItem146, @function
+HelpItem146:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 14 succeeded
+INFO:root:C code :
+
+int update_program_status(int aggregated_dump) {}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	update_program_status
+	.type	update_program_status, @function
+update_program_status:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -20(%rbp)
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 15 failed
+INFO:root:C code :
+#include <stdlib.h>
+
+int printArray(int arr[], int n)
+{
+    int i=1;
+    while(arr[i]==arr[0])
+    {
+        i++;
+    }
+    return i;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	printArray
+	.type	printArray, @function
+printArray:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -24(%rbp)
+	movl	%esi, -28(%rbp)
+	movl	$1, -4(%rbp)
+	jmp	.L2
+.L3:
+	addl	$1, -4(%rbp)
+.L2:
+	movl	-4(%rbp), %eax
+	cltq
+	leaq	0(,%rax,4), %rdx
+	movq	-24(%rbp), %rax
+	addq	%rdx, %rax
+	movl	(%rax), %eax
+	cmpl	-24(%rbp), %eax
+	je	.L3
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 16 succeeded
+INFO:root:C code :
+
+int
+COLORS()
+{
+
+    return 256;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	COLORS
+	.type	COLORS, @function
+COLORS:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$256, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 17 succeeded
+INFO:root:C code :
+
+int bar( int x )
+{
+   return x+1;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	bar
+	.type	bar, @function
+bar:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	addl	$1, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 18 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <time.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <assert.h>
+
+char *skipSpaces(char *pc)
+{
+ while((*pc == ' ' || *pc == '\n' || *pc == '\t' || *pc == '\r') &&
+   *pc != '\0')
+  pc++;
+
+ return pc;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	skipSpaces
+	.type	skipSpaces, @function
+skipSpaces:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	jmp	.L2
+.L3:
+	addq	$1, -8(%rbp)
+.L2:
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	jne	.L4
+	jmp	.L5
+.L4:
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %eax
+	cmpb	$32, %al
+	je	.L3
+	cmpb	$10, %al
+	je	.L3
+	cmpb	$9, %al
+	je	.L3
+	cmpb	$13, %al
+	je	.L3
+.L5:
+	movq	-8(%rbp), %rax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 19 succeeded
+INFO:root:C code :
+
+char *init_buffer(char *buffer)
+{
+ int i;
+
+ i = 0;
+ while (buffer[i])
+  buffer[i++] = 0;
+ return (buffer);
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	init_buffer
+	.type	init_buffer, @function
+init_buffer:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movl	$0, -4(%rbp)
+	jmp	.L2
+.L3:
+	movl	-4(%rbp), %eax
+	addl	$1, %eax
+	movl	%eax, -4(%rbp)
+	movl	-4(%rbp), %eax
+	cltq
+	movb	$0, (%rdi,%rax)
+.L2:
+	movl	-4(%rbp), %eax
+	cltq
+	movzbl	(%rdi,%rax), %eax
+	testb	%al, %al
+	jne	.L3
+	movq	-8(%rbp), %rax
+	popq	%rbp
+	ret
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 20
+WARNING:root:WARNING: code failed to execute for input 1 in case 20
+WARNING:root:WARNING: code failed to execute for input 2 in case 20
+WARNING:root:WARNING: code failed to execute for input 3 in case 20
+WARNING:root:WARNING: code failed to execute for input 4 in case 20
+WARNING:root:WARNING: code failed to execute for input 5 in case 20
+WARNING:root:WARNING: code failed to execute for input 6 in case 20
+WARNING:root:WARNING: code failed to execute for input 7 in case 20
+WARNING:root:WARNING: code failed to execute for input 8 in case 20
+WARNING:root:WARNING: code failed to execute for input 9 in case 20
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 20 failed
+INFO:root:C code :
+
+int GetAnswer() {
+  return 42;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	GetAnswer
+	.type	GetAnswer, @function
+GetAnswer:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$42, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 21 succeeded
+INFO:root:C code :
+
+unsigned char padding(void)
+{
+  return 0xff;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	padding
+	.type	padding, @function
+padding:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movb	$0xff, %al
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 22 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+int getPrec(char op) {
+
+    switch(op) {
+        case '+':
+        case '-':
+        return 1;
+
+        case '*':
+        case '/':
+        return 2;
+
+
+        case '(':
+        case ')':
+        return 3;
+
+        default:
+        return 0;
+    }
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	getPrec
+	.type	getPrec, @function
+getPrec:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movb	%dil, -4(%rbp)
+	movzbl	-4(%rbp), %eax
+	cmpb	$43, %al
+	je	.L2
+	cmpb	$45, %al
+	je	.L2
+	cmpb	$42, %al
+	je	.L3
+	cmpb	$47, %al
+	je	.L3
+	cmpb	$40, %al
+	je	.L4
+	cmpb	$41, %al
+	je	.L4
+	movl	$0, %eax
+	jmp	.L5
+.L2:
+	movl	$1, %eax
+	jmp	.L5
+.L3:
+	movl	$2, %eax
+	jmp	.L5
+.L4:
+	movl	$3, %eax
+.L5:
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 23 succeeded
+INFO:root:C code :
+#include <sys/stat.h>
+
+#include <errno.h>
+
+#include <sys/times.h>
+
+int _isatty(int file)
+{
+  return 0;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	_isatty
+	.type	_isatty, @function
+_isatty:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 24 succeeded
+INFO:root:C code :
+#include <stdlib.h>
+
+#include <stdio.h>
+
+#include <string.h>
+
+#include <errno.h>
+
+char flip_bit (char bit_character) {
+ if ('0' == bit_character)
+  return '1';
+ else
+  return '0';
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	flip_bit
+	.type	flip_bit, @function
+flip_bit:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movb	%dl, -4(%rbp)
+	movsbl	-4(%rbp), %eax
+	cmpb	$48, %al
+	je	.L2
+	movb	$48, %eax
+	jmp	.L3
+.L2:
+	movb	$49, %eax
+.L3:
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 25 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:14: Error: `%eax' not allowed with `movb'
+tmp.s:17: Error: `%eax' not allowed with `movb'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int
+foo (int a, int b)
+{
+  int t;
+
+  if (b)
+    {
+      if (a)
+ t = 3;
+      else
+ t = 5;
+
+      a = 0;
+    }
+  else
+    t = 7;
+
+  return t;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	foo
+	.type	foo, @function
+foo:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -20(%rbp)
+	movl	%esi, -24(%rbp)
+	movl	$0, -4(%rbp)
+	movl	-24(%rbp), %eax
+	testl	%eax, %eax
+	je	.L2
+	movl	-20(%rbp), %eax
+	testl	%eax, %eax
+	je	.L3
+	movl	$3, -4(%rbp)
+	jmp	.L4
+.L3:
+	movl	$5, -4(%rbp)
+	movl	$0, -20(%rbp)
+	jmp	.L4
+.L2:
+	movl	$7, -4(%rbp)
+.L4:
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 26 succeeded
+INFO:root:C code :
+#include <math.h>
+
+#include <stddef.h>
+
+double opTimes(double lhs, double rhs) { return lhs * rhs; }
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	opTimes
+	.type	opTimes, @function
+opTimes:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movsd	%xmm0, -8(%rbp)
+	movsd	%xmm1, -16(%rbp)
+	movsd	-8(%rbp), %xmm0
+	mulsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 27 succeeded
+INFO:root:C code :
+
+float raw_linear_derivative_at( float y ) {
+  return 1.0;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	raw_linear_derivative_at
+	.type	raw_linear_derivative_at, @function
+raw_linear_derivative_at:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movss	.LC0(%rip), %xmm0
+	popq	%rbp
+	ret
+.LC0:
+	.float	1.0
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 28 succeeded
+INFO:root:C code :
+
+int bitCount(int x) {
+  return 2;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	bitCount
+	.type	bitCount, @function
+bitCount:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$2, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 29 succeeded
+INFO:root:C code :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int xtoi(char *p)
+{
+ int curr;
+ int res = 0;
+
+ while (*p)
+ {
+  curr = ((*p) >= '0' && (*p) <= '9' ? (*p) - '0' : (*p) >= 'A' && (*p) <= 'F' ? (*p) - 'A' + 10 : (*p) >= 'a' && (*p) <= 'f' ? (*p) - 'a' + 10 : -1);
+  if (curr == -1) break;
+  res = res * 0x10 + curr;
+  p++;
+ }
+
+ return res;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	xtoi
+	.type	xtoi, @function
+xtoi:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -24(%rbp)
+	movl	$0, -4(%rbp)
+	movl	$0, -8(%rbp)
+	jmp	.L2
+.L3:
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %eax
+	cmpb	$'0', %al
+	jl	.L4
+	cmpb	$'9', %al
+	jg	.L5
+	subl	$'0', %eax
+	jmp	.L6
+.L5:
+	cmpb	$'A', %al
+	jl	.L4
+	cmpb	$'F', %al
+	jg	.L7
+	subl	$'A'-10, %eax
+	jmp	.L6
+.L7:
+	cmpb	$a, %al
+	jl	.L4
+	cmpb	$f, %al
+	jg	.L4
+	subl	$a-10, %eax
+	jmp	.L6
+.L4:
+	movl	$-1, %eax
+.L6:
+	cmpl	$-1, %eax
+	je	.L8
+	movl	-8(%rbp), %eax
+	imull	$0x10, %eax
+	addl	%eax, -4(%rbp)
+	movq	-24(%rbp), %rax
+	addq	$1, %rax
+	movq	%rax, -24(%rbp)
+.L2:
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	jne	.L3
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	ret
+.L8:
+	jmp	.L2
+
+WARNING:root:CASE 30 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccRadRqu.o: relocation R_X86_64_8 against undefined symbol `a' can not be used when making a PIE object; recompile with -fPIE
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <assert.h>
+
+int DummyCDInit(__attribute ((unused)) const char *cdrom_name)
+{
+
+
+
+ return 0;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	DummyCDInit
+	.type	DummyCDInit, @function
+DummyCDInit:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 31 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <time.h>
+
+#include <stdlib.h>
+
+#include <ctype.h>
+
+int retPosVector(char letra, char alfabeto[]) {
+ int i;
+
+ for( i = 0; alfabeto[i]; i++) {
+  if(alfabeto[i] == letra) {
+   return i;
+  }
+ }
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	retPosVector
+	.type	retPosVector, @function
+retPosVector:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -24(%rbp)
+	movq	%rsi, -32(%rbp)
+	movl	$0, -4(%rbp)
+	jmp	.L2
+.L3:
+	movl	-4(%rbp), %eax
+	cltq
+	movq	-32(%rbp), %rdx
+	addq	$0, %rdx
+	movzbl	(%rdx,%rax), %edx
+	movzbl	-24(%rbp), %eax
+	cmpb	%al, %dl
+	je	.L4
+	addl	$1, -4(%rbp)
+.L2:
+	movl	-4(%rbp), %eax
+	cltq
+	movq	-32(%rbp), %rdx
+	addq	$0, %rdx
+	movzbl	(%rdx,%rax), %eax
+	testb	%al, %al
+	jne	.L3
+.L4:
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 90.0%
+INFO:root:CASE 32 failed
+INFO:root:C code :
+
+unsigned int CgosStrLen(const char *s)
+  {
+  const char *ss=s;
+  if (!s) return 0;
+  while (*s++);
+  return s-ss-1;
+  }
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	CgosStrLen
+	.type	CgosStrLen, @function
+CgosStrLen:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	cmpq	$0, -8(%rbp)
+	je	.L2
+	movq	-8(%rbp), %rax
+	jmp	.L3
+.L4:
+	addq	$1, %rax
+.L3:
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	jne	.L4
+	subq	-8(%rbp), %rax
+	subq	$1, %rax
+.L2:
+	movq	%rax, %rdx
+	movq	%rdx, %rax
+	popq	%rbp
+	ret
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 33
+WARNING:root:WARNING: code failed to execute for input 1 in case 33
+WARNING:root:WARNING: code failed to execute for input 2 in case 33
+WARNING:root:WARNING: code failed to execute for input 3 in case 33
+WARNING:root:WARNING: code failed to execute for input 5 in case 33
+WARNING:root:WARNING: code failed to execute for input 6 in case 33
+WARNING:root:WARNING: code failed to execute for input 7 in case 33
+WARNING:root:WARNING: code failed to execute for input 8 in case 33
+WARNING:root:WARNING: code failed to execute for input 9 in case 33
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 33 failed
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <math.h>
+
+#include <time.h>
+
+#include <omp.h>
+
+#include <unistd.h>
+
+int checkExpDesignator(char *str, int len)
+{
+ int i,n=0;
+
+ for (i=0; i<len; i++)
+ {
+  if (str[i]=='D')
+  {
+   n++;
+   str[i] = 'E';
+  }
+ }
+
+ return(n);
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	checkExpDesignator
+	.type	checkExpDesignator, @function
+checkExpDesignator:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -24(%rbp)
+	movl	%esi, -28(%rbp)
+	movl	$0, -4(%rbp)
+	movl	$0, -8(%rbp)
+	jmp	.L2
+.L3:
+	movl	-8(%rbp), %eax
+	addl	$1, %eax
+	movl	%eax, -8(%rbp)
+	movl	-24(%rbp), %rax
+	movl	-8(%rbp), %edx
+	movzbl	(%rax,%rdx), %eax
+	cmpb	$68, %al
+	jne	.L4
+	movl	-24(%rbp), %rax
+	movl	-8(%rbp), %edx
+	movb	$69, (%rax,%rdx)
+	addl	$1, -4(%rbp)
+.L4:
+	addl	$1, -8(%rbp)
+.L2:
+	movl	-28(%rbp), %eax
+	cmpl	-8(%rbp), %eax
+	jl	.L3
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 34 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:19: Error: incorrect register `%rax' used with `l' suffix
+tmp.s:24: Error: incorrect register `%rax' used with `l' suffix
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stddef.h>
+
+#include <stdint.h>
+
+int oc_storage_config(const char *store) {
+    return -1;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	oc_storage_config
+	.type	oc_storage_config, @function
+oc_storage_config:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movl	$-1, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 35 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+int inter_mercenary_sql_init(void)
+{
+ return 0;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	inter_mercenary_sql_init
+	.type	inter_mercenary_sql_init, @function
+inter_mercenary_sql_init:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 36 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int tester(int num){
+ return num;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	tester
+	.type	tester, @function
+tester:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 37 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int logicOr(int x, int y) {
+ if (x || y == 1) {
+  return 1;
+ }
+ else {
+  return 0;
+ }
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	logicOr
+	.type	logicOr, @function
+logicOr:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-4(%rbp), %eax
+	testl	%eax, %eax
+	jne	.L2
+	movl	-8(%rbp), %eax
+	cmpl	$1, %eax
+	je	.L2
+	movl	$0, %eax
+	jmp	.L3
+.L2:
+	movl	$1, %eax
+.L3:
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 38 succeeded
+INFO:root:C code :
+
+int f6(int c, int shamt) {
+
+
+
+
+  return c << shamt;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	f6
+	.type	f6, @function
+f6:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -20(%rbp)
+	movl	%esi, -24(%rbp)
+	movl	-20(%rbp), %eax
+	movl	-24(%rbp), %ecx
+	sall	%cl, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 39 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+char cipher (char c){
+ if(c >= 65 && c<= 90){
+  c = c - 65;
+  c = 90 - c;
+ }else if( c >= 97 && c<= 122){
+  c = c-97;
+  c = 122 - c;
+ }
+ return c;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	cipher
+	.type	cipher, @function
+cipher:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movb	%dl, -4(%rbp)
+	movzbl	-4(%rbp), %eax
+	cmpb	$90, %al
+	jle	.L2
+	cmpb	$122, %al
+	jg	.L3
+	movzbl	-4(%rbp), %eax
+	subl	$97, %eax
+	movl	$122, %edx
+	subl	%eax, %edx
+	movb	%dl, %al
+	jmp	.L4
+.L2:
+	movzbl	-4(%rbp), %eax
+	subl	$65, %eax
+	movl	$90, %edx
+	subl	%eax, %edx
+	movb	%dl, %al
+.L4:
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 40 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccpQdCyx.o: in function `cipher':
+(.text+0x17): undefined reference to `.L3'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int
+g(int a)
+{
+ return a;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	g
+	.type	g, @function
+g:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 41 succeeded
+INFO:root:C code :
+
+float obdConvert_44 (unsigned int A, unsigned int B, unsigned int C, unsigned int D) {
+ return ((float)A*256.0f+(float)B)*0.0000305f;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	obdConvert_44
+	.type	obdConvert_44, @function
+obdConvert_44:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	cvtsi2ss	%edi, %xmm0
+	movss	.LC0(%rip), %xmm1
+	mulss	%xmm1, %xmm0
+	cvtsi2ss	%esi, %xmm1
+	addss	%xmm1, %xmm0
+	movss	.LC1(%rip), %xmm1
+	mulss	%xmm1, %xmm0
+	movss	%xmm0, (%rbp)-4
+	movss	(%rbp)-4, %xmm0
+	popq	%rbp
+	ret
+.LC0:
+	.long	1120403456
+	.align 4
+.LC1:
+	.long	1069547520
+
+WARNING:root:CASE 42 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:17: Error: register value used as expression
+tmp.s:18: Error: register value used as expression
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+double check_double() { return 0; }
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	check_double
+	.type	check_double, @function
+check_double:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 43 failed
+INFO:root:C code :
+
+int ft_tolower(int c)
+{
+ if (c <= 90 && c >= 65)
+  return (c + 32);
+ return (c);
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	ft_tolower
+	.type	ft_tolower, @function
+ft_tolower:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	cmpl	$90, %eax
+	jg	.L2
+	cmpl	$65, %eax
+	jl	.L2
+	addl	$32, %eax
+.L2:
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 44 succeeded
+INFO:root:C code :
+
+
+
+
+
+
+
+int SwapLong(int num)
+{
+ return (((num >> 0) & 0xFF) << 24) + (((num >> 8) & 0xFF) << 16) + (((num >> 16) & 0xFF) << 8) + (((num >> 24) & 0xFF) << 0);
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	SwapLong
+	.type	SwapLong, @function
+SwapLong:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	movl	%eax, %edx
+	sarl	$0, %edx
+	andl	$255, %edx
+	sall	$24, %edx
+	movl	-4(%rbp), %eax
+	movl	%eax, %ecx
+	sarl	$8, %ecx
+	andl	$255, %ecx
+	sall	$16, %ecx
+	addl	%ecx, %edx
+	movl	-4(%rbp), %eax
+	movl	%eax, %ecx
+	sarl	$16, %ecx
+	andl	$255, %ecx
+	sall	$8, %ecx
+	addl	%ecx, %edx
+	movl	-4(%rbp), %eax
+	movl	%eax, %ecx
+	sarl	$24, %ecx
+	andl	$255, %ecx
+	addl	%ecx, %edx
+	movl	%edx, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 45 succeeded
+INFO:root:C code :
+#include <inttypes.h>
+
+#include <stdlib.h>
+
+#include <limits.h>
+
+#include <stdio.h>
+
+#include <string.h>
+
+#include <sqlite3.h>
+
+int Bank_int_IsValidName(const char *Name)
+{
+ if( !Name ) return 0;
+ while(*Name)
+ {
+  if( *Name == '\'' ) return 0;
+  Name ++;
+ }
+ return 1;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	Bank_int_IsValidName
+	.type	Bank_int_IsValidName, @function
+Bank_int_IsValidName:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	-8(%rbp), %rax
+	testq	%rax, %rax
+	je	.L2
+	jmp	.L3
+.L3:
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %edx
+	testb	%dl, %dl
+	je	.L2
+	cmpb	$39, %dl
+	je	.L4
+	addq	$1, -8(%rbp)
+	jmp	.L3
+.L2:
+	movl	$1, %eax
+	jmp	.L5
+.L4:
+	movl	$0, %eax
+.L5:
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 46 succeeded
+INFO:root:C code :
+#include <assert.h>
+
+#include <errno.h>
+
+#include <fcntl.h>
+
+#include <poll.h>
+
+#include <signal.h>
+
+#include <stdarg.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <sys/mman.h>
+
+#include <sys/time.h>
+
+#include <sys/types.h>
+
+#include <sys/wait.h>
+
+#include <time.h>
+
+#include <unistd.h>
+
+int RIFSIGNALED(int status)
+{
+    return (status & 0xff) != 0;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	RIFSIGNALED
+	.type	RIFSIGNALED, @function
+RIFSIGNALED:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	andl	$0xff, %eax
+	cmpl	$0, %eax
+	setne	%al
+	movzbl	%al, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 47 succeeded
+INFO:root:C code :
+
+
+
+
+
+
+
+
+
+
+
+void TextDisplaySetBarText(int barnum, const char *str)
+{
+
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	TextDisplaySetBarText
+	.type	TextDisplaySetBarText, @function
+TextDisplaySetBarText:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -20(%rbp)
+	movq	%rsi, -32(%rbp)
+	nop
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 48 succeeded
+INFO:root:C code :
+
+char * getTokenTypeName(int type){
+ switch(type){
+  case 1:
+   return "<LParen>";
+  case 2:
+   return "<RParen>";
+  case 3:
+   return "<Number>";
+  case 8:
+   return "<ID>";
+  case 6:
+   return "<Plus>";
+  case 7:
+   return "<Minus>";
+  case -2:
+   return "<EOF>";
+  case -1:
+   return "<Error!>";
+  default:
+   return "<Unknown token type!>";
+ }
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	getTokenTypeName
+	.type	getTokenTypeName, @function
+getTokenTypeName:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -20(%rbp)
+	movl	-20(%rbp), %eax
+	cmpl	$1, %eax
+	je	.L2
+	cmpl	$2, %eax
+	je	.L3
+	cmpl	$3, %eax
+	je	.L4
+	cmpl	$8, %eax
+	je	.L5
+	cmpl	$6, %eax
+	je	.L6
+	cmpl	$7, %eax
+	je	.L7
+	cmpl	$-2, %eax
+	je	.L8
+	cmpl	$-1, %eax
+	je	.L9
+	jmp	.L10
+.L2:
+	leaq	.LC0(%rip), %rax
+	jmp	.L11
+.L3:
+	leaq	.LC1(%rip), %rax
+	jmp	.L11
+.L4:
+	leaq	.LC2(%rip), %rax
+	jmp	.L11
+.L5:
+	leaq	.LC3(%rip), %rax
+	jmp	.L11
+.L6:
+	leaq	.LC4(%rip), %rax
+	jmp	.L11
+.L7:
+	leaq	.LC5(%rip), %rax
+	jmp	.L11
+.L8:
+	leaq	.LC6(%rip), %rax
+	jmp	.L11
+.L9:
+	leaq	.LC7(%rip), %rax
+	jmp	.L11
+.L10:
+	leaq	.LC8(%rip), %rax
+.L11:
+	popq	%rbp
+	ret
+.LC0:
+	.string	"<LParen>"
+.LC1:
+	.string	"<RParen>"
+.LC2:
+	.string	"<Number>"
+.LC3:
+	.string	"<ID>"
+.LC4:
+	.string	"<Plus>"
+.LC5:
+	.string	"<Minus>"
+.LC6:
+	.string	"<EOF>"
+.LC7:
+	.string	"<Error>"
+.LC8:
+	.string	"<Unknown token type>"
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 49 failed
+INFO:root:C code :
+#include <math.h>
+
+#include <stdio.h>
+
+#include <errno.h>
+
+#include <stdlib.h>
+
+int mus_iclamp(int lo, int val, int hi)
+{
+    if (val > hi)
+        return(hi);
+    else
+        if (val < lo)
+            return(lo);
+        else return(val);
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	mus_iclamp
+	.type	mus_iclamp, @function
+mus_iclamp:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -20(%rbp)
+	movl	%esi, -24(%rbp)
+	movl	%edx, -28(%rbp)
+	movl	-24(%rbp), %eax
+	cmpl	-28(%rbp), %eax
+	jle	.L2
+	movl	-28(%rbp), %eax
+	jmp	.L3
+.L2:
+	movl	-20(%rbp), %eax
+	cmpl	-20(%rbp), %eax
+	jge	.L4
+	movl	-20(%rbp), %eax
+	jmp	.L3
+.L4:
+	movl	-24(%rbp), %eax
+.L3:
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 40.0%
+INFO:root:CASE 50 failed
+INFO:root:C code :
+
+float UI_ClampCvar( float min, float max, float value )
+{
+ if ( value < min ) return min;
+ if ( value > max ) return max;
+ return value;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	UI_ClampCvar
+	.type	UI_ClampCvar, @function
+UI_ClampCvar:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movss	%xmm2, %xmm1
+	comiss	%xmm0, %xmm1
+	jbe	.L2
+	movss	%xmm0, %xmm1
+	jmp	.L3
+.L2:
+	comiss	%xmm1, %xmm2
+	jbe	.L3
+	movss	%xmm1, %xmm2
+.L3:
+	movss	%xmm2, %xmm0
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 90.0%
+INFO:root:CASE 51 failed
+INFO:root:C code :
+
+short USBSTK5505_GPIO_init()
+{
+    return 0;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	USBSTK5505_GPIO_init
+	.type	USBSTK5505_GPIO_init, @function
+USBSTK5505_GPIO_init:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 52 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <math.h>
+
+#include <stdlib.h>
+
+#include <unistd.h>
+
+#include <stdarg.h>
+
+#include <string.h>
+
+double H (double x) {
+   if (x >= 0) return 1.;
+   else return 0.;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.section	.rodata
+.LC0:
+	.string	"%f"
+	.text
+	.globl	H
+	.type	H, @function
+H:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm1
+	ucomisd	.LC1(%rip), %xmm1
+	jb	.L2
+	movsd	.LC2(%rip), %xmm0
+	jmp	.L3
+.L2:
+	movsd	.LC3(%rip), %xmm0
+.L3:
+	popq	%rbp
+	ret
+.LC1:
+	.long	0
+	.long	0
+.LC2:
+	.long	0
+	.long	1072693248
+.LC3:
+	.long	0
+	.long	0
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 53 succeeded
+INFO:root:C code :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int LZ4_versionNumber (void) { return (1 *100*100 + 6 *100 + 0); }
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	LZ4_versionNumber
+	.type	LZ4_versionNumber, @function
+LZ4_versionNumber:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$1606, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 54 failed
+INFO:root:C code :
+
+int foo(int time, int n) {
+#pragma omp parallel for default(shared) schedule(dynamic, 1) reduction(+ : time)
+  for (int i = 1; i < n; ++i);
+  return 0;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	foo
+	.type	foo, @function
+foo:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	pushq	%rbx
+	subq	$24, %rsp
+	movl	%edi, -20(%rbp)
+	movl	%esi, -24(%rbp)
+	movl	$0, -4(%rbp)
+	movl	-20(%rbp), %eax
+	movl	%eax, %edx
+	movl	$1, %eax
+	call	GOMP_parallel_start
+	movl	$0, %ebx
+	.p2align 4,,10
+	.p2align 3
+.L3:
+	movl	-24(%rbp), %eax
+	cmpl	%eax, %ebx
+	jge	.L2
+	movl	%ebx, %eax
+	addl	$1, %eax
+	movl	%eax, %ebx
+	jmp	.L3
+.L2:
+	call	GOMP_parallel_end
+	movl	-4(%rbp), %eax
+	addq	$24, %rsp
+	popq	%rbx
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 55 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/cchaJd8H.o: in function `foo':
+(.text+0x25): undefined reference to `GOMP_parallel_start'
+/usr/bin/ld: (.text+0x41): undefined reference to `GOMP_parallel_end'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+int checkrange(char c1, char c2)
+{
+
+ if (('a' <= c1 && c1 <= 'z') && (c1 <= c2 && c2 <= 'z'))
+  return 1;
+
+ if (('A' <= c1 && c1 <= 'Z') && (c1 <= c2 && c2 <= 'Z'))
+  return 1;
+
+ if (('0' <= c1 && c1 <= '9') && (c1 <= c2 && c2 <= '9'))
+  return 1;
+
+ return 0;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	checkrange
+	.type	checkrange, @function
+checkrange:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movb	%dl, -4(%rbp)
+	movb	%sil, -8(%rbp)
+	movsbl	-4(%rbp), %eax
+	cmpb	$97, %al
+	jl	.L2
+	cmpb	$122, %al
+	jg	.L2
+	movsbl	-8(%rbp), %edx
+	cmpb	$97, %dl
+	jl	.L3
+	cmpb	$122, %dl
+	jg	.L3
+	movl	$1, %eax
+	jmp	.L4
+.L3:
+	movsbl	-4(%rbp), %eax
+	cmpb	$65, %al
+	jl	.L5
+	cmpb	$90, %al
+	jg	.L5
+	movsbl	-8(%rbp), %edx
+	cmpb	$65, %dl
+	jl	.L6
+	cmpb	$90, %dl
+	jg	.L6
+	movl	$1, %eax
+	jmp	.L4
+.L6:
+	movsbl	-4(%rbp), %eax
+	cmpb	$48, %al
+	jl	.L7
+	cmpb	$57, %al
+	jg	.L7
+	movsbl	-8(%rbp), %edx
+	cmpb	$48, %dl
+	jl	.L2
+	cmpb	$57, %dl
+	jg	.L2
+	movl	$1, %eax
+	jmp	.L4
+.L7:
+	movl	$0, %eax
+.L4:
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 56 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccJDYw2Q.o: in function `checkrange':
+(.text+0x17): undefined reference to `.L2'
+/usr/bin/ld: (.text+0x1f): undefined reference to `.L2'
+/usr/bin/ld: (.text+0x40): undefined reference to `.L5'
+/usr/bin/ld: (.text+0x48): undefined reference to `.L5'
+/usr/bin/ld: (.text+0x76): undefined reference to `.L2'
+/usr/bin/ld: (.text+0x7f): undefined reference to `.L2'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <math.h>
+
+double
+gsl_coerce_double (const double x)
+{
+  volatile double y;
+  y = x;
+  return y;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	gsl_coerce_double
+	.type	gsl_coerce_double, @function
+gsl_coerce_double:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movsd	%xmm0, -8(%rbp)
+	movsd	-8(%rbp), %xmm0
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 57 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int c059(void) { return 0; }
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	c059
+	.type	c059, @function
+c059:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 58 succeeded
+INFO:root:C code :
+#include <math.h>
+
+#include <stdlib.h>
+
+double mcdrag_rpm(double twist, double velocity)
+{
+  return (velocity/(twist/60.0)*12.0);
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.section	.rodata
+.LC0:
+	.string	"mcdrag_rpm"
+	.text
+	.globl	mcdrag_rpm
+	.type	mcdrag_rpm, @function
+mcdrag_rpm:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movsd	%xmm0, -24(%rbp)
+	movsd	%xmm1, -32(%rbp)
+	movsd	-24(%rbp), %xmm0
+	movsd	.LC1(%rip), %xmm1
+	divsd	%xmm1, %xmm0
+	movsd	-32(%rbp), %xmm1
+	divsd	%xmm0, %xmm1
+	movsd	.LC2(%rip), %xmm0
+	mulsd	%xmm1, %xmm0
+	popq	%rbp
+	ret
+.LC1:
+	.long	1717986918
+	.long	1074266112
+.LC2:
+	.long	1717986918
+	.long	1074266112
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 59 failed
+INFO:root:C code :
+#include    <stdlib.h>  /* Include standard library header */
+
+#include    <math.h>    /* Include math library header */
+
+#include    <string.h>  /* Include string function header */
+
+#include    <ctype.h>   /* Include character function header */
+
+#include    <limits.h>  /* define LONG_MIN and LONG_MAX */
+
+int valid_serial(char *carray)
+{
+int i, code, num[10], sumo=0, sume=0, sumss=0;
+
+for(i=0;i<10;i++){
+  code = carray[i];
+  num[i] = code - 0x30;
+  if((code<0x30)||(code>0x39)){
+    return 0;
+  }
+}
+
+sumo = num[0]+num[2]+num[4];
+sumo = sumo - (sumo/10)*10;
+
+sume = num[1]+num[3]+num[5];
+sume = sume - (sume/10)*10;
+
+sumss = num[0]+num[1]+num[2]+num[3]+num[4]+num[5]+sumo+sume;
+
+if((sumo!=num[6])||(sume!=num[7])||(sumss!=(10*num[8]+num[9]))){
+  return 0;
+}
+
+return 1;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	valid_serial
+	.type	valid_serial, @function
+valid_serial:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$80, %rsp
+	movq	%rdi, -72(%rbp)
+	movl	$0, -4(%rbp)
+	movl	$0, -8(%rbp)
+	movl	$0, -12(%rbp)
+	movl	$0, -16(%rbp)
+	movl	$0, -20(%rbp)
+	movl	$0, -24(%rbp)
+	movl	$0, -28(%rbp)
+	movl	$0, -32(%rbp)
+	movl	$0, -36(%rbp)
+	movl	$0, -40(%rbp)
+	movl	$0, -44(%rbp)
+	movl	$0, -48(%rbp)
+	movl	$0, -52(%rbp)
+	movl	$0, -56(%rbp)
+	movl	$0, -60(%rbp)
+	movl	$0, -64(%rbp)
+	movl	$0, -68(%rbp)
+	jmp	.L2
+.L3:
+	movl	-4(%rbp), %eax
+	cltq
+	leaq	0(,%rax,4), %rdx
+	movq	-72(%rbp), %rax
+	addq	%rdx, %rax
+	movzbl	(%rax), %eax
+	movsbl	%al, %eax
+	subl	$48, %eax
+	movl	%eax, -20(%rbp,%rax,4)
+	cmpl	$47, -20(%rbp,%rax,4)
+	jle	.L4
+	cmpl	$58, -20(%rbp,%rax,4)
+	jg	.L4
+	jmp	.L5
+.L4:
+	movl	$0, %eax
+	jmp	.L6
+.L5:
+	addl	$1, -4(%rbp)
+.L2:
+	cmpl	$9, -4(%rbp)
+	jle	.L3
+	movl	-20(%rbp), %eax
+	addl	-22(%rbp), %eax
+	addl	-24(%rbp), %eax
+	movl	%eax, -4(%rbp)
+	movl	-4(%rbp), %eax
+	cltd
+	idivl	$10
+	imull	$10, %eax, %eax
+	subl	%eax, -4(%rbp)
+	movl	-21(%rbp), %eax
+	addl	-23(%rbp), %eax
+	addl	-25(%rbp), %eax
+	movl	%eax, -8(%rbp)
+	movl	-8(%rbp), %eax
+	cltd
+	idivl	$10
+	imull	$10, %eax, %eax
+	subl	%eax, -8(%rbp)
+	movl	-20(%rbp), %eax
+	addl	-21(%rbp), %eax
+	addl	-22(%rbp), %eax
+	addl	-23(%rbp), %eax
+	addl	-24(%rbp), %eax
+	addl	-25(%rbp), %eax
+	addl	-4(%rbp), %eax
+	addl	-8(%rbp), %eax
+	movl	%eax, -12(%rbp)
+	movl	-20(%rbp), %eax
+	cmpl	-26(%rbp), %eax
+	je	.L7
+	movl	$0, %eax
+	jmp	.L6
+.L7:
+	movl	-21(%rbp), %eax
+	cmpl	-27(%rbp), %eax
+	je	.L8
+	movl	$0, %eax
+	jmp	.L6
+.L8:
+	movl	-12(%rbp), %eax
+	movl	%eax, %edx
+	movl	-28(%rbp), %eax
+	imull	$10, %eax, %eax
+	addl	%edx, %eax
+	cmpl	%eax, -29(%rbp)
+	je	.L9
+	movl	$0, %eax
+	jmp	.L6
+.L9:
+	movl	$1, %eax
+.L6:
+	leave
+	ret
+
+WARNING:root:CASE 60 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:59: Error: operand type mismatch for `idiv'
+tmp.s:68: Error: operand type mismatch for `idiv'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int f(int x) { return x - 5; }
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	f
+	.type	f, @function
+f:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	subl	$5, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 61 succeeded
+INFO:root:C code :
+#include <stdbool.h>
+
+bool timeout_reached(void)
+{
+    return false;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	timeout_reached
+	.type	timeout_reached, @function
+timeout_reached:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 62 succeeded
+INFO:root:C code :
+#include <string.h>
+
+char* langRomTypeMicrosolFdc() { return "Microsol Disk Controller"; }
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	langRomTypeMicrosolFdc
+	.type	langRomTypeMicrosolFdc, @function
+langRomTypeMicrosolFdc:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	leaq	.LC0(%rip), %rax
+	popq	%rbp
+	ret
+.LC0:
+	.string	"Microsol Disk Controller"
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 63 succeeded
+INFO:root:C code :
+
+int do_386() { return 386; }
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	do_386
+	.type	do_386, @function
+do_386:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$386, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 64 succeeded
+INFO:root:C code :
+
+int function(int a, int b) { return a+b; }
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	function
+	.type	function, @function
+function:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-4(%rbp), %edx
+	addl	-8(%rbp), %edx
+	movl	%edx, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 65 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+double
+UC_11_1_11
+(
+    double F_g_s_rep,
+
+    double F_g_u_d
+
+)
+{
+        return (F_g_s_rep / F_g_u_d);
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	UC_11_1_11
+	.type	UC_11_1_11, @function
+UC_11_1_11:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movsd	%xmm0, -8(%rbp)
+	movsd	%xmm1, -16(%rbp)
+	movsd	-16(%rbp), %xmm1
+	divsd	-8(%rbp), %xmm1
+	movsd	%xmm1, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 66 failed
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <sys/types.h>
+
+#include <sys/stat.h>
+
+#include <signal.h>
+
+#include <fcntl.h>
+
+#include <unistd.h>
+
+#include <stdlib.h>
+
+#include <sys/wait.h>
+
+int stop_process(int pid)
+{
+ return kill(pid, 15);
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	stop_process
+	.type	stop_process, @function
+stop_process:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -20(%rbp)
+	movl	-20(%rbp), %eax
+	movl	$15, %esi
+	movl	$2, %edi
+	call	kill@PLT
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 67 succeeded
+INFO:root:C code :
+#include <string.h>
+
+int vout_finish(void)
+{
+  return 0;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	vout_finish
+	.type	vout_finish, @function
+vout_finish:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 68 succeeded
+INFO:root:C code :
+
+int alloc(int *p)
+{
+  int tmp = 5;
+
+
+
+  return 0;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	alloc
+	.type	alloc, @function
+alloc:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -24(%rbp)
+	movl	$5, -4(%rbp)
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 69 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stddef.h>
+
+#include <string.h>
+
+char* mote64_Name(void) {
+ return "MOTE64";
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	mote64_Name
+	.type	mote64_Name, @function
+mote64_Name:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	$L0, %rax
+	popq	%rbp
+	ret
+.L0:
+	.string	"MOTE64"
+
+WARNING:root:CASE 70 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccyoRIq0.o: relocation R_X86_64_32S against undefined symbol `L0' can not be used when making a PIE object; recompile with -fPIE
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+char *hello(void) {
+    return "hello";
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	hello
+	.type	hello, @function
+hello:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	$L0, %rax
+	popq	%rbp
+	ret
+.L0:
+	.string	"hello"
+
+WARNING:root:CASE 71 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/cccK7Ixz.o: relocation R_X86_64_32S against undefined symbol `L0' can not be used when making a PIE object; recompile with -fPIE
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+
+
+
+
+int exists(const char *filename)
+{
+ return (0);
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	exists
+	.type	exists, @function
+exists:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 72 succeeded
+INFO:root:C code :
+#include <math.h>
+
+float fast_cbrtf(float x)
+{
+   union {int ix; float x;} v;
+   v.x = x;
+   v.ix = v.ix/4 + v.ix/16;
+   v.ix = v.ix + v.ix/16;
+   v.ix = v.ix + v.ix/256;
+   v.ix = 0x2a511cd0 + v.ix;
+   return v.x;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	fast_cbrtf
+	.type	fast_cbrtf, @function
+fast_cbrtf:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movss	%xmm0, -4(%rbp)
+	movl	-4(%rbp), %eax
+	sarl	$2, %eax
+	movl	%eax, %edx
+	sarl	$4, %edx
+	addl	%edx, %eax
+	movl	%eax, %edx
+	sarl	$4, %edx
+	addl	%edx, %eax
+	movl	%eax, %edx
+	sarl	$8, %edx
+	addl	%edx, %eax
+	addl	$0x2a511cd0, %eax
+	movl	%eax, -4(%rbp)
+	movss	-4(%rbp), %xmm0
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 73 failed
+INFO:root:C code :
+#include <stddef.h>
+
+int GO_strcmp (char *d, char *s)
+{
+ while ('\0' != *d) {
+  if (*d != *s)
+   return *d - *s;
+  d++;
+  s++;
+ }
+
+ return *d - *s;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	GO_strcmp
+	.type	GO_strcmp, @function
+GO_strcmp:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -24(%rbp)
+	movq	%rsi, -32(%rbp)
+	jmp	.L2
+.L3:
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %edx
+	movq	-32(%rbp), %rax
+	movzbl	(%rax), %eax
+	subl	%eax, %edx
+	movl	%edx, %eax
+	jmp	.L4
+.L2:
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	je	.L5
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %edx
+	movq	-32(%rbp), %rax
+	movzbl	(%rax), %eax
+	cmpl	%eax, %edx
+	je	.L6
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %edx
+	movq	-32(%rbp), %rax
+	movzbl	(%rax), %eax
+	subl	%eax, %edx
+	movl	%edx, %eax
+	jmp	.L4
+.L6:
+	addq	$1, -24(%rbp)
+	addq	$1, -32(%rbp)
+	jmp	.L2
+.L5:
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %edx
+	movq	-32(%rbp), %rax
+	movzbl	(%rax), %eax
+	subl	%eax, %edx
+	movl	%edx, %eax
+.L4:
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 74 succeeded
+INFO:root:C code :
+
+int
+test_01 (volatile short* x)
+{
+  return *x;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	test_01
+	.type	test_01, @function
+test_01:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movzwl	(%rdi), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 75 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <ctype.h>
+
+int isspec(char c)
+{
+    return (((c >= '!') && (c <= '/')) || (c >= ':' && c <= '@') || ((c >= '[') && (c <= '`')) || ((c >= '{') && (c <= 'DEL')));
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	isspec
+	.type	isspec, @function
+isspec:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movb	%dil, -1(%rbp)
+	movzbl	-1(%rbp), %eax
+	cmpb	$33, %al
+	jle	.L2
+	cmpb	$47, %al
+	jle	.L3
+	cmpb	$58, %al
+	jle	.L2
+	cmpb	$64, %al
+	jle	.L3
+	cmpb	$91, %al
+	jle	.L2
+	cmpb	$96, %al
+	jle	.L3
+	cmpb	$123, %al
+	jle	.L2
+	cmpb	$127, %al
+	jle	.L3
+	movl	$0, %eax
+	jmp	.L4
+.L3:
+	movl	$1, %eax
+.L4:
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 76 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccdaAxIE.o: in function `isspec':
+(.text+0x14): undefined reference to `.L2'
+/usr/bin/ld: (.text+0x20): undefined reference to `.L2'
+/usr/bin/ld: (.text+0x2c): undefined reference to `.L2'
+/usr/bin/ld: (.text+0x38): undefined reference to `.L2'
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int hash_val (int key)
+{
+    return key;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	hash_val
+	.type	hash_val, @function
+hash_val:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 77 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <stdint.h>
+
+#include <math.h>
+
+int cat_nums(char *str_out, char *str){
+
+ int i=0,j=0;
+ while(str[i]!='\0'){
+  if(str[i] >= '0' && str[i] <= '9'){
+   str_out[j++] = str[i];
+  }
+  i++;
+ }
+ str_out[j] = '\0';
+ return(j);
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	cat_nums
+	.type	cat_nums, @function
+cat_nums:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -24(%rbp)
+	movq	%rsi, -32(%rbp)
+	movl	$0, -4(%rbp)
+	movl	$0, -8(%rbp)
+	jmp	.L2
+.L3:
+	movl	-4(%rbp), %eax
+	movslq	%eax, %rdx
+	movq	-32(%rbp), %rcx
+	addq	%rdx, %rcx
+	movzbl	(%rcx), %eax
+	cmpb	$48, %al
+	jl	.L4
+	movzbl	(%rcx), %eax
+	cmpb	$57, %al
+	jg	.L4
+	movl	-4(%rbp), %eax
+	movslq	%eax, %rdx
+	movq	-24(%rbp), %rcx
+	addq	%rdx, %rcx
+	movl	-4(%rbp), %edx
+	movslq	%edx, %rdx
+	movq	-32(%rbp), %rsi
+	addq	%rdx, %rsi
+	movzbl	(%rsi), %edx
+	movb	%dl, (%rcx)
+	addl	$1, -4(%rbp)
+	addl	$1, -8(%rbp)
+.L4:
+	addl	$1, -4(%rbp)
+.L2:
+	movl	-4(%rbp), %eax
+	movslq	%eax, %rdx
+	movq	-32(%rbp), %rcx
+	addq	%rdx, %rcx
+	movzbl	(%rcx), %eax
+	testb	%al, %al
+	jne	.L3
+	movl	-8(%rbp), %eax
+	movslq	%eax, %rdx
+	movq	-24(%rbp), %rcx
+	addq	%rdx, %rcx
+	movb	$0, (%rcx)
+	movl	-8(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 78 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdarg.h>
+
+#include <sys/types.h>
+
+#include <sys/stat.h>
+
+__attribute__ ((used))
+int _write(int file, char *ptr, int len)
+{
+# 103 "/scratch/repos/new/home/jordi_armengol_estape/c-scraper/outputs/2022-01-22/02-19-57/repos/LCRS-UCC/STM32F4Discovery-expansion/refs/heads/Working/OtharSoft/syscalls/syscalls.c"
+    return len;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	_write
+	.type	_write, @function
+_write:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movq	%rsi, -16(%rbp)
+	movl	%edx, -20(%rbp)
+	movl	-20(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 79 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int countVowels(char *str)
+{
+ int i,count=0;
+ for(i=0;str[i]!='\0';++i)
+  if('a' == str[i] ||
+     'e' == str[i] ||
+     'i' == str[i] ||
+     'o' == str[i] ||
+     'u' == str[i] ||
+     'A' == str[i] ||
+     'E' == str[i] ||
+     'I' == str[i] ||
+     'O' == str[i] ||
+     'U' == str[i] )
+   count++;
+ return count;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	countVowels
+	.type	countVowels, @function
+countVowels:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movl	$0, -4(%rbp)
+	jmp	.L2
+.L3:
+	movl	-4(%rbp), %eax
+	addl	$1, %eax
+	movl	%eax, -4(%rbp)
+.L2:
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	je	.L5
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %eax
+	cmpb	$97, %al
+	je	.L3
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %eax
+	cmpb	$101, %al
+	je	.L3
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %eax
+	cmpb	$105, %al
+	je	.L3
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %eax
+	cmpb	$111, %al
+	je	.L3
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %eax
+	cmpb	$117, %al
+	je	.L3
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %eax
+	cmpb	$65, %al
+	je	.L3
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %eax
+	cmpb	$69, %al
+	je	.L3
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %eax
+	cmpb	$73, %al
+	je	.L3
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %eax
+	cmpb	$79, %al
+	je	.L3
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %eax
+	cmpb	$85, %al
+	je	.L3
+.L4:
+	addq	$1, -8(%rbp)
+.L2:
+	movq	-8(%rbp), %rax
+	movzbl	(%rax), %eax
+	testb	%al, %al
+	jne	.L4
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	ret
+
+WARNING:root:CASE 80 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:64: Error: symbol `.L2' is already defined
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <string.h>
+
+char* langRomTypeMirroredRam1k() { return "1kB Mirrored RAM"; }
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	langRomTypeMirroredRam1k
+	.type	langRomTypeMirroredRam1k, @function
+langRomTypeMirroredRam1k:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	$L0, %rax
+	popq	%rbp
+	ret
+.L0:
+	.string	"1kB Mirrored RAM"
+
+WARNING:root:CASE 81 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/cc7MBHQA.o: relocation R_X86_64_32S against undefined symbol `L0' can not be used when making a PIE object; recompile with -fPIE
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+unsigned long unsignedlong_id(unsigned long x){return x;}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	unsignedlong_id
+	.type	unsignedlong_id, @function
+unsignedlong_id:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	-8(%rbp), %rax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 82 succeeded
+INFO:root:C code :
+#include <stdlib.h>
+
+void pointerExample1(int *ptr1, int *ptr2){
+ ptr1 = ptr2;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	pointerExample1
+	.type	pointerExample1, @function
+pointerExample1:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	-16(%rbp), %rax
+	movq	%rax, -8(%rbp)
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 83 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int hcf_iterative(int a, int b){
+ int q, r;
+ if(a > 0 && b > 0){
+  if(a < b)
+   return hcf_iterative(b, a);
+
+  q = a / b;
+  r = a % b;
+  while(r != 0 && r != 1){
+   a = b;
+   b = r;
+   q = a / b;
+   r = a % b;
+  }
+
+  if(r == 0)
+   return b;
+  else if(r == 1)
+   return 1;
+ }
+ return -1;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	hcf_iterative
+	.type	hcf_iterative, @function
+hcf_iterative:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -20(%rbp)
+	movl	%esi, -24(%rbp)
+	cmpl	$0, -20(%rbp)
+	jle	.L2
+	cmpl	$0, -24(%rbp)
+	jle	.L2
+	movl	-20(%rbp), %eax
+	cmpl	-24(%rbp), %eax
+	jge	.L3
+	movl	-24(%rbp), %eax
+	movl	%eax, -20(%rbp)
+	movl	-20(%rbp), %eax
+	movl	%eax, -24(%rbp)
+.L3:
+	movl	-20(%rbp), %eax
+	cltd
+	idivl	-24(%rbp)
+	movl	%edx, -4(%rbp)
+	movl	$0, %eax
+	jmp	.L4
+.L5:
+	movl	-24(%rbp), %eax
+	movl	%eax, -20(%rbp)
+	movl	-4(%rbp), %eax
+	movl	%eax, -24(%rbp)
+	movl	-20(%rbp), %eax
+	cltd
+	idivl	-24(%rbp)
+	movl	%edx, -4(%rbp)
+.L4:
+	cmpl	$0, -4(%rbp)
+	je	.L6
+	cmpl	$1, -4(%rbp)
+	jne	.L5
+	movl	$1, %eax
+	jmp	.L7
+.L6:
+	movl	-24(%rbp), %eax
+.L7:
+	jmp	.L8
+.L2:
+	movl	$-1, %eax
+.L8:
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 40.0%
+INFO:root:CASE 84 failed
+INFO:root:C code :
+
+int soma3(int a, int b, int c)
+{
+ return a+b+c;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	soma3
+	.type	soma3, @function
+soma3:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	%edx, -12(%rbp)
+	movl	-4(%rbp), %edx
+	movl	-8(%rbp), %ecx
+	addl	-12(%rbp), %ecx
+	addl	%ecx, %edx
+	movl	%edx, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 85 succeeded
+INFO:root:C code :
+
+unsigned long int_sqrt(unsigned long x)
+{
+        unsigned long b, m, y = 0;
+
+        if (x <= 1)
+                return x;
+
+        m = 1UL << ((sizeof(long) * 8) - 2);
+        while (m != 0) {
+                b = y + m;
+                y >>= 1;
+
+                if (x >= b) {
+                        x -= b;
+                        y += m;
+                }
+                m >>= 2;
+        }
+
+        return y;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	int_sqrt
+	.type	int_sqrt, @function
+int_sqrt:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	cmpq	$1, -8(%rbp)
+	jbe	.L2
+	movl	$1073741824, -16(%rbp)
+	jmp	.L3
+.L4:
+	movq	-16(%rbp), %rax
+	addq	-24(%rbp), %rax
+	movq	%rax, -32(%rbp)
+	movq	-24(%rbp), %rax
+	sarq	$1, %rax
+	movq	%rax, -24(%rbp)
+	cmpq	-8(%rbp), %rax
+	jb	.L5
+	movq	-8(%rbp), %rax
+	subq	-32(%rbp), %rax
+	movq	%rax, -8(%rbp)
+	movq	-24(%rbp), %rax
+	addq	-16(%rbp), %rax
+	movq	%rax, -24(%rbp)
+.L5:
+	movq	-16(%rbp), %rax
+	sarq	$2, %rax
+	movq	%rax, -16(%rbp)
+.L3:
+	cmpq	$0, -16(%rbp)
+	jne	.L4
+	movq	-24(%rbp), %rax
+	popq	%rbp
+	ret
+.L2:
+	movq	-8(%rbp), %rax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 86 failed
+INFO:root:C code :
+#include <stdio.h> 
+
+int comp(int num)
+{
+    int res = 0;
+    int cnt = 0;
+
+    while (num) {
+        if (!(num & 1)) {
+            res = res | (1 << cnt);
+        }
+        ++cnt;
+        num = num >> 1;
+    }
+
+    return res;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	comp
+	.type	comp, @function
+comp:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -20(%rbp)
+	movl	$0, -4(%rbp)
+	movl	$0, -8(%rbp)
+	jmp	.L2
+.L3:
+	movl	-8(%rbp), %eax
+	andl	$1, %eax
+	testl	%eax, %eax
+	je	.L4
+	movl	-4(%rbp), %eax
+	movl	-8(%rbp), %edx
+	sall	$1, %edx
+	orl	1(%rax, %rdx, 4), %eax
+	movl	%eax, -4(%rbp)
+.L4:
+	addl	$1, -8(%rbp)
+	movl	-20(%rbp), %eax
+	sarl	$31, %eax
+	sarl	$1, %eax
+	movl	%eax, -20(%rbp)
+.L2:
+	cmpl	$0, -20(%rbp)
+	jne	.L3
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 90.0%
+INFO:root:CASE 87 failed
+INFO:root:C code :
+
+int logicalShift(int x, int n) {
+ int a=(x>>31&1)<<32+~n;
+ return (x^a<<n)>>n^a;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	logicalShift
+	.type	logicalShift, @function
+logicalShift:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -20(%rbp)
+	movl	%esi, -24(%rbp)
+	movl	-20(%rbp), %eax
+	movl	$31, %ecx
+	sarl	$31, %eax
+	andl	$1, %eax
+	sall	$32, %eax
+	movl	-24(%rbp), %edx
+	notl	%edx
+	addl	%edx, %eax
+	movl	-20(%rbp), %edx
+	xorl	%eax, %edx
+	movl	-24(%rbp), %ecx
+	sall	%cl, %edx
+	movl	-24(%rbp), %ecx
+	sarl	%cl, %edx
+	xorl	%eax, %edx
+	movl	%edx, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 90.0%
+INFO:root:CASE 88 failed
+INFO:root:C code :
+
+double light_time(double distance) {
+    double t = 0.0;
+
+
+
+    return t;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	light_time
+	.type	light_time, @function
+light_time:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movsd	%xmm0, -8(%rbp)
+	movsd	.LC0(%rip), %xmm0
+	movq	-8(%rbp), %rax
+	popq	%rbp
+	ret
+.LC0:
+	.long	0
+	.long	0
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 89 succeeded
+INFO:root:C code :
+
+double business_sum(double in, double in2) {
+    return in + in2;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	business_sum
+	.type	business_sum, @function
+business_sum:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movsd	%xmm0, -8(%rbp)
+	movsd	%xmm1, -16(%rbp)
+	movsd	-8(%rbp), %xmm0
+	addsd	-16(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-24(%rbp), %xmm0
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 90 succeeded
+INFO:root:C code :
+
+int do_961() { return 961; }
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	do_961
+	.type	do_961, @function
+do_961:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$961, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 91 succeeded
+INFO:root:C code :
+
+
+
+
+
+int chroma_sub_implemented(int mode)
+{
+  switch (mode) {
+  case 0:
+  case 1:
+  case 3:
+    return 1;
+  case 2:
+  case 4:
+  case 5:
+  case 7:
+  case 6:
+  default:
+    return 0;
+  }
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	chroma_sub_implemented
+	.type	chroma_sub_implemented, @function
+chroma_sub_implemented:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	cmpl	$7, %eax
+	ja	.L2
+	movl	%eax, %edx
+	movl	$.L3, %eax
+	movl	(%rax,%rdx,4), %eax
+	testl	%eax, %eax
+	setne	%al
+	movzbl	%al, %eax
+	jmp	.L1
+.L2:
+	movl	$0, %eax
+.L1:
+	popq	%rbp
+	ret
+.L3:
+	.long	1
+	.long	1
+	.long	0
+	.long	1
+	.long	0
+	.long	0
+	.long	0
+	.long	0
+
+WARNING:root:CASE 92 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccDYgj5a.o: relocation R_X86_64_32 against `.text' can not be used when making a PIE object; recompile with -fPIE
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+int leapyear(int year) {
+  if (year % 400 == 0)
+    return 1;
+  else if (year % 4 == 0 && year % 100 != 0)
+    return 1;
+  else
+    return 0;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	leapyear
+	.type	leapyear, @function
+leapyear:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -20(%rbp)
+	movl	-20(%rbp), %eax
+	cltd
+	shrl	$6, %edx
+	movl	$400, %ecx
+	idivl	%ecx
+	testl	%edx, %edx
+	je	.L2
+	movl	-20(%rbp), %eax
+	cltd
+	shrl	$2, %edx
+	movl	$4, %ecx
+	idivl	%ecx
+	testl	%edx, %edx
+	je	.L3
+	movl	-20(%rbp), %eax
+	cltd
+	shrl	$6, %edx
+	movl	$100, %ecx
+	idivl	%ecx
+	testl	%edx, %edx
+	jne	.L4
+.L3:
+	movl	$1, %eax
+	jmp	.L5
+.L2:
+	movl	$1, %eax
+	jmp	.L5
+.L4:
+	movl	$0, %eax
+.L5:
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 93 succeeded
+INFO:root:C code :
+
+int subtract(int x, int y) {
+    return x - y;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	subtract
+	.type	subtract, @function
+subtract:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-4(%rbp), %eax
+	subl	-8(%rbp), %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 94 succeeded
+INFO:root:C code :
+#include <ctype.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <stdint.h>
+
+#include <math.h>
+
+#include <time.h>
+
+#include <fcntl.h>
+
+#include <sys/types.h>
+
+#include <errno.h>
+
+#include <limits.h>
+
+double calc_swst(unsigned short swst_dn, double pri)
+{
+
+
+     return ((double) swst_dn * 210.94e-09 + 9.0 * pri - 6.6E-6);
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.section	.rodata
+.LC0:
+	.string	"%f"
+	.text
+	.globl	calc_swst
+	.type	calc_swst, @function
+calc_swst:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movzwl	%edi, %edx
+	cvtsi2sd	%edx, %xmm0
+	movsd	%xmm0, %xmm1
+	movsd	.LC1(%rip), %xmm2
+	mulsd	%xmm2, %xmm1
+	movsd	%xmm1, %xmm0
+	movsd	%xmm0, %xmm1
+	movsd	%xmm0, %xmm2
+	addsd	%xmm2, %xmm1
+	movsd	%xmm1, %xmm0
+	movsd	%xmm0, %xmm1
+	movapd	%xmm1, %xmm0
+	popq	%rbp
+	ret
+.LC1:
+	.long	-1056964608
+	.long	1069547520
+
+WARNING:root:CASE 95 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:13: Error: operand size mismatch for `movzw'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int gsl_TouchNear(void)
+{
+  return 0;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	gsl_TouchNear
+	.type	gsl_TouchNear, @function
+gsl_TouchNear:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 96 succeeded
+INFO:root:C code :
+
+int _link (const char *old_name, const char *new_name)
+{
+  return -1;
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	_link
+	.type	_link, @function
+_link:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$-1, %eax
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 97 succeeded
+INFO:root:C code :
+
+int quant(int n, int m)
+{
+ int i, neg;
+
+ neg = 0;
+ if (n < 0) {
+  neg++;
+  n = -n;
+ }
+
+ i = n / m;
+ if (n - m * i > m / 2)
+  i += 1;
+ i *= m;
+ if (neg)
+  i = -i;
+ return(i);
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	quant
+	.type	quant, @function
+quant:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	%edi, -20(%rbp)
+	movl	%esi, -24(%rbp)
+	movl	$0, -4(%rbp)
+	movl	$0, -8(%rbp)
+	movl	-20(%rbp), %eax
+	testl	%eax, %eax
+	js	.L2
+	jmp	.L3
+.L2:
+	addl	$1, -4(%rbp)
+	negl	-20(%rbp)
+.L3:
+	movl	-20(%rbp), %eax
+	cltd
+	idivl	-24(%rbp)
+	movl	%eax, -8(%rbp)
+	movl	-20(%rbp), %eax
+	subl	-8(%rbp), %eax
+	imull	-24(%rbp), %eax
+	movl	%eax, %edx
+	movl	-24(%rbp), %eax
+	sarl	$31, %eax
+	idivl	%eax
+	cmpl	%edx, %eax
+	jle	.L4
+	addl	$1, -8(%rbp)
+.L4:
+	movl	-8(%rbp), %eax
+	imull	-24(%rbp), %eax
+	movl	-4(%rbp), %edx
+	testl	%edx, %edx
+	je	.L5
+	negl	%eax
+.L5:
+	movl	%eax, %edx
+	movl	%edx, %eax
+	popq	%rbp
+	ret
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 98
+WARNING:root:WARNING: code failed to execute for input 1 in case 98
+WARNING:root:WARNING: code failed to execute for input 2 in case 98
+WARNING:root:WARNING: code failed to execute for input 3 in case 98
+WARNING:root:WARNING: code failed to execute for input 4 in case 98
+WARNING:root:WARNING: code failed to execute for input 5 in case 98
+WARNING:root:WARNING: code failed to execute for input 6 in case 98
+WARNING:root:WARNING: code failed to execute for input 7 in case 98
+WARNING:root:WARNING: code failed to execute for input 8 in case 98
+WARNING:root:WARNING: code failed to execute for input 9 in case 98
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 98 failed
+INFO:root:C code :
+
+void fs_scandir(char *dir, char *name)
+{
+}
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+	.text
+	.globl	fs_scandir
+	.type	fs_scandir, @function
+fs_scandir:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	nop
+	popq	%rbp
+	ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 99 succeeded
+INFO:root:Done
+INFO:root:Passed cases: [1, 2, 4, 6, 7, 8, 10, 11, 12, 13, 14, 16, 17, 18, 19, 21, 22, 23, 24, 26, 27, 28, 29, 31, 35, 36, 37, 38, 39, 41, 44, 45, 46, 47, 48, 52, 53, 57, 58, 61, 62, 63, 64, 65, 67, 68, 69, 72, 74, 75, 77, 78, 79, 82, 83, 85, 89, 90, 91, 93, 94, 96, 97, 99]
+INFO:root:Pass rate: 64.0%
+INFO:root:End time: 2024-07-03 17:38:17.269627

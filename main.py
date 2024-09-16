@@ -23,8 +23,8 @@ cached_pass_id: dict = {
     "gpt-4o": {
         "baseline": [0, 1, 2, 5, 9, 20, 30, 32, 34, 40, 51, 56, 59, 60, 63, 73, 76, 80, 81, 92, 95, 98, 109, 113, 124, 127, 139, 148, 159, 161, 182, 183, 187, 188, 195, 202, 207, 212, 216, 218, 219, 220, 222, 224, 228, 233, 238, 239, 240, 241, 246, 249, 256, 258, 260, 261, 267, 270, 277, 284, 290, 291, 300, 311, 318, 323, 324, 329, 333, 336, 344, 347, 348, 349, 353, 354, 356, 358, 362, 363, 365, 368, 373, 375, 386, 399, 404, 407, 409, 410, 421, 422, 427, 429, 431, 434, 441, 442, 444, 445, 447, 455, 456, 461, 468, 473, 475, 479, 480, 485, 486, 489, 493, 495, 496, 497],
         "pass@5": [1, 5, 32, 40, 95, 113, 187, 202, 219, 224, 228, 240, 260, 267, 270, 277, 323, 333, 347, 349, 358, 368, 375, 410, 421, 434, 441, 456, 468, 475, 493, 496, 497],
-        "fix": [9, 30, 32, 42, 95],
-        "annotation": [95],
+        "fix": [32, 219, 228, 240, 260, 333, 358, 368, 410, 441, 456],
+        "annotation": None,
         "LEGO": None,
     },
     "deepseek-coder": {
@@ -39,8 +39,8 @@ cached_pass_id: dict = {
         "baseline": [4, 42, 59, 73, 95, 98, 136, 187, 191, 202, 207, 208, 219, 228, 239, 240, 245, 246, 260, 270, 288, 299, 348, 356, 363, 367, 368, 409, 413, 422, 441, 442, 456, 459, 468, 491, 495],
         "pass@5": [95, 202, 219, 228, 240, 260, 348, 367, 368, 409, 456],
         "fix": [202, 228, 240, 260, 348, 409, 456],
-        "annotation": None,
-        "LEGO": None,
+        "annotation": [228, 409, 456],
+        "LEGO": [],
     },
     "gpt-4o-mini": {
         "baseline": [0, 1, 2, 4, 5, 7, 9, 15, 20, 30, 32, 33, 34, 39, 40, 51, 54, 56, 59, 60, 63, 71, 73, 74, 75, 76, 78, 80, 81, 84, 86, 87, 88, 89, 92, 93, 95, 98, 100, 103, 109, 113, 115, 124, 126, 127, 129, 137, 139, 140, 142, 148, 150, 151, 154, 159, 160, 161, 170, 174, 175, 180, 182, 183, 185, 187, 188, 194, 195, 198, 199, 202, 207, 209, 210, 212, 216, 217, 218, 219, 220, 222, 223, 224, 228, 230, 231, 232, 233, 234, 237, 238, 239, 240, 241, 246, 249, 252, 256, 258, 260, 261, 262, 263, 267, 270, 277, 278, 281, 284, 290, 291, 293, 296, 300, 301, 303, 311, 318, 320, 322, 323, 324, 329, 331, 333, 335, 336, 343, 344, 347, 348, 349, 352, 353, 354, 355, 356, 358, 359, 362, 363, 365, 366, 368, 373, 375, 380, 381, 382, 385, 386, 395, 397, 399, 404, 407, 409, 410, 416, 421, 422, 427, 428, 429, 430, 431, 433, 434, 441, 442, 444, 445, 447, 452, 454, 455, 456, 458, 459, 460, 461, 463, 464, 468, 470, 473, 474, 475, 478, 479, 480, 481, 483, 485, 486, 489, 490, 492, 493, 495, 496, 497, 498, 499],
@@ -53,7 +53,7 @@ cached_pass_id: dict = {
         "baseline": [4, 7, 9, 32, 33, 39, 40, 42, 53, 54, 59, 66, 73, 83, 84, 86, 87, 88, 89, 93, 95, 98, 100, 101, 107, 109, 113, 114, 119, 127, 136, 137, 139, 150, 159, 161, 170, 174, 180, 182, 187, 190, 191, 194, 202, 207, 208, 209, 212, 214, 216, 218, 219, 220, 222, 223, 224, 228, 231, 234, 239, 240, 241, 243, 245, 246, 252, 256, 258, 260, 261, 266, 270, 277, 284, 287, 288, 290, 293, 295, 298, 299, 300, 301, 304, 307, 311, 318, 324, 333, 347, 348, 349, 351, 353, 356, 358, 359, 362, 363, 364, 365, 367, 368, 373, 375, 380, 381, 382, 387, 391, 404, 407, 409, 410, 413, 417, 422, 427, 428, 429, 430, 431, 433, 441, 442, 445, 454, 455, 456, 458, 459, 460, 461, 462, 463, 464, 468, 470, 471, 473, 475, 480, 481, 482, 484, 491, 492, 493, 495, 496, 497, 498],
         "pass@5": [4, 32, 42, 54, 59, 73, 83, 86, 87, 88, 89, 93, 95, 98, 101, 107, 113, 136, 137, 150, 159, 161, 180, 187, 191, 202, 207, 208, 218, 219, 228, 231, 239, 240, 245, 246, 252, 256, 260, 270, 277, 287, 288, 290, 295, 299, 301, 311, 318, 324, 333, 348, 353, 356, 358, 359, 363, 365, 367, 368, 375, 382, 404, 407, 409, 410, 413, 422, 428, 431, 433, 441, 442, 455, 456, 458, 459, 461, 463, 468, 471, 473, 475, 480, 484, 491, 492, 493, 495, 497, 498],
         "fix": [4, 32, 73, 83, 86, 87, 88, 95, 98, 113, 136, 137, 150, 161, 180, 202, 218, 219, 228, 239, 240, 252, 260, 270, 277, 290, 295, 301, 311, 324, 333, 348, 353, 359, 367, 368, 375, 409, 410, 422, 428, 431, 433, 456, 458, 461, 484, 492, 493, 497],
-        "annotation": [32, 73, 95, 113, 180, 202, 240, 270, 277, 311, 324, 353, 368, 375, 409, 422, 431, 456],
+        "annotation": [32, 73, 95, 113, 180, 202, 240, 270, 277, 311, 324, 353, 368, 375, 409, 422, 431, 456, 492, 493, 497],
         "LEGO": None,
     },
     "codestral:22b-v0.1-f16": {
@@ -232,15 +232,21 @@ The real output is: None, because of timeout.
                 f"WARNING: code failed to execute for input {j} in case {case_id}"
             )
             # for context length limit, we only report the last error
+            stdout = ret.stdout.decode()
+            stderr = ret.stderr.decode()
+            if len(stdout) > 2048:
+                stdout = stdout[:2048] + "..."
+            if len(stderr) > 2048:
+                stderr = stderr[:2048] + "..."
             error_message = f"""input {j} in case {case_id} failed because of runtime error.
 Inputs are: 
 {open(f"input/in{j}.json", "r").read()}
 Expected outputs are:
 {open(f"output/out{j}.json", "r").read()}
 Run stdout:
-{ret.stdout.decode()}
+{stdout}
 Run stderr:
-{ret.stderr.decode()}
+{stderr}
 ----------
 """
             local_err += 1
@@ -565,6 +571,8 @@ def c_compiler_exebench(
                 break
         except Exception as e:
             logging.error(f"Unexpected Error: {e}")
+            logging.info(f"CASE {case_id} fail")
+            failed_id.append(case_id)
             case_id += 1
             continue
 
@@ -580,15 +588,18 @@ def c_compiler_exebench(
     os.chdir("failed")
     for i in range(len(failed_id)):
         case_id = failed_id[i]
-        with open(f"case_{case_id}.c", "w") as f:
-            f.write(failed_c[i])
-            f.close()
-        with open(f"case_{case_id}_llm.s", "w") as f:
-            f.write(failed_asm[i])
-            f.close()
-        with open(f"case_{case_id}_ref.s", "w") as f:
-            f.write(failed_asm_ref[i])
-            f.close()
+        if failed_c[i] is not None:
+            with open(f"case_{case_id}.c", "w") as f:
+                f.write(failed_c[i])
+                f.close()
+        if failed_asm[i] is not None:
+            with open(f"case_{case_id}_llm.s", "w") as f:
+                f.write(failed_asm[i])
+                f.close()
+        if failed_asm_ref[i] is not None:
+            with open(f"case_{case_id}_ref.s", "w") as f:
+                f.write(failed_asm_ref[i])
+                f.close()
 
 
 def clean_hyp_dir():
@@ -622,15 +633,22 @@ def examine_coremark(try_i, file_name, function_name):
         stdout=subprocess.PIPE,
     )
     if ret.returncode != 0:
+        stdout = ret.stdout.decode()
+        stderr = ret.stderr.decode()
+        if len(stdout) > 2048:
+            stdout = stdout[:2048] + "..."
+        if len(stderr) > 2048:
+            stderr = stderr[:2048] + "..."
         logging.warning(
-            f"{try_i}th try failed to compile the assembly hypothesis for {function_name}\nstdout: {ret.stdout.decode()}\nstderr: {ret.stderr.decode()}"
+            f"{try_i}th try failed to compile the assembly hypothesis for {function_name}\nstdout: {stdout}\nstderr: {stderr}"
         )
+        
         error_message = f"""Compilation error: Failed to assemble the assembly code to executable!
 where compilation error is:
 stdout:
-{ret.stdout.decode()}
+{stdout}
 stderr:
-{ret.stderr.decode()}
+{stderr}
 """
         logging.debug(f"###error message: {error_message}")
         clean_hyp_dir()
@@ -644,12 +662,18 @@ stderr:
             timeout=60,
         )
         if ret.returncode != 0:
+            stdout = ret.stdout.decode()
+            stderr = ret.stderr.decode()
+            if len(stdout) > 2048:
+                stdout = stdout[:2048] + "..."
+            if len(stderr) > 2048:
+                stderr = stderr[:2048] + "..."
             error_message = f"""Runtime error: Failed to execute the assembly hypothesis for {function_name}!
 where runtime error is:
 stdout:
-{ret.stdout.decode()}
+{stdout}
 stderr:
-{ret.stderr.decode()}
+{stderr}
 """
             logging.debug(f"###error message: {error_message}")
             logging.warning(
@@ -659,8 +683,14 @@ stderr:
             return (False, error_message)
         else:
             # log stdout and stderr
-            logging.info(f"stdout: {ret.stdout.decode()}")
-            logging.info(f"stderr: {ret.stderr.decode()}")
+            stdout = ret.stdout.decode()
+            stderr = ret.stderr.decode()
+            if len(stdout) > 2048:
+                stdout = stdout[:2048] + "..."
+            if len(stderr) > 2048:
+                stderr = stderr[:2048] + "..."
+            logging.info(f"stdout: {stdout}")
+            logging.info(f"stderr: {stderr}")
             # assume it is correct, since it can be executed successfully
             logging.info(f"{try_i}th try passed for {function_name}")
             clean_hyp_dir()
