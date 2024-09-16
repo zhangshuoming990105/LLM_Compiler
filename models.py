@@ -134,7 +134,8 @@ class Chat:
         self.claude_client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
         self.deepseek_client = OpenAI(
             api_key="sk-de942e3222de415cb5636482c0b6a378",
-            base_url="https://api.deepseek.com",
+            # base_url="https://api.deepseek.com",
+            base_url="https://api.deepseek.com/beta",
         )
         self.ollama_client = OpenAI(
             base_url="http://localhost:11434/v1/",
@@ -414,12 +415,26 @@ class Compiler(Chat):
         # that the next generation will be able to understand
         # for repair, we don't need the one-shot prompt in generation.
         # our focus is fixing the error.
+        
+#         If it's an compilation error, based on the error message, only fix on the line that reports error.
+# If it's a runtime error, think about the logic of the code line by line, and try to locate it.
+# If it's a result error, simulate the execution of the code in your mind, and find where it goes wrong.
         prompt = f"""The following assembly code has an error, based on the error message, fix the error in the assembly code.
 we also provide the original C code for your reference.
 Majorly FOCUS on the error message, and fix the error in the assembly code.
-If it's an compilation error, based on the error message, only fix on the line that reports error.
-If it's a runtime error, think about the logic of the code line by line, and try to locate it.
-If it's a result error, simulate the execution of the code in your mind, and find where it goes wrong.
+Based on the **error message**(from stdout and stderr), analyze which part of the code is wrong and fix it.
+There are three types, if its a **syntax error**, you should focus on the syntax error and fix it, it's usually your misused of syntax.
+if its a **runtime error**, not syntax and no output, you should focus on the logic and find possible segmentation fault, null pointer dereference, etc.
+if its a **result error**, where the expected output mismatch with the actual output, you should focus on the logic and find the wrong part of the assembly code.
+And if the mismatched results are very close but not the same, you should focus on the numerical values types, possible missing type conversions and the order of operations.
+Remember, the source code is always correct, the error is always on the generated assembly code. You should revise the code logic carefully, pay attention to the details.
+When you try to fix the assembly, always recap the source code to make sure you are following the source code logic. That's where you can find the error.
+NEVER add logic that is not in the source code, always follow the source code logic.
+Like the order of operations, the type usage of instructions(do they have implicit conversion), and the irregular part of code(like the needle-in-the-haystack).
+always remember the **error message**, it's quite important! Then generate your fixed code with proper comment on the code.
+FORMAT: make sure the generated x86 assembly in the "#Output" be inside "```x86" and "```" tags.
+
+
 Wrong assembly code:
 ```x86
 {error_asm}

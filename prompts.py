@@ -115,6 +115,9 @@ However, I don't want you to do it directly because that's memorizing. I want yo
 In order to compile the following code into assembly, we need:
 1. first analyze the customized structs types and give them correct offset, size and padding, note that each struct follows the largest alignment basic type in its elements.
 2. collect all the constants, name their labels with meaningful names, and all variables with their type to form a SymbolTable.
+Remember to find all distinct constants appeared in source, do not precomputing them. For example, 1.0f and 1.0 are different constants, 
+and 2.0/1.3 should generate two constants, and compute them in the assembly.
+But for same constants(type also the same) appeared multiple times, you should only generate one constant label is enough.
 3. compile the code using the above SymbolTable. generate AT&T syntax x86_64 assembly.
 [/INST]""",
     "example": """[INST]###Example:
@@ -178,6 +181,8 @@ typedef struct {
 -- float and double values:
 double: 1.0, 2.0, -1.0
 float: none
+## NOTE that 1.0f and 1.0 are different constants, 
+## and 2.0/1.3 should generate two constants, and compute them in the assembly.
 
 - Variables:
 -- Global variables: 
@@ -645,6 +650,7 @@ numerical, cmp_ins, div_ins, irregular
 There are three types, if its a **syntax error**, you should focus on the syntax error and fix it, it's usually your misused of syntax.
 if its a **runtime error**, not syntax and no output, you should focus on the logic and find possible segmentation fault, null pointer dereference, etc.
 if its a **result error**, where the expected output mismatch with the actual output, you should focus on the logic and find the wrong part of the assembly code.
+And if the results are close but not the same, you should focus on the numerical values and the order of operations.
 Remember, the source code is always correct, the error is always on the generated assembly code. You should revise the code logic carefully, pay attention to the details.
 When you try to fix the assembly, always recap the source code to make sure you are following the source code logic. That's where you can find the error.
 NEVER add logic that is not in the source code, always follow the source code logic.
@@ -663,16 +669,45 @@ here, '||' a none-zero value is always true, you should strictly follow the code
 just keep them as they are, float as .float, double as .double, no need to convert it to int value.
 Besides, using meaningful labels for the numbers is also helpful. Also, if the value is like 23.0/1.5, etc, you should generate two values instead of precomputed value.
 Also, 23.0f is a float value, 23.0 is a double value, you should generate them with the correct type.
-When computing different types of numerical values, if not explicitly converted, always promote the smaller type to the larger type, then saved the result to the result type.
+And for numbers, it should be based on with or without f to determine the type.
+like, 23.0f is a float, 23.0 is a double, 23 is an int. If assign a double to a float variable, you should load first, then convert, store.
+or, when calculate a(a float) + 32.0(a double), you should convert a to double first, add, then convert back to float.
+similar for other type conversions as well.
 Example:
-C:
-    double a = 23.0;
-    float b = -1.0f;
-x86: 
-.LC_23:
-    .double 23.0    # a's number
-.LC_NEG_ONE:
-    .float -1.0     # b's number
+```c
+#include <stdio.h>
+
+float foo(float fahrenheit) {
+ return ( 5.0 / 9.0) * (fahrenheit - 32);
+}
+```
+```x86
+	.text
+	.globl	foo
+	.type	foo, @function
+foo:
+.LFB0:
+	endbr64
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movss	%xmm0, -12(%rbp)  # store the input fahrenheit value
+	movss	-12(%rbp), %xmm0
+	subss	.LC_32(%rip), %xmm0  # subtract 32, promote int 32 to float because it's used to compute with a float value
+	movsd	.LC_five(%rip), %xmm1  # load the value 5.0 as a double
+	divsd	.LC_nine(%rip), %xmm1  # divide the result by 9.0
+	cvtss2sd	%xmm0, %xmm0  # convert the result to double
+	mulsd	%xmm1, %xmm0  # multiply the result with 5.0/9.0
+	cvtsd2ss	%xmm0, %xmm0  # convert the result back to float
+	popq	%rbp
+	ret
+.LC_32:
+	.float 32.0  # 32 as a float, because it's used to compute directly with a float value
+.LC_five:
+	.double 5.0
+.LC_nine:
+	.double 9.0
+```
+Repeat, do not precompute value make meaningful labels, and use the correct type.
 """,
     "hex_octal": """For hexadecimal or octal values, you don't need to convert them to base-10 value,
 just keep them as they are,

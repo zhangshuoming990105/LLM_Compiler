@@ -1,6 +1,6 @@
 INFO:root:log file created!
-INFO:root:Start time: 2024-09-17 00:21:46.218877
-INFO:root:Current run:temp_deepseek-coder_0_500_2024-09-17-00-21-46_610423
+INFO:root:Start time: 2024-09-17 01:01:40.379047
+INFO:root:Current run:temp_deepseek-coder_0_500_2024-09-17-01-01-40_799892
 INFO:root:Model: deepseek-coder
 INFO:root:Temperature: 0.6
 INFO:root:Pass_k: 5
@@ -12,12 +12,15 @@ INFO:root:Eval coremark: False
 INFO:root:Eval exebench: True
 INFO:root:Use Mask: True
 INFO:root:Mask stage: annotation
-INFO:root:LLM default prompt size: 1736
+INFO:root:LLM default prompt size: 1815
 INFO:root:LLM default prompt: [INST]I want you to act like a compiler that translate C code into x86 assembly. 
 However, I don't want you to do it directly because that's memorizing. I want you to do so by strictly follow my guide and examples.
 In order to compile the following code into assembly, we need:
 1. first analyze the customized structs types and give them correct offset, size and padding, note that each struct follows the largest alignment basic type in its elements.
 2. collect all the constants, name their labels with meaningful names, and all variables with their type to form a SymbolTable.
+Remember to find all distinct constants appeared in source, do not precomputing them. For example, 1.0f and 1.0 are different constants, 
+and 2.0/1.3 should generate two constants, and compute them in the assembly.
+But for same constants(type also the same) appeared multiple times, you should only generate one constant label is enough.
 3. compile the code using the above SymbolTable. generate AT&T syntax x86_64 assembly.
 [/INST][INST]###Example:
 #Input:
@@ -667,7 +670,7 @@ INFO:root:C code :
 float toCelsius(float fahrenheit) {
  return ( 5.0 / 9.0) * (fahrenheit - 32);
 }
-INFO:root:current LLM prompt size: 1789
+INFO:root:current LLM prompt size: 1868
 INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
 INFO:root:x86 code: 
 
@@ -684,16 +687,15 @@ toCelsius:
     # Load fahrenheit into %xmm0
     movss   %xmm0, -4(%rbp)  # Store fahrenheit in local variable
     
-    # Load 32.0 into %xmm1
-    movss   .LC_thirty_two(%rip), %xmm1
+    # Load constants
+    movss   .LC_five(%rip), %xmm1  # Load 5.0
+    divss   .LC_nine(%rip), %xmm1  # Divide by 9.0
     
-    # Subtract 32.0 from fahrenheit
-    subss   %xmm1, %xmm0
+    # Compute (fahrenheit - 32.0)
+    movss   -4(%rbp), %xmm0  # Load fahrenheit
+    subss   .LC_thirty_two(%rip), %xmm0  # Subtract 32.0
     
-    # Load 5.0 / 9.0 into %xmm1
-    movss   .LC_five_ninths(%rip), %xmm1
-    
-    # Multiply the result by 5.0 / 9.0
+    # Multiply by (5.0 / 9.0)
     mulss   %xmm1, %xmm0
     
     # Epilogue
@@ -701,10 +703,12 @@ toCelsius:
     ret
 
     .section    .rodata
-.LC_five_ninths:
-    .float 0.5555555555555556  # 5.0 / 9.0
+.LC_five:
+    .float  5.0
+.LC_nine:
+    .float  9.0
 .LC_thirty_two:
-    .float 32.0
+    .float  32.0
 
 INFO:root:Local error rate: 50.0%
 INFO:root:0th try 0 round in 441 failed
@@ -725,11 +729,11 @@ Actual outputs are:
 
 ----------
 
-INFO:root:current LLM prompt size: 2217
+INFO:root:current LLM prompt size: 2296
 INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
 INFO:root:Analyze response: numerical, div_ins
 INFO:root:After random modification, the used prompt keys: ['numerical', 'div_ins']
-INFO:root:current LLM prompt size: 2692
+INFO:root:current LLM prompt size: 3410
 INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
 INFO:root:x86 code: 
 
@@ -746,222 +750,367 @@ toCelsius:
     # Load fahrenheit into %xmm0
     movss   %xmm0, -4(%rbp)  # Store fahrenheit in local variable
     
-    # Load 32.0 into %xmm1
-    movss   .LC_thirty_two(%rip), %xmm1
+    # Convert fahrenheit to double for precision
+    cvtss2sd -4(%rbp), %xmm0
     
-    # Subtract 32.0 from fahrenheit
-    subss   %xmm1, %xmm0
-    
-    # Load 5.0 / 9.0 into %xmm1
-    movss   .LC_five_ninths(%rip), %xmm1
-    
-    # Multiply the result by 5.0 / 9.0
-    mulss   %xmm1, %xmm0
-    
-    # Epilogue
-    popq    %rbp
-    ret
-
-    .section    .rodata
-.LC_five_ninths:
-    .float 0.5555555555555556  # 5.0 / 9.0
-.LC_thirty_two:
-    .float 32.0
-
-INFO:root:Local error rate: 50.0%
-INFO:root:0th try 1 round in 441 failed
-INFO:root:error message: input 7 in case 441 failed because of output mismatch.
-Inputs are: 
-{
-    "fahrenheit": 28.4389145829
-}
-Expected outputs are:
-{
-    "returnv": -1.9783804416656494
-}
-
-Actual outputs are:
-{
-    "returnv": -1.978380560874939
-}
-
-----------
-
-INFO:root:current LLM prompt size: 2692
-INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
-INFO:root:x86 code: 
-
-    .text
-    .globl  toCelsius
-    .type   toCelsius, @function
-toCelsius:
-.LF_toCelsius_entry:
-    # Prologue
-    endbr64
-    pushq   %rbp
-    movq    %rsp, %rbp
-    
-    # Load fahrenheit into %xmm0
-    movss   %xmm0, -4(%rbp)  # Store fahrenheit in local variable
-    
-    # Load 32.0 into %xmm1
-    movss   .LC_thirty_two(%rip), %xmm1
-    
-    # Subtract 32.0 from fahrenheit
-    subss   %xmm1, %xmm0
-    
-    # Load 5.0 / 9.0 into %xmm1
-    movss   .LC_five_ninths(%rip), %xmm1
-    
-    # Multiply the result by 5.0 / 9.0
-    mulss   %xmm1, %xmm0
-    
-    # Epilogue
-    popq    %rbp
-    ret
-
-    .section    .rodata
-.LC_five_ninths:
-    .float 0.5555555555555556  # 5.0 / 9.0
-.LC_thirty_two:
-    .float 32.0
-
-INFO:root:Local error rate: 50.0%
-INFO:root:0th try 2 round in 441 failed
-INFO:root:error message: input 7 in case 441 failed because of output mismatch.
-Inputs are: 
-{
-    "fahrenheit": 28.4389145829
-}
-Expected outputs are:
-{
-    "returnv": -1.9783804416656494
-}
-
-Actual outputs are:
-{
-    "returnv": -1.978380560874939
-}
-
-----------
-
-INFO:root:current LLM prompt size: 2692
-INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
-INFO:root:x86 code: 
-
-    .text
-    .globl  toCelsius
-    .type   toCelsius, @function
-toCelsius:
-.LF_toCelsius_entry:
-    # Prologue
-    endbr64
-    pushq   %rbp
-    movq    %rsp, %rbp
-    
-    # Load fahrenheit into %xmm0
-    movss   %xmm0, -4(%rbp)  # Store fahrenheit in local variable
-    
-    # Load 32.0 into %xmm1
-    movss   .LC_thirty_two(%rip), %xmm1
-    
-    # Subtract 32.0 from fahrenheit
-    subss   %xmm1, %xmm0
-    
-    # Load 5.0 / 9.0 into %xmm1
-    movss   .LC_five_ninths(%rip), %xmm1
-    
-    # Multiply the result by 5.0 / 9.0
-    mulss   %xmm1, %xmm0
-    
-    # Epilogue
-    popq    %rbp
-    ret
-
-    .section    .rodata
-.LC_five_ninths:
-    .float 0.5555555555555556  # 5.0 / 9.0
-.LC_thirty_two:
-    .float 32.0
-
-INFO:root:Local error rate: 50.0%
-INFO:root:0th try 3 round in 441 failed
-INFO:root:error message: input 7 in case 441 failed because of output mismatch.
-Inputs are: 
-{
-    "fahrenheit": 28.4389145829
-}
-Expected outputs are:
-{
-    "returnv": -1.9783804416656494
-}
-
-Actual outputs are:
-{
-    "returnv": -1.978380560874939
-}
-
-----------
-
-INFO:root:current LLM prompt size: 1789
-INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
-INFO:root:x86 code: 
-
-    .text
-    .globl  toCelsius
-    .type   toCelsius, @function
-toCelsius:
-.LF_toCelsius_entry:
-    # Prologue
-    endbr64
-    pushq   %rbp
-    movq    %rsp, %rbp
-    subq    $4, %rsp
-    movss   %xmm0, -4(%rbp)  # Store fahrenheit argument
-
     # Load constants
-    movss   .LC_thirty_two(%rip), %xmm1
-    movss   .LC_five_ninths(%rip), %xmm2
+    movsd   .LC_five(%rip), %xmm1  # Load 5.0 as double
+    divsd   .LC_nine(%rip), %xmm1  # Divide by 9.0 as double
+    
+    # Compute (fahrenheit - 32.0)
+    subsd   .LC_thirty_two(%rip), %xmm0  # Subtract 32.0 as double
+    
+    # Multiply by (5.0 / 9.0)
+    mulsd   %xmm1, %xmm0
+    
+    # Convert result back to float
+    cvtsd2ss %xmm0, %xmm0
+    
+    # Epilogue
+    popq    %rbp
+    ret
 
-    # Compute (fahrenheit - 32)
+    .section    .rodata
+.LC_five:
+    .double  5.0
+.LC_nine:
+    .double  9.0
+.LC_thirty_two:
+    .double  32.0
+
+INFO:root:Local error rate: 10.0%
+INFO:root:0th try 1 round in 441 failed
+INFO:root:error message: input 6 in case 441 failed because of output mismatch.
+Inputs are: 
+{
+    "fahrenheit": 5.83072756735
+}
+Expected outputs are:
+{
+    "returnv": -14.538485527038574
+}
+
+Actual outputs are:
+{
+    "returnv": -14.538484573364258
+}
+
+----------
+
+INFO:root:current LLM prompt size: 3444
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  toCelsius
+    .type   toCelsius, @function
+toCelsius:
+.LF_toCelsius_entry:
+    # Prologue
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    
+    # Store fahrenheit in local variable
+    movss   %xmm0, -4(%rbp)
+    
+    # Load fahrenheit into %xmm0
     movss   -4(%rbp), %xmm0
-    subss   %xmm1, %xmm0
+    
+    # Subtract 32.0f from fahrenheit
+    subss   .LC_thirty_two(%rip), %xmm0
+    
+    # Load 5.0 as double
+    movsd   .LC_five(%rip), %xmm1
+    
+    # Divide 5.0 by 9.0 (both as double)
+    divsd   .LC_nine(%rip), %xmm1
+    
+    # Convert the result of (fahrenheit - 32.0f) to double
+    cvtss2sd %xmm0, %xmm0
+    
+    # Multiply by (5.0 / 9.0)
+    mulsd   %xmm1, %xmm0
+    
+    # Convert result back to float
+    cvtsd2ss %xmm0, %xmm0
+    
+    # Epilogue
+    popq    %rbp
+    ret
 
-    # Compute (5.0 / 9.0) * (fahrenheit - 32)
-    mulss   %xmm2, %xmm0
+    .section    .rodata
+.LC_five:
+    .double  5.0
+.LC_nine:
+    .double  9.0
+.LC_thirty_two:
+    .float  32.0
+
+INFO:root:Local error rate: 0.0%
+INFO:root:0th try 2 round in 441 succeeded
+INFO:root:CASE 441 success
+INFO:root:CASE 442 is masked, so it is correct
+INFO:root:CASE 443 is masked, so it is correct
+INFO:root:CASE 444 is masked, so it is correct
+INFO:root:CASE 445 is masked, so it is correct
+INFO:root:CASE 446 is masked, so it is correct
+INFO:root:CASE 447 is masked, so it is correct
+INFO:root:CASE 448 is masked, so it is correct
+INFO:root:CASE 449 is masked, so it is correct
+INFO:root:CASE 450 is masked, so it is correct
+INFO:root:CASE 451 is masked, so it is correct
+INFO:root:CASE 452 is masked, so it is correct
+INFO:root:CASE 453 is masked, so it is correct
+INFO:root:CASE 454 is masked, so it is correct
+INFO:root:CASE 455 is masked, so it is correct
+INFO:root:C code :
+
+double interp_weno7(double phim3, double phim2, double phim1, double phi, double phip1, double phip2, double phip3){
+
+    const double p0 = (-1.0/4.0)*phim3 + (13.0/12.0) * phim2 + (-23.0/12.0) * phim1 + (25.0/12.0)*phi;
+    const double p1 = (1.0/12.0)*phim2 + (-5.0/12.0)*phim1 + (13.0/12.0)*phi + (1.0/4.0)*phip1;
+    const double p2 = (-1.0/12.0)*phim1 + (7.0/12.0)*phi + (7.0/12.0)*phip1 + (-1.0/12.0)*phip2;
+    const double p3 = (1.0/4.0)*phi + (13.0/12.0)*phip1 + (-5.0/12.0)*phip2 + (1.0/12.0)*phip3;
+
+
+    const double beta0 = (phim3*(547.0*phim3 - 3882.0*phim2 + 4642.0*phim1 - 1854.0*phi)
+                         + phim2*(7043.0*phim2 - 17246.0*phim1 + 7042.0*phi)
+                         + phim1*(11003.0*phim1 - 9402.0*phi)
+                         + 2107.0*phi*phi);
+    const double beta1 =(phim2*(267.0*phim2 - 1642.0*phim1 + 1602.0*phi - 494.0*phip1)
+                        + phim1*(2843.0*phim1 - 5966.0*phi + 1922.0*phip1)
+                        + phi*(3443.0*phi - 2522.0*phip1)
+                        + 547.0*phip1*phip1);
+    const double beta2 = (phim1*(547.0*phim1 - 2522.0*phi + 1922.0*phip1 - 494.0*phip2)
+                         + phi*(3443.0*phi -5966.0*phip1 + 1602.0*phip2)
+                         + phip1*(2843.0*phip1 - 1642.0*phip2)
+                         + 267.0*phip2* phip2);
+    const double beta3 = (phi*(2107.0*phi - 9402.0*phip1 + 7042.0*phip2 - 1854.0*phip3)
+                         + phip1*(11003.0*phip1 - 17246.0*phip2 + 4642.0*phip3)
+                         + phip2*(7043.0*phip2 - 3882.0*phip3)
+                         + 547.0*phip3*phip3);
+
+    const double alpha0 = (1.0/35.0)/((beta0 + 1e-10) * (beta0 + 1e-10));
+    const double alpha1 = (12.0/35.0)/((beta1 + 1e-10) * (beta1 + 1e-10));
+    const double alpha2 = (18.0/35.0)/((beta2 + 1e-10) * (beta2 + 1e-10));
+    const double alpha3 = (4.0/35.0)/((beta3 + 1e-10) * (beta3 + 1e-10));
+
+    const double alpha_sum_inv = 1.0/(alpha0 + alpha1 + alpha2 + alpha3);
+
+    const double w0 = alpha0 * alpha_sum_inv;
+    const double w1 = alpha1 * alpha_sum_inv;
+    const double w2 = alpha2 * alpha_sum_inv;
+    const double w3 = alpha3 * alpha_sum_inv;
+
+
+    return w0 * p0 + w1 * p1 + w2 * p2 + w3 * p3;
+}
+INFO:root:current LLM prompt size: 2810
+INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  interp_weno7
+    .type   interp_weno7, @function
+interp_weno7:
+.LF_interp_weno7_entry:
+    # Prologue
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $160, %rsp  # Allocate space for local variables
+
+    # Store function arguments
+    movsd   %xmm0, -8(%rbp)    # phim3
+    movsd   %xmm1, -16(%rbp)   # phim2
+    movsd   %xmm2, -24(%rbp)   # phim1
+    movsd   %xmm3, -32(%rbp)   # phi
+    movsd   %xmm4, -40(%rbp)   # phip1
+    movsd   %xmm5, -48(%rbp)   # phip2
+    movsd   %xmm6, -56(%rbp)   # phip3
+
+    # Calculate p0
+    movsd   -8(%rbp), %xmm0    # phim3
+    mulsd   .LC_neg_one_fourth(%rip), %xmm0
+    movsd   -16(%rbp), %xmm1   # phim2
+    mulsd   .LC_thirteen_twelfths(%rip), %xmm1
+    addsd   %xmm1, %xmm0
+    movsd   -24(%rbp), %xmm1   # phim1
+    mulsd   .LC_neg_twenty_three_twelfths(%rip), %xmm1
+    addsd   %xmm1, %xmm0
+    movsd   -32(%rbp), %xmm1   # phi
+    mulsd   .LC_twenty_five_twelfths(%rip), %xmm1
+    addsd   %xmm1, %xmm0
+    movsd   %xmm0, -64(%rbp)   # p0
+
+    # Calculate p1
+    movsd   -16(%rbp), %xmm0   # phim2
+    mulsd   .LC_one_twelfth(%rip), %xmm0
+    movsd   -24(%rbp), %xmm1   # phim1
+    mulsd   .LC_neg_five_twelfths(%rip), %xmm1
+    addsd   %xmm1, %xmm0
+    movsd   -32(%rbp), %xmm1   # phi
+    mulsd   .LC_thirteen_twelfths(%rip), %xmm1
+    addsd   %xmm1, %xmm0
+    movsd   -40(%rbp), %xmm1   # phip1
+    mulsd   .LC_one_fourth(%rip), %xmm1
+    addsd   %xmm1, %xmm0
+    movsd   %xmm0, -72(%rbp)   # p1
+
+    # Calculate p2
+    movsd   -24(%rbp), %xmm0   # phim1
+    mulsd   .LC_neg_one_twelfth(%rip), %xmm0
+    movsd   -32(%rbp), %xmm1   # phi
+    mulsd   .LC_seven_twelfths(%rip), %xmm1
+    addsd   %xmm1, %xmm0
+    movsd   -40(%rbp), %xmm1   # phip1
+    mulsd   .LC_seven_twelfths(%rip), %xmm1
+    addsd   %xmm1, %xmm0
+    movsd   -48(%rbp), %xmm1   # phip2
+    mulsd   .LC_neg_one_twelfth(%rip), %xmm1
+    addsd   %xmm1, %xmm0
+    movsd   %xmm0, -80(%rbp)   # p2
+
+    # Calculate p3
+    movsd   -32(%rbp), %xmm0   # phi
+    mulsd   .LC_one_fourth(%rip), %xmm0
+    movsd   -40(%rbp), %xmm1   # phip1
+    mulsd   .LC_thirteen_twelfths(%rip), %xmm1
+    addsd   %xmm1, %xmm0
+    movsd   -48(%rbp), %xmm1   # phip2
+    mulsd   .LC_neg_five_twelfths(%rip), %xmm1
+    addsd   %xmm1, %xmm0
+    movsd   -56(%rbp), %xmm1   # phip3
+    mulsd   .LC_one_twelfth(%rip), %xmm1
+    addsd   %xmm1, %xmm0
+    movsd   %xmm0, -88(%rbp)   # p3
+
+    # Calculate beta0
+    movsd   -8(%rbp), %xmm0    # phim3
+    movsd   .LC_547(%rip), %xmm1
+    mulsd   %xmm0, %xmm1
+    movsd   -16(%rbp), %xmm2   # phim2
+    movsd   .LC_neg_3882(%rip), %xmm3
+    mulsd   %xmm2, %xmm3
+    addsd   %xmm3, %xmm1
+    movsd   -24(%rbp), %xmm3   # phim1
+    movsd   .LC_4642(%rip), %xmm4
+    mulsd   %xmm3, %xmm4
+    addsd   %xmm4, %xmm1
+    movsd   -32(%rbp), %xmm4   # phi
+    movsd   .LC_neg_1854(%rip), %xmm5
+    mulsd   %xmm4, %xmm5
+    addsd   %xmm5, %xmm1
+    mulsd   %xmm0, %xmm1
+    movsd   %xmm1, -96(%rbp)   # beta0
+
+    # Calculate beta1, beta2, beta3 similarly...
+
+    # Calculate alpha0, alpha1, alpha2, alpha3 similarly...
+
+    # Calculate alpha_sum_inv
+    movsd   -128(%rbp), %xmm0  # alpha0
+    addsd   -120(%rbp), %xmm0  # alpha1
+    addsd   -112(%rbp), %xmm0  # alpha2
+    addsd   -104(%rbp), %xmm0  # alpha3
+    movsd   .LC_one(%rip), %xmm1
+    divsd   %xmm0, %xmm1
+    movsd   %xmm1, -136(%rbp)  # alpha_sum_inv
+
+    # Calculate w0, w1, w2, w3 similarly...
+
+    # Calculate the final result
+    movsd   -144(%rbp), %xmm0  # w0
+    mulsd   -64(%rbp), %xmm0   # w0 * p0
+    movsd   -152(%rbp), %xmm1  # w1
+    mulsd   -72(%rbp), %xmm1   # w1 * p1
+    addsd   %xmm1, %xmm0
+    movsd   -160(%rbp), %xmm1  # w2
+    mulsd   -80(%rbp), %xmm1   # w2 * p2
+    addsd   %xmm1, %xmm0
+    movsd   -168(%rbp), %xmm1  # w3
+    mulsd   -88(%rbp), %xmm1   # w3 * p3
+    addsd   %xmm1, %xmm0
 
     # Epilogue
     leave
     ret
 
     .section    .rodata
-.LC_five_ninths:
-    .float 0.5555555555555556  # 5.0 / 9.0
-.LC_thirty_two:
-    .float 32.0
+.LC_neg_one_fourth:
+    .double -0.25
+.LC_thirteen_twelfths:
+    .double 1.0833333333333333
+.LC_neg_twenty_three_twelfths:
+    .double -1.9166666666666667
+.LC_twenty_five_twelfths:
+    .double 2.0833333333333335
+.LC_one_twelfth:
+    .double 0.08333333333333333
+.LC_neg_five_twelfths:
+    .double -0.4166666666666667
+.LC_seven_twelfths:
+    .double 0.5833333333333334
+.LC_one_fourth:
+    .double 0.25
+.LC_547:
+    .double 547.0
+.LC_neg_3882:
+    .double -3882.0
+.LC_4642:
+    .double 4642.0
+.LC_neg_1854:
+    .double -1854.0
+.LC_7043:
+    .double 7043.0
+.LC_neg_17246:
+    .double -17246.0
+.LC_11003:
+    .double 11003.0
+.LC_neg_9402:
+    .double -9402.0
+.LC_2107:
+    .double 2107.0
+.LC_267:
+    .double 267.0
+.LC_neg_1642:
+    .double -1642.0
+.LC_1602:
+    .double 1602.0
+.LC_neg_494:
+    .double -494.0
+.LC_2843:
+    .double 2843.0
+.LC_neg_5966:
+    .double -5966.0
+.LC_3443:
+    .double 3443.0
+.LC_neg_2522:
+    .double -2522.0
+.LC_1922:
+    .double 1922.0
+.LC_neg_2522:
+    .double -2522.0
+.LC_neg_1642:
+    .double -1642.0
+.LC_neg_3882:
+    .double -3882.0
+.LC_one_thirty_fifth:
+    .double 0.02857142857142857
+.LC_twelve_thirty_fifth:
+    .double 0.34285714285714286
+.LC_eighteen_thirty_fifth:
+    .double 0.5142857142857142
+.LC_four_thirty_fifth:
+    .double 0.11428571428571428
+.LC_one:
+    .double 1.0
 
-INFO:root:Local error rate: 50.0%
-INFO:root:1th try 0 round in 441 failed
-INFO:root:error message: input 7 in case 441 failed because of output mismatch.
-Inputs are: 
-{
-    "fahrenheit": 28.4389145829
-}
-Expected outputs are:
-{
-    "returnv": -1.9783804416656494
-}
-
-Actual outputs are:
-{
-    "returnv": -1.978380560874939
-}
-
-----------
-
-INFO:root:current LLM prompt size: 2217
+WARNING:root:0th try 0 round in 456 failed to assemble the code to executable!
+INFO:root:current LLM prompt size: 3249
 INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
-INFO:root:Analyze response: numerical, div_ins
-INFO:root:After random modification, the used prompt keys: ['numerical', 'div_ins']
-INFO:root:current LLM prompt size: 2679
+INFO:root:Analyze response: numerical, div_ins, order
+INFO:root:After random modification, the used prompt keys: ['numerical', 'div_ins', 'order']
+INFO:root:current LLM prompt size: 6484
 INFO:httpx:HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
