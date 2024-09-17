@@ -6,6 +6,7 @@ import os
 import logging
 import subprocess
 from prompts import (
+    lego_prompts,
     compiler_annotation_prompts,
     compiler_prompts,
     compiler_short_prompts,
@@ -348,6 +349,7 @@ class Compiler(Chat):
         model="mixtral-8x7b-instruct",
         use_one_shot_prompt=False,
         use_zero_shot_prompt=False,
+        use_lego_prompt=False,
         use_local=False,
         temperature=0.3,
         peft_model="",
@@ -356,7 +358,8 @@ class Compiler(Chat):
             model, use_local=use_local, temperature=temperature, peft_model=peft_model
         )
         self.full_prompt = (
-            compiler_annotation_prompts["description"] + compiler_annotation_prompts["example"]
+            compiler_annotation_prompts["description"]
+            + compiler_annotation_prompts["example"]
             # compiler_prompts["general"]
             # + compiler_prompts["mission"]
             # + compiler_prompts["step1"]
@@ -367,6 +370,9 @@ class Compiler(Chat):
             # + compiler_prompts["step3_example"]
             # + compiler_prompts["recap"]
         )
+
+        self.lego_prompt = lego_prompts["description"] + lego_prompts["example"]
+
         self.simplified_prompt = (
             compiler_short_prompts["general"]
             + compiler_short_prompts["mission"]
@@ -415,10 +421,10 @@ class Compiler(Chat):
         # that the next generation will be able to understand
         # for repair, we don't need the one-shot prompt in generation.
         # our focus is fixing the error.
-        
-#         If it's an compilation error, based on the error message, only fix on the line that reports error.
-# If it's a runtime error, think about the logic of the code line by line, and try to locate it.
-# If it's a result error, simulate the execution of the code in your mind, and find where it goes wrong.
+
+        #         If it's an compilation error, based on the error message, only fix on the line that reports error.
+        # If it's a runtime error, think about the logic of the code line by line, and try to locate it.
+        # If it's a result error, simulate the execution of the code in your mind, and find where it goes wrong.
         prompt = f"""The following assembly code has an error, based on the error message, fix the error in the assembly code.
 we also provide the original C code for your reference.
 Majorly FOCUS on the error message, and fix the error in the assembly code.
@@ -549,7 +555,7 @@ Extra information:
         self.message_reset()
         return rsp
 
-    def simulate(self, code, c_src="",init_value=""):
+    def simulate(self, code, c_src="", init_value=""):
         prompt = """Below is a x86 assembly code that will be executed, 
 your job is to simulate the execution of the code from the entrypoint of the function.
 after every instruction simulation, output the (modified)register values and memory values.

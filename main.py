@@ -61,7 +61,7 @@ cached_pass_id: dict = {
     "codestral:22b-v0.1-f16": {
         "baseline": [1, 5, 9, 16, 19, 20, 30, 33, 34, 39, 42, 45, 51, 53, 59, 60, 73, 74, 76, 84, 86, 87, 88, 93, 95, 98, 101, 109, 110, 113, 114, 121, 124, 126, 128, 133, 136, 148, 150, 159, 170, 183, 187, 188, 191, 194, 196, 198, 202, 207, 208, 209, 214, 216, 219, 220, 224, 226, 228, 240, 245, 256, 258, 260, 261, 266, 270, 274, 277, 278, 284, 285, 287, 293, 294, 297, 299, 300, 301, 311, 318, 320, 322, 323, 324, 329, 333, 344, 347, 349, 353, 356, 358, 359, 362, 363, 365, 367, 368, 373, 376, 379, 380, 381, 385, 395, 400, 404, 409, 410, 413, 416, 417, 420, 422, 425, 429, 430, 431, 434, 441, 442, 455, 456, 458, 459, 461, 465, 468, 473, 475, 480, 484, 486, 489, 490, 491, 493, 495, 497],
         "pass@5": [1, 5, 9, 16, 19, 30, 39, 42, 51, 53, 59, 60, 73, 74, 84, 86, 87, 88, 95, 98, 101, 109, 110, 113, 121, 124, 126, 128, 133, 136, 150, 159, 170, 187, 194, 202, 207, 208, 209, 216, 219, 224, 228, 240, 245, 260, 261, 266, 270, 274, 277, 278, 284, 287, 293, 297, 299, 300, 301, 318, 324, 329, 333, 344, 347, 349, 353, 356, 359, 363, 365, 367, 368, 373, 379, 381, 395, 404, 409, 410, 416, 420, 422, 425, 429, 430, 431, 434, 441, 442, 455, 456, 459, 461, 468, 473, 475, 484, 489, 490, 493, 495, 497],
-        "fix": None,
+        "fix": [9, 30, 42, 51, 53, 59, 73, 86, 88, 95, 98, 101, 109, 113, 121, 159, 187, 202, 207, 209, 219, 228, 240, 245, 260, 261, 270, 277, 284, 287, 301, 318, 324, 329, 333, 344, 349, 353, 356, 367, 368, 381, 409, 410, 422, 425, 429, 431, 441, 442, 456, 459, 461, 468, 493, 495, 497],
         "annotation": None,
         "LEGO": None,
     }
@@ -296,6 +296,7 @@ def c_compiler_exebench(
     end_id=100,
     use_one_shot_prompt=False,
     use_zero_shot_prompt=False,
+    use_lego_prompt=False,
     use_local=False,
     temperature=0.3,
     peft_model="",
@@ -315,6 +316,7 @@ def c_compiler_exebench(
         model,
         use_one_shot_prompt=use_one_shot_prompt,
         use_zero_shot_prompt=use_zero_shot_prompt,
+        use_lego_prompt=use_lego_prompt,
         use_local=use_local,
         temperature=temperature,
         peft_model=peft_model,
@@ -912,6 +914,9 @@ if __name__ == "__main__":
     clear_workspace: bool = S.clear_workspace
     use_mask: bool = S.use_mask
     mask_stage: str = S.mask_stage
+    use_lego_prompt = False
+    use_one_shot_prompt = True
+    use_zero_shot_prompt = False
     if prompt_style == "one":
         use_one_shot_prompt = True
         use_zero_shot_prompt = False
@@ -921,9 +926,10 @@ if __name__ == "__main__":
     elif prompt_style == "cot":
         use_one_shot_prompt = False
         use_zero_shot_prompt = False
-    else:
-        use_one_shot_prompt = False
-        use_zero_shot_prompt = False
+    elif prompt_style == "lego":
+        use_lego_prompt = True
+        
+        
 
     # check if the model is available
     ALL_MODELS = (
@@ -1011,6 +1017,7 @@ if __name__ == "__main__":
             end_id=end_id,
             use_one_shot_prompt=use_one_shot_prompt,
             use_zero_shot_prompt=use_zero_shot_prompt,
+            use_lego_prompt=use_lego_prompt,
             use_local=use_local,
             temperature=temperature,
             peft_model=peft_model,

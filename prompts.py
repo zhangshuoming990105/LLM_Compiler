@@ -313,6 +313,268 @@ foo:
 [/INST]""",
 }
 
+lego_prompts = {
+    "description": """[INST]I want you to act like a compiler that translate C code into x86 assembly. 
+However, I don't want you to do it directly because that's memorizing. I want you to do so by strictly follow my guide and examples.
+In order to compile the following code into assembly, we need:
+1. first analyze the customized structs types and give them correct offset, size and padding, note that each struct follows the largest alignment basic type in its elements.
+2. collect all the constants, name their labels with meaningful names, and all variables with their type to form a SymbolTable.
+Remember to find all distinct constants appeared in source, do not precomputing them. For example, 1.0f and 1.0 are different constants, 
+and 2.0/1.3 should generate two constants, and compute them in the assembly.
+But for same constants(type also the same) appeared multiple times, you should only generate one constant label is enough.
+3. based on the code control structure, split the program into control blocks(like a if() {}, for() {}, while() {}, or a meaningful group of sequential stmts, etc),
+we should first split the code from the outmost blocks, if one controlblock is too large, then we should consider to split it into smaller blocks.
+When you split the code, you should maintain the SymbolTable and the constants, and the struct annotation.
+And most importantly, you should organize the splitted blocks into a list, order them in the order of the code execution.
+Then you should also generate labels and comments to indicate the start and end of each splitted block.
+4. Finally, you should output the x86 assembly code based on the splitted blocks, and the SymbolTable.
+
+[/INST]""",
+    "example": """[INST]###Example:
+#Input:
+```c
+#include <stdio.h>
+
+typedef struct {
+    int company_id;
+    char company_name[10];
+} Company;
+
+typedef struct {
+    int person_age;
+    char person_name[10];
+    long person_id;
+    Company *person_company;
+} Person;
+
+double dval = 1.0;
+static int arr[5] = {1, 2, 3, 4, 5};
+
+void foo(Person *person1, Person *person2) {
+    printf("enter foo\n");
+    if(person1->person_age > person2->person_age) {
+        double d = -1.0;
+        dval += d;
+        person1->person_age += 5;
+    } else {
+        person2->person_age += 5;
+    }
+    dval += 2.0;
+    arr[0] += 1;
+    printf("exit foo\n");
+}
+
+```
+#Step1, Let's first get the struct annotation:
+# 1. struct annotation:
+```plaintext
+typedef struct {
+    int company_id; // offset 0, size 4
+    char company_name[10]; // offset 4, size 10, pad 2 to 4 byte alignment
+} Company;  // total size 16, alignment 4, 16%4=0
+typedef struct {
+    int person_age; // offset 0, size 4
+    char person_name[10]; // offset 4, size 10, pad 2 to 4 byte alignment
+    long person_id; // offset 16, size 8
+    Company *person_company; // offset 24, size 8
+} Person; // total size 32, alignment 8, 32%8=0
+```
+#Step2, we should based on the struct annotation, find all symbol instances to generate the SymbolTable:
+# 2. SymbolTable:
+```plaintext
+- Constants:
+-- literals:
+.LC_enter_foo_str: 
+    .string "enter foo\n"
+.LC_exit_foo_str:
+    .string "exit foo\n"
+-- float and double values:
+double: 1.0, 2.0, -1.0
+float: none
+## NOTE that 1.0f and 1.0 are different constants, 
+## and 2.0/1.3 should generate two constants, and compute them in the assembly.
+
+- Variables:
+-- Global variables: 
+    double dval
+-- Static variables: 
+    int arr[10]
+-- Local variables:
+    double d
+-- Function arguments:
+person1: Person *, size 8
+person2: Person *, size 8
+
+- Warp these values to generate STACK ALLOCATION(local + arguments):
+#double d: -8(%rbp), [-8, 0), size 8
+#Person *person1: -16(%rbp), [-16, -8), size 8
+#Person *person2: -24(%rbp), [-24, -16), size 8
+```
+#Step3, now we should split the code into control blocks, we do this by annotate the source code first:
+## Annotated C code for splitting:
+```c
+// Block 1, global, static, local_constants initialization
+#include <stdio.h>
+
+typedef struct {
+    int company_id;
+    char company_name[10];
+} Company;
+
+typedef struct {
+    int person_age;
+    char person_name[10];
+    long person_id;
+    Company *person_company;
+} Person;
+
+double dval = 1.0;
+static int arr[5] = {1, 2, 3, 4, 5};
+
+void foo(Person *person1, Person *person2) {
+    // Block 2, function prologue + followup sequential stmts
+    printf("enter foo\n");
+    // Block 3, if block 1
+    if(person1->person_age > person2->person_age) {
+        double d = -1.0;
+        dval += d;
+        person1->person_age += 5;
+    } else {
+        person2->person_age += 5;
+    }
+    // Block 4, followup sequential stmts + function epilogue
+    dval += 2.0;
+    arr[0] += 1;
+    printf("exit foo\n");
+}
+```
+## output block numbers:
+```plaintext
+1,2,3,4
+```
+## Then we should generate the splitted blocks one by one:
+
+
+#Step4, now we can compile the code using the SymbolTable.
+```x86
+## Block 1-begin
+    .text
+# Global variables
+    .globl  dval
+    .data
+    .align 8
+    .type   dval, @object
+    .size   dval, 8
+dval:
+    .double 1.0  # double dval = 1.0;
+
+# Static variables
+    .align 16
+    .type   arr, @object
+    .size   arr, 20
+arr:
+    .long   1  # static int arr[5] = {1, 2, 3, 4, 5};
+    .long   2
+    .long   3
+    .long   4
+    .long   5
+
+# Local constants in function
+    .section    .rodata
+# String literals
+.LC_enter_foo_str:
+    .string "enter foo\n"  # For printf("enter foo\n");
+.LC_exit_foo_str:
+    .string "exit foo\n"   # For printf("exit foo\n");
+    .align 8
+# Numeric constants
+.LC_neg_one:
+    .double -1.0  # For double d = -1.0;
+
+    .align 8
+.LC_two:
+    .double 2.0  # For dval += 2.0;
+## Block 1-end
+
+## Block 2_begin
+# Function body
+    .text
+    .globl  foo
+    .type   foo, @function
+foo:
+.LF_foo_entry:
+	# Prologue
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $24, %rsp
+    movq    %rdi, -16(%rbp)  # Store person1 pointer
+    movq    %rsi, -24(%rbp)  # Store person2 pointer
+    
+    # printf("enter foo\n");
+    leaq    .LC_enter_foo_str(%rip), %rdi
+    movb	$0, %al
+    call    printf@PLT
+## Block 2_end
+## Block 3_begin
+    
+    # if(person1->person_age > person2->person_age)
+    movq    -16(%rbp), %rax
+    movl    (%rax), %edx  # person1->person_age
+    movq    -24(%rbp), %rax
+    movl    (%rax), %eax  # person2->person_age
+    cmpl    %eax, %edx
+    jle     .L_if1_else
+    
+    # Inside if block
+    movsd   .LC_neg_one(%rip), %xmm0
+    movsd   %xmm0, -8(%rbp)  # double d = -1.0;
+    movsd   dval(%rip), %xmm0
+    addsd   -8(%rbp), %xmm0
+    movsd   %xmm0, dval(%rip)  # dval += d;
+    
+    movq    -16(%rbp), %rax
+    movl    (%rax), %eax
+    leal    5(%rax), %edx
+    movq    -16(%rbp), %rax
+    movl    %edx, (%rax)  # person1->person_age += 5;
+    jmp     .L_if1_end
+    
+.L_if1_else:
+    # Inside else block
+    movq    -24(%rbp), %rax
+    movl    (%rax), %eax
+    leal    5(%rax), %edx
+    movq    -24(%rbp), %rax
+    movl    %edx, (%rax)  # person2->person_age += 5;
+
+.L_if1_end:
+    # After if-else block
+## Block 3_end
+## Block 4_begin
+    movsd   dval(%rip), %xmm1
+    movsd   .LC_two(%rip), %xmm0
+    addsd   %xmm1, %xmm0
+    movsd   %xmm0, dval(%rip)  # dval += 2.0;
+    
+    movl    arr(%rip), %eax
+    addl    $1, %eax
+    movl    %eax, arr(%rip)  # arr[0] += 1;
+    
+    # printf("exit foo\n");
+    leaq    .LC_exit_foo_str(%rip), %rdi
+    movb	$0, %al
+    call    printf@PLT
+    nop
+	
+	# Epilogue
+    leave
+    ret
+## Block 4_end
+```
+[/INST]
+""",
+}
 
 compiler_short_prompts = {
     "general": """[INST]you are a helpful AI assistant, you will think carefully and follow the instructions to assist the user.[/INST]""",
