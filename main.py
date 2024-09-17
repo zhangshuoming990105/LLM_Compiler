@@ -27,6 +27,7 @@ cached_pass_id: dict = {
         "fix": [32, 219, 228, 240, 260, 333, 358, 368, 410, 441, 456],
         "annotation": [456], # 368-output limit, 228-needle, 441-float conversion
         "LEGO": None,
+        "coremark_baseline": ['core_bench_state', 'core_list_insert_new', 'core_list_remove', 'matrix_mul_matrix_bitextract', 'core_bench_matrix', 'matrix_test', 'core_list_undo_remove', 'matrix_mul_vect', 'iterate', 'matrix_mul_matrix', 'get_time', 'crcu32', 'ee_isdigit', 'matrix_mul_const', 'check_data_types', 'core_init_matrix', 'core_list_mergesort', 'core_list_init', 'core_bench_list',  'core_state_transition', 'core_init_state'], # except main
     },
     "deepseek-coder": {
         "baseline": [9, 33, 42, 53, 59, 60, 73, 84, 86, 93, 95, 98, 101, 109, 113, 121, 133, 170, 187, 194, 207, 209, 214, 219, 224, 228, 240, 245, 256, 277, 287, 299, 311, 318, 324, 347, 356, 363, 365, 367, 368, 380, 381, 409, 410, 420, 422, 429, 431, 441, 442, 456, 461, 468, 473, 475, 489, 491, 495],
@@ -34,6 +35,7 @@ cached_pass_id: dict = {
         "fix": [84, 101, 113, 202, 240, 318, 368, 409, 410, 431, 441, 456],
         "annotation": [113, 240, 318, 456], # 368, 441 fixed
         "LEGO": None,
+        "coremark_baseline": ['core_init_matrix', 'get_time', 'calc_func', 'core_list_insert_new', 'core_list_remove', 'core_list_mergesort', 'crcu8', 'matrix_add_const', 'core_list_init', 'core_state_transition', 'core_bench_matrix', 'core_list_reverse', 'matrix_test', 'core_bench_list', 'cmp_idx', 'matrix_sum', 'core_list_undo_remove', 'core_bench_state', 'iterate'], # except main
     },
     # 3.5-sonnet will bypass 3-haiku's passed cases to speedup
     "claude-3-5-sonnet-20240620": {
@@ -289,6 +291,128 @@ Actual outputs are:
         logging.info(f"error message: {error_message}")
         return False, error_message
 
+def categorize_function_complexity(c_src: str, model: Chat) -> str:
+    prompt = """Please categorize the complexity of the following C function.
+Return just the category name, which is one of {"simple", "medium", "complex"},
+and put it between "```plaintext" and "```" tags.
+Simple programs are those with very simple operations, like addition, subtraction, etc, their control flow is simple.
+Usually don't have more than 10 lines of code in its function.
+Simple example:
+#Input:
+```c
+int foo(int a, int b) {
+    return a + b;
+}
+```
+#Output:
+```plaintext
+simple
+```
+Medium programs at least have some loops, or some simple data structures, like arrays.
+and they may have some simple control flow, like if-else, or switch-case.
+But majorly, they are not complex.
+Medium example:
+#Input:
+```c
+void bar(int a[], int n) {
+    for (int i = 0; i < n; i++) {
+        a[i] = i * i + 2*i + 1;
+    }
+}
+#Output:
+```plaintext
+medium
+```
+Complex programs are those with complex control flow, or custom data structures, like linked list, or tree.
+And they may have multiple funcall, very long function body, complicated expression evaluation, etc.
+Complex example:
+#Input:
+```c
+#include <stdio.h>
+float a[10][10];
+float b[10][10];
+float c[10][10];
+float baz() {
+    float max = -10000.0f;
+    for(int i = 0; i < 10; i++) {
+        for(int j = 0; j < 10; j++) {
+            for(int k = 0; k < 10; k++) {
+                c[i][j] += a[i][k] * b[k][j];
+            }
+            if (c[i][j] > max) {
+                max = c[i][j];
+            }
+        }
+    }
+    return max;
+}
+#Output:
+```plaintext
+complex
+```
+"""
+    prompt += f"#Input:\n```c\n{c_src}\n```\n"
+    model.chat(user_input=prompt)
+    rsp = model.messages[-1]["content"]
+    model.message_reset()
+    logging.debug(f"Raw response: {rsp}")
+    # grab the category
+    category = rsp.split("```plaintext")[1].split("```")[0].strip()
+    if category not in {"simple", "medium", "complex"}:
+        logging.warning(f"Invalid category: {category}")
+        return "unknown"
+    return category
+    
+    
+def categorize_exebench_complexity(model, begin_id=0, end_id=500):
+    llm = Chat(model = model, temperature=0.6)
+    ds = load_dataset("mistral0105/exebench_io_validated_full_cleaned")[
+        "train"
+    ]
+    case_id = 0
+    total_id = end_id - begin_id
+    progress_bar = tqdm(
+        total=total_id,
+        initial=0,
+        dynamic_ncols=True,
+    )
+    simple_list = []
+    medium_list = []
+    complex_list = []
+    unknown_list = []
+    logging.info(f"using LLM model: {model}")
+    for e in ds:
+        if case_id < begin_id:
+            case_id += 1
+            continue
+        progress_bar.update(1)
+        if case_id >= end_id:
+            break
+        try:
+            c_deps: str = e["real_deps"]
+            # rm the "# 1" in the end
+            c_deps = c_deps[: c_deps.rfind("# 1")]
+            c_code = c_deps
+            c_code += e["func_def"]
+            category = categorize_function_complexity(c_code, llm)
+            if category == "simple":
+                simple_list.append(case_id)
+            elif category == "medium":
+                medium_list.append(case_id)
+            elif category == "complex":
+                complex_list.append(case_id)
+            else:
+                unknown_list.append(case_id)
+            logging.info(f"Case {case_id}: {category}\nc_src:\n{c_code}\n-------------\n")
+            case_id += 1
+        except Exception as e:
+            logging.warning(f"Error in case {case_id}: {e}")
+            case_id += 1
+            break
+    logging.info(f"Simple list: {simple_list}")
+    logging.info(f"Medium list: {medium_list}")
+    logging.info(f"Complex list: {complex_list}")
+        
 
 def c_compiler_exebench(
     model="gpt-4o",
@@ -741,7 +865,7 @@ def c_compiler_coremark(
     use_one_shot_prompt=True,
     use_zero_shot_prompt=False,
     use_mask=False,
-    mask_stage="baseline",
+    mask_stage="coremark_baseline",
 ):
     ds = load_dataset("mistral0105/CoreMark_FunctionLevel")
     compiler = Compiler(
@@ -757,9 +881,18 @@ def c_compiler_coremark(
     failed_asm = []
     passed = []
     try_round = pass_k
+    # manage mask function names
+    mask_functions = [] # only test masked functions, which are failed in the previous run
+    if use_mask:
+        mask_functions = cached_pass_id[model][mask_stage]
     for e in tqdm(ds["train"]):
         file_name = e["name"]
         function_name = e["function_name"]
+        if use_mask and (function_name not in mask_functions):
+                logging.info(f"Assume {function_name} is correct, because it passed in the previous run")
+                passed.append(function_name)
+                logging.info(f"{function_name} PASS")
+                continue
         c_code = e["c_src"]
         logging.info(f"Start to compile {function_name}\nC code:\n{c_code}")
         # below is one try to neural compile on the current C code
@@ -777,6 +910,44 @@ def c_compiler_coremark(
                 break
             else:
                 logging.info(f"{i}th try failed at the first round")
+            logging.debug("do_analyze = True, start analyzing")
+            helper_message = ""
+            rsp = compiler.analyze(
+                code=c_code,
+                temperature=temperature,
+                error_message=error_message,
+            )
+            logging.info("Analyze response: " + rsp)
+            key_list = rsp.split(",")
+            candidate_rsp = []
+            for item in key_list:
+                item = item.strip()
+                if item in fix_prompts.keys():
+                    candidate_rsp.append(item)
+            if len(candidate_rsp) > 3:
+                # randomly select 3 out of the candidate_rsp
+                candidate_rsp = random.sample(candidate_rsp, 3)
+            if len(candidate_rsp) < 2:
+                # randomly select 2 out of the fix_prompts
+                keys = fix_prompts.keys()
+                # remove several keys from the keys
+                for item in candidate_rsp:
+                    keys.remove(item)
+                for item in [
+                    # global keys, not helpful for helper message
+                    "analyze_pre", 
+                    "analyze_post", 
+                    "error_message_pre", 
+                    "error_message_post", 
+                    "long", # not implemented yet
+                    ]:
+                    keys.remove(item)
+                random_list = random.sample(keys, 3-len(candidate_rsp))
+                candidate_rsp.extend(random_list)
+            logging.info(f"After random modification, the used prompt keys: {candidate_rsp}")
+            for prompt_item in candidate_rsp:
+                helper_message += fix_prompts[prompt_item]
+            logging.debug(f"Helper message: {helper_message}")    
             if self_correct:
                 logging.info(f"Self-correcting mechanism is enabled")
                 for j in range(self_correct_round):
@@ -785,7 +956,7 @@ def c_compiler_coremark(
                         out=f"hyp/{function_name}.s",
                         error_asm=x86_llm_code,
                         error_message=error_message,
-                        prompt_postfix="",
+                        prompt_postfix=helper_message,
                     )
                     try:
                         x86_llm_code = open(f"hyp/{function_name}.s", "r").read()
@@ -895,6 +1066,7 @@ if __name__ == "__main__":
     parser.add_argument("--clear_workspace", type=bool, default=False)
     parser.add_argument("--use_mask", type=bool, default=False)
     parser.add_argument("--mask_stage", type=str, default="baseline")
+    parser.add_argument("--categorize", type=bool, default=False)
     S = parser.parse_args()
     candidate_model: str = S.model
     begin_id: int = S.begin_id
@@ -914,6 +1086,7 @@ if __name__ == "__main__":
     clear_workspace: bool = S.clear_workspace
     use_mask: bool = S.use_mask
     mask_stage: str = S.mask_stage
+    need_categorize = S.categorize
     use_lego_prompt = False
     use_one_shot_prompt = True
     use_zero_shot_prompt = False
@@ -947,6 +1120,8 @@ if __name__ == "__main__":
         temp_name = f"temp_simulate_{candidate_model}_{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{random.randint(0, 1000000)}"
     elif eval_coremark:
         temp_name = f"temp_coremark_{candidate_model}_{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{random.randint(0, 1000000)}"
+    elif need_categorize:
+        temp_name = f"temp_categorize_{candidate_model}_{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{random.randint(0, 1000000)}"
     else:
         temp_name = f"temp_{candidate_model}_{begin_id}_{end_id}_{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{random.randint(0, 1000000)}"
     temp_dir = os.path.join(sandbox_dir, temp_name)
@@ -991,6 +1166,12 @@ if __name__ == "__main__":
             x86_src=open("/root/workspace/LLM_Compiler/temp/431_f94/llm.s", "r").read(),
             c_src=open("/root/workspace/LLM_Compiler/temp/431_f94/func.c", "r").read(),
             init_value="x=15, y=16",
+        )
+    elif need_categorize:
+        categorize_exebench_complexity(
+            model=candidate_model,
+            begin_id=begin_id,
+            end_id=end_id,
         )
     elif eval_coremark:
         os.chdir(coremark_dir)
