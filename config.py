@@ -25,6 +25,13 @@ DEEPSEEK_AVAILABLE_MODELS = [
     "deepseek-coder",
 ]
 
+QWEN_AVAILABLE_MODELS = [
+    "qwen-max-0919",
+    "qwen-max",
+    "qwen-coder-turbo-latest",
+    "qwen-long",
+]
+
 OLLAMA_AVAILABLE_MODELS = [
     # general models
     "llama3.1",

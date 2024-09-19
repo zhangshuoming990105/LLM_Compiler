@@ -22,6 +22,7 @@ from config import (
     ANTHROPIC_AVAILABLE_MODELS,
     DEEPSEEK_AVAILABLE_MODELS,
     OLLAMA_AVAILABLE_MODELS,
+    QWEN_AVAILABLE_MODELS,
 )
 
 # local mode
@@ -102,6 +103,7 @@ class Chat:
             and model not in GPT_AVAILABLE_MODELS
             and model not in ANTHROPIC_AVAILABLE_MODELS
             and model not in DEEPSEEK_AVAILABLE_MODELS
+            and model not in QWEN_AVAILABLE_MODELS
             and model not in OLLAMA_AVAILABLE_MODELS
             and use_local is False
         ):
@@ -138,6 +140,10 @@ class Chat:
             # base_url="https://api.deepseek.com",
             base_url="https://api.deepseek.com/beta",
         )
+        self.qwen_client = OpenAI(
+            api_key=os.getenv("QWEN_API_KEY"),
+            base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
+        )
         self.ollama_client = OpenAI(
             base_url="http://localhost:11434/v1/",
             api_key="ollama",  # required, but unused
@@ -150,6 +156,8 @@ class Chat:
             self.client = self.deepseek_client
         elif self.model in PPLX_AVAILABLE_MODELS:
             self.client = self.pplx_client
+        elif self.model in QWEN_AVAILABLE_MODELS:
+            self.client = self.qwen_client
         elif self.use_local:
             self.client = self.local_model
         else:

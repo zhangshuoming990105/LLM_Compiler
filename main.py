@@ -17,6 +17,7 @@ from config import (
     OLLAMA_AVAILABLE_MODELS,
     PPLX_AVAILABLE_MODELS,
     DEEPSEEK_AVAILABLE_MODELS,
+    QWEN_AVAILABLE_MODELS,
 )
 from prompts import *
 cached_pass_id: dict = {
@@ -1111,6 +1112,7 @@ if __name__ == "__main__":
         + OLLAMA_AVAILABLE_MODELS
         + PPLX_AVAILABLE_MODELS
         + DEEPSEEK_AVAILABLE_MODELS
+        + QWEN_AVAILABLE_MODELS
     )
     if candidate_model not in ALL_MODELS and not use_local:
         print(f"Model {candidate_model} is not available!")
