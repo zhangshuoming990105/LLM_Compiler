@@ -9,7 +9,8 @@ def num_token_from_string(
     return num_tokens
 
 dir = "/root/workspace/LLM_Compiler/sandbox/longfunction_workspace/"
-for file in os.listdir(dir):
+# visit in alphabetical order
+for file in sorted(os.listdir(dir)):
     if file.endswith(".c"):
         c_code = open(dir + file, "r").read()
         c_tokens = num_token_from_string(c_code)

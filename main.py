@@ -67,6 +67,13 @@ cached_pass_id: dict = {
         "fix": [9, 30, 42, 51, 53, 59, 73, 86, 88, 95, 98, 101, 109, 113, 121, 159, 187, 202, 207, 209, 219, 228, 240, 245, 260, 261, 270, 277, 284, 287, 301, 318, 324, 329, 333, 344, 349, 353, 356, 367, 368, 381, 409, 410, 422, 425, 429, 431, 441, 442, 456, 459, 461, 468, 493, 495, 497],
         "annotation": None,
         "LEGO": None,
+    },
+    "qwen-coder-turbo-latest": {
+        "baseline": None,
+        "pass@5": None,
+        "fix": None,
+        "annotation": None,
+        "LEGO": None,
     }
 }
 
@@ -758,6 +765,11 @@ def clean_hyp_dir():
     if os.path.exists("hyp"):
         shutil.rmtree("hyp")
     os.mkdir("hyp")
+    
+def compile_single_file(c_src, compiler: Compiler, save_name="tmp.s"):
+    """Compile a single C file to assembly code"""
+    compiler.compile(c_src, out=save_name)
+    return open(save_name, "r").read()
 
 
 def examine_coremark(try_i, file_name, function_name):
