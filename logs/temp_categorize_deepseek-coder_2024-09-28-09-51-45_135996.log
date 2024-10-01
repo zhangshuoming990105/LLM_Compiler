@@ -1,0 +1,4012 @@
+INFO:root:log file created!
+INFO:root:Start time: 2024-09-28 09:51:45.658855
+INFO:root:Current run:temp_categorize_deepseek-coder_2024-09-28-09-51-45_135996
+INFO:root:Model: deepseek-coder
+INFO:root:Temperature: 0.5
+INFO:root:Pass_k: 1
+INFO:root:Self-correct: False
+INFO:root:Correct round: 3
+INFO:root:Do analyze: False
+INFO:root:Do simulate: False
+INFO:root:Eval coremark: False
+INFO:root:Eval exebench: True
+INFO:root:Use Mask: False
+INFO:root:Mask stage: baseline
+INFO:root:Case 0 is complex
+
+INFO:root:Case 1 is complex
+
+INFO:root:Case 2 is complex
+
+INFO:root:Case 3 is complex
+
+INFO:root:Case 4 is complex
+
+INFO:root:Case 5 is complex
+
+INFO:root:Case 6 is complex
+
+INFO:root:Case 7 is complex
+
+INFO:root:Case 8 is complex
+
+INFO:root:Case 9 is complex
+
+INFO:root:Case 10 is complex
+
+INFO:root:Case 11 is complex
+
+INFO:root:Case 12 is complex
+
+INFO:root:Case 13 is complex
+
+INFO:root:Case 14 is complex
+
+INFO:root:Case 15 is complex
+
+INFO:root:Case 16 is complex
+
+INFO:root:Case 17 is complex
+
+INFO:root:Case 18 is complex
+
+INFO:root:Case 19 is complex
+
+INFO:root:Case 20 is complex
+
+INFO:root:Case 21 is complex
+
+INFO:root:Case 22 is complex
+
+INFO:root:Case 23 is complex
+
+INFO:root:Case 24 is complex
+
+INFO:root:Case 25 is complex
+
+INFO:root:Case 26 is complex
+
+INFO:root:Case 27 is complex
+
+INFO:root:Case 28 is complex
+
+INFO:root:Case 29 is complex
+
+INFO:root:Case 30 is complex
+
+INFO:root:Case 31 is complex
+
+INFO:root:Case 32 is complex
+
+INFO:root:Case 33 is complex
+
+INFO:root:Case 34 is complex
+
+INFO:root:Case 35 is complex
+
+INFO:root:Case 36 is complex
+
+INFO:root:Case 37 is complex
+
+INFO:root:Case 38 is complex
+
+INFO:root:Case 39 is complex
+
+INFO:root:Case 40 is complex
+
+INFO:root:Case 41 is complex
+
+INFO:root:Case 42 is complex
+
+INFO:root:Case 43 is complex
+
+INFO:root:Case 44 is complex
+
+INFO:root:Case 45 is complex
+
+INFO:root:Case 46 is complex
+
+INFO:root:Case 47 is complex
+
+INFO:root:Case 48 is complex
+
+INFO:root:Case 49 is complex
+
+INFO:root:Case 50 is complex
+
+INFO:root:Case 51 is complex
+
+INFO:root:Case 52 is complex
+
+INFO:root:Case 53 is complex
+
+INFO:root:Case 54 is complex
+
+INFO:root:Case 55 is complex
+
+INFO:root:Case 56 is complex
+
+INFO:root:Case 57 is complex
+
+INFO:root:Case 58 is complex
+
+INFO:root:Case 59 is complex
+
+INFO:root:Case 60 is complex
+
+INFO:root:Case 61 is complex
+
+INFO:root:Case 62 is complex
+
+INFO:root:Case 63 is complex
+
+INFO:root:Case 64 is complex
+
+INFO:root:Case 65 is complex
+
+INFO:root:Case 66 is complex
+
+INFO:root:Case 67 is complex
+
+INFO:root:Case 68 is complex
+
+INFO:root:Case 69 is complex
+
+INFO:root:Case 70 is complex
+
+INFO:root:Case 71 is complex
+
+INFO:root:Case 72 is complex
+
+INFO:root:Case 73 is complex
+
+INFO:root:Case 74 is complex
+
+INFO:root:Case 75 is complex
+
+INFO:root:Case 76 is complex
+
+INFO:root:Case 77 is complex
+
+INFO:root:Case 78 is complex
+
+INFO:root:Case 79 is complex
+
+INFO:root:Case 80 is complex
+
+INFO:root:Case 81 is complex
+
+INFO:root:Case 82 is complex
+
+INFO:root:Case 83 is complex
+
+INFO:root:Case 84 is complex
+
+INFO:root:Case 85 is complex
+
+INFO:root:Case 86 is complex
+
+INFO:root:Case 87 is complex
+
+INFO:root:Case 88 is complex
+
+INFO:root:Case 89 is complex
+
+INFO:root:Case 90 is complex
+
+INFO:root:Case 91 is complex
+
+INFO:root:Case 92 is complex
+
+INFO:root:Case 93 is complex
+
+INFO:root:Case 94 is complex
+
+INFO:root:Case 95 is complex
+
+INFO:root:Case 96 is complex
+
+INFO:root:Case 97 is complex
+
+INFO:root:Case 98 is complex
+
+INFO:root:Case 99 is complex
+
+INFO:root:Case 100 is complex
+
+INFO:root:Case 101 is complex
+
+INFO:root:Case 102 is complex
+
+INFO:root:Case 103 is complex
+
+INFO:root:Case 104 is complex
+
+INFO:root:Case 105 is complex
+
+INFO:root:Case 106 is complex
+
+INFO:root:Case 107 is complex
+
+INFO:root:Case 108 is complex
+
+INFO:root:Case 109 is complex
+
+INFO:root:Case 110 is complex
+
+INFO:root:Case 111 is complex
+
+INFO:root:Case 112 is complex
+
+INFO:root:Case 113 is complex
+
+INFO:root:Case 114 is complex
+
+INFO:root:Case 115 is complex
+
+INFO:root:Case 116 is complex
+
+INFO:root:Case 117 is complex
+
+INFO:root:Case 118 is complex
+
+INFO:root:Case 119 is complex
+
+INFO:root:Case 120 is complex
+
+INFO:root:Case 121 is complex
+
+INFO:root:Case 122 is complex
+
+INFO:root:Case 123 is complex
+
+INFO:root:Case 124 is complex
+
+INFO:root:Case 125 is complex
+
+INFO:root:Case 126 is complex
+
+INFO:root:Case 127 is complex
+
+INFO:root:Case 128 is complex
+
+INFO:root:Case 129 is complex
+
+INFO:root:Case 130 is complex
+
+INFO:root:Case 131 is complex
+
+INFO:root:Case 132 is complex
+
+INFO:root:Case 133 is complex
+
+INFO:root:Case 134 is complex
+
+INFO:root:Case 135 is complex
+
+INFO:root:Case 136 is complex
+
+INFO:root:Case 137 is complex
+
+INFO:root:Case 138 is complex
+
+INFO:root:Case 139 is complex
+
+INFO:root:Case 140 is complex
+
+INFO:root:Case 141 is complex
+
+INFO:root:Case 142 is complex
+
+INFO:root:Case 143 is complex
+
+INFO:root:Case 144 is complex
+
+INFO:root:Case 145 is complex
+
+INFO:root:Case 146 is complex
+
+INFO:root:Case 147 is complex
+
+INFO:root:Case 148 is complex
+
+INFO:root:Case 149 is complex
+
+INFO:root:Case 150 is complex
+
+INFO:root:Case 151 is complex
+
+INFO:root:Case 152 is complex
+
+INFO:root:Case 153 is complex
+
+INFO:root:Case 154 is complex
+
+INFO:root:Case 155 is complex
+
+INFO:root:Case 156 is complex
+
+INFO:root:Case 157 is complex
+
+INFO:root:Case 158 is complex
+
+INFO:root:Case 159 is complex
+
+INFO:root:Case 160 is complex
+
+INFO:root:Case 161 is complex
+
+INFO:root:Case 162 is complex
+
+INFO:root:Case 163 is complex
+
+INFO:root:Case 164 is complex
+
+INFO:root:Case 165 is complex
+
+INFO:root:Case 166 is complex
+
+INFO:root:Case 167 is complex
+
+INFO:root:Case 168 is complex
+
+INFO:root:Case 169 is complex
+
+INFO:root:Case 170 is complex
+
+INFO:root:Case 171 is complex
+
+INFO:root:Case 172 is complex
+
+INFO:root:Case 173 is complex
+
+INFO:root:Case 174 is complex
+
+INFO:root:Case 175 is complex
+
+INFO:root:Case 176 is complex
+
+INFO:root:Case 177 is complex
+
+INFO:root:Case 178 is complex
+
+INFO:root:Case 179 is complex
+
+INFO:root:Case 180 is complex
+
+INFO:root:Case 181 is complex
+
+INFO:root:Case 182 is complex
+
+INFO:root:Case 183 is complex
+
+INFO:root:Case 184 is complex
+
+INFO:root:Case 185 is complex
+
+INFO:root:Case 186 is complex
+
+INFO:root:Case 187 is complex
+
+INFO:root:Case 188 is complex
+
+INFO:root:Case 189 is complex
+
+INFO:root:Case 190 is complex
+
+INFO:root:Case 191 is complex
+
+INFO:root:Case 192 is complex
+
+INFO:root:Case 193 is complex
+
+INFO:root:Case 194 is complex
+
+INFO:root:Case 195 is complex
+
+INFO:root:Case 196 is complex
+
+INFO:root:Case 197 is complex
+
+INFO:root:Case 198 is complex
+
+INFO:root:Case 199 is complex
+
+INFO:root:Case 200 is complex
+
+INFO:root:Case 201 is complex
+
+INFO:root:Case 202 is complex
+
+INFO:root:Case 203 is complex
+
+INFO:root:Case 204 is complex
+
+INFO:root:Case 205 is complex
+
+INFO:root:Case 206 is complex
+
+INFO:root:Case 207 is complex
+
+INFO:root:Case 208 is complex
+
+INFO:root:Case 209 is complex
+
+INFO:root:Case 210 is complex
+
+INFO:root:Case 211 is complex
+
+INFO:root:Case 212 is complex
+
+INFO:root:Case 213 is complex
+
+INFO:root:Case 214 is complex
+
+INFO:root:Case 215 is complex
+
+INFO:root:Case 216 is complex
+
+INFO:root:Case 217 is complex
+
+INFO:root:Case 218 is complex
+
+INFO:root:Case 219 is complex
+
+INFO:root:Case 220 is complex
+
+INFO:root:Case 221 is complex
+
+INFO:root:Case 222 is complex
+
+INFO:root:Case 223 is complex
+
+INFO:root:Case 224 is complex
+
+INFO:root:Case 225 is complex
+
+INFO:root:Case 226 is complex
+
+INFO:root:Case 227 is complex
+
+INFO:root:Case 228 is complex
+
+INFO:root:Case 229 is complex
+
+INFO:root:Case 230 is complex
+
+INFO:root:Case 231 is complex
+
+INFO:root:Case 232 is complex
+
+INFO:root:Case 233 is complex
+
+INFO:root:Case 234 is complex
+
+INFO:root:Case 235 is complex
+
+INFO:root:Case 236 is complex
+
+INFO:root:Case 237 is complex
+
+INFO:root:Case 238 is complex
+
+INFO:root:Case 239 is complex
+
+INFO:root:Case 240 is complex
+
+INFO:root:Case 241 is complex
+
+INFO:root:Case 242 is complex
+
+INFO:root:Case 243 is complex
+
+INFO:root:Case 244 is complex
+
+INFO:root:Case 245 is complex
+
+INFO:root:Case 246 is complex
+
+INFO:root:Case 247 is complex
+
+INFO:root:Case 248 is complex
+
+INFO:root:Case 249 is complex
+
+INFO:root:Case 250 is complex
+
+INFO:root:Case 251 is complex
+
+INFO:root:Case 252 is complex
+
+INFO:root:Case 253 is complex
+
+INFO:root:Case 254 is complex
+
+INFO:root:Case 255 is complex
+
+INFO:root:Case 256 is complex
+
+INFO:root:Case 257 is complex
+
+INFO:root:Case 258 is complex
+
+INFO:root:Case 259 is complex
+
+INFO:root:Case 260 is complex
+
+INFO:root:Case 261 is complex
+
+INFO:root:Case 262 is complex
+
+INFO:root:Case 263 is complex
+
+INFO:root:Case 264 is complex
+
+INFO:root:Case 265 is complex
+
+INFO:root:Case 266 is complex
+
+INFO:root:Case 267 is complex
+
+INFO:root:Case 268 is complex
+
+INFO:root:Case 269 is complex
+
+INFO:root:Case 270 is complex
+
+INFO:root:Case 271 is complex
+
+INFO:root:Case 272 is complex
+
+INFO:root:Case 273 is complex
+
+INFO:root:Case 274 is complex
+
+INFO:root:Case 275 is complex
+
+INFO:root:Case 276 is complex
+
+INFO:root:Case 277 is complex
+
+INFO:root:Case 278 is complex
+
+INFO:root:Case 279 is complex
+
+INFO:root:Case 280 is complex
+
+INFO:root:Case 281 is complex
+
+INFO:root:Case 282 is complex
+
+INFO:root:Case 283 is complex
+
+INFO:root:Case 284 is complex
+
+INFO:root:Case 285 is complex
+
+INFO:root:Case 286 is complex
+
+INFO:root:Case 287 is complex
+
+INFO:root:Case 288 is complex
+
+INFO:root:Case 289 is complex
+
+INFO:root:Case 290 is complex
+
+INFO:root:Case 291 is complex
+
+INFO:root:Case 292 is complex
+
+INFO:root:Case 293 is complex
+
+INFO:root:Case 294 is complex
+
+INFO:root:Case 295 is complex
+
+INFO:root:Case 296 is complex
+
+INFO:root:Case 297 is complex
+
+INFO:root:Case 298 is complex
+
+INFO:root:Case 299 is complex
+
+INFO:root:Case 300 is complex
+
+INFO:root:Case 301 is complex
+
+INFO:root:Case 302 is complex
+
+INFO:root:Case 303 is complex
+
+INFO:root:Case 304 is complex
+
+INFO:root:Case 305 is complex
+
+INFO:root:Case 306 is complex
+
+INFO:root:Case 307 is complex
+
+INFO:root:Case 308 is complex
+
+INFO:root:Case 309 is complex
+
+INFO:root:Case 310 is complex
+
+INFO:root:Case 311 is complex
+
+INFO:root:Case 312 is complex
+
+INFO:root:Case 313 is complex
+
+INFO:root:Case 314 is complex
+
+INFO:root:Case 315 is complex
+
+INFO:root:Case 316 is complex
+
+INFO:root:Case 317 is complex
+
+INFO:root:Case 318 is complex
+
+INFO:root:Case 319 is complex
+
+INFO:root:Case 320 is complex
+
+INFO:root:Case 321 is complex
+
+INFO:root:Case 322 is complex
+
+INFO:root:Case 323 is complex
+
+INFO:root:Case 324 is complex
+
+INFO:root:Case 325 is complex
+
+INFO:root:Case 326 is complex
+
+INFO:root:Case 327 is complex
+
+INFO:root:Case 328 is complex
+
+INFO:root:Case 329 is complex
+
+INFO:root:Case 330 is complex
+
+INFO:root:Case 331 is complex
+
+INFO:root:Case 332 is complex
+
+INFO:root:Case 333 is complex
+
+INFO:root:Case 334 is complex
+
+INFO:root:Case 335 is complex
+
+INFO:root:Case 336 is complex
+
+INFO:root:Case 337 is complex
+
+INFO:root:Case 338 is complex
+
+INFO:root:Case 339 is complex
+
+INFO:root:Case 340 is complex
+
+INFO:root:Case 341 is complex
+
+INFO:root:Case 342 is complex
+
+INFO:root:Case 343 is complex
+
+INFO:root:Case 344 is complex
+
+INFO:root:Case 345 is complex
+
+INFO:root:Case 346 is complex
+
+INFO:root:Case 347 is complex
+
+INFO:root:Case 348 is complex
+
+INFO:root:Case 349 is complex
+
+INFO:root:Case 350 is complex
+
+INFO:root:Case 351 is complex
+
+INFO:root:Case 352 is complex
+
+INFO:root:Case 353 is complex
+
+INFO:root:Case 354 is complex
+
+INFO:root:Case 355 is complex
+
+INFO:root:Case 356 is complex
+
+INFO:root:Case 357 is complex
+
+INFO:root:Case 358 is complex
+
+INFO:root:Case 359 is complex
+
+INFO:root:Case 360 is complex
+
+INFO:root:Case 361 is complex
+
+INFO:root:Case 362 is complex
+
+INFO:root:Case 363 is complex
+
+INFO:root:Case 364 is complex
+
+INFO:root:Case 365 is complex
+
+INFO:root:Case 366 is complex
+
+INFO:root:Case 367 is complex
+
+INFO:root:Case 368 is complex
+
+INFO:root:Case 369 is complex
+
+INFO:root:Case 370 is complex
+
+INFO:root:Case 371 is complex
+
+INFO:root:Case 372 is complex
+
+INFO:root:Case 373 is complex
+
+INFO:root:Case 374 is complex
+
+INFO:root:Case 375 is complex
+
+INFO:root:Case 376 is complex
+
+INFO:root:Case 377 is complex
+
+INFO:root:Case 378 is complex
+
+INFO:root:Case 379 is complex
+
+INFO:root:Case 380 is complex
+
+INFO:root:Case 381 is complex
+
+INFO:root:Case 382 is complex
+
+INFO:root:Case 383 is complex
+
+INFO:root:Case 384 is complex
+
+INFO:root:Case 385 is complex
+
+INFO:root:Case 386 is complex
+
+INFO:root:Case 387 is complex
+
+INFO:root:Case 388 is complex
+
+INFO:root:Case 389 is complex
+
+INFO:root:Case 390 is complex
+
+INFO:root:Case 391 is complex
+
+INFO:root:Case 392 is complex
+
+INFO:root:Case 393 is complex
+
+INFO:root:Case 394 is complex
+
+INFO:root:Case 395 is complex
+
+INFO:root:Case 396 is complex
+
+INFO:root:Case 397 is complex
+
+INFO:root:Case 398 is complex
+
+INFO:root:Case 399 is complex
+
+INFO:root:Case 400 is complex
+
+INFO:root:Case 401 is complex
+
+INFO:root:Case 402 is complex
+
+INFO:root:Case 403 is complex
+
+INFO:root:Case 404 is complex
+
+INFO:root:Case 405 is complex
+
+INFO:root:Case 406 is complex
+
+INFO:root:Case 407 is complex
+
+INFO:root:Case 408 is complex
+
+INFO:root:Case 409 is complex
+
+INFO:root:Case 410 is complex
+
+INFO:root:Case 411 is complex
+
+INFO:root:Case 412 is complex
+
+INFO:root:Case 413 is complex
+
+INFO:root:Case 414 is complex
+
+INFO:root:Case 415 is complex
+
+INFO:root:Case 416 is complex
+
+INFO:root:Case 417 is complex
+
+INFO:root:Case 418 is complex
+
+INFO:root:Case 419 is complex
+
+INFO:root:Case 420 is complex
+
+INFO:root:Case 421 is complex
+
+INFO:root:Case 422 is complex
+
+INFO:root:Case 423 is complex
+
+INFO:root:Case 424 is complex
+
+INFO:root:Case 425 is complex
+
+INFO:root:Case 426 is complex
+
+INFO:root:Case 427 is complex
+
+INFO:root:Case 428 is complex
+
+INFO:root:Case 429 is complex
+
+INFO:root:Case 430 is complex
+
+INFO:root:Case 431 is complex
+
+INFO:root:Case 432 is complex
+
+INFO:root:Case 433 is complex
+
+INFO:root:Case 434 is complex
+
+INFO:root:Case 435 is complex
+
+INFO:root:Case 436 is complex
+
+INFO:root:Case 437 is complex
+
+INFO:root:Case 438 is complex
+
+INFO:root:Case 439 is complex
+
+INFO:root:Case 440 is complex
+
+INFO:root:Case 441 is complex
+
+INFO:root:Case 442 is complex
+
+INFO:root:Case 443 is complex
+
+INFO:root:Case 444 is complex
+
+INFO:root:Case 445 is complex
+
+INFO:root:Case 446 is complex
+
+INFO:root:Case 447 is complex
+
+INFO:root:Case 448 is complex
+
+INFO:root:Case 449 is complex
+
+INFO:root:Case 450 is complex
+
+INFO:root:Case 451 is complex
+
+INFO:root:Case 452 is complex
+
+INFO:root:Case 453 is complex
+
+INFO:root:Case 454 is complex
+
+INFO:root:Case 455 is complex
+
+INFO:root:Case 456 is complex
+
+INFO:root:Case 457 is complex
+
+INFO:root:Case 458 is complex
+
+INFO:root:Case 459 is complex
+
+INFO:root:Case 460 is complex
+
+INFO:root:Case 461 is complex
+
+INFO:root:Case 462 is complex
+
+INFO:root:Case 463 is complex
+
+INFO:root:Case 464 is complex
+
+INFO:root:Case 465 is complex
+
+INFO:root:Case 466 is complex
+
+INFO:root:Case 467 is complex
+
+INFO:root:Case 468 is complex
+
+INFO:root:Case 469 is complex
+
+INFO:root:Case 470 is complex
+
+INFO:root:Case 471 is complex
+
+INFO:root:Case 472 is complex
+
+INFO:root:Case 473 is complex
+
+INFO:root:Case 474 is complex
+
+INFO:root:Case 475 is complex
+
+INFO:root:Case 476 is complex
+
+INFO:root:Case 477 is complex
+
+INFO:root:Case 478 is complex
+
+INFO:root:Case 479 is complex
+
+INFO:root:Case 480 is complex
+
+INFO:root:Case 481 is complex
+
+INFO:root:Case 482 is complex
+
+INFO:root:Case 483 is complex
+
+INFO:root:Case 484 is complex
+
+INFO:root:Case 485 is complex
+
+INFO:root:Case 486 is complex
+
+INFO:root:Case 487 is complex
+
+INFO:root:Case 488 is complex
+
+INFO:root:Case 489 is complex
+
+INFO:root:Case 490 is complex
+
+INFO:root:Case 491 is complex
+
+INFO:root:Case 492 is complex
+
+INFO:root:Case 493 is complex
+
+INFO:root:Case 494 is complex
+
+INFO:root:Case 495 is complex
+
+INFO:root:Case 496 is complex
+
+INFO:root:Case 497 is complex
+
+INFO:root:Case 498 is complex
+
+INFO:root:Case 499 is complex
+
+INFO:root:Case 500 is complex
+
+INFO:root:Case 501 is complex
+
+INFO:root:Case 502 is complex
+
+INFO:root:Case 503 is complex
+
+INFO:root:Case 504 is complex
+
+INFO:root:Case 505 is complex
+
+INFO:root:Case 506 is complex
+
+INFO:root:Case 507 is complex
+
+INFO:root:Case 508 is complex
+
+INFO:root:Case 509 is complex
+
+INFO:root:Case 510 is complex
+
+INFO:root:Case 511 is complex
+
+INFO:root:Case 512 is complex
+
+INFO:root:Case 513 is complex
+
+INFO:root:Case 514 is complex
+
+INFO:root:Case 515 is complex
+
+INFO:root:Case 516 is complex
+
+INFO:root:Case 517 is complex
+
+INFO:root:Case 518 is complex
+
+INFO:root:Case 519 is complex
+
+INFO:root:Case 520 is complex
+
+INFO:root:Case 521 is complex
+
+INFO:root:Case 522 is complex
+
+INFO:root:Case 523 is complex
+
+INFO:root:Case 524 is complex
+
+INFO:root:Case 525 is complex
+
+INFO:root:Case 526 is complex
+
+INFO:root:Case 527 is complex
+
+INFO:root:Case 528 is complex
+
+INFO:root:Case 529 is complex
+
+INFO:root:Case 530 is complex
+
+INFO:root:Case 531 is complex
+
+INFO:root:Case 532 is complex
+
+INFO:root:Case 533 is complex
+
+INFO:root:Case 534 is complex
+
+INFO:root:Case 535 is complex
+
+INFO:root:Case 536 is complex
+
+INFO:root:Case 537 is complex
+
+INFO:root:Case 538 is complex
+
+INFO:root:Case 539 is complex
+
+INFO:root:Case 540 is complex
+
+INFO:root:Case 541 is complex
+
+INFO:root:Case 542 is complex
+
+INFO:root:Case 543 is complex
+
+INFO:root:Case 544 is complex
+
+INFO:root:Case 545 is complex
+
+INFO:root:Case 546 is complex
+
+INFO:root:Case 547 is complex
+
+INFO:root:Case 548 is complex
+
+INFO:root:Case 549 is complex
+
+INFO:root:Case 550 is complex
+
+INFO:root:Case 551 is complex
+
+INFO:root:Case 552 is complex
+
+INFO:root:Case 553 is complex
+
+INFO:root:Case 554 is complex
+
+INFO:root:Case 555 is complex
+
+INFO:root:Case 556 is complex
+
+INFO:root:Case 557 is complex
+
+INFO:root:Case 558 is complex
+
+INFO:root:Case 559 is complex
+
+INFO:root:Case 560 is complex
+
+INFO:root:Case 561 is complex
+
+INFO:root:Case 562 is complex
+
+INFO:root:Case 563 is complex
+
+INFO:root:Case 564 is complex
+
+INFO:root:Case 565 is complex
+
+INFO:root:Case 566 is complex
+
+INFO:root:Case 567 is complex
+
+INFO:root:Case 568 is complex
+
+INFO:root:Case 569 is complex
+
+INFO:root:Case 570 is complex
+
+INFO:root:Case 571 is complex
+
+INFO:root:Case 572 is complex
+
+INFO:root:Case 573 is complex
+
+INFO:root:Case 574 is complex
+
+INFO:root:Case 575 is complex
+
+INFO:root:Case 576 is complex
+
+INFO:root:Case 577 is complex
+
+INFO:root:Case 578 is complex
+
+INFO:root:Case 579 is complex
+
+INFO:root:Case 580 is complex
+
+INFO:root:Case 581 is complex
+
+INFO:root:Case 582 is complex
+
+INFO:root:Case 583 is complex
+
+INFO:root:Case 584 is complex
+
+INFO:root:Case 585 is complex
+
+INFO:root:Case 586 is complex
+
+INFO:root:Case 587 is complex
+
+INFO:root:Case 588 is complex
+
+INFO:root:Case 589 is complex
+
+INFO:root:Case 590 is complex
+
+INFO:root:Case 591 is complex
+
+INFO:root:Case 592 is complex
+
+INFO:root:Case 593 is complex
+
+INFO:root:Case 594 is complex
+
+INFO:root:Case 595 is complex
+
+INFO:root:Case 596 is complex
+
+INFO:root:Case 597 is complex
+
+INFO:root:Case 598 is complex
+
+INFO:root:Case 599 is complex
+
+INFO:root:Case 600 is complex
+
+INFO:root:Case 601 is complex
+
+INFO:root:Case 602 is complex
+
+INFO:root:Case 603 is complex
+
+INFO:root:Case 604 is complex
+
+INFO:root:Case 605 is complex
+
+INFO:root:Case 606 is complex
+
+INFO:root:Case 607 is complex
+
+INFO:root:Case 608 is complex
+
+INFO:root:Case 609 is complex
+
+INFO:root:Case 610 is complex
+
+INFO:root:Case 611 is complex
+
+INFO:root:Case 612 is complex
+
+INFO:root:Case 613 is complex
+
+INFO:root:Case 614 is complex
+
+INFO:root:Case 615 is complex
+
+INFO:root:Case 616 is complex
+
+INFO:root:Case 617 is complex
+
+INFO:root:Case 618 is complex
+
+INFO:root:Case 619 is complex
+
+INFO:root:Case 620 is complex
+
+INFO:root:Case 621 is complex
+
+INFO:root:Case 622 is complex
+
+INFO:root:Case 623 is complex
+
+INFO:root:Case 624 is complex
+
+INFO:root:Case 625 is complex
+
+INFO:root:Case 626 is complex
+
+INFO:root:Case 627 is complex
+
+INFO:root:Case 628 is complex
+
+INFO:root:Case 629 is complex
+
+INFO:root:Case 630 is complex
+
+INFO:root:Case 631 is complex
+
+INFO:root:Case 632 is complex
+
+INFO:root:Case 633 is complex
+
+INFO:root:Case 634 is complex
+
+INFO:root:Case 635 is complex
+
+INFO:root:Case 636 is complex
+
+INFO:root:Case 637 is complex
+
+INFO:root:Case 638 is complex
+
+INFO:root:Case 639 is complex
+
+INFO:root:Case 640 is complex
+
+INFO:root:Case 641 is complex
+
+INFO:root:Case 642 is complex
+
+INFO:root:Case 643 is complex
+
+INFO:root:Case 644 is complex
+
+INFO:root:Case 645 is complex
+
+INFO:root:Case 646 is complex
+
+INFO:root:Case 647 is complex
+
+INFO:root:Case 648 is complex
+
+INFO:root:Case 649 is complex
+
+INFO:root:Case 650 is complex
+
+INFO:root:Case 651 is complex
+
+INFO:root:Case 652 is complex
+
+INFO:root:Case 653 is complex
+
+INFO:root:Case 654 is complex
+
+INFO:root:Case 655 is complex
+
+INFO:root:Case 656 is complex
+
+INFO:root:Case 657 is complex
+
+INFO:root:Case 658 is complex
+
+INFO:root:Case 659 is complex
+
+INFO:root:Case 660 is complex
+
+INFO:root:Case 661 is complex
+
+INFO:root:Case 662 is complex
+
+INFO:root:Case 663 is complex
+
+INFO:root:Case 664 is complex
+
+INFO:root:Case 665 is complex
+
+INFO:root:Case 666 is complex
+
+INFO:root:Case 667 is complex
+
+INFO:root:Case 668 is complex
+
+INFO:root:Case 669 is complex
+
+INFO:root:Case 670 is complex
+
+INFO:root:Case 671 is complex
+
+INFO:root:Case 672 is complex
+
+INFO:root:Case 673 is complex
+
+INFO:root:Case 674 is complex
+
+INFO:root:Case 675 is complex
+
+INFO:root:Case 676 is complex
+
+INFO:root:Case 677 is complex
+
+INFO:root:Case 678 is complex
+
+INFO:root:Case 679 is complex
+
+INFO:root:Case 680 is complex
+
+INFO:root:Case 681 is complex
+
+INFO:root:Case 682 is complex
+
+INFO:root:Case 683 is complex
+
+INFO:root:Case 684 is complex
+
+INFO:root:Case 685 is complex
+
+INFO:root:Case 686 is complex
+
+INFO:root:Case 687 is complex
+
+INFO:root:Case 688 is complex
+
+INFO:root:Case 689 is complex
+
+INFO:root:Case 690 is complex
+
+INFO:root:Case 691 is complex
+
+INFO:root:Case 692 is complex
+
+INFO:root:Case 693 is complex
+
+INFO:root:Case 694 is complex
+
+INFO:root:Case 695 is complex
+
+INFO:root:Case 696 is complex
+
+INFO:root:Case 697 is complex
+
+INFO:root:Case 698 is complex
+
+INFO:root:Case 699 is complex
+
+INFO:root:Case 700 is complex
+
+INFO:root:Case 701 is complex
+
+INFO:root:Case 702 is complex
+
+INFO:root:Case 703 is complex
+
+INFO:root:Case 704 is complex
+
+INFO:root:Case 705 is complex
+
+INFO:root:Case 706 is complex
+
+INFO:root:Case 707 is complex
+
+INFO:root:Case 708 is complex
+
+INFO:root:Case 709 is complex
+
+INFO:root:Case 710 is complex
+
+INFO:root:Case 711 is complex
+
+INFO:root:Case 712 is complex
+
+INFO:root:Case 713 is complex
+
+INFO:root:Case 714 is complex
+
+INFO:root:Case 715 is complex
+
+INFO:root:Case 716 is complex
+
+INFO:root:Case 717 is complex
+
+INFO:root:Case 718 is complex
+
+INFO:root:Case 719 is complex
+
+INFO:root:Case 720 is complex
+
+INFO:root:Case 721 is complex
+
+INFO:root:Case 722 is complex
+
+INFO:root:Case 723 is complex
+
+INFO:root:Case 724 is complex
+
+INFO:root:Case 725 is complex
+
+INFO:root:Case 726 is complex
+
+INFO:root:Case 727 is complex
+
+INFO:root:Case 728 is complex
+
+INFO:root:Case 729 is complex
+
+INFO:root:Case 730 is complex
+
+INFO:root:Case 731 is complex
+
+INFO:root:Case 732 is complex
+
+INFO:root:Case 733 is complex
+
+INFO:root:Case 734 is complex
+
+INFO:root:Case 735 is complex
+
+INFO:root:Case 736 is complex
+
+INFO:root:Case 737 is complex
+
+INFO:root:Case 738 is complex
+
+INFO:root:Case 739 is complex
+
+INFO:root:Case 740 is complex
+
+INFO:root:Case 741 is complex
+
+INFO:root:Case 742 is complex
+
+INFO:root:Case 743 is complex
+
+INFO:root:Case 744 is complex
+
+INFO:root:Case 745 is complex
+
+INFO:root:Case 746 is complex
+
+INFO:root:Case 747 is complex
+
+INFO:root:Case 748 is complex
+
+INFO:root:Case 749 is complex
+
+INFO:root:Case 750 is complex
+
+INFO:root:Case 751 is complex
+
+INFO:root:Case 752 is complex
+
+INFO:root:Case 753 is complex
+
+INFO:root:Case 754 is complex
+
+INFO:root:Case 755 is complex
+
+INFO:root:Case 756 is complex
+
+INFO:root:Case 757 is complex
+
+INFO:root:Case 758 is complex
+
+INFO:root:Case 759 is complex
+
+INFO:root:Case 760 is complex
+
+INFO:root:Case 761 is complex
+
+INFO:root:Case 762 is complex
+
+INFO:root:Case 763 is complex
+
+INFO:root:Case 764 is complex
+
+INFO:root:Case 765 is complex
+
+INFO:root:Case 766 is complex
+
+INFO:root:Case 767 is complex
+
+INFO:root:Case 768 is complex
+
+INFO:root:Case 769 is complex
+
+INFO:root:Case 770 is complex
+
+INFO:root:Case 771 is complex
+
+INFO:root:Case 772 is complex
+
+INFO:root:Case 773 is complex
+
+INFO:root:Case 774 is complex
+
+INFO:root:Case 775 is complex
+
+INFO:root:Case 776 is complex
+
+INFO:root:Case 777 is complex
+
+INFO:root:Case 778 is complex
+
+INFO:root:Case 779 is complex
+
+INFO:root:Case 780 is complex
+
+INFO:root:Case 781 is complex
+
+INFO:root:Case 782 is complex
+
+INFO:root:Case 783 is complex
+
+INFO:root:Case 784 is complex
+
+INFO:root:Case 785 is complex
+
+INFO:root:Case 786 is complex
+
+INFO:root:Case 787 is complex
+
+INFO:root:Case 788 is complex
+
+INFO:root:Case 789 is complex
+
+INFO:root:Case 790 is complex
+
+INFO:root:Case 791 is complex
+
+INFO:root:Case 792 is complex
+
+INFO:root:Case 793 is complex
+
+INFO:root:Case 794 is complex
+
+INFO:root:Case 795 is complex
+
+INFO:root:Case 796 is complex
+
+INFO:root:Case 797 is complex
+
+INFO:root:Case 798 is complex
+
+INFO:root:Case 799 is complex
+
+INFO:root:Case 800 is complex
+
+INFO:root:Case 801 is complex
+
+INFO:root:Case 802 is complex
+
+INFO:root:Case 803 is complex
+
+INFO:root:Case 804 is complex
+
+INFO:root:Case 805 is complex
+
+INFO:root:Case 806 is complex
+
+INFO:root:Case 807 is complex
+
+INFO:root:Case 808 is complex
+
+INFO:root:Case 809 is complex
+
+INFO:root:Case 810 is complex
+
+INFO:root:Case 811 is complex
+
+INFO:root:Case 812 is complex
+
+INFO:root:Case 813 is complex
+
+INFO:root:Case 814 is complex
+
+INFO:root:Case 815 is complex
+
+INFO:root:Case 816 is complex
+
+INFO:root:Case 817 is complex
+
+INFO:root:Case 818 is complex
+
+INFO:root:Case 819 is complex
+
+INFO:root:Case 820 is complex
+
+INFO:root:Case 821 is complex
+
+INFO:root:Case 822 is complex
+
+INFO:root:Case 823 is complex
+
+INFO:root:Case 824 is complex
+
+INFO:root:Case 825 is complex
+
+INFO:root:Case 826 is complex
+
+INFO:root:Case 827 is complex
+
+INFO:root:Case 828 is complex
+
+INFO:root:Case 829 is complex
+
+INFO:root:Case 830 is complex
+
+INFO:root:Case 831 is complex
+
+INFO:root:Case 832 is complex
+
+INFO:root:Case 833 is complex
+
+INFO:root:Case 834 is complex
+
+INFO:root:Case 835 is complex
+
+INFO:root:Case 836 is complex
+
+INFO:root:Case 837 is complex
+
+INFO:root:Case 838 is complex
+
+INFO:root:Case 839 is complex
+
+INFO:root:Case 840 is complex
+
+INFO:root:Case 841 is complex
+
+INFO:root:Case 842 is complex
+
+INFO:root:Case 843 is complex
+
+INFO:root:Case 844 is complex
+
+INFO:root:Case 845 is complex
+
+INFO:root:Case 846 is complex
+
+INFO:root:Case 847 is complex
+
+INFO:root:Case 848 is complex
+
+INFO:root:Case 849 is complex
+
+INFO:root:Case 850 is complex
+
+INFO:root:Case 851 is complex
+
+INFO:root:Case 852 is complex
+
+INFO:root:Case 853 is complex
+
+INFO:root:Case 854 is complex
+
+INFO:root:Case 855 is complex
+
+INFO:root:Case 856 is complex
+
+INFO:root:Case 857 is complex
+
+INFO:root:Case 858 is complex
+
+INFO:root:Case 859 is complex
+
+INFO:root:Case 860 is complex
+
+INFO:root:Case 861 is complex
+
+INFO:root:Case 862 is complex
+
+INFO:root:Case 863 is complex
+
+INFO:root:Case 864 is complex
+
+INFO:root:Case 865 is complex
+
+INFO:root:Case 866 is complex
+
+INFO:root:Case 867 is complex
+
+INFO:root:Case 868 is complex
+
+INFO:root:Case 869 is complex
+
+INFO:root:Case 870 is complex
+
+INFO:root:Case 871 is complex
+
+INFO:root:Case 872 is complex
+
+INFO:root:Case 873 is complex
+
+INFO:root:Case 874 is complex
+
+INFO:root:Case 875 is complex
+
+INFO:root:Case 876 is complex
+
+INFO:root:Case 877 is complex
+
+INFO:root:Case 878 is complex
+
+INFO:root:Case 879 is complex
+
+INFO:root:Case 880 is complex
+
+INFO:root:Case 881 is complex
+
+INFO:root:Case 882 is complex
+
+INFO:root:Case 883 is complex
+
+INFO:root:Case 884 is complex
+
+INFO:root:Case 885 is complex
+
+INFO:root:Case 886 is complex
+
+INFO:root:Case 887 is complex
+
+INFO:root:Case 888 is complex
+
+INFO:root:Case 889 is complex
+
+INFO:root:Case 890 is complex
+
+INFO:root:Case 891 is complex
+
+INFO:root:Case 892 is complex
+
+INFO:root:Case 893 is complex
+
+INFO:root:Case 894 is complex
+
+INFO:root:Case 895 is complex
+
+INFO:root:Case 896 is complex
+
+INFO:root:Case 897 is complex
+
+INFO:root:Case 898 is complex
+
+INFO:root:Case 899 is complex
+
+INFO:root:Case 900 is complex
+
+INFO:root:Case 901 is complex
+
+INFO:root:Case 902 is complex
+
+INFO:root:Case 903 is complex
+
+INFO:root:Case 904 is complex
+
+INFO:root:Case 905 is complex
+
+INFO:root:Case 906 is complex
+
+INFO:root:Case 907 is complex
+
+INFO:root:Case 908 is complex
+
+INFO:root:Case 909 is complex
+
+INFO:root:Case 910 is complex
+
+INFO:root:Case 911 is complex
+
+INFO:root:Case 912 is complex
+
+INFO:root:Case 913 is complex
+
+INFO:root:Case 914 is complex
+
+INFO:root:Case 915 is complex
+
+INFO:root:Case 916 is complex
+
+INFO:root:Case 917 is complex
+
+INFO:root:Case 918 is complex
+
+INFO:root:Case 919 is complex
+
+INFO:root:Case 920 is complex
+
+INFO:root:Case 921 is complex
+
+INFO:root:Case 922 is complex
+
+INFO:root:Case 923 is complex
+
+INFO:root:Case 924 is complex
+
+INFO:root:Case 925 is complex
+
+INFO:root:Case 926 is complex
+
+INFO:root:Case 927 is complex
+
+INFO:root:Case 928 is complex
+
+INFO:root:Case 929 is complex
+
+INFO:root:Case 930 is complex
+
+INFO:root:Case 931 is complex
+
+INFO:root:Case 932 is complex
+
+INFO:root:Case 933 is complex
+
+INFO:root:Case 934 is complex
+
+INFO:root:Case 935 is complex
+
+INFO:root:Case 936 is complex
+
+INFO:root:Case 937 is complex
+
+INFO:root:Case 938 is complex
+
+INFO:root:Case 939 is complex
+
+INFO:root:Case 940 is complex
+
+INFO:root:Case 941 is complex
+
+INFO:root:Case 942 is complex
+
+INFO:root:Case 943 is complex
+
+INFO:root:Case 944 is complex
+
+INFO:root:Case 945 is complex
+
+INFO:root:Case 946 is complex
+
+INFO:root:Case 947 is complex
+
+INFO:root:Case 948 is complex
+
+INFO:root:Case 949 is complex
+
+INFO:root:Case 950 is complex
+
+INFO:root:Case 951 is complex
+
+INFO:root:Case 952 is complex
+
+INFO:root:Case 953 is complex
+
+INFO:root:Case 954 is complex
+
+INFO:root:Case 955 is complex
+
+INFO:root:Case 956 is complex
+
+INFO:root:Case 957 is complex
+
+INFO:root:Case 958 is complex
+
+INFO:root:Case 959 is complex
+
+INFO:root:Case 960 is complex
+
+INFO:root:Case 961 is complex
+
+INFO:root:Case 962 is complex
+
+INFO:root:Case 963 is complex
+
+INFO:root:Case 964 is complex
+
+INFO:root:Case 965 is complex
+
+INFO:root:Case 966 is complex
+
+INFO:root:Case 967 is complex
+
+INFO:root:Case 968 is complex
+
+INFO:root:Case 969 is complex
+
+INFO:root:Case 970 is complex
+
+INFO:root:Case 971 is complex
+
+INFO:root:Case 972 is complex
+
+INFO:root:Case 973 is complex
+
+INFO:root:Case 974 is complex
+
+INFO:root:Case 975 is complex
+
+INFO:root:Case 976 is complex
+
+INFO:root:Case 977 is complex
+
+INFO:root:Case 978 is complex
+
+INFO:root:Case 979 is complex
+
+INFO:root:Case 980 is complex
+
+INFO:root:Case 981 is complex
+
+INFO:root:Case 982 is complex
+
+INFO:root:Case 983 is complex
+
+INFO:root:Case 984 is complex
+
+INFO:root:Case 985 is complex
+
+INFO:root:Case 986 is complex
+
+INFO:root:Case 987 is complex
+
+INFO:root:Case 988 is complex
+
+INFO:root:Case 989 is complex
+
+INFO:root:Case 990 is complex
+
+INFO:root:Case 991 is complex
+
+INFO:root:Case 992 is complex
+
+INFO:root:Case 993 is complex
+
+INFO:root:Case 994 is complex
+
+INFO:root:Case 995 is complex
+
+INFO:root:Case 996 is complex
+
+INFO:root:Case 997 is complex
+
+INFO:root:Case 998 is complex
+
+INFO:root:Case 999 is complex
+
+INFO:root:Case 1000 is complex
+
+INFO:root:Case 1001 is complex
+
+INFO:root:Case 1002 is complex
+
+INFO:root:Case 1003 is complex
+
+INFO:root:Case 1004 is complex
+
+INFO:root:Case 1005 is complex
+
+INFO:root:Case 1006 is complex
+
+INFO:root:Case 1007 is complex
+
+INFO:root:Case 1008 is complex
+
+INFO:root:Case 1009 is complex
+
+INFO:root:Case 1010 is complex
+
+INFO:root:Case 1011 is complex
+
+INFO:root:Case 1012 is complex
+
+INFO:root:Case 1013 is complex
+
+INFO:root:Case 1014 is complex
+
+INFO:root:Case 1015 is complex
+
+INFO:root:Case 1016 is complex
+
+INFO:root:Case 1017 is complex
+
+INFO:root:Case 1018 is complex
+
+INFO:root:Case 1019 is complex
+
+INFO:root:Case 1020 is complex
+
+INFO:root:Case 1021 is complex
+
+INFO:root:Case 1022 is complex
+
+INFO:root:Case 1023 is complex
+
+INFO:root:Case 1024 is complex
+
+INFO:root:Case 1025 is complex
+
+INFO:root:Case 1026 is complex
+
+INFO:root:Case 1027 is complex
+
+INFO:root:Case 1028 is complex
+
+INFO:root:Case 1029 is complex
+
+INFO:root:Case 1030 is complex
+
+INFO:root:Case 1031 is complex
+
+INFO:root:Case 1032 is complex
+
+INFO:root:Case 1033 is complex
+
+INFO:root:Case 1034 is complex
+
+INFO:root:Case 1035 is complex
+
+INFO:root:Case 1036 is complex
+
+INFO:root:Case 1037 is complex
+
+INFO:root:Case 1038 is complex
+
+INFO:root:Case 1039 is complex
+
+INFO:root:Case 1040 is complex
+
+INFO:root:Case 1041 is complex
+
+INFO:root:Case 1042 is complex
+
+INFO:root:Case 1043 is complex
+
+INFO:root:Case 1044 is complex
+
+INFO:root:Case 1045 is complex
+
+INFO:root:Case 1046 is complex
+
+INFO:root:Case 1047 is complex
+
+INFO:root:Case 1048 is complex
+
+INFO:root:Case 1049 is complex
+
+INFO:root:Case 1050 is complex
+
+INFO:root:Case 1051 is complex
+
+INFO:root:Case 1052 is complex
+
+INFO:root:Case 1053 is complex
+
+INFO:root:Case 1054 is complex
+
+INFO:root:Case 1055 is complex
+
+INFO:root:Case 1056 is complex
+
+INFO:root:Case 1057 is complex
+
+INFO:root:Case 1058 is complex
+
+INFO:root:Case 1059 is complex
+
+INFO:root:Case 1060 is complex
+
+INFO:root:Case 1061 is complex
+
+INFO:root:Case 1062 is complex
+
+INFO:root:Case 1063 is complex
+
+INFO:root:Case 1064 is complex
+
+INFO:root:Case 1065 is complex
+
+INFO:root:Case 1066 is complex
+
+INFO:root:Case 1067 is complex
+
+INFO:root:Case 1068 is complex
+
+INFO:root:Case 1069 is complex
+
+INFO:root:Case 1070 is complex
+
+INFO:root:Case 1071 is complex
+
+INFO:root:Case 1072 is complex
+
+INFO:root:Case 1073 is complex
+
+INFO:root:Case 1074 is complex
+
+INFO:root:Case 1075 is complex
+
+INFO:root:Case 1076 is complex
+
+INFO:root:Case 1077 is complex
+
+INFO:root:Case 1078 is complex
+
+INFO:root:Case 1079 is complex
+
+INFO:root:Case 1080 is complex
+
+INFO:root:Case 1081 is complex
+
+INFO:root:Case 1082 is complex
+
+INFO:root:Case 1083 is complex
+
+INFO:root:Case 1084 is complex
+
+INFO:root:Case 1085 is complex
+
+INFO:root:Case 1086 is complex
+
+INFO:root:Case 1087 is complex
+
+INFO:root:Case 1088 is complex
+
+INFO:root:Case 1089 is complex
+
+INFO:root:Case 1090 is complex
+
+INFO:root:Case 1091 is complex
+
+INFO:root:Case 1092 is complex
+
+INFO:root:Case 1093 is complex
+
+INFO:root:Case 1094 is complex
+
+INFO:root:Case 1095 is complex
+
+INFO:root:Case 1096 is complex
+
+INFO:root:Case 1097 is complex
+
+INFO:root:Case 1098 is complex
+
+INFO:root:Case 1099 is complex
+
+INFO:root:Case 1100 is complex
+
+INFO:root:Case 1101 is complex
+
+INFO:root:Case 1102 is complex
+
+INFO:root:Case 1103 is complex
+
+INFO:root:Case 1104 is complex
+
+INFO:root:Case 1105 is complex
+
+INFO:root:Case 1106 is complex
+
+INFO:root:Case 1107 is complex
+
+INFO:root:Case 1108 is complex
+
+INFO:root:Case 1109 is complex
+
+INFO:root:Case 1110 is complex
+
+INFO:root:Case 1111 is complex
+
+INFO:root:Case 1112 is complex
+
+INFO:root:Case 1113 is complex
+
+INFO:root:Case 1114 is complex
+
+INFO:root:Case 1115 is complex
+
+INFO:root:Case 1116 is complex
+
+INFO:root:Case 1117 is complex
+
+INFO:root:Case 1118 is complex
+
+INFO:root:Case 1119 is complex
+
+INFO:root:Case 1120 is complex
+
+INFO:root:Case 1121 is complex
+
+INFO:root:Case 1122 is complex
+
+INFO:root:Case 1123 is complex
+
+INFO:root:Case 1124 is complex
+
+INFO:root:Case 1125 is complex
+
+INFO:root:Case 1126 is complex
+
+INFO:root:Case 1127 is complex
+
+INFO:root:Case 1128 is complex
+
+INFO:root:Case 1129 is complex
+
+INFO:root:Case 1130 is complex
+
+INFO:root:Case 1131 is complex
+
+INFO:root:Case 1132 is complex
+
+INFO:root:Case 1133 is complex
+
+INFO:root:Case 1134 is complex
+
+INFO:root:Case 1135 is complex
+
+INFO:root:Case 1136 is complex
+
+INFO:root:Case 1137 is complex
+
+INFO:root:Case 1138 is complex
+
+INFO:root:Case 1139 is complex
+
+INFO:root:Case 1140 is complex
+
+INFO:root:Case 1141 is complex
+
+INFO:root:Case 1142 is complex
+
+INFO:root:Case 1143 is complex
+
+INFO:root:Case 1144 is complex
+
+INFO:root:Case 1145 is complex
+
+INFO:root:Case 1146 is complex
+
+INFO:root:Case 1147 is complex
+
+INFO:root:Case 1148 is complex
+
+INFO:root:Case 1149 is complex
+
+INFO:root:Case 1150 is complex
+
+INFO:root:Case 1151 is complex
+
+INFO:root:Case 1152 is complex
+
+INFO:root:Case 1153 is complex
+
+INFO:root:Case 1154 is complex
+
+INFO:root:Case 1155 is complex
+
+INFO:root:Case 1156 is complex
+
+INFO:root:Case 1157 is complex
+
+INFO:root:Case 1158 is complex
+
+INFO:root:Case 1159 is complex
+
+INFO:root:Case 1160 is complex
+
+INFO:root:Case 1161 is complex
+
+INFO:root:Case 1162 is complex
+
+INFO:root:Case 1163 is complex
+
+INFO:root:Case 1164 is complex
+
+INFO:root:Case 1165 is complex
+
+INFO:root:Case 1166 is complex
+
+INFO:root:Case 1167 is complex
+
+INFO:root:Case 1168 is complex
+
+INFO:root:Case 1169 is complex
+
+INFO:root:Case 1170 is complex
+
+INFO:root:Case 1171 is complex
+
+INFO:root:Case 1172 is complex
+
+INFO:root:Case 1173 is complex
+
+INFO:root:Case 1174 is complex
+
+INFO:root:Case 1175 is complex
+
+INFO:root:Case 1176 is complex
+
+INFO:root:Case 1177 is complex
+
+INFO:root:Case 1178 is complex
+
+INFO:root:Case 1179 is complex
+
+INFO:root:Case 1180 is complex
+
+INFO:root:Case 1181 is complex
+
+INFO:root:Case 1182 is complex
+
+INFO:root:Case 1183 is complex
+
+INFO:root:Case 1184 is complex
+
+INFO:root:Case 1185 is complex
+
+INFO:root:Case 1186 is complex
+
+INFO:root:Case 1187 is complex
+
+INFO:root:Case 1188 is complex
+
+INFO:root:Case 1189 is complex
+
+INFO:root:Case 1190 is complex
+
+INFO:root:Case 1191 is complex
+
+INFO:root:Case 1192 is complex
+
+INFO:root:Case 1193 is complex
+
+INFO:root:Case 1194 is complex
+
+INFO:root:Case 1195 is complex
+
+INFO:root:Case 1196 is complex
+
+INFO:root:Case 1197 is complex
+
+INFO:root:Case 1198 is complex
+
+INFO:root:Case 1199 is complex
+
+INFO:root:Case 1200 is complex
+
+INFO:root:Case 1201 is complex
+
+INFO:root:Case 1202 is complex
+
+INFO:root:Case 1203 is complex
+
+INFO:root:Case 1204 is complex
+
+INFO:root:Case 1205 is complex
+
+INFO:root:Case 1206 is complex
+
+INFO:root:Case 1207 is complex
+
+INFO:root:Case 1208 is complex
+
+INFO:root:Case 1209 is complex
+
+INFO:root:Case 1210 is complex
+
+INFO:root:Case 1211 is complex
+
+INFO:root:Case 1212 is complex
+
+INFO:root:Case 1213 is complex
+
+INFO:root:Case 1214 is complex
+
+INFO:root:Case 1215 is complex
+
+INFO:root:Case 1216 is complex
+
+INFO:root:Case 1217 is complex
+
+INFO:root:Case 1218 is complex
+
+INFO:root:Case 1219 is complex
+
+INFO:root:Case 1220 is complex
+
+INFO:root:Case 1221 is complex
+
+INFO:root:Case 1222 is complex
+
+INFO:root:Case 1223 is complex
+
+INFO:root:Case 1224 is complex
+
+INFO:root:Case 1225 is complex
+
+INFO:root:Case 1226 is complex
+
+INFO:root:Case 1227 is complex
+
+INFO:root:Case 1228 is complex
+
+INFO:root:Case 1229 is complex
+
+INFO:root:Case 1230 is complex
+
+INFO:root:Case 1231 is complex
+
+INFO:root:Case 1232 is complex
+
+INFO:root:Case 1233 is complex
+
+INFO:root:Case 1234 is complex
+
+INFO:root:Case 1235 is complex
+
+INFO:root:Case 1236 is complex
+
+INFO:root:Case 1237 is complex
+
+INFO:root:Case 1238 is complex
+
+INFO:root:Case 1239 is complex
+
+INFO:root:Case 1240 is complex
+
+INFO:root:Case 1241 is complex
+
+INFO:root:Case 1242 is complex
+
+INFO:root:Case 1243 is complex
+
+INFO:root:Case 1244 is complex
+
+INFO:root:Case 1245 is complex
+
+INFO:root:Case 1246 is complex
+
+INFO:root:Case 1247 is complex
+
+INFO:root:Case 1248 is complex
+
+INFO:root:Case 1249 is complex
+
+INFO:root:Case 1250 is complex
+
+INFO:root:Case 1251 is complex
+
+INFO:root:Case 1252 is complex
+
+INFO:root:Case 1253 is complex
+
+INFO:root:Case 1254 is complex
+
+INFO:root:Case 1255 is complex
+
+INFO:root:Case 1256 is complex
+
+INFO:root:Case 1257 is complex
+
+INFO:root:Case 1258 is complex
+
+INFO:root:Case 1259 is complex
+
+INFO:root:Case 1260 is complex
+
+INFO:root:Case 1261 is complex
+
+INFO:root:Case 1262 is complex
+
+INFO:root:Case 1263 is complex
+
+INFO:root:Case 1264 is complex
+
+INFO:root:Case 1265 is complex
+
+INFO:root:Case 1266 is complex
+
+INFO:root:Case 1267 is complex
+
+INFO:root:Case 1268 is complex
+
+INFO:root:Case 1269 is complex
+
+INFO:root:Case 1270 is complex
+
+INFO:root:Case 1271 is complex
+
+INFO:root:Case 1272 is complex
+
+INFO:root:Case 1273 is complex
+
+INFO:root:Case 1274 is complex
+
+INFO:root:Case 1275 is complex
+
+INFO:root:Case 1276 is complex
+
+INFO:root:Case 1277 is complex
+
+INFO:root:Case 1278 is complex
+
+INFO:root:Case 1279 is complex
+
+INFO:root:Case 1280 is complex
+
+INFO:root:Case 1281 is complex
+
+INFO:root:Case 1282 is complex
+
+INFO:root:Case 1283 is complex
+
+INFO:root:Case 1284 is complex
+
+INFO:root:Case 1285 is complex
+
+INFO:root:Case 1286 is complex
+
+INFO:root:Case 1287 is complex
+
+INFO:root:Case 1288 is complex
+
+INFO:root:Case 1289 is complex
+
+INFO:root:Case 1290 is complex
+
+INFO:root:Case 1291 is complex
+
+INFO:root:Case 1292 is complex
+
+INFO:root:Case 1293 is complex
+
+INFO:root:Case 1294 is complex
+
+INFO:root:Case 1295 is complex
+
+INFO:root:Case 1296 is complex
+
+INFO:root:Case 1297 is complex
+
+INFO:root:Case 1298 is complex
+
+INFO:root:Case 1299 is complex
+
+INFO:root:Case 1300 is complex
+
+INFO:root:Case 1301 is complex
+
+INFO:root:Case 1302 is complex
+
+INFO:root:Case 1303 is complex
+
+INFO:root:Case 1304 is complex
+
+INFO:root:Case 1305 is complex
+
+INFO:root:Case 1306 is complex
+
+INFO:root:Case 1307 is complex
+
+INFO:root:Case 1308 is complex
+
+INFO:root:Case 1309 is complex
+
+INFO:root:Case 1310 is complex
+
+INFO:root:Case 1311 is complex
+
+INFO:root:Case 1312 is complex
+
+INFO:root:Case 1313 is complex
+
+INFO:root:Case 1314 is complex
+
+INFO:root:Case 1315 is complex
+
+INFO:root:Case 1316 is complex
+
+INFO:root:Case 1317 is complex
+
+INFO:root:Case 1318 is complex
+
+INFO:root:Case 1319 is complex
+
+INFO:root:Case 1320 is complex
+
+INFO:root:Case 1321 is complex
+
+INFO:root:Case 1322 is complex
+
+INFO:root:Case 1323 is complex
+
+INFO:root:Case 1324 is complex
+
+INFO:root:Case 1325 is complex
+
+INFO:root:Case 1326 is complex
+
+INFO:root:Case 1327 is complex
+
+INFO:root:Case 1328 is complex
+
+INFO:root:Case 1329 is complex
+
+INFO:root:Case 1330 is complex
+
+INFO:root:Case 1331 is complex
+
+INFO:root:Case 1332 is complex
+
+INFO:root:Case 1333 is complex
+
+INFO:root:Case 1334 is complex
+
+INFO:root:Case 1335 is complex
+
+INFO:root:Case 1336 is complex
+
+INFO:root:Case 1337 is complex
+
+INFO:root:Case 1338 is complex
+
+INFO:root:Case 1339 is complex
+
+INFO:root:Case 1340 is complex
+
+INFO:root:Case 1341 is complex
+
+INFO:root:Case 1342 is complex
+
+INFO:root:Case 1343 is complex
+
+INFO:root:Case 1344 is complex
+
+INFO:root:Case 1345 is complex
+
+INFO:root:Case 1346 is complex
+
+INFO:root:Case 1347 is complex
+
+INFO:root:Case 1348 is complex
+
+INFO:root:Case 1349 is complex
+
+INFO:root:Case 1350 is complex
+
+INFO:root:Case 1351 is complex
+
+INFO:root:Case 1352 is complex
+
+INFO:root:Case 1353 is complex
+
+INFO:root:Case 1354 is complex
+
+INFO:root:Case 1355 is complex
+
+INFO:root:Case 1356 is complex
+
+INFO:root:Case 1357 is complex
+
+INFO:root:Case 1358 is complex
+
+INFO:root:Case 1359 is complex
+
+INFO:root:Case 1360 is complex
+
+INFO:root:Case 1361 is complex
+
+INFO:root:Case 1362 is complex
+
+INFO:root:Case 1363 is complex
+
+INFO:root:Case 1364 is complex
+
+INFO:root:Case 1365 is complex
+
+INFO:root:Case 1366 is complex
+
+INFO:root:Case 1367 is complex
+
+INFO:root:Case 1368 is complex
+
+INFO:root:Case 1369 is complex
+
+INFO:root:Case 1370 is complex
+
+INFO:root:Case 1371 is complex
+
+INFO:root:Case 1372 is complex
+
+INFO:root:Case 1373 is complex
+
+INFO:root:Case 1374 is complex
+
+INFO:root:Case 1375 is complex
+
+INFO:root:Case 1376 is complex
+
+INFO:root:Case 1377 is complex
+
+INFO:root:Case 1378 is complex
+
+INFO:root:Case 1379 is complex
+
+INFO:root:Case 1380 is complex
+
+INFO:root:Case 1381 is complex
+
+INFO:root:Case 1382 is complex
+
+INFO:root:Case 1383 is complex
+
+INFO:root:Case 1384 is complex
+
+INFO:root:Case 1385 is complex
+
+INFO:root:Case 1386 is complex
+
+INFO:root:Case 1387 is complex
+
+INFO:root:Case 1388 is complex
+
+INFO:root:Case 1389 is complex
+
+INFO:root:Case 1390 is complex
+
+INFO:root:Case 1391 is complex
+
+INFO:root:Case 1392 is complex
+
+INFO:root:Case 1393 is complex
+
+INFO:root:Case 1394 is complex
+
+INFO:root:Case 1395 is complex
+
+INFO:root:Case 1396 is complex
+
+INFO:root:Case 1397 is complex
+
+INFO:root:Case 1398 is complex
+
+INFO:root:Case 1399 is complex
+
+INFO:root:Case 1400 is complex
+
+INFO:root:Case 1401 is complex
+
+INFO:root:Case 1402 is complex
+
+INFO:root:Case 1403 is complex
+
+INFO:root:Case 1404 is complex
+
+INFO:root:Case 1405 is complex
+
+INFO:root:Case 1406 is complex
+
+INFO:root:Case 1407 is complex
+
+INFO:root:Case 1408 is complex
+
+INFO:root:Case 1409 is complex
+
+INFO:root:Case 1410 is complex
+
+INFO:root:Case 1411 is complex
+
+INFO:root:Case 1412 is complex
+
+INFO:root:Case 1413 is complex
+
+INFO:root:Case 1414 is complex
+
+INFO:root:Case 1415 is complex
+
+INFO:root:Case 1416 is complex
+
+INFO:root:Case 1417 is complex
+
+INFO:root:Case 1418 is complex
+
+INFO:root:Case 1419 is complex
+
+INFO:root:Case 1420 is complex
+
+INFO:root:Case 1421 is complex
+
+INFO:root:Case 1422 is complex
+
+INFO:root:Case 1423 is complex
+
+INFO:root:Case 1424 is complex
+
+INFO:root:Case 1425 is complex
+
+INFO:root:Case 1426 is complex
+
+INFO:root:Case 1427 is complex
+
+INFO:root:Case 1428 is complex
+
+INFO:root:Case 1429 is complex
+
+INFO:root:Case 1430 is complex
+
+INFO:root:Case 1431 is complex
+
+INFO:root:Case 1432 is complex
+
+INFO:root:Case 1433 is complex
+
+INFO:root:Case 1434 is complex
+
+INFO:root:Case 1435 is complex
+
+INFO:root:Case 1436 is complex
+
+INFO:root:Case 1437 is complex
+
+INFO:root:Case 1438 is complex
+
+INFO:root:Case 1439 is complex
+
+INFO:root:Case 1440 is complex
+
+INFO:root:Case 1441 is complex
+
+INFO:root:Case 1442 is complex
+
+INFO:root:Case 1443 is complex
+
+INFO:root:Case 1444 is complex
+
+INFO:root:Case 1445 is complex
+
+INFO:root:Case 1446 is complex
+
+INFO:root:Case 1447 is complex
+
+INFO:root:Case 1448 is complex
+
+INFO:root:Case 1449 is complex
+
+INFO:root:Case 1450 is complex
+
+INFO:root:Case 1451 is complex
+
+INFO:root:Case 1452 is complex
+
+INFO:root:Case 1453 is complex
+
+INFO:root:Case 1454 is complex
+
+INFO:root:Case 1455 is complex
+
+INFO:root:Case 1456 is complex
+
+INFO:root:Case 1457 is complex
+
+INFO:root:Case 1458 is complex
+
+INFO:root:Case 1459 is complex
+
+INFO:root:Case 1460 is complex
+
+INFO:root:Case 1461 is complex
+
+INFO:root:Case 1462 is complex
+
+INFO:root:Case 1463 is complex
+
+INFO:root:Case 1464 is complex
+
+INFO:root:Case 1465 is complex
+
+INFO:root:Case 1466 is complex
+
+INFO:root:Case 1467 is complex
+
+INFO:root:Case 1468 is complex
+
+INFO:root:Case 1469 is complex
+
+INFO:root:Case 1470 is complex
+
+INFO:root:Case 1471 is complex
+
+INFO:root:Case 1472 is complex
+
+INFO:root:Case 1473 is complex
+
+INFO:root:Case 1474 is complex
+
+INFO:root:Case 1475 is complex
+
+INFO:root:Case 1476 is complex
+
+INFO:root:Case 1477 is complex
+
+INFO:root:Case 1478 is complex
+
+INFO:root:Case 1479 is complex
+
+INFO:root:Case 1480 is complex
+
+INFO:root:Case 1481 is complex
+
+INFO:root:Case 1482 is complex
+
+INFO:root:Case 1483 is complex
+
+INFO:root:Case 1484 is complex
+
+INFO:root:Case 1485 is complex
+
+INFO:root:Case 1486 is complex
+
+INFO:root:Case 1487 is complex
+
+INFO:root:Case 1488 is complex
+
+INFO:root:Case 1489 is complex
+
+INFO:root:Case 1490 is complex
+
+INFO:root:Case 1491 is complex
+
+INFO:root:Case 1492 is complex
+
+INFO:root:Case 1493 is complex
+
+INFO:root:Case 1494 is complex
+
+INFO:root:Case 1495 is complex
+
+INFO:root:Case 1496 is complex
+
+INFO:root:Case 1497 is complex
+
+INFO:root:Case 1498 is complex
+
+INFO:root:Case 1499 is complex
+
+INFO:root:Case 1500 is complex
+
+INFO:root:Case 1501 is complex
+
+INFO:root:Case 1502 is complex
+
+INFO:root:Case 1503 is complex
+
+INFO:root:Case 1504 is complex
+
+INFO:root:Case 1505 is complex
+
+INFO:root:Case 1506 is complex
+
+INFO:root:Case 1507 is complex
+
+INFO:root:Case 1508 is complex
+
+INFO:root:Case 1509 is complex
+
+INFO:root:Case 1510 is complex
+
+INFO:root:Case 1511 is complex
+
+INFO:root:Case 1512 is complex
+
+INFO:root:Case 1513 is complex
+
+INFO:root:Case 1514 is complex
+
+INFO:root:Case 1515 is complex
+
+INFO:root:Case 1516 is complex
+
+INFO:root:Case 1517 is complex
+
+INFO:root:Case 1518 is complex
+
+INFO:root:Case 1519 is complex
+
+INFO:root:Case 1520 is complex
+
+INFO:root:Case 1521 is complex
+
+INFO:root:Case 1522 is complex
+
+INFO:root:Case 1523 is complex
+
+INFO:root:Case 1524 is complex
+
+INFO:root:Case 1525 is complex
+
+INFO:root:Case 1526 is complex
+
+INFO:root:Case 1527 is complex
+
+INFO:root:Case 1528 is complex
+
+INFO:root:Case 1529 is complex
+
+INFO:root:Case 1530 is complex
+
+INFO:root:Case 1531 is complex
+
+INFO:root:Case 1532 is complex
+
+INFO:root:Case 1533 is complex
+
+INFO:root:Case 1534 is complex
+
+INFO:root:Case 1535 is complex
+
+INFO:root:Case 1536 is complex
+
+INFO:root:Case 1537 is complex
+
+INFO:root:Case 1538 is complex
+
+INFO:root:Case 1539 is complex
+
+INFO:root:Case 1540 is complex
+
+INFO:root:Case 1541 is complex
+
+INFO:root:Case 1542 is complex
+
+INFO:root:Case 1543 is complex
+
+INFO:root:Case 1544 is complex
+
+INFO:root:Case 1545 is complex
+
+INFO:root:Case 1546 is complex
+
+INFO:root:Case 1547 is complex
+
+INFO:root:Case 1548 is complex
+
+INFO:root:Case 1549 is complex
+
+INFO:root:Case 1550 is complex
+
+INFO:root:Case 1551 is complex
+
+INFO:root:Case 1552 is complex
+
+INFO:root:Case 1553 is complex
+
+INFO:root:Case 1554 is complex
+
+INFO:root:Case 1555 is complex
+
+INFO:root:Case 1556 is complex
+
+INFO:root:Case 1557 is complex
+
+INFO:root:Case 1558 is complex
+
+INFO:root:Case 1559 is complex
+
+INFO:root:Case 1560 is complex
+
+INFO:root:Case 1561 is complex
+
+INFO:root:Case 1562 is complex
+
+INFO:root:Case 1563 is complex
+
+INFO:root:Case 1564 is complex
+
+INFO:root:Case 1565 is complex
+
+INFO:root:Case 1566 is complex
+
+INFO:root:Case 1567 is complex
+
+INFO:root:Case 1568 is complex
+
+INFO:root:Case 1569 is complex
+
+INFO:root:Case 1570 is complex
+
+INFO:root:Case 1571 is complex
+
+INFO:root:Case 1572 is complex
+
+INFO:root:Case 1573 is complex
+
+INFO:root:Case 1574 is complex
+
+INFO:root:Case 1575 is complex
+
+INFO:root:Case 1576 is complex
+
+INFO:root:Case 1577 is complex
+
+INFO:root:Case 1578 is complex
+
+INFO:root:Case 1579 is complex
+
+INFO:root:Case 1580 is complex
+
+INFO:root:Case 1581 is complex
+
+INFO:root:Case 1582 is complex
+
+INFO:root:Case 1583 is complex
+
+INFO:root:Case 1584 is complex
+
+INFO:root:Case 1585 is complex
+
+INFO:root:Case 1586 is complex
+
+INFO:root:Case 1587 is complex
+
+INFO:root:Case 1588 is complex
+
+INFO:root:Case 1589 is complex
+
+INFO:root:Case 1590 is complex
+
+INFO:root:Case 1591 is complex
+
+INFO:root:Case 1592 is complex
+
+INFO:root:Case 1593 is complex
+
+INFO:root:Case 1594 is complex
+
+INFO:root:Case 1595 is complex
+
+INFO:root:Case 1596 is complex
+
+INFO:root:Case 1597 is complex
+
+INFO:root:Case 1598 is complex
+
+INFO:root:Case 1599 is complex
+
+INFO:root:Case 1600 is complex
+
+INFO:root:Case 1601 is complex
+
+INFO:root:Case 1602 is complex
+
+INFO:root:Case 1603 is complex
+
+INFO:root:Case 1604 is complex
+
+INFO:root:Case 1605 is complex
+
+INFO:root:Case 1606 is complex
+
+INFO:root:Case 1607 is complex
+
+INFO:root:Case 1608 is complex
+
+INFO:root:Case 1609 is complex
+
+INFO:root:Case 1610 is complex
+
+INFO:root:Case 1611 is complex
+
+INFO:root:Case 1612 is complex
+
+INFO:root:Case 1613 is complex
+
+INFO:root:Case 1614 is complex
+
+INFO:root:Case 1615 is complex
+
+INFO:root:Case 1616 is complex
+
+INFO:root:Case 1617 is complex
+
+INFO:root:Case 1618 is complex
+
+INFO:root:Case 1619 is complex
+
+INFO:root:Case 1620 is complex
+
+INFO:root:Case 1621 is complex
+
+INFO:root:Case 1622 is complex
+
+INFO:root:Case 1623 is complex
+
+INFO:root:Case 1624 is complex
+
+INFO:root:Case 1625 is complex
+
+INFO:root:Case 1626 is complex
+
+INFO:root:Case 1627 is complex
+
+INFO:root:Case 1628 is complex
+
+INFO:root:Case 1629 is complex
+
+INFO:root:Case 1630 is complex
+
+INFO:root:Case 1631 is complex
+
+INFO:root:Case 1632 is complex
+
+INFO:root:Case 1633 is complex
+
+INFO:root:Case 1634 is complex
+
+INFO:root:Case 1635 is complex
+
+INFO:root:Case 1636 is complex
+
+INFO:root:Case 1637 is complex
+
+INFO:root:Case 1638 is complex
+
+INFO:root:Case 1639 is complex
+
+INFO:root:Case 1640 is complex
+
+INFO:root:Case 1641 is complex
+
+INFO:root:Case 1642 is complex
+
+INFO:root:Case 1643 is complex
+
+INFO:root:Case 1644 is complex
+
+INFO:root:Case 1645 is complex
+
+INFO:root:Case 1646 is complex
+
+INFO:root:Case 1647 is complex
+
+INFO:root:Case 1648 is complex
+
+INFO:root:Case 1649 is complex
+
+INFO:root:Case 1650 is complex
+
+INFO:root:Case 1651 is complex
+
+INFO:root:Case 1652 is complex
+
+INFO:root:Case 1653 is complex
+
+INFO:root:Case 1654 is complex
+
+INFO:root:Case 1655 is complex
+
+INFO:root:Case 1656 is complex
+
+INFO:root:Case 1657 is complex
+
+INFO:root:Case 1658 is complex
+
+INFO:root:Case 1659 is complex
+
+INFO:root:Case 1660 is complex
+
+INFO:root:Case 1661 is complex
+
+INFO:root:Case 1662 is complex
+
+INFO:root:Case 1663 is complex
+
+INFO:root:Case 1664 is complex
+
+INFO:root:Case 1665 is complex
+
+INFO:root:Case 1666 is complex
+
+INFO:root:Case 1667 is complex
+
+INFO:root:Case 1668 is complex
+
+INFO:root:Case 1669 is complex
+
+INFO:root:Case 1670 is complex
+
+INFO:root:Case 1671 is complex
+
+INFO:root:Case 1672 is complex
+
+INFO:root:Case 1673 is complex
+
+INFO:root:Case 1674 is complex
+
+INFO:root:Case 1675 is complex
+
+INFO:root:Case 1676 is complex
+
+INFO:root:Case 1677 is complex
+
+INFO:root:Case 1678 is complex
+
+INFO:root:Case 1679 is complex
+
+INFO:root:Case 1680 is complex
+
+INFO:root:Case 1681 is complex
+
+INFO:root:Case 1682 is complex
+
+INFO:root:Case 1683 is complex
+
+INFO:root:Case 1684 is complex
+
+INFO:root:Case 1685 is complex
+
+INFO:root:Case 1686 is complex
+
+INFO:root:Case 1687 is complex
+
+INFO:root:Case 1688 is complex
+
+INFO:root:Case 1689 is complex
+
+INFO:root:Case 1690 is complex
+
+INFO:root:Case 1691 is complex
+
+INFO:root:Case 1692 is complex
+
+INFO:root:Case 1693 is complex
+
+INFO:root:Case 1694 is complex
+
+INFO:root:Case 1695 is complex
+
+INFO:root:Case 1696 is complex
+
+INFO:root:Case 1697 is complex
+
+INFO:root:Case 1698 is complex
+
+INFO:root:Case 1699 is complex
+
+INFO:root:Case 1700 is complex
+
+INFO:root:Case 1701 is complex
+
+INFO:root:Case 1702 is complex
+
+INFO:root:Case 1703 is complex
+
+INFO:root:Case 1704 is complex
+
+INFO:root:Case 1705 is complex
+
+INFO:root:Case 1706 is complex
+
+INFO:root:Case 1707 is complex
+
+INFO:root:Case 1708 is complex
+
+INFO:root:Case 1709 is complex
+
+INFO:root:Case 1710 is complex
+
+INFO:root:Case 1711 is complex
+
+INFO:root:Case 1712 is complex
+
+INFO:root:Case 1713 is complex
+
+INFO:root:Case 1714 is complex
+
+INFO:root:Case 1715 is complex
+
+INFO:root:Case 1716 is complex
+
+INFO:root:Case 1717 is complex
+
+INFO:root:Case 1718 is complex
+
+INFO:root:Case 1719 is complex
+
+INFO:root:Case 1720 is complex
+
+INFO:root:Case 1721 is complex
+
+INFO:root:Case 1722 is complex
+
+INFO:root:Case 1723 is complex
+
+INFO:root:Case 1724 is complex
+
+INFO:root:Case 1725 is complex
+
+INFO:root:Case 1726 is complex
+
+INFO:root:Case 1727 is complex
+
+INFO:root:Case 1728 is complex
+
+INFO:root:Case 1729 is complex
+
+INFO:root:Case 1730 is complex
+
+INFO:root:Case 1731 is complex
+
+INFO:root:Case 1732 is complex
+
+INFO:root:Case 1733 is complex
+
+INFO:root:Case 1734 is complex
+
+INFO:root:Case 1735 is complex
+
+INFO:root:Case 1736 is complex
+
+INFO:root:Case 1737 is complex
+
+INFO:root:Case 1738 is complex
+
+INFO:root:Case 1739 is complex
+
+INFO:root:Case 1740 is complex
+
+INFO:root:Case 1741 is complex
+
+INFO:root:Case 1742 is complex
+
+INFO:root:Case 1743 is complex
+
+INFO:root:Case 1744 is complex
+
+INFO:root:Case 1745 is complex
+
+INFO:root:Case 1746 is complex
+
+INFO:root:Case 1747 is complex
+
+INFO:root:Case 1748 is complex
+
+INFO:root:Case 1749 is complex
+
+INFO:root:Case 1750 is complex
+
+INFO:root:Case 1751 is complex
+
+INFO:root:Case 1752 is complex
+
+INFO:root:Case 1753 is complex
+
+INFO:root:Case 1754 is complex
+
+INFO:root:Case 1755 is complex
+
+INFO:root:Case 1756 is complex
+
+INFO:root:Case 1757 is complex
+
+INFO:root:Case 1758 is complex
+
+INFO:root:Case 1759 is complex
+
+INFO:root:Case 1760 is complex
+
+INFO:root:Case 1761 is complex
+
+INFO:root:Case 1762 is complex
+
+INFO:root:Case 1763 is complex
+
+INFO:root:Case 1764 is complex
+
+INFO:root:Case 1765 is complex
+
+INFO:root:Case 1766 is complex
+
+INFO:root:Case 1767 is complex
+
+INFO:root:Case 1768 is complex
+
+INFO:root:Case 1769 is complex
+
+INFO:root:Case 1770 is complex
+
+INFO:root:Case 1771 is complex
+
+INFO:root:Case 1772 is complex
+
+INFO:root:Case 1773 is complex
+
+INFO:root:Case 1774 is complex
+
+INFO:root:Case 1775 is complex
+
+INFO:root:Case 1776 is complex
+
+INFO:root:Case 1777 is complex
+
+INFO:root:Case 1778 is complex
+
+INFO:root:Case 1779 is complex
+
+INFO:root:Case 1780 is complex
+
+INFO:root:Case 1781 is complex
+
+INFO:root:Case 1782 is complex
+
+INFO:root:Case 1783 is complex
+
+INFO:root:Case 1784 is complex
+
+INFO:root:Case 1785 is complex
+
+INFO:root:Case 1786 is complex
+
+INFO:root:Case 1787 is complex
+
+INFO:root:Case 1788 is complex
+
+INFO:root:Case 1789 is complex
+
+INFO:root:Case 1790 is complex
+
+INFO:root:Case 1791 is complex
+
+INFO:root:Case 1792 is complex
+
+INFO:root:Case 1793 is complex
+
+INFO:root:Case 1794 is complex
+
+INFO:root:Case 1795 is complex
+
+INFO:root:Case 1796 is complex
+
+INFO:root:Case 1797 is complex
+
+INFO:root:Case 1798 is complex
+
+INFO:root:Case 1799 is complex
+
+INFO:root:Case 1800 is complex
+
+INFO:root:Case 1801 is complex
+
+INFO:root:Case 1802 is complex
+
+INFO:root:Case 1803 is complex
+
+INFO:root:Case 1804 is complex
+
+INFO:root:Case 1805 is complex
+
+INFO:root:Case 1806 is complex
+
+INFO:root:Case 1807 is complex
+
+INFO:root:Case 1808 is complex
+
+INFO:root:Case 1809 is complex
+
+INFO:root:Case 1810 is complex
+
+INFO:root:Case 1811 is complex
+
+INFO:root:Case 1812 is complex
+
+INFO:root:Case 1813 is complex
+
+INFO:root:Case 1814 is complex
+
+INFO:root:Case 1815 is complex
+
+INFO:root:Case 1816 is complex
+
+INFO:root:Case 1817 is complex
+
+INFO:root:Case 1818 is complex
+
+INFO:root:Case 1819 is complex
+
+INFO:root:Case 1820 is complex
+
+INFO:root:Case 1821 is complex
+
+INFO:root:Case 1822 is complex
+
+INFO:root:Case 1823 is complex
+
+INFO:root:Case 1824 is complex
+
+INFO:root:Case 1825 is complex
+
+INFO:root:Case 1826 is complex
+
+INFO:root:Case 1827 is complex
+
+INFO:root:Case 1828 is complex
+
+INFO:root:Case 1829 is complex
+
+INFO:root:Case 1830 is complex
+
+INFO:root:Case 1831 is complex
+
+INFO:root:Case 1832 is complex
+
+INFO:root:Case 1833 is complex
+
+INFO:root:Case 1834 is complex
+
+INFO:root:Case 1835 is complex
+
+INFO:root:Case 1836 is complex
+
+INFO:root:Case 1837 is complex
+
+INFO:root:Case 1838 is complex
+
+INFO:root:Case 1839 is complex
+
+INFO:root:Case 1840 is complex
+
+INFO:root:Case 1841 is complex
+
+INFO:root:Case 1842 is complex
+
+INFO:root:Case 1843 is complex
+
+INFO:root:Case 1844 is complex
+
+INFO:root:Case 1845 is complex
+
+INFO:root:Case 1846 is complex
+
+INFO:root:Case 1847 is complex
+
+INFO:root:Case 1848 is complex
+
+INFO:root:Case 1849 is complex
+
+INFO:root:Case 1850 is complex
+
+INFO:root:Case 1851 is complex
+
+INFO:root:Case 1852 is complex
+
+INFO:root:Case 1853 is complex
+
+INFO:root:Case 1854 is complex
+
+INFO:root:Case 1855 is complex
+
+INFO:root:Case 1856 is complex
+
+INFO:root:Case 1857 is complex
+
+INFO:root:Case 1858 is complex
+
+INFO:root:Case 1859 is complex
+
+INFO:root:Case 1860 is complex
+
+INFO:root:Case 1861 is complex
+
+INFO:root:Case 1862 is complex
+
+INFO:root:Case 1863 is complex
+
+INFO:root:Case 1864 is complex
+
+INFO:root:Case 1865 is complex
+
+INFO:root:Case 1866 is complex
+
+INFO:root:Case 1867 is complex
+
+INFO:root:Case 1868 is complex
+
+INFO:root:Case 1869 is complex
+
+INFO:root:Case 1870 is complex
+
+INFO:root:Case 1871 is complex
+
+INFO:root:Case 1872 is complex
+
+INFO:root:Case 1873 is complex
+
+INFO:root:Case 1874 is complex
+
+INFO:root:Case 1875 is complex
+
+INFO:root:Case 1876 is complex
+
+INFO:root:Case 1877 is complex
+
+INFO:root:Case 1878 is complex
+
+INFO:root:Case 1879 is complex
+
+INFO:root:Case 1880 is complex
+
+INFO:root:Case 1881 is complex
+
+INFO:root:Case 1882 is complex
+
+INFO:root:Case 1883 is complex
+
+INFO:root:Case 1884 is complex
+
+INFO:root:Case 1885 is complex
+
+INFO:root:Case 1886 is complex
+
+INFO:root:Case 1887 is complex
+
+INFO:root:Case 1888 is complex
+
+INFO:root:Case 1889 is complex
+
+INFO:root:Case 1890 is complex
+
+INFO:root:Case 1891 is complex
+
+INFO:root:Case 1892 is complex
+
+INFO:root:Case 1893 is complex
+
+INFO:root:Case 1894 is complex
+
+INFO:root:Case 1895 is complex
+
+INFO:root:Case 1896 is complex
+
+INFO:root:Case 1897 is complex
+
+INFO:root:Case 1898 is complex
+
+INFO:root:Case 1899 is complex
+
+INFO:root:Case 1900 is complex
+
+INFO:root:Case 1901 is complex
+
+INFO:root:Case 1902 is complex
+
+INFO:root:Case 1903 is complex
+
+INFO:root:Case 1904 is complex
+
+INFO:root:Case 1905 is complex
+
+INFO:root:Case 1906 is complex
+
+INFO:root:Case 1907 is complex
+
+INFO:root:Case 1908 is complex
+
+INFO:root:Case 1909 is complex
+
+INFO:root:Case 1910 is complex
+
+INFO:root:Case 1911 is complex
+
+INFO:root:Case 1912 is complex
+
+INFO:root:Case 1913 is complex
+
+INFO:root:Case 1914 is complex
+
+INFO:root:Case 1915 is complex
+
+INFO:root:Case 1916 is complex
+
+INFO:root:Case 1917 is complex
+
+INFO:root:Case 1918 is complex
+
+INFO:root:Case 1919 is complex
+
+INFO:root:Case 1920 is complex
+
+INFO:root:Case 1921 is complex
+
+INFO:root:Case 1922 is complex
+
+INFO:root:Case 1923 is complex
+
+INFO:root:Case 1924 is complex
+
+INFO:root:Case 1925 is complex
+
+INFO:root:Case 1926 is complex
+
+INFO:root:Case 1927 is complex
+
+INFO:root:Case 1928 is complex
+
+INFO:root:Case 1929 is complex
+
+INFO:root:Case 1930 is complex
+
+INFO:root:Case 1931 is complex
+
+INFO:root:Case 1932 is complex
+
+INFO:root:Case 1933 is complex
+
+INFO:root:Case 1934 is complex
+
+INFO:root:Case 1935 is complex
+
+INFO:root:Case 1936 is complex
+
+INFO:root:Case 1937 is complex
+
+INFO:root:Case 1938 is complex
+
+INFO:root:Case 1939 is complex
+
+INFO:root:Case 1940 is complex
+
+INFO:root:Case 1941 is complex
+
+INFO:root:Case 1942 is complex
+
+INFO:root:Case 1943 is complex
+
+INFO:root:Case 1944 is complex
+
+INFO:root:Case 1945 is complex
+
+INFO:root:Case 1946 is complex
+
+INFO:root:Case 1947 is complex
+
+INFO:root:Case 1948 is complex
+
+INFO:root:Case 1949 is complex
+
+INFO:root:Case 1950 is complex
+
+INFO:root:Case 1951 is complex
+
+INFO:root:Case 1952 is complex
+
+INFO:root:Case 1953 is complex
+
+INFO:root:Case 1954 is complex
+
+INFO:root:Case 1955 is complex
+
+INFO:root:Case 1956 is complex
+
+INFO:root:Case 1957 is complex
+
+INFO:root:Case 1958 is complex
+
+INFO:root:Case 1959 is complex
+
+INFO:root:Case 1960 is complex
+
+INFO:root:Case 1961 is complex
+
+INFO:root:Case 1962 is complex
+
+INFO:root:Case 1963 is complex
+
+INFO:root:Case 1964 is complex
+
+INFO:root:Case 1965 is complex
+
+INFO:root:Case 1966 is complex
+
+INFO:root:Case 1967 is complex
+
+INFO:root:Case 1968 is complex
+
+INFO:root:Case 1969 is complex
+
+INFO:root:Case 1970 is complex
+
+INFO:root:Case 1971 is complex
+
+INFO:root:Case 1972 is complex
+
+INFO:root:Case 1973 is complex
+
+INFO:root:Case 1974 is complex
+
+INFO:root:Case 1975 is complex
+
+INFO:root:Case 1976 is complex
+
+INFO:root:Case 1977 is complex
+
+INFO:root:Case 1978 is complex
+
+INFO:root:Case 1979 is complex
+
+INFO:root:Case 1980 is complex
+
+INFO:root:Case 1981 is complex
+
+INFO:root:Case 1982 is complex
+
+INFO:root:Case 1983 is complex
+
+INFO:root:Case 1984 is complex
+
+INFO:root:Case 1985 is complex
+
+INFO:root:Case 1986 is complex
+
+INFO:root:Case 1987 is complex
+
+INFO:root:Case 1988 is complex
+
+INFO:root:Case 1989 is complex
+
+INFO:root:Case 1990 is complex
+
+INFO:root:Case 1991 is complex
+
+INFO:root:Case 1992 is complex
+
+INFO:root:Case 1993 is complex
+
+INFO:root:Case 1994 is complex
+
+INFO:root:Case 1995 is complex
+
+INFO:root:Complex list size: 1996
+INFO:root:bbcount_list: [10, 18, 11, 17, 13, 10, 16, 17, 10, 12, 11, 10, 13, 19, 27, 18, 28, 15, 12, 11, 16, 19, 52, 20, 10, 15, 23, 13, 11, 10, 13, 16, 20, 20, 13, 27, 30, 14, 13, 11, 83, 1, 27, 12, 10, 10, 17, 13, 10, 1, 64, 51, 12, 16, 11, 16, 12, 12, 11, 11, 35, 21, 16, 15, 15, 10, 16, 38, 22, 11, 11, 10, 17, 14, 13, 11, 16, 16, 12, 13, 13, 10, 22, 15, 11, 10, 12, 23, 11, 11, 15, 13, 10, 11, 10, 190, 10, 15, 24, 218, 10, 14, 10, 15, 14, 10, 12, 16, 12, 13, 11, 12, 11, 14, 1, 12, 13, 11, 16, 18, 13, 11, 10, 11, 52, 13, 13, 10, 12, 10, 10, 10, 11, 12, 10, 14, 10, 13, 10, 207, 24, 79, 11, 10, 12, 23, 11, 18, 11, 13, 13, 59, 79, 10, 15, 19, 13, 10, 13, 19, 13, 10, 12, 15, 10, 14, 13, 31, 16, 10, 10, 13, 13, 10, 12, 11, 11, 11, 12, 34, 13, 11, 12, 12, 14, 15, 16, 24, 11, 15, 14, 11, 11, 29, 24, 12, 16, 23, 11, 10, 22, 14, 25, 20, 14, 14, 11, 23, 22, 15, 24, 10, 11, 17, 10, 12, 28, 11, 12, 14, 1, 19, 35, 14, 11, 1, 38, 56, 15, 11, 26, 54, 12, 10, 10, 10, 12, 13, 26, 12, 24, 14, 13, 11, 12, 11, 13, 14, 64, 12, 10, 19, 13, 12, 35, 10, 18, 11, 10, 23, 10, 10, 12, 10, 41, 12, 43, 16, 29, 14, 1, 24, 10, 33, 12, 12, 15, 16, 12, 17, 13, 11, 24, 17, 10, 11, 12, 11, 12, 26, 13, 29, 18, 13, 10, 23, 10, 14, 49, 32, 11, 14, 10, 15, 66, 22, 15, 11, 23, 11, 10, 13, 25, 1, 14, 10, 90, 17, 11, 13, 12, 80, 16, 11, 13, 67, 10, 11, 22, 18, 13, 17, 15, 12, 26, 13, 17, 23, 14, 24, 21, 27, 10, 12, 28, 22, 19, 12, 19, 13, 11, 14, 10, 11, 52, 10, 12, 10, 11, 16, 80, 10, 10, 12, 24, 10, 15, 16, 11, 32, 11, 38, 12, 15, 10, 20, 14, 20, 11, 18, 11, 10, 10, 12, 17, 10, 12, 13, 13, 10, 10, 13, 14, 14, 12, 14, 12, 10, 11, 12, 18, 20, 86, 12, 13, 11, 41, 24, 14, 10, 14, 18, 12, 19, 12, 13, 33, 10, 17, 12, 11, 14, 11, 20, 11, 23, 10, 11, 26, 45, 27, 10, 14, 15, 26, 10, 21, 17, 12, 10, 18, 10, 12, 13, 12, 12, 23, 12, 31, 11, 10, 10, 15, 16, 11, 14, 17, 12, 10, 1, 16, 33, 12, 23, 10, 10, 10, 21, 20, 10, 14, 11, 13, 10, 18, 11, 14, 11, 10, 17, 10, 10, 28, 12, 11, 105, 12, 13, 11, 23, 11, 10, 35, 18, 14, 11, 13, 11, 11, 11, 10, 25, 10, 20, 11, 26, 12, 19, 14, 10, 12, 11, 10, 10, 13, 13, 36, 10, 24, 11, 24, 11, 26, 12, 11, 10, 84, 14, 18, 15, 28, 10, 14, 10, 19, 11, 21, 15, 12, 12, 13, 26, 35, 12, 19, 10, 12, 12, 10, 20, 14, 10, 12, 12, 12, 13, 24, 22, 10, 121, 14, 10, 14, 16, 10, 10, 19, 10, 12, 11, 10, 12, 11, 10, 20, 18, 10, 19, 16, 10, 11, 18, 13, 10, 11, 29, 14, 11, 58, 24, 15, 11, 31, 14, 13, 15, 11, 14, 15, 11, 10, 16, 10, 12, 11, 11, 26, 16, 13, 10, 24, 12, 15, 18, 15, 14, 11, 20, 40, 24, 10, 26, 10, 10, 11, 10, 14, 14, 19, 12, 47, 15, 12, 11, 14, 15, 26, 27, 10, 10, 26, 29, 12, 10, 30, 10, 20, 40, 10, 31, 16, 21, 11, 24, 14, 32, 10, 86, 18, 13, 12, 10, 20, 34, 10, 10, 18, 12, 25, 21, 19, 19, 23, 21, 24, 10, 20, 14, 10, 10, 11, 11, 1, 10, 24, 18, 19, 10, 9, 16, 10, 12, 17, 23, 11, 16, 15, 13, 24, 14, 13, 10, 16, 20, 14, 11, 25, 12, 51, 16, 34, 10, 29, 12, 28, 10, 15, 23, 12, 12, 15, 10, 12, 10, 10, 11, 13, 12, 19, 19, 16, 35, 13, 13, 14, 20, 13, 17, 14, 10, 12, 10, 10, 19, 19, 18, 13, 11, 12, 12, 14, 10, 11, 12, 11, 29, 18, 16, 15, 11, 30, 35, 10, 24, 12, 13, 18, 14, 10, 11, 21, 14, 11, 1, 11, 8, 11, 12, 35, 15, 13, 10, 11, 34, 12, 11, 12, 17, 13, 14, 23, 10, 12, 28, 51, 75, 13, 51, 14, 16, 23, 11, 11, 10, 18, 22, 19, 18, 10, 10, 22, 17, 12, 11, 10, 65, 13, 12, 12, 15, 12, 17, 12, 18, 10, 10, 11, 18, 14, 15, 12, 11, 10, 13, 12, 12, 10, 10, 37, 14, 22, 11, 13, 24, 10, 24, 18, 14, 14, 18, 12, 12, 43, 20, 12, 14, 28, 11, 20, 11, 25, 13, 16, 14, 17, 27, 12, 22, 11, 21, 16, 46, 18, 34, 25, 11, 13, 19, 35, 13, 17, 64, 17, 19, 11, 14, 25, 12, 14, 12, 15, 10, 21, 34, 10, 15, 11, 12, 16, 24, 10, 13, 11, 12, 14, 20, 14, 10, 39, 22, 13, 10, 15, 14, 19, 12, 15, 10, 10, 12, 55, 10, 14, 14, 11, 12, 25, 12, 17, 18, 1, 13, 15, 19, 11, 18, 22, 22, 11, 11, 13, 11, 28, 30, 26, 10, 11, 13, 20, 22, 29, 15, 16, 50, 24, 10, 16, 13, 27, 14, 13, 11, 18, 10, 16, 14, 13, 10, 10, 28, 15, 30, 11, 19, 20, 11, 34, 11, 27, 20, 26, 11, 29, 11, 12, 14, 23, 35, 11, 15, 39, 60, 28, 18, 27, 10, 15, 10, 15, 14, 17, 12, 19, 10, 28, 10, 20, 12, 16, 10, 20, 12, 61, 15, 11, 15, 23, 10, 22, 48, 12, 10, 24, 19, 12, 26, 11, 20, 12, 12, 19, 10, 13, 24, 18, 22, 24, 10, 11, 11, 10, 28, 22, 11, 13, 20, 22, 23, 11, 43, 15, 13, 83, 10, 26, 10, 11, 44, 20, 11, 10, 41, 17, 23, 12, 24, 11, 10, 13, 10, 13, 28, 11, 10, 21, 14, 41, 15, 10, 16, 10, 12, 27, 14, 11, 10, 1, 17, 11, 10, 17, 22, 23, 13, 11, 11, 11, 21, 11, 10, 12, 36, 10, 105, 18, 15, 24, 35, 14, 10, 11, 17, 11, 17, 21, 16, 12, 10, 20, 12, 11, 11, 67, 12, 27, 10, 127, 13, 10, 10, 17, 20, 10, 16, 20, 10, 14, 11, 14, 11, 10, 10, 21, 15, 29, 13, 13, 29, 15, 12, 12, 22, 37, 11, 20, 12, 41, 13, 10, 10, 12, 12, 16, 18, 11, 16, 12, 11, 17, 12, 12, 12, 10, 23, 10, 26, 16, 10, 15, 16, 23, 10, 25, 14, 12, 11, 25, 10, 21, 50, 10, 19, 10, 12, 28, 10, 14, 16, 11, 16, 25, 27, 11, 10, 11, 11, 10, 12, 21, 10, 10, 25, 22, 10, 15, 12, 10, 19, 16, 16, 11, 14, 14, 10, 12, 41, 18, 16, 10, 10, 11, 14, 16, 25, 31, 21, 10, 36, 1, 15, 37, 24, 13, 16, 26, 12, 13, 17, 12, 15, 10, 12, 11, 10, 13, 11, 10, 12, 10, 11, 24, 18, 10, 10, 12, 15, 10, 13, 51, 12, 10, 1, 11, 33, 40, 11, 11, 11, 12, 18, 10, 16, 10, 21, 12, 15, 24, 11, 31, 10, 13, 14, 22, 12, 10, 11, 15, 32, 21, 18, 11, 15, 10, 14, 19, 1, 11, 16, 14, 10, 45, 35, 16, 10, 12, 17, 23, 14, 29, 14, 26, 11, 60, 11, 13, 11, 12, 16, 12, 13, 10, 17, 10, 12, 61, 17, 64, 19, 10, 10, 23, 30, 10, 11, 15, 26, 10, 10, 10, 13, 17, 12, 35, 13, 20, 12, 1, 14, 57, 29, 12, 12, 13, 18, 9, 12, 10, 24, 27, 10, 31, 13, 14, 11, 43, 11, 13, 14, 18, 10, 13, 10, 13, 10, 11, 10, 11, 1, 70, 10, 13, 18, 16, 32, 14, 20, 45, 16, 14, 10, 19, 11, 17, 130, 14, 14, 27, 14, 18, 10, 1, 10, 13, 11, 12, 14, 12, 18, 1, 16, 11, 12, 21, 10, 18, 10, 12, 13, 10, 39, 10, 48, 15, 11, 28, 13, 11, 20, 11, 14, 12, 17, 18, 12, 13, 13, 13, 11, 11, 12, 11, 10, 12, 25, 10, 20, 11, 98, 17, 10, 54, 12, 13, 11, 14, 20, 26, 15, 17, 13, 10, 11, 12, 16, 10, 12, 17, 14, 16, 12, 12, 22, 10, 41, 22, 10, 22, 19, 14, 10, 10, 10, 14, 23, 10, 14, 14, 12, 12, 10, 17, 11, 28, 10, 18, 15, 13, 16, 16, 10, 15, 15, 19, 10, 13, 10, 10, 16, 14, 15, 17, 10, 46, 20, 10, 21, 12, 13, 18, 15, 14, 16, 17, 26, 10, 21, 22, 10, 35, 10, 10, 12, 12, 11, 11, 13, 12, 15, 13, 12, 13, 10, 17, 13, 10, 11, 10, 20, 41, 16, 32, 13, 11, 12, 20, 10, 14, 18, 12, 10, 13, 22, 11, 22, 35, 19, 14, 11, 10, 24, 15, 10, 19, 11, 10, 15, 14, 60, 12, 19, 12, 12, 19, 14, 35, 10, 23, 15, 10, 49, 23, 10, 89, 10, 15, 10, 10, 31, 18, 17, 10, 11, 17, 24, 58, 10, 13, 10, 13, 11, 15, 18, 11, 10, 28, 12, 10, 10, 17, 26, 19, 10, 10, 10, 19, 14, 15, 11, 13, 16, 12, 42, 24, 10, 1, 11, 10, 15, 10, 11, 15, 12, 11, 14, 22, 11, 12, 13, 14, 12, 10, 16, 12, 23, 22, 21, 72, 13, 24, 53, 11, 15, 15, 17, 15, 13, 10, 12, 15, 13, 20, 15, 19, 15, 14, 11, 12, 16, 11, 10, 14, 19, 10, 23, 16, 19, 22, 18, 12, 86, 11, 14, 12, 12, 11, 11, 12, 12, 12, 24, 133, 26, 10, 12, 31, 21, 25, 19, 11, 14, 14, 17, 10, 24, 19, 12, 10, 10, 28, 11, 11, 8, 11, 17, 11, 10, 17, 10, 18, 15, 1, 13, 12, 12, 11, 28, 15, 10, 15, 21, 10, 19, 12, 34, 16, 20, 10, 10, 18, 12, 20, 12, 10, 18, 20, 15, 27, 14, 13, 17, 11, 10, 21, 16, 63, 20, 10, 18, 13, 12, 18, 12, 10, 10, 11, 12, 24, 13, 10, 21, 13, 20, 1, 11, 21, 1, 10, 10, 10, 10, 1, 17, 10, 12, 12, 11, 17, 190, 10, 15, 9, 12, 11, 36, 10, 19, 14, 15, 15, 10, 23, 10, 14, 12, 11, 11, 26, 18, 15, 11, 19, 10, 14, 10, 12, 12, 14, 19, 10, 11, 34, 12, 10, 14, 25, 20, 25, 11, 13, 14, 18, 17, 10, 11, 19, 12, 10, 10, 12, 17, 23, 15, 19, 27, 18, 10, 10, 20, 70, 24, 11, 13, 10, 10, 11, 13, 98, 19, 13, 24, 10, 24, 79, 13, 14, 12, 1, 16, 19, 11, 25, 29, 12, 12, 54, 10, 11, 10, 11, 19, 16, 16, 10, 53, 11, 17, 11, 11, 11, 13, 12, 16, 20, 31, 11, 14, 20, 10, 24, 11, 12, 17, 15, 10, 46, 13, 11, 10, 10, 23, 13, 11, 18, 11, 24, 13, 10, 18, 34, 13, 21, 10, 23, 11, 10, 12, 12, 17, 12, 12, 18, 10, 11, 14, 18, 12, 11, 10, 25, 28, 15, 12, 16, 10, 18, 16, 19, 18, 80, 12, 12, 15, 15, 15, 11, 13, 15, 10, 15, 19, 11, 12, 10, 16, 15, 18, 20, 11, 11, 11, 10, 12, 23, 12, 14, 11]
+INFO:root:bb_list_max_size_list: [10, 9, 5, 9, 57, 6, 8, 13, 9, 12, 8, 14, 11, 6, 12, 10, 6, 5, 9, 12, 18, 10, 20, 9, 17, 10, 6, 6, 9, 25, 15, 20, 12, 6, 12, 22, 16, 17, 8, 6, 7, 94, 12, 7, 9, 12, 9, 14, 19, 261, 7, 15, 16, 17, 7, 16, 15, 11, 14, 13, 14, 10, 14, 14, 14, 23, 13, 9, 14, 11, 7, 12, 8, 22, 10, 15, 7, 12, 12, 16, 9, 9, 31, 15, 31, 7, 10, 13, 18, 14, 13, 8, 12, 39, 8, 6, 8, 10, 14, 26, 7, 12, 7, 41, 14, 15, 6, 9, 7, 7, 12, 12, 15, 5, 102, 6, 5, 9, 13, 6, 8, 13, 8, 8, 8, 10, 8, 9, 7, 8, 10, 13, 7, 15, 10, 13, 6, 27, 9, 8, 9, 14, 12, 14, 10, 17, 22, 14, 7, 11, 8, 24, 9, 8, 19, 11, 20, 8, 11, 5, 6, 8, 7, 8, 21, 10, 8, 18, 15, 10, 15, 9, 19, 11, 9, 7, 21, 12, 10, 9, 14, 9, 8, 7, 8, 15, 12, 14, 14, 6, 12, 10, 8, 12, 9, 8, 18, 11, 12, 14, 6, 8, 7, 13, 11, 7, 15, 15, 9, 7, 6, 14, 33, 17, 15, 6, 8, 6, 8, 16, 890, 9, 14, 5, 8, 123, 5, 12, 14, 9, 19, 9, 15, 14, 10, 14, 11, 10, 13, 7, 10, 13, 8, 7, 7, 7, 15, 7, 9, 6, 14, 14, 5, 9, 7, 9, 16, 7, 9, 6, 9, 8, 10, 8, 18, 7, 5, 16, 8, 10, 85, 9, 8, 29, 45, 20, 7, 12, 16, 10, 15, 7, 15, 7, 15, 13, 12, 13, 8, 14, 7, 5, 8, 13, 15, 6, 7, 16, 11, 18, 15, 16, 12, 8, 9, 6, 19, 8, 35, 9, 15, 7, 13, 170, 13, 9, 8, 7, 7, 19, 7, 7, 5, 7, 9, 9, 5, 7, 12, 13, 12, 11, 12, 13, 13, 7, 8, 6, 7, 28, 13, 16, 8, 11, 9, 13, 10, 6, 5, 8, 7, 10, 10, 7, 5, 8, 14, 7, 9, 7, 10, 11, 8, 13, 17, 97, 14, 8, 13, 9, 11, 11, 12, 19, 13, 9, 15, 14, 7, 5, 10, 19, 12, 21, 5, 12, 6, 8, 5, 8, 16, 13, 6, 8, 7, 9, 9, 10, 5, 8, 10, 6, 17, 10, 8, 16, 21, 18, 14, 16, 13, 15, 10, 9, 6, 15, 8, 17, 16, 10, 5, 7, 5, 6, 7, 16, 11, 13, 9, 25, 21, 7, 6, 11, 8, 10, 13, 6, 13, 10, 14, 27, 9, 8, 19, 11, 15, 12, 7, 12, 5, 6, 17, 17, 9, 37, 19, 11, 15, 401, 12, 8, 39, 14, 15, 7, 6, 23, 13, 13, 14, 7, 10, 18, 13, 12, 28, 19, 7, 17, 7, 8, 7, 13, 6, 9, 7, 11, 13, 11, 15, 6, 8, 9, 14, 8, 23, 7, 13, 13, 7, 20, 10, 12, 6, 14, 13, 8, 42, 17, 11, 23, 8, 21, 13, 17, 15, 5, 17, 7, 7, 11, 9, 11, 9, 10, 26, 9, 11, 14, 11, 6, 22, 6, 10, 7, 14, 8, 19, 7, 20, 17, 9, 6, 12, 22, 12, 14, 17, 9, 10, 7, 12, 8, 28, 15, 6, 20, 11, 7, 9, 14, 6, 17, 26, 7, 11, 8, 21, 7, 7, 11, 6, 10, 12, 11, 24, 5, 15, 21, 11, 16, 14, 22, 15, 14, 4, 8, 50, 12, 7, 10, 10, 5, 5, 7, 12, 10, 5, 7, 13, 25, 21, 11, 10, 11, 9, 11, 7, 6, 15, 22, 8, 6, 7, 7, 26, 10, 9, 18, 6, 6, 5, 10, 6, 7, 5, 14, 6, 14, 17, 10, 7, 10, 13, 9, 16, 10, 8, 17, 30, 12, 55, 5, 19, 10, 13, 7, 9, 8, 11, 17, 14, 7, 5, 6, 15, 6, 5, 144, 13, 12, 17, 25, 8, 8, 13, 8, 10, 9, 9, 11, 6, 13, 14, 10, 18, 14, 7, 7, 6, 7, 118, 9, 15, 7, 13, 9, 197, 15, 11, 8, 8, 8, 10, 7, 7, 8, 17, 9, 11, 10, 20, 10, 9, 7, 24, 6, 15, 12, 5, 12, 15, 10, 6, 6, 24, 29, 6, 18, 9, 5, 8, 14, 7, 14, 14, 16, 5, 10, 16, 5, 6, 7, 12, 13, 30, 17, 6, 6, 7, 6, 6, 27, 5, 14, 24, 7, 7, 14, 9, 9, 15, 20, 7, 6, 15, 9, 20, 12, 43, 26, 9, 8, 7, 7, 10, 8, 12, 15, 13, 14, 16, 278, 7, 90, 8, 11, 6, 10, 14, 7, 7, 14, 8, 15, 7, 7, 31, 14, 7, 24, 13, 6, 43, 30, 18, 10, 12, 14, 7, 7, 8, 7, 15, 7, 6, 10, 9, 8, 8, 20, 11, 18, 16, 10, 15, 9, 13, 14, 23, 8, 7, 18, 19, 6, 12, 9, 16, 11, 11, 21, 14, 7, 11, 61, 13, 8, 17, 10, 6, 8, 15, 11, 20, 8, 6, 17, 11, 11, 9, 17, 7, 10, 14, 4, 25, 7, 6, 20, 5, 8, 37, 16, 24, 13, 18, 23, 11, 13, 16, 24, 32, 7, 19, 8, 6, 6, 11, 6, 10, 16, 22, 30, 15, 14, 5, 11, 14, 10, 20, 8, 10, 9, 9, 14, 6, 23, 5, 20, 14, 11, 7, 14, 18, 13, 9, 14, 5, 10, 5, 8, 11, 9, 20, 20, 8, 8, 14, 8, 4, 7, 23, 8, 9, 7, 12, 5, 8, 12, 104, 5, 9, 20, 7, 15, 6, 16, 15, 9, 7, 11, 13, 32, 10, 8, 4, 15, 11, 12, 24, 8, 9, 9, 17, 23, 10, 9, 12, 10, 6, 41, 6, 19, 14, 10, 20, 7, 46, 15, 7, 14, 10, 9, 5, 7, 16, 15, 5, 16, 13, 5, 7, 7, 12, 5, 8, 21, 6, 14, 9, 57, 13, 10, 13, 7, 18, 9, 9, 11, 6, 6, 6, 7, 11, 17, 6, 10, 7, 20, 7, 17, 12, 19, 15, 6, 8, 11, 15, 24, 11, 11, 9, 5, 13, 10, 7, 8, 7, 8, 6, 12, 21, 11, 10, 13, 15, 6, 7, 9, 8, 8, 6, 11, 14, 5, 32, 5, 13, 5, 20, 7, 39, 8, 24, 11, 13, 27, 8, 6, 27, 21, 24, 7, 9, 12, 14, 9, 9, 12, 9, 14, 13, 14, 10, 8, 10, 7, 6, 18, 7, 8, 18, 8, 8, 19, 168, 7, 8, 14, 12, 17, 5, 17, 7, 7, 8, 17, 6, 16, 12, 12, 5, 10, 17, 14, 15, 25, 16, 7, 14, 18, 5, 12, 16, 9, 7, 6, 15, 12, 13, 11, 5, 14, 13, 14, 5, 8, 5, 14, 74, 8, 11, 5, 25, 14, 5, 10, 9, 14, 28, 7, 12, 14, 6, 6, 17, 11, 11, 9, 10, 14, 16, 7, 8, 10, 8, 7, 10, 6, 15, 11, 15, 10, 5, 18, 23, 14, 17, 25, 7, 8, 8, 19, 9, 20, 5, 5, 73, 11, 15, 8, 5, 14, 8, 7, 30, 10, 10, 9, 14, 6, 12, 16, 6, 8, 5, 13, 13, 10, 6, 17, 11, 10, 5, 11, 6, 8, 25, 7, 5, 12, 9, 10, 14, 16, 8, 19, 6, 9, 9, 28, 6, 8, 15, 30, 17, 10, 8, 9, 9, 10, 5, 20, 8, 12, 8, 88, 117, 7, 14, 8, 7, 15, 13, 7, 13, 14, 11, 10, 7, 16, 11, 6, 14, 27, 7, 10, 10, 9, 11, 9, 6, 8, 12, 9, 6, 15, 10, 10, 7, 83, 15, 9, 17, 12, 14, 4, 8, 6, 7, 17, 12, 21, 5, 17, 17, 7, 16, 9, 13, 12, 13, 6, 7, 8, 15, 8, 18, 9, 7, 8, 16, 19, 9, 168, 7, 6, 14, 13, 10, 7, 7, 8, 14, 15, 39, 14, 10, 8, 6, 8, 7, 10, 5, 7, 11, 9, 14, 24, 6, 9, 14, 10, 5, 10, 5, 16, 8, 8, 16, 9, 10, 12, 17, 6, 9, 6, 9, 7, 17, 9, 14, 14, 7, 13, 154, 11, 9, 9, 11, 7, 7, 24, 88, 11, 13, 9, 27, 8, 8, 6, 16, 15, 5, 6, 5, 7, 14, 5, 5, 10, 7, 13, 15, 6, 14, 83, 6, 10, 14, 12, 7, 22, 5, 5, 22, 6, 14, 9, 12, 36, 8, 27, 12, 16, 8, 5, 8, 7, 125, 10, 7, 12, 14, 16, 9, 6, 168, 10, 14, 11, 35, 6, 7, 6, 11, 11, 14, 9, 15, 24, 12, 17, 9, 7, 10, 13, 14, 12, 9, 14, 9, 8, 12, 15, 6, 11, 12, 6, 7, 11, 8, 21, 8, 10, 9, 28, 12, 7, 19, 8, 17, 8, 15, 33, 5, 22, 9, 10, 7, 15, 12, 11, 10, 14, 12, 12, 6, 7, 20, 27, 7, 16, 6, 6, 7, 6, 13, 7, 7, 14, 7, 14, 10, 15, 14, 14, 17, 10, 17, 12, 6, 13, 6, 17, 6, 7, 2, 7, 15, 16, 5, 7, 22, 28, 11, 10, 52, 74, 8, 7, 5, 11, 8, 11, 11, 5, 8, 7, 11, 12, 7, 6, 17, 13, 7, 14, 5, 10, 7, 8, 18, 16, 17, 7, 6, 15, 7, 5, 4, 14, 7, 16, 11, 7, 26, 17, 21, 6, 6, 12, 17, 12, 11, 13, 14, 18, 7, 8, 12, 5, 7, 12, 11, 15, 9, 9, 6, 11, 7, 7, 10, 13, 16, 17, 9, 6, 7, 11, 14, 12, 9, 8, 5, 10, 5, 8, 7, 7, 15, 10, 18, 21, 5, 8, 28, 8, 18, 17, 5, 7, 23, 11, 13, 9, 7, 7, 20, 6, 5, 12, 9, 15, 6, 14, 10, 8, 17, 10, 13, 8, 9, 7, 6, 6, 5, 24, 12, 8, 12, 6, 5, 12, 149, 15, 9, 5, 11, 7, 12, 12, 10, 9, 22, 10, 12, 6, 4, 7, 10, 7, 7, 15, 14, 8, 8, 7, 28, 10, 5, 15, 14, 17, 9, 16, 5, 16, 16, 17, 10, 14, 15, 6, 5, 7, 10, 9, 7, 7, 14, 6, 14, 15, 14, 11, 5, 5, 17, 6, 13, 8, 11, 6, 15, 9, 12, 14, 6, 7, 5, 9, 14, 6, 5, 8, 9, 19, 7, 16, 7, 6, 5, 17, 7, 6, 10, 8, 5, 6, 14, 861, 9, 8, 15, 11, 12, 7, 7, 7, 103, 10, 14, 7, 10, 5, 9, 13, 10, 10, 13, 7, 7, 7, 14, 7, 8, 8, 9, 28, 11, 12, 6, 17, 6, 19, 10, 9, 8, 8, 9, 10, 17, 9, 8, 6, 20, 13, 8, 13, 9, 23, 7, 11, 17, 11, 15, 12, 6, 23, 11, 14, 104, 9, 21, 224, 11, 12, 14, 16, 138, 8, 15, 14, 20, 7, 13, 6, 4, 5, 97, 11, 20, 9, 17, 8, 20, 5, 10, 6, 15, 11, 5, 13, 8, 10, 16, 16, 19, 9, 16, 8, 12, 6, 9, 7, 17, 21, 8, 10, 18, 7, 9, 13, 19, 31, 6, 10, 15, 12, 9, 8, 6, 7, 9, 19, 14, 9, 12, 10, 5, 7, 6, 11, 5, 10, 6, 9, 40, 9, 10, 9, 18, 12, 10, 6, 28, 7, 7, 8, 9, 12, 14, 16, 14, 13, 138, 13, 15, 11, 10, 21, 7, 16, 6, 10, 7, 8, 10, 14, 11, 9, 15, 11, 18, 17, 10, 13, 8, 8, 11, 25, 6, 7, 9, 22, 7, 9, 11, 12, 5, 27, 9, 11, 17, 8, 8, 7, 10, 29, 4, 15, 12, 13, 9, 11, 6, 7, 10, 7, 8, 10, 7, 15, 7, 6, 9, 8, 14, 5, 6, 11, 11, 12, 154, 13, 18, 10, 10, 12, 6, 8, 20, 13, 7, 6, 10, 18, 10, 17, 10, 14, 5, 19, 40, 14, 14, 16, 15, 6, 11, 13, 14, 6, 15, 17, 10, 14, 12, 10, 10, 6, 10, 9, 5, 7]
+INFO:root:bb_list_avg_size_list: [4.4, 4.388888888888889, 2.272727272727273, 4.0588235294117645, 9.23076923076923, 3.9, 6.625, 4.0588235294117645, 4.6, 4.666666666666667, 4.545454545454546, 6.5, 3.769230769230769, 2.210526315789474, 4.407407407407407, 2.4444444444444446, 2.5714285714285716, 2.1333333333333333, 4.333333333333333, 4.2727272727272725, 5.6875, 3.3157894736842106, 6.3076923076923075, 2.4, 5.0, 3.7333333333333334, 3.9130434782608696, 2.3076923076923075, 2.909090909090909, 6.8, 4.384615384615385, 6.5625, 4.15, 2.6, 5.538461538461538, 7.962962962962963, 2.7, 5.071428571428571, 3.0, 3.1818181818181817, 2.0602409638554215, 94.0, 4.62962962962963, 2.75, 4.2, 5.3, 2.4705882352941178, 5.230769230769231, 5.5, 261.0, 1.984375, 2.7058823529411766, 4.333333333333333, 5.5625, 4.636363636363637, 5.125, 5.083333333333333, 2.9166666666666665, 5.909090909090909, 4.454545454545454, 5.314285714285714, 4.714285714285714, 5.375, 5.133333333333334, 4.866666666666666, 8.3, 4.875, 5.657894736842105, 6.2272727272727275, 4.454545454545454, 3.3636363636363638, 4.4, 3.7058823529411766, 6.5, 4.769230769230769, 6.636363636363637, 2.875, 4.0625, 5.5, 4.615384615384615, 5.230769230769231, 4.4, 4.909090909090909, 5.466666666666667, 7.818181818181818, 3.8, 3.4166666666666665, 4.565217391304348, 6.454545454545454, 6.090909090909091, 4.466666666666667, 3.076923076923077, 4.3, 7.363636363636363, 4.7, 2.0210526315789474, 3.5, 3.0, 4.375, 4.348623853211009, 3.3, 4.142857142857143, 4.6, 7.2, 5.428571428571429, 5.8, 3.25, 2.5, 3.0833333333333335, 3.3076923076923075, 4.545454545454546, 4.833333333333333, 5.181818181818182, 2.9285714285714284, 102.0, 2.6666666666666665, 2.230769230769231, 3.727272727272727, 4.0625, 2.8333333333333335, 5.3076923076923075, 5.454545454545454, 3.7, 4.7272727272727275, 2.769230769230769, 3.3076923076923075, 5.461538461538462, 4.1, 3.3333333333333335, 3.5, 4.9, 4.4, 3.090909090909091, 6.583333333333333, 4.0, 3.7142857142857144, 2.7, 7.538461538461538, 4.2, 2.028985507246377, 3.7916666666666665, 5.822784810126582, 4.636363636363637, 6.4, 3.9166666666666665, 5.608695652173913, 5.545454545454546, 4.777777777777778, 3.8181818181818183, 5.0, 4.615384615384615, 3.2203389830508473, 5.481012658227848, 4.0, 5.733333333333333, 2.6315789473684212, 10.846153846153847, 3.4, 4.230769230769231, 2.210526315789474, 3.923076923076923, 4.7, 3.9166666666666665, 3.3333333333333335, 5.4, 3.7857142857142856, 4.076923076923077, 6.032258064516129, 4.375, 3.7, 3.9, 6.076923076923077, 5.076923076923077, 3.7, 3.8333333333333335, 3.3636363636363638, 6.909090909090909, 5.454545454545454, 4.416666666666667, 3.0294117647058822, 5.230769230769231, 3.8181818181818183, 3.6666666666666665, 3.25, 3.5, 4.666666666666667, 4.3125, 4.0, 4.909090909090909, 3.2, 5.0, 4.454545454545454, 3.5454545454545454, 4.724137931034483, 2.3333333333333335, 4.416666666666667, 5.625, 3.9130434782608696, 4.363636363636363, 4.6, 2.590909090909091, 4.714285714285714, 3.44, 5.35, 4.928571428571429, 4.785714285714286, 5.181818181818182, 3.739130434782609, 4.2727272727272725, 4.066666666666666, 2.5833333333333335, 6.2, 11.0, 3.764705882352941, 6.0, 4.0, 3.0357142857142856, 3.3636363636363638, 3.4166666666666665, 5.357142857142857, 890.0, 3.3684210526315788, 5.314285714285714, 2.2142857142857144, 4.454545454545454, 123.0, 2.0789473684210527, 4.5, 5.666666666666667, 4.545454545454546, 7.076923076923077, 4.592592592592593, 6.583333333333333, 5.8, 3.9, 4.5, 4.333333333333333, 3.5384615384615383, 5.384615384615385, 3.3333333333333335, 4.333333333333333, 5.357142857142857, 4.461538461538462, 3.3636363636363638, 2.5, 4.363636363636363, 6.3076923076923075, 3.0, 4.8125, 2.3333333333333335, 5.0, 4.421052631578948, 3.3846153846153846, 4.083333333333333, 3.342857142857143, 4.1, 5.611111111111111, 4.363636363636363, 4.6, 2.6956521739130435, 3.5, 3.7, 4.25, 3.5, 3.5853658536585367, 4.333333333333333, 2.0697674418604652, 8.0625, 3.896551724137931, 4.142857142857143, 85.0, 4.666666666666667, 4.6, 6.606060606060606, 8.333333333333334, 6.333333333333333, 3.2666666666666666, 5.625, 5.75, 3.7058823529411766, 5.230769230769231, 4.363636363636363, 4.625, 4.0588235294117645, 5.6, 5.0, 5.083333333333333, 4.7272727272727275, 3.3333333333333335, 4.346153846153846, 3.923076923076923, 2.103448275862069, 4.055555555555555, 4.461538461538462, 4.8, 2.1739130434782608, 3.1, 6.285714285714286, 3.2653061224489797, 5.625, 6.636363636363637, 4.142857142857143, 4.6, 3.533333333333333, 4.954545454545454, 2.1818181818181817, 5.466666666666667, 3.8181818181818183, 6.043478260869565, 4.090909090909091, 6.7, 3.8461538461538463, 4.0, 170.0, 4.0, 3.8, 2.5444444444444443, 2.9411764705882355, 4.363636363636363, 5.461538461538462, 4.666666666666667, 4.3875, 3.4375, 4.363636363636363, 3.6153846153846154, 4.044776119402985, 3.2, 3.3636363636363638, 4.545454545454546, 3.5555555555555554, 5.846153846153846, 4.117647058823529, 4.533333333333333, 4.166666666666667, 4.884615384615385, 3.3076923076923075, 4.117647058823529, 2.260869565217391, 3.7857142857142856, 6.041666666666667, 4.476190476190476, 4.518518518518518, 3.5, 3.6666666666666665, 2.2857142857142856, 6.181818181818182, 5.105263157894737, 2.6666666666666665, 2.1578947368421053, 2.5384615384615383, 4.363636363636363, 4.0, 3.9, 4.363636363636363, 2.3076923076923075, 4.6, 4.833333333333333, 4.7, 3.4545454545454546, 3.375, 3.05, 5.3, 3.7, 3.8333333333333335, 3.9166666666666665, 16.1, 5.133333333333334, 4.0, 4.909090909090909, 5.59375, 5.636363636363637, 4.421052631578948, 5.916666666666667, 5.066666666666666, 4.1, 2.4, 4.785714285714286, 5.45, 4.636363636363637, 3.611111111111111, 4.545454545454546, 5.5, 4.5, 6.0, 3.588235294117647, 4.9, 3.1666666666666665, 4.615384615384615, 2.3846153846153846, 4.3, 4.0, 3.6153846153846154, 2.2857142857142856, 3.4285714285714284, 3.4166666666666665, 4.071428571428571, 4.166666666666667, 4.1, 3.1818181818181817, 3.4166666666666665, 4.5, 2.6, 4.0813953488372094, 4.0, 3.4615384615384617, 5.818181818181818, 3.658536585365854, 5.5, 4.857142857142857, 5.3, 4.571428571428571, 5.166666666666667, 3.5, 5.315789473684211, 4.083333333333333, 4.769230769230769, 2.6666666666666665, 6.0, 4.705882352941177, 3.75, 4.090909090909091, 3.357142857142857, 2.272727272727273, 2.6, 4.636363636363637, 5.130434782608695, 3.9, 4.818181818181818, 3.423076923076923, 4.177777777777778, 5.296296296296297, 4.3, 2.642857142857143, 4.133333333333334, 2.5, 4.2, 4.428571428571429, 2.411764705882353, 4.5, 3.7, 4.5, 6.4, 4.0, 4.461538461538462, 5.666666666666667, 4.75, 4.130434782608695, 4.083333333333333, 3.903225806451613, 5.181818181818182, 3.1, 2.7, 5.533333333333333, 4.8125, 3.727272727272727, 8.928571428571429, 4.294117647058823, 5.25, 6.9, 401.0, 4.4375, 3.4242424242424243, 11.916666666666666, 6.478260869565218, 5.6, 3.2, 2.7, 5.904761904761905, 3.6, 3.7, 6.142857142857143, 3.727272727272727, 3.230769230769231, 5.9, 5.055555555555555, 4.818181818181818, 8.785714285714286, 5.909090909090909, 3.2, 4.294117647058823, 3.2, 4.5, 2.857142857142857, 5.083333333333333, 2.272727272727273, 3.5428571428571427, 3.5, 4.6923076923076925, 4.7272727272727275, 3.869565217391304, 5.090909090909091, 2.7, 5.885714285714286, 4.611111111111111, 5.428571428571429, 3.4545454545454546, 6.0, 3.1818181818181817, 4.545454545454546, 5.090909090909091, 3.3, 5.76, 3.2, 5.6, 4.090909090909091, 5.153846153846154, 3.8333333333333335, 3.9473684210526314, 8.642857142857142, 6.0, 5.833333333333333, 7.090909090909091, 3.1, 10.4, 5.0, 4.6923076923076925, 4.361111111111111, 3.7, 5.916666666666667, 2.4545454545454546, 2.2083333333333335, 4.818181818181818, 4.0, 5.5, 4.636363636363637, 5.2, 3.107142857142857, 2.5714285714285716, 3.5, 5.466666666666667, 4.892857142857143, 3.0, 6.071428571428571, 3.6, 4.368421052631579, 3.3636363636363638, 4.761904761904762, 3.3333333333333335, 5.666666666666667, 3.0833333333333335, 7.3076923076923075, 6.076923076923077, 3.2, 2.4166666666666665, 2.8947368421052633, 8.0, 4.5, 4.833333333333333, 5.0, 5.3, 4.0, 3.3, 5.083333333333333, 3.9166666666666665, 6.25, 5.076923076923077, 2.5833333333333335, 4.2272727272727275, 3.5, 2.3636363636363638, 4.571428571428571, 5.5, 2.2857142857142856, 6.3125, 7.4, 3.4, 4.157894736842105, 3.2, 5.166666666666667, 4.636363636363637, 3.1, 3.1666666666666665, 4.181818181818182, 3.5, 4.35, 4.611111111111111, 6.6, 2.1578947368421053, 5.9375, 4.9, 3.727272727272727, 6.166666666666667, 5.3076923076923075, 5.3, 5.363636363636363, 4.068965517241379, 3.0714285714285716, 3.6363636363636362, 3.0172413793103448, 4.958333333333333, 4.0, 5.363636363636363, 5.419354838709677, 2.5714285714285716, 3.1538461538461537, 3.8666666666666667, 4.636363636363637, 3.7857142857142856, 3.4, 4.363636363636363, 4.1, 6.125, 6.0, 2.9166666666666665, 4.818181818181818, 4.2727272727272725, 4.0, 4.3125, 3.5384615384615383, 3.1, 3.6666666666666665, 5.416666666666667, 3.6, 2.2222222222222223, 4.066666666666666, 3.7857142857142856, 7.363636363636363, 4.85, 5.55, 5.291666666666667, 3.5, 3.423076923076923, 2.3, 4.3, 3.5454545454545454, 4.9, 2.2142857142857144, 5.428571428571429, 2.789473684210526, 5.166666666666667, 4.617021276595745, 4.466666666666667, 3.25, 4.181818181818182, 4.571428571428571, 3.2666666666666666, 4.461538461538462, 3.8518518518518516, 4.5, 6.9, 5.961538461538462, 4.482758620689655, 7.666666666666667, 3.8, 4.533333333333333, 4.3, 4.35, 3.175, 4.1, 5.838709677419355, 5.25, 4.714285714285714, 4.818181818181818, 2.2083333333333335, 4.0, 2.5625, 5.8, 2.686046511627907, 2.1666666666666665, 14.615384615384615, 3.8333333333333335, 6.3, 4.55, 6.147058823529412, 3.5, 4.5, 4.277777777777778, 3.4166666666666665, 4.64, 4.571428571428571, 3.736842105263158, 4.157894736842105, 2.1739130434782608, 6.333333333333333, 7.166666666666667, 4.7, 5.35, 5.0, 4.5, 4.5, 3.0, 4.181818181818182, 118.0, 4.7, 5.916666666666667, 3.2777777777777777, 8.894736842105264, 3.7, 28.666666666666668, 4.375, 3.5, 4.083333333333333, 6.588235294117647, 3.652173913043478, 4.818181818181818, 4.0, 3.8, 3.4615384615384617, 3.7083333333333335, 4.071428571428571, 4.230769230769231, 4.1, 5.0625, 2.85, 4.428571428571429, 4.363636363636363, 4.8, 3.4166666666666665, 8.431372549019608, 5.4375, 2.088235294117647, 5.7, 5.344827586206897, 3.4166666666666665, 2.607142857142857, 3.4, 6.933333333333334, 6.826086956521739, 2.3333333333333335, 4.25, 2.466666666666667, 4.2, 3.0, 5.2, 2.7, 4.636363636363637, 6.6923076923076925, 6.0, 2.1578947368421053, 4.7368421052631575, 4.875, 2.085714285714286, 2.769230769230769, 4.0, 4.214285714285714, 4.85, 5.923076923076923, 4.588235294117647, 3.5714285714285716, 3.7, 3.0, 2.4, 2.4, 6.526315789473684, 2.1578947368421053, 4.777777777777778, 7.538461538461538, 2.4545454545454546, 3.0, 6.083333333333333, 3.7857142857142856, 4.0, 5.181818181818182, 5.916666666666667, 4.363636363636363, 2.7241379310344827, 3.8333333333333335, 4.5, 5.0, 4.181818181818182, 6.733333333333333, 6.114285714285714, 3.5, 2.6666666666666665, 3.75, 3.1538461538461537, 3.2777777777777777, 3.142857142857143, 4.5, 5.363636363636363, 4.619047619047619, 4.285714285714286, 5.454545454545454, 278.0, 4.181818181818182, 14.25, 4.090909090909091, 5.333333333333333, 2.1142857142857143, 3.2, 5.538461538461538, 3.4, 4.181818181818182, 4.852941176470588, 2.9166666666666665, 4.454545454545454, 3.0, 4.0588235294117645, 6.153846153846154, 5.357142857142857, 3.347826086956522, 7.6, 6.833333333333333, 2.5714285714285716, 4.882352941176471, 4.826666666666667, 6.076923076923077, 6.235294117647059, 5.785714285714286, 5.625, 3.347826086956522, 4.181818181818182, 3.1818181818181817, 4.8, 3.7222222222222223, 3.3636363636363638, 2.210526315789474, 3.388888888888889, 4.6, 3.9, 2.8181818181818183, 5.705882352941177, 4.75, 5.636363636363637, 6.0, 4.630769230769231, 4.153846153846154, 4.25, 5.5, 5.133333333333334, 7.0, 3.7058823529411766, 3.5, 4.944444444444445, 6.6, 3.6, 4.0, 3.5555555555555554, 6.357142857142857, 4.6, 3.9166666666666665, 6.363636363636363, 4.7, 3.769230769230769, 5.5, 10.666666666666666, 4.5, 3.9, 8.567567567567568, 4.357142857142857, 5.045454545454546, 4.0, 4.076923076923077, 4.583333333333333, 8.2, 4.041666666666667, 2.7777777777777777, 5.071428571428571, 4.571428571428571, 3.2222222222222223, 3.4166666666666665, 5.083333333333333, 4.976744186046512, 4.25, 5.583333333333333, 3.0714285714285716, 6.75, 2.727272727272727, 2.6, 5.636363636363637, 2.12, 5.6923076923076925, 6.375, 4.5, 8.235294117647058, 4.037037037037037, 4.25, 4.909090909090909, 5.181818181818182, 3.619047619047619, 4.0, 4.978260869565218, 7.944444444444445, 2.4705882352941178, 4.92, 6.363636363636363, 2.3076923076923075, 2.210526315789474, 3.4857142857142858, 2.3076923076923075, 3.5294117647058822, 2.90625, 6.352941176470588, 4.7894736842105265, 5.181818181818182, 5.214285714285714, 2.12, 4.75, 5.428571428571429, 4.416666666666667, 8.066666666666666, 3.5, 3.9523809523809526, 4.205882352941177, 3.9, 5.133333333333334, 4.090909090909091, 6.583333333333333, 2.1875, 4.333333333333333, 5.2, 4.6923076923076925, 4.363636363636363, 4.916666666666667, 5.357142857142857, 4.85, 4.0, 5.6, 2.076923076923077, 3.9545454545454546, 2.230769230769231, 3.7, 4.933333333333334, 6.071428571428571, 5.7894736842105265, 5.916666666666667, 3.8666666666666667, 5.3, 5.3, 3.25, 3.0, 3.3, 7.642857142857143, 3.7142857142857144, 5.0, 3.1666666666666665, 4.08, 3.1666666666666665, 6.176470588235294, 6.555555555555555, 104.0, 2.230769230769231, 5.4, 4.052631578947368, 4.363636363636363, 5.944444444444445, 2.727272727272727, 4.2272727272727275, 6.2727272727272725, 3.5454545454545454, 3.3076923076923075, 3.909090909090909, 3.0357142857142856, 3.6666666666666665, 3.6923076923076925, 4.3, 1.8181818181818181, 6.923076923076923, 5.35, 4.7727272727272725, 5.655172413793103, 4.533333333333333, 3.5625, 4.68, 5.166666666666667, 9.7, 5.0, 3.923076923076923, 4.555555555555555, 3.857142857142857, 2.769230769230769, 8.727272727272727, 2.7222222222222223, 6.9, 4.875, 4.785714285714286, 6.384615384615385, 4.5, 8.3, 5.214285714285714, 4.066666666666666, 3.9, 4.909090909090909, 4.0, 2.15, 3.3636363636363638, 3.764705882352941, 4.454545454545454, 2.111111111111111, 4.85, 3.8461538461538463, 3.727272727272727, 3.7586206896551726, 3.3636363636363638, 4.166666666666667, 2.2142857142857144, 4.173913043478261, 4.3428571428571425, 4.2727272727272725, 5.133333333333334, 4.666666666666667, 5.816666666666666, 4.821428571428571, 4.0, 4.037037037037037, 3.4, 6.6, 4.2, 3.2666666666666666, 5.357142857142857, 2.2941176470588234, 2.6666666666666665, 2.210526315789474, 4.7, 4.714285714285714, 5.0, 2.6, 3.6666666666666665, 2.875, 7.1, 3.75, 5.0, 3.442622950819672, 5.8, 5.181818181818182, 2.3333333333333335, 3.652173913043478, 5.0, 5.0, 3.1666666666666665, 3.9166666666666665, 5.7, 3.9166666666666665, 2.1578947368421053, 4.583333333333333, 3.923076923076923, 3.4545454545454546, 5.2, 2.8333333333333335, 3.9166666666666665, 3.736842105263158, 4.7, 7.3076923076923075, 4.291666666666667, 3.2222222222222223, 4.2272727272727275, 5.458333333333333, 2.7, 4.181818181818182, 2.909090909090909, 4.4, 5.678571428571429, 2.590909090909091, 5.181818181818182, 6.076923076923077, 2.15, 13.863636363636363, 2.130434782608696, 5.363636363636363, 2.0697674418604652, 5.933333333333334, 3.3076923076923075, 6.216867469879518, 4.3, 3.8076923076923075, 5.7, 4.818181818181818, 4.590909090909091, 3.5, 3.5454545454545454, 7.9, 3.658536585365854, 5.294117647058823, 2.217391304347826, 3.9166666666666665, 4.333333333333333, 4.7272727272727275, 4.6, 3.923076923076923, 4.2, 3.4615384615384617, 5.642857142857143, 5.090909090909091, 4.7, 3.9523809523809526, 4.428571428571429, 4.7560975609756095, 4.2, 3.3, 5.0, 3.7, 4.25, 5.222222222222222, 3.7142857142857144, 4.7272727272727275, 5.9, 168.0, 2.6470588235294117, 3.909090909090909, 6.5, 4.176470588235294, 4.090909090909091, 3.130434782608696, 4.230769230769231, 4.636363636363637, 3.272727272727273, 2.909090909090909, 6.238095238095238, 3.5454545454545454, 4.9, 4.75, 4.166666666666667, 3.9, 3.295238095238095, 5.555555555555555, 5.066666666666666, 5.0, 6.0, 6.142857142857143, 3.5, 5.2727272727272725, 5.0, 3.3636363636363638, 4.0588235294117645, 4.619047619047619, 4.5, 3.1666666666666665, 2.8, 5.1, 3.75, 5.636363636363637, 4.545454545454546, 3.8955223880597014, 7.833333333333333, 4.111111111111111, 5.9, 3.9448818897637796, 3.6923076923076925, 3.5, 5.1, 8.0, 3.5, 3.9, 2.1875, 5.85, 5.2, 2.5714285714285716, 3.8181818181818183, 4.285714285714286, 4.2727272727272725, 7.4, 4.3, 4.238095238095238, 5.8, 2.1379310344827585, 3.3076923076923075, 6.153846153846154, 3.8620689655172415, 4.666666666666667, 4.916666666666667, 4.75, 5.5, 3.1621621621621623, 4.363636363636363, 4.5, 3.4166666666666665, 3.8292682926829267, 2.3846153846153846, 3.8, 2.7, 8.75, 6.0, 5.125, 5.111111111111111, 3.8181818181818183, 5.1875, 6.583333333333333, 5.181818181818182, 4.0, 7.666666666666667, 3.3333333333333335, 3.5, 4.1, 4.391304347826087, 4.2, 3.730769230769231, 3.4375, 3.2, 7.266666666666667, 4.8125, 4.565217391304348, 4.9, 2.2, 5.142857142857143, 4.25, 4.363636363636363, 6.44, 4.6, 3.9523809523809526, 2.3, 6.1, 2.4210526315789473, 5.3, 5.833333333333333, 2.5714285714285716, 2.6, 2.2142857142857144, 4.0625, 6.818181818181818, 4.8125, 2.16, 5.148148148148148, 4.636363636363637, 4.9, 2.1818181818181817, 6.363636363636363, 3.0, 4.083333333333333, 6.9523809523809526, 3.4, 2.3, 2.64, 3.909090909090909, 4.7, 5.133333333333334, 9.166666666666666, 3.4, 4.947368421052632, 2.625, 4.375, 4.454545454545454, 8.785714285714286, 2.642857142857143, 2.9, 6.333333333333333, 4.829268292682927, 6.111111111111111, 4.1875, 3.6, 3.8, 4.363636363636363, 4.428571428571429, 2.1875, 4.68, 4.129032258064516, 4.142857142857143, 4.5, 10.972222222222221, 117.0, 4.066666666666666, 4.216216216216216, 5.666666666666667, 3.4615384615384617, 4.375, 8.26923076923077, 3.0833333333333335, 4.3076923076923075, 5.882352941176471, 4.583333333333333, 4.933333333333334, 3.2, 5.333333333333333, 4.545454545454546, 4.4, 5.3076923076923075, 7.090909090909091, 3.7, 4.333333333333333, 4.8, 4.0, 3.75, 3.5555555555555554, 3.3, 4.5, 4.166666666666667, 4.6, 2.4, 5.0, 2.627450980392157, 4.083333333333333, 3.1, 83.0, 5.181818181818182, 4.545454545454546, 4.6, 3.5454545454545454, 5.090909090909091, 2.1818181818181817, 4.333333333333333, 2.611111111111111, 3.4, 4.6875, 5.1, 4.523809523809524, 2.75, 4.4, 3.9166666666666665, 4.636363636363637, 5.838709677419355, 4.3, 3.076923076923077, 5.0, 4.545454545454546, 3.5, 3.1, 3.090909090909091, 5.066666666666666, 4.21875, 4.095238095238095, 5.388888888888889, 2.4545454545454546, 4.666666666666667, 5.8, 5.142857142857143, 3.8421052631578947, 168.0, 4.363636363636363, 2.25, 5.428571428571429, 4.3, 5.777777777777778, 3.3714285714285714, 4.25, 3.8, 4.25, 4.294117647058823, 5.782608695652174, 4.428571428571429, 5.724137931034483, 4.285714285714286, 2.576923076923077, 3.3636363636363638, 5.533333333333333, 3.5454545454545454, 2.230769230769231, 3.3636363636363638, 4.083333333333333, 4.6875, 3.1666666666666665, 6.538461538461538, 2.7, 6.0, 5.4, 3.4166666666666665, 2.0491803278688523, 3.8823529411764706, 2.140625, 5.157894736842105, 4.1, 3.6, 5.043478260869565, 4.466666666666667, 5.2, 4.090909090909091, 5.333333333333333, 2.730769230769231, 4.3, 4.0, 4.5, 2.3846153846153846, 4.294117647058823, 3.75, 4.571428571428571, 4.923076923076923, 3.05, 5.25, 154.0, 4.928571428571429, 5.842105263157895, 2.2758620689655173, 5.166666666666667, 3.75, 4.076923076923077, 5.833333333333333, 14.0, 3.6666666666666665, 4.2, 3.75, 6.555555555555555, 4.1, 3.4193548387096775, 2.3076923076923075, 4.571428571428571, 4.636363636363637, 2.0697674418604652, 3.0, 3.076923076923077, 3.357142857142857, 4.166666666666667, 2.7, 2.923076923076923, 3.7, 3.8461538461538463, 5.8, 5.0, 3.1, 5.090909090909091, 83.0, 2.5285714285714285, 5.8, 4.076923076923077, 4.277777777777778, 3.6875, 6.15625, 2.857142857142857, 2.15, 3.6444444444444444, 2.25, 5.5, 4.4, 4.421052631578948, 8.272727272727273, 3.9411764705882355, 4.161538461538462, 3.5, 6.0, 3.814814814814815, 2.2142857142857144, 2.7222222222222223, 3.0, 125.0, 4.8, 4.384615384615385, 4.909090909090909, 5.0, 5.785714285714286, 3.9166666666666665, 2.6666666666666665, 168.0, 5.3125, 7.0, 3.75, 6.190476190476191, 2.4, 4.5, 2.4, 3.6666666666666665, 3.6923076923076925, 6.4, 5.205128205128205, 5.7, 3.1666666666666665, 4.266666666666667, 5.909090909090909, 2.2857142857142856, 3.1538461538461537, 4.7272727272727275, 4.3, 6.0, 4.857142857142857, 5.416666666666667, 4.470588235294118, 4.944444444444445, 4.5, 5.615384615384615, 5.076923076923077, 2.3076923076923075, 4.0, 5.0, 2.6666666666666665, 4.363636363636363, 3.8, 3.5, 4.76, 3.0, 3.8, 4.0, 4.663265306122449, 5.588235294117647, 3.7, 3.3518518518518516, 4.416666666666667, 5.923076923076923, 4.545454545454546, 5.5, 6.55, 2.1923076923076925, 6.133333333333334, 5.9411764705882355, 5.153846153846154, 3.2, 5.181818181818182, 5.25, 5.125, 5.3, 4.25, 5.588235294117647, 4.571428571428571, 2.625, 3.75, 5.916666666666667, 5.318181818181818, 3.3, 4.024390243902439, 2.590909090909091, 4.0, 2.5, 2.210526315789474, 7.714285714285714, 4.0, 3.1, 5.7, 3.0714285714285716, 4.782608695652174, 4.2, 4.142857142857143, 5.142857142857143, 4.833333333333333, 4.166666666666667, 3.2, 3.764705882352941, 3.8181818181818183, 3.75, 5.0, 2.2222222222222223, 7.2, 2.3076923076923075, 3.125, 1.1875, 3.3, 3.8666666666666667, 3.7333333333333334, 2.1578947368421053, 2.7, 4.769230769230769, 6.9, 4.4, 3.9375, 7.714285714285714, 35.666666666666664, 3.3529411764705883, 3.7, 2.0652173913043477, 3.6, 2.8, 5.142857142857143, 4.75, 2.230769230769231, 5.333333333333333, 4.266666666666667, 4.428571428571429, 4.125, 2.2941176470588234, 2.730769230769231, 5.6, 3.4761904761904763, 3.0454545454545454, 4.5, 2.085714285714286, 5.2, 4.6, 4.833333333333333, 4.083333333333333, 5.2727272727272725, 5.090909090909091, 4.0, 2.6666666666666665, 4.933333333333334, 3.8461538461538463, 2.25, 3.5384615384615383, 5.2, 2.9411764705882355, 4.846153846153846, 4.2, 4.363636363636363, 7.2, 7.45, 3.658536585365854, 2.8125, 2.5625, 3.076923076923077, 8.727272727272727, 4.416666666666667, 4.5, 5.0, 5.428571428571429, 4.777777777777778, 4.833333333333333, 4.5, 4.538461538461538, 2.1363636363636362, 3.090909090909091, 4.7272727272727275, 3.4285714285714284, 4.578947368421052, 3.4285714285714284, 4.181818181818182, 2.7, 4.166666666666667, 2.3333333333333335, 4.4, 3.473684210526316, 4.818181818181818, 4.7, 5.6, 4.0, 3.283333333333333, 3.0833333333333335, 3.8947368421052633, 4.75, 5.833333333333333, 4.631578947368421, 3.0714285714285716, 2.085714285714286, 4.9, 2.130434782608696, 3.6, 3.1, 2.4081632653061225, 6.130434782608695, 3.8, 2.8876404494382024, 7.0, 2.2, 3.9, 7.4, 2.4838709677419355, 4.722222222222222, 5.0588235294117645, 2.3, 4.636363636363637, 6.882352941176471, 3.75, 5.155172413793103, 2.8, 3.3076923076923075, 3.8, 7.0, 3.1818181818181817, 2.2, 3.5, 4.2727272727272725, 5.4, 3.9642857142857144, 4.833333333333333, 3.7, 3.8, 4.0, 3.6538461538461537, 4.842105263157895, 5.0, 4.8, 3.1, 3.9473684210526314, 3.0, 3.8, 6.181818181818182, 4.538461538461538, 3.9375, 3.9166666666666665, 2.5476190476190474, 2.125, 5.3, 149.0, 5.363636363636363, 3.9, 2.2, 5.5, 3.3636363636363638, 4.0, 4.083333333333333, 3.5454545454545454, 3.357142857142857, 7.863636363636363, 3.5454545454545454, 4.083333333333333, 3.6923076923076925, 3.0714285714285716, 3.0833333333333335, 4.5, 2.3125, 3.0833333333333335, 6.695652173913044, 7.545454545454546, 3.0476190476190474, 2.5555555555555554, 3.8461538461538463, 8.541666666666666, 3.8867924528301887, 2.272727272727273, 7.4, 5.133333333333334, 4.0, 5.066666666666666, 5.153846153846154, 3.1, 5.416666666666667, 4.533333333333333, 4.6923076923076925, 4.8, 5.0, 4.105263157894737, 2.933333333333333, 2.2142857142857144, 3.5454545454545454, 5.916666666666667, 3.625, 4.363636363636363, 3.1, 4.714285714285714, 2.210526315789474, 4.2, 7.043478260869565, 4.75, 3.3684210526315788, 2.8636363636363638, 3.111111111111111, 3.9166666666666665, 2.686046511627907, 4.909090909090909, 4.5, 5.583333333333333, 3.0, 5.181818181818182, 5.090909090909091, 4.166666666666667, 4.666666666666667, 2.6666666666666665, 3.9583333333333335, 2.037593984962406, 4.076923076923077, 5.8, 2.6666666666666665, 2.096774193548387, 4.238095238095238, 4.6, 4.947368421052632, 4.363636363636363, 6.285714285714286, 3.357142857142857, 3.1176470588235294, 2.3, 3.7083333333333335, 3.6842105263157894, 2.3333333333333335, 3.8, 3.8, 2.107142857142857, 2.8181818181818183, 7.363636363636363, 111.625, 3.909090909090909, 3.176470588235294, 4.454545454545454, 4.4, 4.294117647058823, 3.3, 3.2777777777777777, 4.266666666666667, 103.0, 3.4615384615384617, 5.0, 3.25, 4.181818181818182, 2.107142857142857, 3.1333333333333333, 6.7, 4.266666666666667, 5.523809523809524, 5.0, 2.526315789473684, 3.75, 3.5, 5.8125, 3.05, 2.9, 3.5, 4.444444444444445, 5.583333333333333, 4.3, 4.0, 2.7, 7.388888888888889, 2.7, 5.0, 3.037037037037037, 3.642857142857143, 5.3076923076923075, 3.4705882352941178, 5.7272727272727275, 4.3, 4.380952380952381, 4.9375, 4.428571428571429, 2.2, 5.1, 4.277777777777778, 4.538461538461538, 4.333333333333333, 4.666666666666667, 5.25, 3.5, 4.7, 5.636363636363637, 5.0, 5.458333333333333, 5.615384615384615, 2.4, 5.904761904761905, 3.769230769230769, 4.1, 104.0, 5.181818181818182, 4.428571428571429, 224.0, 5.2, 5.6, 5.1, 4.8, 138.0, 2.9411764705882355, 5.5, 5.166666666666667, 5.583333333333333, 4.363636363636363, 3.9411764705882355, 2.0210526315789474, 2.8, 2.2, 14.333333333333334, 3.6666666666666665, 6.363636363636363, 3.388888888888889, 5.3, 4.315789473684211, 6.357142857142857, 2.2, 3.2666666666666666, 3.0, 4.217391304347826, 3.2, 2.2142857142857144, 5.0, 3.1818181818181817, 5.363636363636363, 6.6923076923076925, 7.388888888888889, 5.8, 4.363636363636363, 6.105263157894737, 3.8, 3.9285714285714284, 3.4, 3.6666666666666665, 4.333333333333333, 5.357142857142857, 7.0, 5.6, 3.272727272727273, 4.823529411764706, 3.0833333333333335, 5.1, 4.428571428571429, 5.6, 8.85, 4.48, 3.8181818181818183, 4.153846153846154, 3.857142857142857, 3.1666666666666665, 3.235294117647059, 2.4, 4.363636363636363, 4.947368421052632, 5.666666666666667, 5.2, 4.5, 4.083333333333333, 3.4705882352941178, 2.130434782608696, 2.933333333333333, 2.210526315789474, 3.6666666666666665, 3.1666666666666665, 4.5, 4.1, 4.6, 7.228571428571429, 4.083333333333333, 3.727272727272727, 7.153846153846154, 6.2, 3.8, 3.3636363636363638, 2.5384615384615383, 4.663265306122449, 2.263157894736842, 3.3076923076923075, 7.25, 4.5, 5.541666666666667, 5.708860759493671, 4.0, 5.428571428571429, 5.083333333333333, 138.0, 3.375, 4.052631578947368, 3.909090909090909, 4.6, 2.793103448275862, 3.3333333333333335, 4.583333333333333, 2.574074074074074, 4.0, 4.363636363636363, 3.7, 4.545454545454546, 5.894736842105263, 5.25, 4.625, 5.3, 3.169811320754717, 5.545454545454546, 4.0, 6.545454545454546, 5.909090909090909, 5.2727272727272725, 6.615384615384615, 4.416666666666667, 5.3125, 2.65, 2.4516129032258065, 4.545454545454546, 6.857142857142857, 3.6, 3.6, 4.0, 4.818181818181818, 2.25, 6.117647058823529, 4.733333333333333, 4.8, 3.717391304347826, 3.0, 4.454545454545454, 3.3, 3.2, 6.434782608695652, 3.230769230769231, 6.0, 5.0, 5.363636363636363, 2.3333333333333335, 3.923076923076923, 4.5, 4.611111111111111, 2.8529411764705883, 4.076923076923077, 3.9523809523809526, 4.5, 4.3478260869565215, 5.181818181818182, 3.2, 3.0, 4.25, 2.588235294117647, 4.833333333333333, 3.1666666666666665, 2.2222222222222223, 4.7, 4.090909090909091, 4.571428571428571, 14.555555555555555, 3.8333333333333335, 6.2727272727272725, 4.3, 3.88, 4.214285714285714, 3.4, 3.9166666666666665, 5.625, 5.0, 3.6666666666666665, 2.625, 4.315789473684211, 4.5, 3.3375, 5.916666666666667, 3.1666666666666665, 5.133333333333334, 2.2, 5.8, 10.0, 6.230769230769231, 5.133333333333334, 4.9, 5.133333333333334, 2.789473684210526, 4.545454545454546, 3.9166666666666665, 6.5, 2.9375, 7.133333333333334, 3.111111111111111, 4.15, 5.090909090909091, 5.454545454545454, 3.909090909090909, 3.7, 4.083333333333333, 3.391304347826087, 3.3333333333333335, 2.2142857142857144, 4.363636363636363]
+INFO:root:bb_list_total_size_list: [44, 79, 25, 69, 120, 39, 106, 69, 46, 56, 50, 65, 49, 42, 119, 44, 72, 32, 52, 47, 91, 63, 328, 48, 50, 56, 90, 30, 32, 68, 57, 105, 83, 52, 72, 215, 81, 71, 39, 35, 171, 94, 125, 33, 42, 53, 42, 68, 55, 261, 127, 138, 52, 89, 51, 82, 61, 35, 65, 49, 186, 99, 86, 77, 73, 83, 78, 215, 137, 49, 37, 44, 63, 91, 62, 73, 46, 65, 66, 60, 68, 44, 108, 82, 86, 38, 41, 105, 71, 67, 67, 40, 43, 81, 47, 384, 35, 45, 105, 948, 33, 58, 46, 108, 76, 58, 39, 40, 37, 43, 50, 58, 57, 41, 102, 32, 29, 41, 65, 51, 69, 60, 37, 52, 144, 43, 71, 41, 40, 35, 49, 44, 34, 79, 40, 52, 27, 98, 42, 420, 91, 460, 51, 64, 47, 129, 61, 86, 42, 65, 60, 190, 433, 40, 86, 50, 141, 34, 55, 42, 51, 47, 47, 50, 54, 53, 53, 187, 70, 37, 39, 79, 66, 37, 46, 37, 76, 60, 53, 103, 68, 42, 44, 39, 49, 70, 69, 96, 54, 48, 70, 49, 39, 137, 56, 53, 90, 90, 48, 46, 57, 66, 86, 107, 69, 67, 57, 86, 94, 61, 62, 62, 121, 64, 60, 48, 85, 37, 41, 75, 890, 64, 186, 31, 49, 123, 79, 252, 85, 50, 184, 248, 79, 58, 39, 45, 52, 46, 140, 40, 104, 75, 58, 37, 30, 48, 82, 42, 308, 28, 50, 84, 44, 49, 117, 41, 101, 48, 46, 62, 35, 37, 51, 35, 147, 52, 89, 129, 113, 58, 85, 112, 46, 218, 100, 76, 49, 90, 69, 63, 68, 48, 111, 69, 56, 55, 61, 52, 40, 113, 51, 61, 73, 58, 48, 50, 31, 88, 160, 180, 73, 58, 46, 53, 327, 48, 82, 42, 139, 45, 67, 50, 100, 170, 56, 38, 229, 50, 48, 71, 56, 351, 55, 48, 47, 271, 32, 37, 100, 64, 76, 70, 68, 50, 127, 43, 70, 52, 53, 145, 94, 122, 35, 44, 64, 136, 97, 32, 41, 33, 48, 56, 39, 48, 120, 46, 58, 47, 38, 54, 244, 53, 37, 46, 94, 161, 77, 64, 54, 179, 62, 168, 71, 76, 41, 48, 67, 109, 51, 65, 50, 55, 45, 72, 61, 49, 38, 60, 31, 43, 40, 47, 32, 48, 41, 57, 50, 41, 35, 41, 81, 52, 351, 48, 45, 64, 150, 132, 68, 53, 64, 93, 42, 101, 49, 62, 88, 60, 80, 45, 45, 47, 25, 52, 51, 118, 39, 53, 89, 188, 143, 43, 37, 62, 65, 42, 93, 41, 54, 37, 81, 64, 48, 58, 68, 57, 95, 49, 121, 57, 31, 27, 83, 77, 41, 125, 73, 63, 69, 401, 71, 113, 143, 149, 56, 32, 27, 124, 72, 37, 86, 41, 42, 59, 91, 53, 123, 65, 32, 73, 32, 45, 80, 61, 25, 372, 42, 61, 52, 89, 56, 27, 206, 83, 76, 38, 78, 35, 50, 56, 33, 144, 32, 112, 45, 134, 46, 75, 121, 60, 70, 78, 31, 104, 65, 61, 157, 37, 142, 27, 53, 53, 104, 66, 51, 52, 261, 36, 63, 82, 137, 30, 85, 36, 83, 37, 100, 50, 68, 37, 95, 158, 112, 29, 55, 80, 54, 58, 50, 106, 56, 33, 61, 47, 75, 66, 62, 93, 35, 286, 64, 55, 32, 101, 74, 34, 79, 32, 62, 51, 31, 38, 46, 35, 87, 83, 66, 41, 95, 49, 41, 111, 69, 53, 59, 118, 43, 40, 175, 119, 60, 59, 168, 36, 41, 58, 51, 53, 51, 48, 41, 98, 60, 35, 53, 47, 104, 69, 46, 31, 88, 65, 54, 40, 61, 53, 81, 97, 222, 127, 35, 89, 23, 43, 39, 49, 31, 76, 53, 62, 217, 67, 39, 46, 64, 49, 116, 104, 45, 69, 155, 130, 92, 38, 136, 43, 87, 127, 41, 181, 84, 99, 53, 53, 56, 82, 58, 231, 39, 190, 46, 63, 91, 209, 35, 45, 77, 41, 116, 96, 71, 79, 50, 133, 172, 47, 107, 70, 45, 45, 33, 46, 118, 47, 142, 59, 169, 37, 258, 70, 35, 49, 112, 84, 53, 64, 57, 45, 89, 57, 55, 41, 81, 57, 62, 48, 120, 41, 430, 87, 71, 57, 155, 41, 73, 34, 104, 157, 28, 51, 37, 42, 36, 52, 27, 51, 87, 72, 41, 90, 78, 73, 36, 52, 59, 97, 77, 78, 50, 37, 36, 24, 24, 124, 41, 86, 98, 27, 36, 73, 53, 40, 57, 71, 48, 79, 69, 72, 75, 46, 202, 214, 35, 64, 45, 41, 59, 44, 45, 59, 97, 60, 60, 278, 46, 114, 45, 64, 74, 48, 72, 34, 46, 165, 35, 49, 36, 69, 80, 75, 77, 76, 82, 72, 249, 362, 79, 318, 81, 90, 77, 46, 35, 48, 67, 74, 42, 61, 46, 39, 62, 97, 57, 62, 60, 301, 54, 51, 66, 77, 84, 63, 42, 89, 66, 36, 44, 64, 89, 69, 47, 70, 47, 49, 66, 128, 45, 39, 317, 61, 111, 44, 53, 110, 82, 97, 50, 71, 64, 58, 41, 61, 214, 85, 67, 43, 189, 30, 52, 62, 53, 74, 102, 63, 140, 109, 51, 108, 57, 76, 64, 229, 143, 84, 123, 70, 30, 42, 122, 30, 60, 186, 108, 91, 57, 73, 53, 57, 76, 53, 121, 35, 83, 143, 39, 77, 45, 79, 35, 104, 52, 61, 48, 59, 75, 97, 56, 56, 81, 87, 29, 37, 74, 85, 110, 71, 58, 53, 53, 39, 165, 33, 107, 52, 55, 38, 102, 38, 105, 118, 104, 29, 81, 77, 48, 107, 60, 93, 69, 39, 43, 43, 85, 110, 96, 43, 20, 90, 107, 105, 164, 68, 57, 234, 124, 97, 80, 51, 123, 54, 36, 96, 49, 69, 78, 67, 83, 45, 83, 146, 61, 117, 54, 76, 43, 37, 128, 49, 57, 97, 100, 41, 109, 37, 50, 31, 96, 152, 47, 77, 182, 349, 135, 72, 109, 34, 99, 42, 49, 75, 39, 32, 42, 47, 132, 50, 52, 44, 46, 71, 75, 60, 210, 87, 57, 35, 84, 50, 110, 152, 47, 57, 94, 41, 55, 102, 38, 104, 34, 47, 71, 47, 95, 103, 58, 93, 131, 27, 46, 32, 44, 159, 57, 57, 79, 43, 305, 49, 59, 89, 89, 43, 516, 43, 99, 57, 53, 202, 70, 39, 79, 150, 90, 51, 47, 104, 52, 46, 51, 42, 45, 158, 56, 47, 83, 62, 195, 63, 33, 80, 37, 51, 141, 52, 52, 59, 168, 45, 43, 65, 71, 90, 72, 55, 51, 36, 32, 131, 39, 49, 57, 150, 39, 346, 100, 76, 120, 210, 86, 35, 58, 85, 37, 69, 97, 72, 38, 28, 102, 45, 62, 50, 261, 94, 111, 59, 501, 48, 35, 51, 136, 70, 39, 35, 117, 52, 36, 42, 60, 47, 74, 43, 89, 87, 62, 43, 80, 112, 70, 59, 57, 121, 117, 48, 90, 41, 157, 31, 38, 27, 105, 72, 82, 92, 42, 83, 79, 57, 68, 92, 40, 42, 41, 101, 42, 97, 55, 32, 109, 77, 105, 49, 55, 72, 51, 48, 161, 46, 83, 115, 61, 46, 53, 70, 72, 26, 31, 65, 75, 77, 54, 139, 51, 49, 24, 70, 30, 49, 146, 34, 23, 66, 86, 47, 77, 110, 34, 94, 42, 70, 49, 123, 37, 29, 76, 198, 110, 67, 36, 38, 48, 62, 35, 117, 128, 87, 45, 395, 117, 61, 156, 136, 45, 70, 215, 37, 56, 100, 55, 74, 32, 64, 50, 44, 69, 78, 37, 52, 48, 44, 90, 64, 33, 45, 50, 69, 24, 65, 134, 49, 31, 83, 57, 150, 184, 39, 56, 24, 52, 47, 34, 75, 51, 95, 33, 66, 94, 51, 181, 43, 40, 70, 100, 42, 31, 34, 76, 135, 86, 97, 27, 70, 58, 72, 73, 168, 48, 36, 76, 43, 260, 118, 68, 38, 51, 73, 133, 62, 166, 60, 67, 37, 332, 39, 29, 37, 49, 75, 38, 85, 27, 102, 54, 41, 125, 66, 137, 98, 41, 36, 116, 134, 52, 45, 80, 71, 43, 40, 45, 31, 73, 45, 160, 64, 61, 63, 154, 69, 333, 66, 62, 45, 53, 105, 126, 44, 42, 90, 177, 41, 106, 30, 64, 51, 89, 33, 40, 47, 75, 27, 38, 37, 50, 58, 55, 31, 56, 83, 177, 58, 53, 77, 59, 197, 40, 43, 164, 36, 77, 44, 84, 91, 67, 541, 49, 84, 103, 31, 49, 30, 125, 48, 57, 54, 60, 81, 47, 48, 168, 85, 77, 45, 130, 24, 81, 24, 44, 48, 64, 203, 57, 152, 64, 65, 64, 41, 52, 86, 66, 68, 65, 76, 89, 54, 73, 66, 30, 44, 55, 32, 48, 38, 42, 119, 30, 76, 44, 457, 95, 37, 181, 53, 77, 50, 77, 131, 57, 92, 101, 67, 32, 57, 63, 82, 53, 51, 95, 64, 42, 45, 71, 117, 33, 165, 57, 40, 55, 42, 108, 40, 31, 57, 43, 110, 42, 58, 72, 58, 50, 32, 64, 42, 105, 50, 40, 108, 30, 50, 19, 33, 58, 56, 41, 27, 62, 69, 44, 63, 108, 535, 57, 37, 95, 72, 28, 108, 57, 29, 96, 64, 62, 66, 39, 71, 56, 73, 67, 45, 73, 52, 46, 58, 49, 58, 56, 52, 32, 74, 50, 27, 46, 52, 50, 63, 42, 48, 72, 149, 150, 45, 82, 40, 96, 53, 90, 50, 76, 86, 58, 45, 59, 47, 34, 104, 120, 87, 48, 46, 27, 100, 35, 44, 66, 53, 47, 84, 56, 197, 37, 74, 57, 70, 88, 43, 73, 49, 49, 54, 31, 118, 141, 38, 257, 70, 33, 39, 74, 77, 85, 86, 23, 51, 117, 90, 299, 28, 43, 38, 91, 35, 33, 63, 47, 54, 111, 58, 37, 38, 68, 95, 92, 50, 48, 31, 75, 42, 57, 68, 59, 63, 47, 107, 51, 53, 149, 59, 39, 33, 55, 37, 60, 49, 39, 47, 173, 39, 49, 48, 43, 37, 45, 37, 37, 154, 166, 64, 184, 50, 205, 206, 25, 111, 77, 68, 76, 67, 31, 65, 68, 61, 96, 75, 78, 44, 31, 39, 71, 58, 48, 31, 66, 42, 42, 162, 76, 64, 63, 56, 47, 231, 54, 63, 67, 36, 57, 56, 50, 56, 32, 95, 271, 106, 58, 32, 65, 89, 115, 94, 48, 88, 47, 53, 23, 89, 70, 28, 38, 38, 59, 31, 81, 893, 43, 54, 49, 44, 73, 33, 59, 64, 103, 45, 60, 39, 46, 59, 47, 67, 64, 116, 50, 48, 45, 119, 93, 61, 29, 35, 80, 67, 86, 48, 27, 133, 54, 75, 82, 51, 69, 59, 63, 43, 92, 79, 279, 44, 51, 77, 59, 52, 84, 63, 35, 47, 62, 60, 131, 73, 24, 124, 49, 82, 104, 57, 93, 224, 52, 56, 51, 48, 138, 50, 55, 62, 67, 48, 67, 384, 28, 33, 129, 44, 70, 122, 53, 82, 89, 33, 49, 30, 97, 32, 31, 60, 35, 59, 174, 133, 87, 48, 116, 38, 55, 34, 44, 52, 75, 133, 56, 36, 164, 37, 51, 62, 140, 177, 112, 42, 54, 54, 57, 55, 24, 48, 94, 68, 52, 45, 49, 59, 49, 44, 42, 99, 57, 45, 41, 92, 506, 98, 41, 93, 62, 38, 37, 33, 457, 43, 43, 174, 45, 133, 451, 52, 76, 61, 138, 54, 77, 43, 115, 81, 40, 55, 139, 40, 48, 37, 50, 112, 84, 74, 53, 168, 61, 68, 72, 65, 58, 86, 53, 85, 53, 76, 50, 96, 72, 36, 96, 53, 27, 104, 71, 48, 171, 39, 49, 33, 32, 148, 42, 66, 90, 59, 56, 51, 45, 83, 97, 53, 83, 45, 100, 57, 32, 36, 51, 44, 58, 38, 40, 47, 45, 64, 262, 46, 69, 43, 97, 118, 51, 47, 90, 50, 66, 42, 82, 81, 267, 71, 38, 77, 33, 87, 110, 81, 77, 49, 77, 53, 50, 47, 65, 47, 107, 56, 83, 56, 60, 43, 37, 49, 78, 40, 31, 48]
+INFO:root:End time: 2024-09-28 09:53:21.939966

@@ -1,0 +1,381 @@
+.globl interp_weno7
+.type interp_weno7, @function
+interp_weno7:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$80, %rsp
+	movsd	%xmm0, -152(%rbp)
+	movsd	%xmm1, -160(%rbp)
+	movsd	%xmm2, -168(%rbp)
+	movsd	%xmm3, -176(%rbp)
+	movsd	%xmm4, -184(%rbp)
+	movsd	%xmm5, -192(%rbp)
+	movsd	%xmm6, -200(%rbp)
+	movsd	-152(%rbp), %xmm1
+	movsd	.LC0(%rip), %xmm0
+	mulsd	%xmm0, %xmm1
+	movsd	-160(%rbp), %xmm2
+	movsd	.LC1(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-168(%rbp), %xmm2
+	movsd	.LC2(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-176(%rbp), %xmm2
+	movsd	.LC3(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	addsd	%xmm1, %xmm0
+	movsd	%xmm0, -136(%rbp)
+	movsd	-160(%rbp), %xmm1
+	movsd	.LC4(%rip), %xmm0
+	mulsd	%xmm0, %xmm1
+	movsd	-168(%rbp), %xmm2
+	movsd	.LC5(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-176(%rbp), %xmm2
+	movsd	.LC1(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-184(%rbp), %xmm2
+	movsd	.LC6(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	addsd	%xmm1, %xmm0
+	movsd	%xmm0, -128(%rbp)
+	movsd	-168(%rbp), %xmm1
+	movsd	.LC7(%rip), %xmm0
+	mulsd	%xmm0, %xmm1
+	movsd	-176(%rbp), %xmm2
+	movsd	.LC8(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-184(%rbp), %xmm2
+	movsd	.LC8(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-192(%rbp), %xmm2
+	movsd	.LC7(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	addsd	%xmm1, %xmm0
+	movsd	%xmm0, -120(%rbp)
+	movsd	-176(%rbp), %xmm1
+	movsd	.LC6(%rip), %xmm0
+	mulsd	%xmm0, %xmm1
+	movsd	-184(%rbp), %xmm2
+	movsd	.LC1(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-192(%rbp), %xmm2
+	movsd	.LC5(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-200(%rbp), %xmm2
+	movsd	.LC4(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	addsd	%xmm1, %xmm0
+	movsd	%xmm0, -112(%rbp)
+	movsd	-152(%rbp), %xmm1
+	movsd	.LC9(%rip), %xmm0
+	mulsd	%xmm1, %xmm0
+	movsd	-160(%rbp), %xmm2
+	movsd	.LC10(%rip), %xmm1
+	mulsd	%xmm2, %xmm1
+	subsd	%xmm1, %xmm0
+	movapd	%xmm0, %xmm1
+	movsd	-168(%rbp), %xmm2
+	movsd	.LC11(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	addsd	%xmm1, %xmm0
+	movsd	-176(%rbp), %xmm2
+	movsd	.LC12(%rip), %xmm1
+	mulsd	%xmm2, %xmm1
+	subsd	%xmm1, %xmm0
+	movapd	%xmm0, %xmm1
+	mulsd	-152(%rbp), %xmm1
+	movsd	-160(%rbp), %xmm2
+	movsd	.LC13(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	movsd	-168(%rbp), %xmm3
+	movsd	.LC14(%rip), %xmm2
+	mulsd	%xmm3, %xmm2
+	subsd	%xmm2, %xmm0
+	movapd	%xmm0, %xmm2
+	movsd	-176(%rbp), %xmm3
+	movsd	.LC15(%rip), %xmm0
+	mulsd	%xmm3, %xmm0
+	addsd	%xmm2, %xmm0
+	mulsd	-160(%rbp), %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-168(%rbp), %xmm2
+	movsd	.LC16(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	movsd	-176(%rbp), %xmm3
+	movsd	.LC17(%rip), %xmm2
+	mulsd	%xmm3, %xmm2
+	subsd	%xmm2, %xmm0
+	mulsd	-168(%rbp), %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-176(%rbp), %xmm2
+	movsd	.LC18(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	mulsd	-176(%rbp), %xmm0
+	addsd	%xmm1, %xmm0
+	movsd	%xmm0, -104(%rbp)
+	movsd	-160(%rbp), %xmm1
+	movsd	.LC19(%rip), %xmm0
+	mulsd	%xmm1, %xmm0
+	movsd	-168(%rbp), %xmm2
+	movsd	.LC20(%rip), %xmm1
+	mulsd	%xmm2, %xmm1
+	subsd	%xmm1, %xmm0
+	movapd	%xmm0, %xmm1
+	movsd	-176(%rbp), %xmm2
+	movsd	.LC21(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	addsd	%xmm1, %xmm0
+	movsd	-184(%rbp), %xmm2
+	movsd	.LC22(%rip), %xmm1
+	mulsd	%xmm2, %xmm1
+	subsd	%xmm1, %xmm0
+	movapd	%xmm0, %xmm1
+	mulsd	-160(%rbp), %xmm1
+	movsd	-168(%rbp), %xmm2
+	movsd	.LC23(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	movsd	-176(%rbp), %xmm3
+	movsd	.LC24(%rip), %xmm2
+	mulsd	%xmm3, %xmm2
+	subsd	%xmm2, %xmm0
+	movapd	%xmm0, %xmm2
+	movsd	-184(%rbp), %xmm3
+	movsd	.LC25(%rip), %xmm0
+	mulsd	%xmm3, %xmm0
+	addsd	%xmm2, %xmm0
+	mulsd	-168(%rbp), %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-176(%rbp), %xmm2
+	movsd	.LC26(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	movsd	-184(%rbp), %xmm3
+	movsd	.LC27(%rip), %xmm2
+	mulsd	%xmm3, %xmm2
+	subsd	%xmm2, %xmm0
+	mulsd	-176(%rbp), %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-184(%rbp), %xmm2
+	movsd	.LC9(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	mulsd	-184(%rbp), %xmm0
+	addsd	%xmm1, %xmm0
+	movsd	%xmm0, -96(%rbp)
+	movsd	-168(%rbp), %xmm1
+	movsd	.LC9(%rip), %xmm0
+	mulsd	%xmm1, %xmm0
+	movsd	-176(%rbp), %xmm2
+	movsd	.LC27(%rip), %xmm1
+	mulsd	%xmm2, %xmm1
+	subsd	%xmm1, %xmm0
+	movapd	%xmm0, %xmm1
+	movsd	-184(%rbp), %xmm2
+	movsd	.LC25(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	addsd	%xmm1, %xmm0
+	movsd	-192(%rbp), %xmm2
+	movsd	.LC22(%rip), %xmm1
+	mulsd	%xmm2, %xmm1
+	subsd	%xmm1, %xmm0
+	movapd	%xmm0, %xmm1
+	mulsd	-168(%rbp), %xmm1
+	movsd	-176(%rbp), %xmm2
+	movsd	.LC26(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	movsd	-184(%rbp), %xmm3
+	movsd	.LC24(%rip), %xmm2
+	mulsd	%xmm3, %xmm2
+	subsd	%xmm2, %xmm0
+	movapd	%xmm0, %xmm2
+	movsd	-192(%rbp), %xmm3
+	movsd	.LC21(%rip), %xmm0
+	mulsd	%xmm3, %xmm0
+	addsd	%xmm2, %xmm0
+	mulsd	-176(%rbp), %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-184(%rbp), %xmm2
+	movsd	.LC23(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	movsd	-192(%rbp), %xmm3
+	movsd	.LC20(%rip), %xmm2
+	mulsd	%xmm3, %xmm2
+	subsd	%xmm2, %xmm0
+	mulsd	-184(%rbp), %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-192(%rbp), %xmm2
+	movsd	.LC19(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	mulsd	-192(%rbp), %xmm0
+	addsd	%xmm1, %xmm0
+	movsd	%xmm0, -88(%rbp)
+	movsd	-176(%rbp), %xmm1
+	movsd	.LC18(%rip), %xmm0
+	mulsd	%xmm1, %xmm0
+	movsd	-184(%rbp), %xmm2
+	movsd	.LC17(%rip), %xmm1
+	mulsd	%xmm2, %xmm1
+	subsd	%xmm1, %xmm0
+	movapd	%xmm0, %xmm1
+	movsd	-192(%rbp), %xmm2
+	movsd	.LC15(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	addsd	%xmm1, %xmm0
+	movsd	-200(%rbp), %xmm2
+	movsd	.LC12(%rip), %xmm1
+	mulsd	%xmm2, %xmm1
+	subsd	%xmm1, %xmm0
+	movapd	%xmm0, %xmm1
+	mulsd	-176(%rbp), %xmm1
+	movsd	-184(%rbp), %xmm2
+	movsd	.LC16(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	movsd	-192(%rbp), %xmm3
+	movsd	.LC14(%rip), %xmm2
+	mulsd	%xmm3, %xmm2
+	subsd	%xmm2, %xmm0
+	movapd	%xmm0, %xmm2
+	movsd	-200(%rbp), %xmm3
+	movsd	.LC11(%rip), %xmm0
+	mulsd	%xmm3, %xmm0
+	addsd	%xmm2, %xmm0
+	mulsd	-184(%rbp), %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-192(%rbp), %xmm2
+	movsd	.LC13(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	movsd	-200(%rbp), %xmm3
+	movsd	.LC10(%rip), %xmm2
+	mulsd	%xmm3, %xmm2
+	subsd	%xmm2, %xmm0
+	mulsd	-192(%rbp), %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-200(%rbp), %xmm2
+	movsd	.LC9(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	mulsd	-200(%rbp), %xmm0
+	addsd	%xmm1, %xmm0
+	movsd	%xmm0, -80(%rbp)
+	movsd	-104(%rbp), %xmm1
+	movsd	.LC28(%rip), %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-104(%rbp), %xmm2
+	movsd	.LC28(%rip), %xmm0
+	addsd	%xmm2, %xmm0
+	mulsd	%xmm0, %xmm1
+	movsd	.LC29(%rip), %xmm0
+	divsd	%xmm1, %xmm0
+	movsd	%xmm0, -72(%rbp)
+	movsd	-96(%rbp), %xmm1
+	movsd	.LC28(%rip), %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-96(%rbp), %xmm2
+	movsd	.LC28(%rip), %xmm0
+	addsd	%xmm2, %xmm0
+	mulsd	%xmm0, %xmm1
+	movsd	.LC30(%rip), %xmm0
+	divsd	%xmm1, %xmm0
+	movsd	%xmm0, -64(%rbp)
+	movsd	-88(%rbp), %xmm1
+	movsd	.LC28(%rip), %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-88(%rbp), %xmm2
+	movsd	.LC28(%rip), %xmm0
+	addsd	%xmm2, %xmm0
+	mulsd	%xmm0, %xmm1
+	movsd	.LC31(%rip), %xmm0
+	divsd	%xmm1, %xmm0
+	movsd	%xmm0, -56(%rbp)
+	movsd	-80(%rbp), %xmm1
+	movsd	.LC28(%rip), %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-80(%rbp), %xmm2
+	movsd	.LC28(%rip), %xmm0
+	addsd	%xmm2, %xmm0
+	mulsd	%xmm0, %xmm1
+	movsd	.LC32(%rip), %xmm0
+	divsd	%xmm1, %xmm0
+	movsd	%xmm0, -48(%rbp)
+	movsd	-72(%rbp), %xmm0
+	addsd	-64(%rbp), %xmm0
+	addsd	-56(%rbp), %xmm0
+	movapd	%xmm0, %xmm1
+	addsd	-48(%rbp), %xmm1
+	movsd	.LC33(%rip), %xmm0
+	divsd	%xmm1, %xmm0
+	movsd	%xmm0, -40(%rbp)
+	movsd	-72(%rbp), %xmm0
+	mulsd	-40(%rbp), %xmm0
+	movsd	%xmm0, -32(%rbp)
+	movsd	-64(%rbp), %xmm0
+	mulsd	-40(%rbp), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-56(%rbp), %xmm0
+	mulsd	-40(%rbp), %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-48(%rbp), %xmm0
+	mulsd	-40(%rbp), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-32(%rbp), %xmm0
+	movapd	%xmm0, %xmm1
+	mulsd	-136(%rbp), %xmm1
+	movsd	-24(%rbp), %xmm0
+	mulsd	-128(%rbp), %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-16(%rbp), %xmm0
+	mulsd	-120(%rbp), %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	-8(%rbp), %xmm0
+	mulsd	-112(%rbp), %xmm0
+	addsd	%xmm1, %xmm0
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LC4: 	.long	1431655765
+.LC29: 	.long	490853405
+.LC14: 	.long	0
+.LC12: 	.long	0
+.LC6: 	.long	0
+.LC32: 	.long	490853405
+.LC22: 	.long	0
+.LC0: 	.long	0
+.LC10: 	.long	0
+.LC24: 	.long	0
+.LC33: 	.long	0
+.LC31: 	.long	1349846864
+.LC2: 	.long	2863311531
+.LC25: 	.long	0
+.LC1: 	.long	1431655765
+.LC13: 	.long	0
+.LC28: 	.long	3654794683
+.LC21: 	.long	0
+.LC3: 	.long	2863311531
+.LC16: 	.long	0
+.LC19: 	.long	0
+.LC27: 	.long	0
+.LC9: 	.long	0
+.LC5: 	.long	2863311531
+.LC23: 	.long	0
+.LC20: 	.long	0
+.LC7: 	.long	1431655765
+.LC8: 	.long	2863311531
+.LC26: 	.long	0
+.LC30: 	.long	368140054
+.LC17: 	.long	0
+.LC15: 	.long	0
+.LC11: 	.long	0
+.LC18: 	.long	0

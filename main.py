@@ -20,6 +20,16 @@ from config import (
     QWEN_AVAILABLE_MODELS,
 )
 from prompts import *
+hard_cached_pass_id: dict = {
+    "deepseek-coder": {
+        "baseline": [26, 29, 41, 45, 51, 66, 69, 73, 74, 84, 86, 126, 128, 135, 139, 141, 144, 145, 146, 148, 149, 174, 176, 185], # 40, 49, 92, 93, 133
+        # "baseline": [4, 7, 9, 13, 18, 20, 26, 29, 31, 40, 41, 42, 43, 45, 49, 51, 52, 53, 56, 61, 64, 65, 66, 69, 71, 73, 74, 81, 84, 86, 92, 93, 95, 99, 102, 104, 113, 114, 115, 116, 117, 122, 123, 126, 128, 129, 131, 133, 135, 138, 139, 141, 144, 145, 146, 147, 148, 149, 154, 156, 159, 162, 165, 166, 172, 173, 174, 176, 185, 188, 190, 196, 197],
+        "pass@5": [4, 9, 13, 20, 26, 31, 40, 41, 45, 49, 51, 52, 53, 61, 64, 65, 66, 69, 71, 73, 74, 81, 84, 92, 93, 95, 99, 102, 114, 122, 123, 126, 128, 129, 133, 138, 141, 144, 145, 146, 147, 148, 162, 165, 172, 174, 176, 185, 197],
+        "fix": [4, 26, 31, 41, 61, 65, 66, 69, 71, 73, 81, 84, 92, 95, 102, 122, 128, 133, 141, 145, 148, 176, 185, 197], # 40, 49, 93, 138
+        "annotation": [26, 41, 66, 69, 73, 95, 185], # 40, 49, 93
+        "LEGO": None,
+    }
+}
 cached_pass_id: dict = {
     # 4o will bypass 4o-mini's passed cases to speedup
     "gpt-4o": {
@@ -421,6 +431,74 @@ def categorize_exebench_complexity(model, begin_id=0, end_id=500):
     logging.info(f"Medium list: {medium_list}")
     logging.info(f"Complex list: {complex_list}")
         
+def grep_difficult_code_exebench():
+    # ds = load_dataset("mistral0105/exebench_io_validated_full_cleaned")["train"]
+    ds = load_dataset("mistral0105/exebench_io_hard2_full_cleaned")["train"]
+    begin_id = 0
+    end_id = ds.num_rows
+    case_id = 0
+    total_id = end_id - begin_id
+    progress_bar = tqdm(
+        total=total_id,
+        initial=0,
+        dynamic_ncols=True,
+    )
+    # record a list of bbcount and bb_list_size
+    bbcount_list = []
+    bb_list_max_size_list = []
+    bb_list_avg_size_list = []
+    bb_list_total_size_list = []
+    complex_cases = []
+    for e in ds:
+        if case_id < begin_id:
+            case_id += 1
+            continue
+        progress_bar.update(1)
+        if case_id >= end_id:
+            break
+        try:
+            c_deps: str = e["real_deps"]
+            # rm the "# 1" in the end
+            c_deps = c_deps[: c_deps.rfind("# 1")]
+            c_code = c_deps
+            c_code += e["func_def"]
+            # category = categorize_function_complexity(c_code, llm)
+            # save to a tmp.c file
+            try:
+                with open("tmp.c", "w") as f:
+                    f.write(c_code)
+                ret = subprocess.run(["clang", "-S", "-emit-llvm", "-o", "tmp.ll", "tmp.c"])
+                ret = subprocess.run(["count_llvm_ir_bb", "tmp.ll"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                logging.debug(f"stdout: {ret.stdout.decode()}")
+                # treat stdout as json
+                bbcount = json.loads(ret.stdout.decode())["bbcount"]
+                bb_list_size = json.loads(ret.stdout.decode())["bb_list_size"]
+                bbcount_list.append(bbcount)
+                bb_list_max_size_list.append(max(bb_list_size))
+                bb_list_avg_size_list.append(sum(bb_list_size) / len(bb_list_size))
+                bb_list_total_size_list.append(sum(bb_list_size))
+            except Exception as e:
+                case_id += 1
+                continue
+            # 7, 100, 50 complexity threshold
+            # 10, 200, 80 threshold
+            if bbcount >= 10 or sum(bb_list_size) > 200 or max(bb_list_size) > 80:
+                complex_cases.append(e)
+                logging.info(f"Case {case_id} is complex\n")       
+            case_id += 1
+        except Exception as e:
+            logging.warning(f"Error in case {case_id}: {e}")
+            case_id += 1
+            break
+    logging.info(f"Complex list size: {len(complex_cases)}")
+    logging.info(f"bbcount_list: {bbcount_list}")
+    logging.info(f"bb_list_max_size_list: {bb_list_max_size_list}")
+    logging.info(f"bb_list_avg_size_list: {bb_list_avg_size_list}")
+    logging.info(f"bb_list_total_size_list: {bb_list_total_size_list}")
+    # save to a new dataset and push to huggingface hub
+    # validate_ds = Dataset.from_list(complex_cases)
+    # validate_ds.push_to_hub("mistral0105/exebench_io_hard2_full_cleaned")
+    
 
 def c_compiler_exebench(
     model="gpt-4o",
@@ -438,6 +516,7 @@ def c_compiler_exebench(
     do_analyze=False,
     use_mask=False,
     mask_stage="baseline",
+    use_hard_subset=False,
 ):
     """
     Compile the C code of ExeBench to assembly code and then to executable code.
@@ -454,9 +533,10 @@ def c_compiler_exebench(
         peft_model=peft_model,
     )
     # ds = load_dataset("jordiae/exebench")["train_real_simple_io"]
-    ds = load_dataset("mistral0105/exebench_io_validated_full_cleaned")[
-        "train"
-    ]  # this ds is already shuffled, so use it directly
+    if use_hard_subset:
+        ds = load_dataset("mistral0105/exebench_io_hard2_full_cleaned")["train"]
+    else:
+        ds = load_dataset("mistral0105/exebench_io_validated_full_cleaned")["train"]
     # select validate example to a new dataset, by checking compile status and execution status
     passed_id = []
     failed_id = []
@@ -474,11 +554,18 @@ def c_compiler_exebench(
     # ds = ds[begin_id:end_id]
     if use_mask:
         failed_ids = [i for i in range(begin_id, end_id)]
-        if cached_pass_id[model][mask_stage] is not None:
-            logging.info(f"Found previous cached results for {model}: {mask_stage}")
-            failed_ids = cached_pass_id[model][mask_stage]      
+        if use_hard_subset:
+            if hard_cached_pass_id[model][mask_stage] is not None:
+                logging.info(f"Found previous cached results for {model}: {mask_stage}")
+                failed_ids = hard_cached_pass_id[model][mask_stage]
+            else:
+                failed_ids = [i for i in range(begin_id, end_id)]
         else:
-            failed_ids = [i for i in range(begin_id, end_id)]
+            if cached_pass_id[model][mask_stage] is not None:
+                logging.info(f"Found previous cached results for {model}: {mask_stage}")
+                failed_ids = cached_pass_id[model][mask_stage]      
+            else:
+                failed_ids = [i for i in range(begin_id, end_id)]
         mask_ids = [i for i in range(begin_id, end_id) if i not in failed_ids]
     else:
         mask_ids = []
@@ -1080,6 +1167,7 @@ if __name__ == "__main__":
     parser.add_argument("--use_mask", type=bool, default=False)
     parser.add_argument("--mask_stage", type=str, default="baseline")
     parser.add_argument("--categorize", type=bool, default=False)
+    parser.add_argument("--use_hard_subset", type=bool, default=False)
     S = parser.parse_args()
     candidate_model: str = S.model
     begin_id: int = S.begin_id
@@ -1100,6 +1188,7 @@ if __name__ == "__main__":
     use_mask: bool = S.use_mask
     mask_stage: str = S.mask_stage
     need_categorize = S.categorize
+    use_hard_subset = S.use_hard_subset
     use_lego_prompt = False
     use_one_shot_prompt = True
     use_zero_shot_prompt = False
@@ -1182,11 +1271,12 @@ if __name__ == "__main__":
             init_value="x=15, y=16",
         )
     elif need_categorize:
-        categorize_exebench_complexity(
-            model=candidate_model,
-            begin_id=begin_id,
-            end_id=end_id,
-        )
+        # categorize_exebench_complexity(
+        #     model=candidate_model,
+        #     begin_id=begin_id,
+        #     end_id=end_id,
+        # )
+        grep_difficult_code_exebench()
     elif eval_coremark:
         os.chdir(coremark_dir)
         c_compiler_coremark(
@@ -1222,6 +1312,7 @@ if __name__ == "__main__":
             do_analyze=do_analyze,
             use_mask=use_mask,
             mask_stage=mask_stage,
+            use_hard_subset=use_hard_subset,
         )
 
     logging.info("End time: " + str(datetime.datetime.now()))

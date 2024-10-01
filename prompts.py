@@ -981,19 +981,21 @@ x86:
 """,
     "cmp_ins": """cmp instructions in x86 assembly are used to compare two values, 
 and set the flags register accordingly.
-however, we cannot use two memory addresses to be compared,
-Example:'    cmpl -4(%rbp), -8(%rbp)' is not allowed,
-so you need to load the value from memory to register before comparing.
+WARNING: we cannot use two memory addresses to be compared, or two values to be compared
+Example:'cmpl -4(%rbp), -8(%rbp)' is not allowed, 'cmpl $10, $20' is not allowed.
+so you need to load one memory/value to register before comparing.
 """,
     "mod_ins": """mod in x86 assembly are used to calculate the remainder of a division operation.
 many compilers will optimize such operation to other instructions with arithemetic operations.
 however, you are not good at arithemetic computation, so you need to use the mod instruction directly.
+WARNING: idivl $10(any constant value) is not allowed, you need to load the value to register first.
 for example: 'int a = 10 % 3;' -compile to-> 'movl $10, %eax\n movl $3, %ecx\n idivl %ecx\n movl %edx, xxx(a's address)'
 """,
     "div_ins": """div in x86 assembly are used to calculate the quotient of a division operation.
 many compilers will optimize such operation to other instructions with arithemetic operations.
 however, you are not good at arithemetic computation, so you need to use the div instruction directly.
-for example: 'int a = 10 / 3;' -compile to-> 'movl $10, %eax\n movl $3, %ecx\n idivl %ecx\n movl %eax, xxx(a's address)'
+WARNING: idivl $10(any constant value) is not allowed, you need to load the value to register first.
+for example: 'int a = 10 / 3;' ---> 'movl $10, %eax\n movl $3, %ecx\n idivl %ecx\n movl %eax, xxx(a's address)'
 """,
     "recursive": """this is a recursive function, you need to generate the assembly with strict stack management.
 make sure you have the correct stack frame and stack pointer management.

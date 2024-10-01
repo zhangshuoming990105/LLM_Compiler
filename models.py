@@ -629,6 +629,28 @@ ret: return eax=-97
             logging.warning(f"Failed to parse the simulation result: \n{e}")
         # self.message_reset()
 
+    # TODO: implement the lego translation method in the next version
+    def lego_compile(self, code, temperature):
+    # lego translation: 
+    # 1.analyze
+    # 2.split
+    # 3.translate each part
+    # 4.recombine  
+        prompt = """I want you to act like a compiler that translate C code into x86 assembly. However, I don't want you to do it directly because that's memorizing. I want you to do so by strictly follow my guide and examples.
+###Example:
+In order to compile the following code into assembly, we need:
+1. first analyze the customized structs types and give them correct offset, size and padding, note that each struct follows the largest alignment basic type in its elements.
+2. collect all the constants, name their labels with meaningful names.
+3. compile the code using the above help messages. generate AT&T syntax x86_64 assembly.
+"""
+        # 1. analyze the code, get the symbols and constants
+        
+        # 2. split the code into parts following the control-blocks
+        
+        # 3. 
+        pass
+         
+
 
 class Decompiler(Chat):
     def __init__(self, model="mixtral-8x7b-instruct", arch="x86"):

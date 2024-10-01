@@ -13,3 +13,4 @@ sandbox/coremark_workspace/hyp
 sandbox/coremark_workspace/failed
 
 sandbox/csmith_workspace/*
+sandbox/3dgaussian_splatting/*

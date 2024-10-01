@@ -1,0 +1,84 @@
+translate the following x86 code into ARM64 code:
+Input x86 code:
+```x86
+        .globl  fib                             # -- Begin function fib
+        .type   fib,@function
+fib:                                    # @fib
+# %bb.0:
+        pushq   %rbp
+        movq    %rsp, %rbp
+        subq    $16, %rsp
+        movl    %edi, -8(%rbp)
+        cmpl    $1, -8(%rbp)
+        jg      .LBB0_2
+# %bb.1:
+        movl    -8(%rbp), %eax
+        movl    %eax, -4(%rbp)
+        jmp     .LBB0_3
+.LBB0_2:
+        movl    -8(%rbp), %edi
+        subl    $1, %edi
+        callq   fib
+        movl    %eax, -12(%rbp)                 # 4-byte Spill
+        movl    -8(%rbp), %edi
+        subl    $2, %edi
+        callq   fib
+        movl    %eax, %ecx
+        movl    -12(%rbp), %eax                 # 4-byte Reload
+        addl    %ecx, %eax
+        movl    %eax, -4(%rbp)
+.LBB0_3:
+        movl    -4(%rbp), %eax
+        addq    $16, %rsp
+        popq    %rbp
+        retq
+.Lfunc_end0:
+        .size   fib, .Lfunc_end0-fib
+```
+Output ARM64 code:
+```arm64
+        .globl  fib                             # -- Begin function fib
+        .type   fib,@function
+fib:                                    # @fib
+        .cfi_startproc
+# %bb.0:
+        pushq   %rbp
+        .cfi_def_cfa_offset 16
+        .cfi_offset %rbp, -16
+        movq    %rsp, %rbp
+        .cfi_def_cfa_register %rbp
+        subq    $16, %rsp
+        movl    %edi, -8(%rbp)
+        cmpl    $1, -8(%rbp)
+        jg      .LBB1_2
+# %bb.1:
+        movl    -8(%rbp), %eax
+        movl    %eax, -4(%rbp)
+        jmp     .LBB1_3
+.LBB1_2:
+        movl    -8(%rbp), %edi
+        subl    $1, %edi
+        callq   fib
+        movl    %eax, -12(%rbp)                 # 4-byte Spill
+        movl    -8(%rbp), %edi
+        subl    $2, %edi
+        callq   fib
+        movl    %eax, %ecx
+        movl    -12(%rbp), %eax                 # 4-byte Reload
+        addl    %ecx, %eax
+        movl    %eax, -4(%rbp)
+.LBB1_3:
+        movl    -4(%rbp), %eax
+        addq    $16, %rsp
+        popq    %rbp
+        .cfi_def_cfa %rsp, 8
+        retq
+.Lfunc_end1:
+        .size   fib, .Lfunc_end1-fib
+        .cfi_endproc
+                                        # -- End function
+        .ident  "clang version 17.0.6 (git@github.com:fairinternal/CodeGen.git b05db9bbf7a92019267416c1bb9996fe6134e3f1)"
+        .section        ".note.GNU-stack","",@progbits
+        .addrsig
+        .addrsig_sym fib
+```

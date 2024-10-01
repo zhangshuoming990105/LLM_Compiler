@@ -1,0 +1,3247 @@
+INFO:root:log file created!
+INFO:root:Start time: 2024-07-08 14:14:48.267790
+INFO:root:LLM default prompt size: 2175
+INFO:root:C code :
+#include <stdlib.h>
+
+#include <stdio.h>
+
+#include <string.h>
+
+#include <errno.h>
+
+char flip_bit (char bit_character) {
+ if ('0' == bit_character)
+  return '1';
+ else
+  return '0';
+}
+INFO:root:current LLM prompt size: 2236
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  flip_bit
+flip_bit:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp          # Allocate space on the stack
+    movb    %dil, -1(%rbp)     # Store bit_character
+
+    cmpb    $48, -1(%rbp)      # Compare bit_character with '0' (ASCII 48)
+    jne     .L1                # Jump to .L1 if not equal
+
+    movb    $49, %al           # Move '1' (ASCII 49) to %al
+    jmp     .L2                # Jump to .L2
+
+.L1:
+    movb    $48, %al           # Move '0' (ASCII 48) to %al
+
+.L2:
+    leave                      # Restore %rbp and %rsp
+    retq                       # Return
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 25 succeeded
+INFO:root:C code :
+
+int
+foo (int a, int b)
+{
+  int t;
+
+  if (b)
+    {
+      if (a)
+ t = 3;
+      else
+ t = 5;
+
+      a = 0;
+    }
+  else
+    t = 7;
+
+  return t;
+}
+INFO:root:current LLM prompt size: 2249
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  foo
+foo:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp           # Allocate space for local variables
+    movl    %edi, -4(%rbp)      # a
+    movl    %esi, -8(%rbp)      # b
+
+    cmpl    $0, -8(%rbp)        # if (b)
+    je      .L2
+    cmpl    $0, -4(%rbp)        # if (a)
+    je      .L3
+    movl    $3, -12(%rbp)       # t = 3
+    jmp     .L4
+.L3:
+    movl    $5, -12(%rbp)       # t = 5
+.L4:
+    movl    $0, -4(%rbp)        # a = 0
+    jmp     .L5
+.L2:
+    movl    $7, -12(%rbp)       # t = 7
+.L5:
+    movl    -12(%rbp), %eax     # return t
+    leave
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 26 succeeded
+INFO:root:C code :
+#include <math.h>
+
+#include <stddef.h>
+
+double opTimes(double lhs, double rhs) { return lhs * rhs; }
+INFO:root:current LLM prompt size: 2212
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  opTimes
+opTimes:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movsd   %xmm0, -8(%rbp)    # lhs
+    movsd   %xmm1, -16(%rbp)   # rhs
+    movsd   -8(%rbp), %xmm0    # load lhs into xmm0
+    mulsd   -16(%rbp), %xmm0   # xmm0 = xmm0 * rhs
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 27 succeeded
+INFO:root:C code :
+
+float raw_linear_derivative_at( float y ) {
+  return 1.0;
+}
+INFO:root:current LLM prompt size: 2205
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  raw_linear_derivative_at
+raw_linear_derivative_at:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp           # Allocate space on the stack
+    movss   %xmm0, -4(%rbp)     # Store the float parameter y
+    movss   .LC0(%rip), %xmm0   # Load the constant 1.0 into %xmm0
+    leave
+    retq
+
+    .section .rodata
+.LC0:
+    .float  1.0
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 28 succeeded
+INFO:root:C code :
+
+int bitCount(int x) {
+  return 2;
+}
+INFO:root:current LLM prompt size: 2200
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  bitCount
+bitCount:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)     # x
+    movl    $2, %eax           # return 2
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 29 succeeded
+INFO:root:C code :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int xtoi(char *p)
+{
+ int curr;
+ int res = 0;
+
+ while (*p)
+ {
+  curr = ((*p) >= '0' && (*p) <= '9' ? (*p) - '0' : (*p) >= 'A' && (*p) <= 'F' ? (*p) - 'A' + 10 : (*p) >= 'a' && (*p) <= 'f' ? (*p) - 'a' + 10 : -1);
+  if (curr == -1) break;
+  res = res * 0x10 + curr;
+  p++;
+ }
+
+ return res;
+}
+INFO:root:current LLM prompt size: 2324
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  xtoi
+xtoi:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp                # Allocate space for local variables
+    movq    %rdi, -8(%rbp)           # p
+
+    movl    $0, -16(%rbp)            # res = 0
+
+.L1:
+    movq    -8(%rbp), %rax           # Load p
+    movb    (%rax), %al              # Load *p
+    testb   %al, %al
+    je      .L2                      # if (*p == 0) break
+
+    movq    -8(%rbp), %rax           # Load p
+    movb    (%rax), %al              # Load *p
+    cmpb    $'0', %al
+    jl      .L3
+    cmpb    $'9', %al
+    jg      .L4
+    subb    $'0', %al
+    jmp     .L5
+
+.L4:
+    cmpb    $'A', %al
+    jl      .L3
+    cmpb    $'F', %al
+    jg      .L6
+    subb    $'A' - 10, %al
+    jmp     .L5
+
+.L6:
+    cmpb    $'a', %al
+    jl      .L3
+    cmpb    $'f', %al
+    jg      .L3
+    subb    $'a' - 10, %al
+    jmp     .L5
+
+.L3:
+    movl    $-1, %eax
+    jmp     .L7
+
+.L5:
+    movzbl  %al, %eax
+
+.L7:
+    movl    %eax, -12(%rbp)          # curr = result of ternary operation
+    cmpl    $-1, -12(%rbp)
+    je      .L2                      # if (curr == -1) break
+
+    movl    -16(%rbp), %eax          # Load res
+    shll    $4, %eax                 # res * 0x10
+    addl    -12(%rbp), %eax          # res * 0x10 + curr
+    movl    %eax, -16(%rbp)          # res = res * 0x10 + curr
+
+    movq    -8(%rbp), %rax           # Load p
+    addq    $1, %rax                 # p++
+    movq    %rax, -8(%rbp)           # Store p
+    jmp     .L1
+
+.L2:
+    movl    -16(%rbp), %eax          # return res
+    leave
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 30 succeeded
+INFO:root:C code :
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <assert.h>
+
+int DummyCDInit(__attribute ((unused)) const char *cdrom_name)
+{
+
+
+
+ return 0;
+}
+INFO:root:current LLM prompt size: 2224
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  DummyCDInit
+DummyCDInit:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movq    %rdi, -8(%rbp)    # cdrom_name
+    movl    $0, %eax          # return 0
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 31 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <time.h>
+
+#include <stdlib.h>
+
+#include <ctype.h>
+
+int retPosVector(char letra, char alfabeto[]) {
+ int i;
+
+ for( i = 0; alfabeto[i]; i++) {
+  if(alfabeto[i] == letra) {
+   return i;
+  }
+ }
+}
+INFO:root:current LLM prompt size: 2257
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  retPosVector
+retPosVector:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $20, %rsp           # Allocate space for local variables
+    movb    %dil, -1(%rbp)      # letra
+    movq    %rsi, -16(%rbp)     # alfabeto
+    movl    $0, -20(%rbp)       # i_0 = 0
+.L1:
+    movl    -20(%rbp), %eax
+    movq    -16(%rbp), %rdx
+    movzbl  (%rdx,%rax,1), %ecx
+    testb   %cl, %cl
+    je      .L2                 # if alfabeto[i_0] == 0, exit loop
+    movl    -20(%rbp), %eax
+    movq    -16(%rbp), %rdx
+    movzbl  (%rdx,%rax,1), %ecx
+    cmpb    -1(%rbp), %cl       # if alfabeto[i_0] == letra
+    je      .L3
+    addl    $1, -20(%rbp)       # i_0++
+    jmp     .L1
+.L2:
+    movl    $-1, %eax           # return -1 if not found (default case)
+    jmp     .L4
+.L3:
+    movl    -20(%rbp), %eax     # return i_0
+.L4:
+    leave
+    ret
+
+INFO:root:Local error rate: 90.0%
+INFO:root:CASE 32 failed
+INFO:root:C code :
+
+unsigned int CgosStrLen(const char *s)
+  {
+  const char *ss=s;
+  if (!s) return 0;
+  while (*s++);
+  return s-ss-1;
+  }
+INFO:root:current LLM prompt size: 2231
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  CgosStrLen
+CgosStrLen:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp             # Allocate space for ss_0 and s
+
+    movq    %rdi, -8(%rbp)        # s = %rdi
+    movq    -8(%rbp), %rax
+    movq    %rax, -16(%rbp)       # ss_0 = s
+
+    cmpq    $0, -8(%rbp)          # if (!s)
+    jne     .L1
+    movl    $0, %eax              # return 0
+    jmp     .L2
+
+.L1:
+    movq    -8(%rbp), %rax
+.L3:
+    cmpb    $0, (%rax)            # while (*s++)
+    je      .L4
+    incq    %rax
+    jmp     .L3
+
+.L4:
+    movq    -16(%rbp), %rdx       # s - ss_0 - 1
+    subq    %rdx, %rax
+    subq    $1, %rax
+    movq    %rax, %rdi
+    movl    %edi, %eax            # return value in %eax
+
+.L2:
+    leave
+    ret
+
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 33 failed
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <math.h>
+
+#include <time.h>
+
+#include <omp.h>
+
+#include <unistd.h>
+
+int checkExpDesignator(char *str, int len)
+{
+ int i,n=0;
+
+ for (i=0; i<len; i++)
+ {
+  if (str[i]=='D')
+  {
+   n++;
+   str[i] = 'E';
+  }
+ }
+
+ return(n);
+}
+INFO:root:current LLM prompt size: 2280
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  checkExpDesignator
+checkExpDesignator:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp                # Allocate space for local variables
+    movq    %rdi, -8(%rbp)           # str
+    movl    %esi, -12(%rbp)          # len
+    movl    $0, -20(%rbp)            # n = 0
+    movl    $0, -16(%rbp)            # i_0 = 0
+
+.L1:
+    movl    -16(%rbp), %eax
+    cmpl    -12(%rbp), %eax          # i_0 < len
+    jge     .L2
+
+    movq    -8(%rbp), %rax
+    movl    -16(%rbp), %edx
+    movzbl  (%rax,%rdx), %ecx
+    cmpb    $68, %cl                 # str[i_0] == 'D'
+    jne     .L3
+
+    addl    $1, -20(%rbp)            # n++
+    movq    -8(%rbp), %rax
+    movl    -16(%rbp), %edx
+    movb    $69, (%rax,%rdx)         # str[i_0] = 'E'
+
+.L3:
+    addl    $1, -16(%rbp)            # i_0++
+    jmp     .L1
+
+.L2:
+    movl    -20(%rbp), %eax          # return n
+    leave
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 34 succeeded
+INFO:root:C code :
+#include <stddef.h>
+
+#include <stdint.h>
+
+int oc_storage_config(const char *store) {
+    return -1;
+}
+INFO:root:current LLM prompt size: 2212
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  oc_storage_config
+oc_storage_config:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movq    %rdi, -8(%rbp)      # store
+    movl    $-1, %eax           # return -1
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 35 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+int inter_mercenary_sql_init(void)
+{
+ return 0;
+}
+INFO:root:current LLM prompt size: 2211
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  inter_mercenary_sql_init
+inter_mercenary_sql_init:
+    pushq   %rbp                # Save base pointer
+    movq    %rsp, %rbp          # Set base pointer to stack pointer
+    movl    $0, %eax            # Return 0
+    popq    %rbp                # Restore base pointer
+    retq                        # Return from function
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 36 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int tester(int num){
+ return num;
+}
+INFO:root:current LLM prompt size: 2200
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  tester
+tester:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)     # num
+    movl    -4(%rbp), %eax     # return num
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 37 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int logicOr(int x, int y) {
+ if (x || y == 1) {
+  return 1;
+ }
+ else {
+  return 0;
+ }
+}
+INFO:root:current LLM prompt size: 2226
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  logicOr
+logicOr:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)     # x
+    movl    %esi, -8(%rbp)     # y
+
+    cmpl    $1, -8(%rbp)       # compare y with 1
+    je      .L1                # if y == 1, jump to .L1
+    cmpl    $0, -4(%rbp)       # compare x with 0
+    jne     .L1                # if x != 0, jump to .L1
+
+    movl    $0, %eax           # return 0
+    jmp     .L2
+
+.L1:
+    movl    $1, %eax           # return 1
+
+.L2:
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 38 succeeded
+INFO:root:C code :
+
+int f6(int c, int shamt) {
+
+
+
+
+  return c << shamt;
+}
+INFO:root:current LLM prompt size: 2207
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  f6
+f6:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)      # c
+    movl    %esi, -8(%rbp)      # shamt
+    movl    -4(%rbp), %eax      # move c to eax
+    movl    -8(%rbp), %ecx      # move shamt to ecx
+    sall    %cl, %eax           # shift c left by shamt
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 39 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+char cipher (char c){
+ if(c >= 65 && c<= 90){
+  c = c - 65;
+  c = 90 - c;
+ }else if( c >= 97 && c<= 122){
+  c = c-97;
+  c = 122 - c;
+ }
+ return c;
+}
+INFO:root:current LLM prompt size: 2263
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  cipher
+cipher:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp          # Allocate space on the stack
+    movb    %dil, -1(%rbp)     # Store the input character 'c' in the stack
+
+    movb    -1(%rbp), %al      # Load 'c' into %al
+    cmpb    $65, %al           # Compare 'c' with 65
+    jl      .L2                # Jump to .L2 if 'c' < 65
+    cmpb    $90, %al           # Compare 'c' with 90
+    jg      .L2                # Jump to .L2 if 'c' > 90
+
+    subb    $65, %al           # c = c - 65
+    movb    $90, %bl
+    subb    %al, %bl           # c = 90 - c
+    movb    %bl, -1(%rbp)      # Store the result back to 'c'
+    jmp     .L3                # Jump to .L3
+
+.L2:
+    movb    -1(%rbp), %al      # Load 'c' into %al
+    cmpb    $97, %al           # Compare 'c' with 97
+    jl      .L3                # Jump to .L3 if 'c' < 97
+    cmpb    $122, %al          # Compare 'c' with 122
+    jg      .L3                # Jump to .L3 if 'c' > 122
+
+    subb    $97, %al           # c = c - 97
+    movb    $122, %bl
+    subb    %al, %bl           # c = 122 - c
+    movb    %bl, -1(%rbp)      # Store the result back to 'c'
+
+.L3:
+    movb    -1(%rbp), %al      # Load the final result into %al
+    leave
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 40 succeeded
+INFO:root:C code :
+
+int
+g(int a)
+{
+ return a;
+}
+INFO:root:current LLM prompt size: 2198
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  g
+g:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)     # a
+    movl    -4(%rbp), %eax     # return a
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 41 succeeded
+INFO:root:C code :
+
+float obdConvert_44 (unsigned int A, unsigned int B, unsigned int C, unsigned int D) {
+ return ((float)A*256.0f+(float)B)*0.0000305f;
+}
+INFO:root:current LLM prompt size: 2234
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  obdConvert_44
+obdConvert_44:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp          # Allocate space for local variables
+
+    movl    %edi, -4(%rbp)     # A
+    movl    %esi, -8(%rbp)     # B
+    movl    %edx, -12(%rbp)    # C
+    movl    %ecx, -16(%rbp)    # D
+
+    cvtsi2ss    -4(%rbp), %xmm0    # Convert A to float
+    movss       .LC0(%rip), %xmm1  # Load 256.0f
+    mulss       %xmm1, %xmm0       # (float)A * 256.0f
+
+    cvtsi2ss    -8(%rbp), %xmm1    # Convert B to float
+    addss       %xmm1, %xmm0       # (float)A * 256.0f + (float)B
+
+    movss       .LC1(%rip), %xmm1  # Load 0.0000305f
+    mulss       %xmm1, %xmm0       # ((float)A * 256.0f + (float)B) * 0.0000305f
+
+    leave
+    retq
+
+    .section .rodata
+.LC0:
+    .float  256.0
+.LC1:
+    .float  0.0000305
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 42 succeeded
+INFO:root:C code :
+
+double check_double() { return 0; }
+INFO:root:current LLM prompt size: 2197
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  check_double
+check_double:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    xorl    %eax, %eax        # return 0
+    cvtsi2sd %eax, %xmm0      # convert int 0 to double in xmm0
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 43 succeeded
+INFO:root:C code :
+
+int ft_tolower(int c)
+{
+ if (c <= 90 && c >= 65)
+  return (c + 32);
+ return (c);
+}
+INFO:root:current LLM prompt size: 2220
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  ft_tolower
+ft_tolower:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)       # c
+
+    movl    -4(%rbp), %eax       # Load c into %eax
+    cmpl    $90, %eax            # Compare c with 90
+    jg      .L2                  # Jump to .L2 if c > 90
+    cmpl    $65, %eax            # Compare c with 65
+    jl      .L2                  # Jump to .L2 if c < 65
+
+    addl    $32, %eax            # c + 32
+    jmp     .L3                  # Jump to .L3
+
+.L2:
+    movl    -4(%rbp), %eax       # Load c into %eax
+
+.L3:
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 44 succeeded
+INFO:root:C code :
+
+
+
+
+
+
+
+int SwapLong(int num)
+{
+ return (((num >> 0) & 0xFF) << 24) + (((num >> 8) & 0xFF) << 16) + (((num >> 16) & 0xFF) << 8) + (((num >> 24) & 0xFF) << 0);
+}
+INFO:root:current LLM prompt size: 2259
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  SwapLong
+SwapLong:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)       # num
+
+    movl    -4(%rbp), %eax       # Load num into %eax
+    movl    %eax, %ebx           # Copy num to %ebx
+    shrl    $8, %ebx             # num >> 8
+    andl    $0xFF, %ebx          # & 0xFF
+    shll    $16, %ebx            # << 16
+
+    movl    -4(%rbp), %ecx       # Load num into %ecx
+    shrl    $16, %ecx            # num >> 16
+    andl    $0xFF, %ecx          # & 0xFF
+    shll    $8, %ecx             # << 8
+
+    movl    -4(%rbp), %edx       # Load num into %edx
+    shrl    $24, %edx            # num >> 24
+    andl    $0xFF, %edx          # & 0xFF
+
+    andl    $0xFF, %eax          # num & 0xFF
+    shll    $24, %eax            # << 24
+
+    addl    %ebx, %eax           # Add shifted num >> 8
+    addl    %ecx, %eax           # Add shifted num >> 16
+    addl    %edx, %eax           # Add shifted num >> 24
+
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 45 succeeded
+INFO:root:C code :
+#include <inttypes.h>
+
+#include <stdlib.h>
+
+#include <limits.h>
+
+#include <stdio.h>
+
+#include <string.h>
+
+#include <sqlite3.h>
+
+int Bank_int_IsValidName(const char *Name)
+{
+ if( !Name ) return 0;
+ while(*Name)
+ {
+  if( *Name == '\'' ) return 0;
+  Name ++;
+ }
+ return 1;
+}
+INFO:root:current LLM prompt size: 2265
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  Bank_int_IsValidName
+Bank_int_IsValidName:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp
+    movq    %rdi, -8(%rbp)      # Name
+
+    movq    -8(%rbp), %rax
+    testq   %rax, %rax
+    jz      .L_return_0         # if (!Name) return 0
+
+.L_loop:
+    movq    -8(%rbp), %rax
+    movb    (%rax), %dl
+    testb   %dl, %dl
+    jz      .L_return_1         # while (*Name)
+
+    cmpb    $39, %dl            # if (*Name == '\'')
+    je      .L_return_0
+
+    movq    -8(%rbp), %rax
+    addq    $1, %rax            # Name++
+    movq    %rax, -8(%rbp)
+    jmp     .L_loop
+
+.L_return_0:
+    movl    $0, %eax
+    jmp     .L_return
+
+.L_return_1:
+    movl    $1, %eax
+
+.L_return:
+    leave
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 46 succeeded
+INFO:root:C code :
+#include <assert.h>
+
+#include <errno.h>
+
+#include <fcntl.h>
+
+#include <poll.h>
+
+#include <signal.h>
+
+#include <stdarg.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <sys/mman.h>
+
+#include <sys/time.h>
+
+#include <sys/types.h>
+
+#include <sys/wait.h>
+
+#include <time.h>
+
+#include <unistd.h>
+
+int RIFSIGNALED(int status)
+{
+    return (status & 0xff) != 0;
+}
+INFO:root:current LLM prompt size: 2290
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  RIFSIGNALED
+RIFSIGNALED:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)      # status
+    movl    -4(%rbp), %eax
+    andl    $255, %eax          # status & 0xff
+    testl   %eax, %eax
+    setne   %al                 # set %al if result is not zero
+    movzbl  %al, %eax           # zero-extend %al to %eax
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 47 succeeded
+INFO:root:C code :
+
+
+
+
+
+
+
+
+
+
+
+void TextDisplaySetBarText(int barnum, const char *str)
+{
+
+}
+INFO:root:current LLM prompt size: 2204
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  TextDisplaySetBarText
+TextDisplaySetBarText:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)      # barnum
+    movq    %rsi, -16(%rbp)     # str
+    nop                          # No operation (function body is empty)
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 48 succeeded
+INFO:root:C code :
+
+char * getTokenTypeName(int type){
+ switch(type){
+  case 1:
+   return "<LParen>";
+  case 2:
+   return "<RParen>";
+  case 3:
+   return "<Number>";
+  case 8:
+   return "<ID>";
+  case 6:
+   return "<Plus>";
+  case 7:
+   return "<Minus>";
+  case -2:
+   return "<EOF>";
+  case -1:
+   return "<Error!>";
+  default:
+   return "<Unknown token type!>";
+ }
+}
+INFO:root:current LLM prompt size: 2293
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  getTokenTypeName
+getTokenTypeName:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp          # Allocate space on the stack
+    movl    %edi, -4(%rbp)     # Store the parameter 'type'
+
+    movl    -4(%rbp), %eax     # Load 'type' into %eax
+    cmpl    $1, %eax
+    je      .L1
+    cmpl    $2, %eax
+    je      .L2
+    cmpl    $3, %eax
+    je      .L3
+    cmpl    $8, %eax
+    je      .L4
+    cmpl    $6, %eax
+    je      .L5
+    cmpl    $7, %eax
+    je      .L6
+    cmpl    $-2, %eax
+    je      .L7
+    cmpl    $-1, %eax
+    je      .L8
+    jmp     .L9
+
+.L1:
+    leaq    .LC0(%rip), %rax   # Load address of "<LParen>"
+    jmp     .L10
+
+.L2:
+    leaq    .LC1(%rip), %rax   # Load address of "<RParen>"
+    jmp     .L10
+
+.L3:
+    leaq    .LC2(%rip), %rax   # Load address of "<Number>"
+    jmp     .L10
+
+.L4:
+    leaq    .LC3(%rip), %rax   # Load address of "<ID>"
+    jmp     .L10
+
+.L5:
+    leaq    .LC4(%rip), %rax   # Load address of "<Plus>"
+    jmp     .L10
+
+.L6:
+    leaq    .LC5(%rip), %rax   # Load address of "<Minus>"
+    jmp     .L10
+
+.L7:
+    leaq    .LC6(%rip), %rax   # Load address of "<EOF>"
+    jmp     .L10
+
+.L8:
+    leaq    .LC7(%rip), %rax   # Load address of "<Error!>"
+    jmp     .L10
+
+.L9:
+    leaq    .LC8(%rip), %rax   # Load address of "<Unknown token type!>"
+
+.L10:
+    leave
+    retq
+
+    .section .rodata
+.LC0:
+    .string "<LParen>"
+.LC1:
+    .string "<RParen>"
+.LC2:
+    .string "<Number>"
+.LC3:
+    .string "<ID>"
+.LC4:
+    .string "<Plus>"
+.LC5:
+    .string "<Minus>"
+.LC6:
+    .string "<EOF>"
+.LC7:
+    .string "<Error!>"
+.LC8:
+    .string "<Unknown token type!>"
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 49 succeeded
+INFO:root:C code :
+#include <math.h>
+
+#include <stdio.h>
+
+#include <errno.h>
+
+#include <stdlib.h>
+
+int mus_iclamp(int lo, int val, int hi)
+{
+    if (val > hi)
+        return(hi);
+    else
+        if (val < lo)
+            return(lo);
+        else return(val);
+}
+INFO:root:current LLM prompt size: 2252
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  mus_iclamp
+mus_iclamp:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)      # lo
+    movl    %esi, -8(%rbp)      # val
+    movl    %edx, -12(%rbp)     # hi
+
+    movl    -8(%rbp), %eax      # load val into %eax
+    cmpl    -12(%rbp), %eax     # compare val with hi
+    jle     .L1                 # jump to .L1 if val <= hi
+
+    movl    -12(%rbp), %eax     # load hi into %eax
+    jmp     .L2                 # jump to .L2 (return hi)
+
+.L1:
+    cmpl    -4(%rbp), %eax      # compare val with lo
+    jge     .L3                 # jump to .L3 if val >= lo
+
+    movl    -4(%rbp), %eax      # load lo into %eax
+    jmp     .L2                 # jump to .L2 (return lo)
+
+.L3:
+    movl    -8(%rbp), %eax      # load val into %eax
+
+.L2:
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 50 succeeded
+INFO:root:C code :
+
+float UI_ClampCvar( float min, float max, float value )
+{
+ if ( value < min ) return min;
+ if ( value > max ) return max;
+ return value;
+}
+INFO:root:current LLM prompt size: 2226
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  UI_ClampCvar
+UI_ClampCvar:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp           # Allocate space for local variables
+
+    movss   %xmm0, -12(%rbp)    # value
+    movss   %xmm1, -4(%rbp)     # min
+    movss   %xmm2, -8(%rbp)     # max
+
+    movss   -12(%rbp), %xmm0    # Load value into xmm0
+    ucomiss -4(%rbp), %xmm0     # Compare value with min
+    jae     .L1                 # Jump if value >= min
+    movss   -4(%rbp), %xmm0     # Return min
+    jmp     .L3
+
+.L1:
+    movss   -12(%rbp), %xmm0    # Load value into xmm0
+    ucomiss -8(%rbp), %xmm0     # Compare value with max
+    jbe     .L2                 # Jump if value <= max
+    movss   -8(%rbp), %xmm0     # Return max
+    jmp     .L3
+
+.L2:
+    movss   -12(%rbp), %xmm0    # Return value
+
+.L3:
+    leave
+    ret
+
+INFO:root:Local error rate: 70.0%
+INFO:root:CASE 51 failed
+INFO:root:C code :
+
+short USBSTK5505_GPIO_init()
+{
+    return 0;
+}
+INFO:root:current LLM prompt size: 2203
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  USBSTK5505_GPIO_init
+USBSTK5505_GPIO_init:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movw    $0, %ax          # Load 0 into the AX register (16-bit)
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 52 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <math.h>
+
+#include <stdlib.h>
+
+#include <unistd.h>
+
+#include <stdarg.h>
+
+#include <string.h>
+
+double H (double x) {
+   if (x >= 0) return 1.;
+   else return 0.;
+}
+INFO:root:current LLM prompt size: 2242
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  H
+H:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp          # Allocate space for local variables
+    movsd   %xmm0, -8(%rbp)    # Move parameter x to stack
+
+    movsd   -8(%rbp), %xmm0    # Load x into xmm0
+    xorpd   %xmm1, %xmm1       # Clear xmm1 (set to 0.0)
+    ucomisd %xmm1, %xmm0       # Compare x with 0.0
+    jp      .L2                # Jump if parity (unordered, NaN)
+    jae     .L3                # Jump if x >= 0
+
+.L2:
+    movsd   .LC0(%rip), %xmm0  # Load 0.0 into xmm0
+    jmp     .L4
+
+.L3:
+    movsd   .LC1(%rip), %xmm0  # Load 1.0 into xmm0
+
+.L4:
+    leave
+    ret
+
+    .section .rodata
+.LC0:
+    .double 0.0
+.LC1:
+    .double 1.0
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 53 succeeded
+INFO:root:C code :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int LZ4_versionNumber (void) { return (1 *100*100 + 6 *100 + 0); }
+INFO:root:current LLM prompt size: 2215
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  LZ4_versionNumber
+LZ4_versionNumber:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    $10600, %eax       # return (1 * 100 * 100 + 6 * 100 + 0)
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 54 succeeded
+INFO:root:C code :
+
+int foo(int time, int n) {
+#pragma omp parallel for default(shared) schedule(dynamic, 1) reduction(+ : time)
+  for (int i = 1; i < n; ++i);
+  return 0;
+}
+INFO:root:current LLM prompt size: 2236
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  foo
+foo:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)     # param_time
+    movl    %esi, -8(%rbp)     # param_n
+    movl    $1, -12(%rbp)      # i_1 = 1
+.L1:
+    movl    -12(%rbp), %eax
+    cmpl    -8(%rbp), %eax     # i_1 < param_n
+    jge     .L2
+    addl    $1, -12(%rbp)      # ++i_1
+    jmp     .L1
+.L2:
+    movl    $0, %eax           # return 0
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 55 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int checkrange(char c1, char c2)
+{
+
+ if (('a' <= c1 && c1 <= 'z') && (c1 <= c2 && c2 <= 'z'))
+  return 1;
+
+ if (('A' <= c1 && c1 <= 'Z') && (c1 <= c2 && c2 <= 'Z'))
+  return 1;
+
+ if (('0' <= c1 && c1 <= '9') && (c1 <= c2 && c2 <= '9'))
+  return 1;
+
+ return 0;
+}
+INFO:root:current LLM prompt size: 2307
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  checkrange
+checkrange:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp          # Allocate space on the stack
+    movb    %dil, -1(%rbp)     # c1
+    movb    %sil, -2(%rbp)     # c2
+
+    # if (('a' <= c1 && c1 <= 'z') && (c1 <= c2 && c2 <= 'z'))
+    movb    -1(%rbp), %al
+    cmpb    $'a', %al
+    jl      .L1
+    cmpb    $'z', %al
+    jg      .L1
+    movb    -2(%rbp), %bl
+    cmpb    -1(%rbp), %bl
+    jl      .L1
+    cmpb    $'z', %bl
+    jg      .L1
+    movl    $1, %eax
+    jmp     .L4
+
+.L1:
+    # if (('A' <= c1 && c1 <= 'Z') && (c1 <= c2 && c2 <= 'Z'))
+    movb    -1(%rbp), %al
+    cmpb    $'A', %al
+    jl      .L2
+    cmpb    $'Z', %al
+    jg      .L2
+    movb    -2(%rbp), %bl
+    cmpb    -1(%rbp), %bl
+    jl      .L2
+    cmpb    $'Z', %bl
+    jg      .L2
+    movl    $1, %eax
+    jmp     .L4
+
+.L2:
+    # if (('0' <= c1 && c1 <= '9') && (c1 <= c2 && c2 <= '9'))
+    movb    -1(%rbp), %al
+    cmpb    $'0', %al
+    jl      .L3
+    cmpb    $'9', %al
+    jg      .L3
+    movb    -2(%rbp), %bl
+    cmpb    -1(%rbp), %bl
+    jl      .L3
+    cmpb    $'9', %bl
+    jg      .L3
+    movl    $1, %eax
+    jmp     .L4
+
+.L3:
+    movl    $0, %eax
+
+.L4:
+    leave
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 56 succeeded
+INFO:root:C code :
+#include <math.h>
+
+double
+gsl_coerce_double (const double x)
+{
+  volatile double y;
+  y = x;
+  return y;
+}
+INFO:root:current LLM prompt size: 2219
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  gsl_coerce_double
+gsl_coerce_double:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp              # Allocate space for local_y and param_x
+    movsd   %xmm0, -8(%rbp)        # param_x
+    movsd   -8(%rbp), %xmm0
+    movsd   %xmm0, -16(%rbp)       # local_y = param_x
+    movsd   -16(%rbp), %xmm0       # return local_y
+    leave
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 57 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int c059(void) { return 0; }
+INFO:root:current LLM prompt size: 2202
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  c059
+c059:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    $0, %eax    # return 0
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 58 succeeded
+INFO:root:C code :
+#include <math.h>
+
+#include <stdlib.h>
+
+double mcdrag_rpm(double twist, double velocity)
+{
+  return (velocity/(twist/60.0)*12.0);
+}
+INFO:root:current LLM prompt size: 2225
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  mcdrag_rpm
+mcdrag_rpm:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp          # Allocate space for twist and velocity
+
+    movsd   %xmm0, -8(%rbp)    # Store twist
+    movsd   %xmm1, -16(%rbp)   # Store velocity
+
+    movsd   -16(%rbp), %xmm0   # Load velocity into xmm0
+    movsd   -8(%rbp), %xmm1    # Load twist into xmm1
+    movsd   .LC0(%rip), %xmm2  # Load 60.0 into xmm2
+    divsd   %xmm2, %xmm1       # xmm1 = twist / 60.0
+    divsd   %xmm1, %xmm0       # xmm0 = velocity / (twist / 60.0)
+    movsd   .LC1(%rip), %xmm1  # Load 12.0 into xmm1
+    mulsd   %xmm1, %xmm0       # xmm0 = xmm0 * 12.0
+
+    leave
+    retq
+
+    .section .rodata
+.LC0:
+    .double 60.0
+.LC1:
+    .double 12.0
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 59 succeeded
+INFO:root:C code :
+#include    <stdlib.h>  /* Include standard library header */
+
+#include    <math.h>    /* Include math library header */
+
+#include    <string.h>  /* Include string function header */
+
+#include    <ctype.h>   /* Include character function header */
+
+#include    <limits.h>  /* define LONG_MIN and LONG_MAX */
+
+int valid_serial(char *carray)
+{
+int i, code, num[10], sumo=0, sume=0, sumss=0;
+
+for(i=0;i<10;i++){
+  code = carray[i];
+  num[i] = code - 0x30;
+  if((code<0x30)||(code>0x39)){
+    return 0;
+  }
+}
+
+sumo = num[0]+num[2]+num[4];
+sumo = sumo - (sumo/10)*10;
+
+sume = num[1]+num[3]+num[5];
+sume = sume - (sume/10)*10;
+
+sumss = num[0]+num[1]+num[2]+num[3]+num[4]+num[5]+sumo+sume;
+
+if((sumo!=num[6])||(sume!=num[7])||(sumss!=(10*num[8]+num[9]))){
+  return 0;
+}
+
+return 1;
+}
+INFO:root:current LLM prompt size: 2465
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  valid_serial
+valid_serial:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $68, %rsp                # Allocate space for local variables
+    movq    %rdi, -8(%rbp)           # carray
+
+    movl    $0, -8(%rbp)             # i = 0
+.L1:
+    cmpl    $10, -8(%rbp)            # i < 10
+    jge     .L2
+
+    movq    -8(%rbp), %rax
+    movzbl  (%rax,%rdi,1), %eax      # code = carray[i]
+    movl    %eax, -16(%rbp)          # code
+    movl    -16(%rbp), %eax
+    subl    $0x30, %eax              # num[i] = code - 0x30
+    movl    -8(%rbp), %ecx
+    movl    %eax, -56(%rbp,%rcx,4)   # num[i]
+
+    cmpl    $0x30, -16(%rbp)         # if (code < 0x30)
+    jl      .L3
+    cmpl    $0x39, -16(%rbp)         # if (code > 0x39)
+    jg      .L3
+
+    addl    $1, -8(%rbp)             # i++
+    jmp     .L1
+
+.L3:
+    movl    $0, %eax                 # return 0
+    leave
+    ret
+
+.L2:
+    movl    -56(%rbp), %eax          # sumo = num[0]
+    addl    -48(%rbp), %eax          # sumo += num[2]
+    addl    -40(%rbp), %eax          # sumo += num[4]
+    movl    %eax, -60(%rbp)          # sumo
+    movl    -60(%rbp), %eax
+    cltd
+    idivl   $10                      # sumo / 10
+    imull   $10, %edx, %edx          # (sumo / 10) * 10
+    subl    %edx, -60(%rbp)          # sumo = sumo - (sumo / 10) * 10
+
+    movl    -52(%rbp), %eax          # sume = num[1]
+    addl    -44(%rbp), %eax          # sume += num[3]
+    addl    -36(%rbp), %eax          # sume += num[5]
+    movl    %eax, -64(%rbp)          # sume
+    movl    -64(%rbp), %eax
+    cltd
+    idivl   $10                      # sume / 10
+    imull   $10, %edx, %edx          # (sume / 10) * 10
+    subl    %edx, -64(%rbp)          # sume = sume - (sume / 10) * 10
+
+    movl    -56(%rbp), %eax          # sumss = num[0]
+    addl    -52(%rbp), %eax          # sumss += num[1]
+    addl    -48(%rbp), %eax          # sumss += num[2]
+    addl    -44(%rbp), %eax          # sumss += num[3]
+    addl    -40(%rbp), %eax          # sumss += num[4]
+    addl    -36(%rbp), %eax          # sumss += num[5]
+    addl    -60(%rbp), %eax          # sumss += sumo
+    addl    -64(%rbp), %eax          # sumss += sume
+    movl    %eax, -68(%rbp)          # sumss
+
+    movl    -60(%rbp), %eax          # if (sumo != num[6])
+    cmpl    -32(%rbp), %eax
+    jne     .L3
+
+    movl    -64(%rbp), %eax          # if (sume != num[7])
+    cmpl    -28(%rbp), %eax
+    jne     .L3
+
+    movl    -68(%rbp), %eax          # if (sumss != (10 * num[8] + num[9]))
+    movl    -24(%rbp), %ecx
+    imull   $10, %ecx, %ecx
+    addl    -20(%rbp), %ecx
+    cmpl    %ecx, %eax
+    jne     .L3
+
+    movl    $1, %eax                 # return 1
+    leave
+    ret
+
+WARNING:root:CASE 60 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:43: Error: operand type mismatch for `idiv'
+tmp.s:53: Error: operand type mismatch for `idiv'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int f(int x) { return x - 5; }
+INFO:root:current LLM prompt size: 2200
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  f
+f:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)     # x
+    movl    -4(%rbp), %eax     # load x into %eax
+    subl    $5, %eax           # x - 5
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 61 succeeded
+INFO:root:C code :
+#include <stdbool.h>
+
+bool timeout_reached(void)
+{
+    return false;
+}
+INFO:root:current LLM prompt size: 2203
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  timeout_reached
+timeout_reached:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movb    $0, %al          # return false (0)
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 62 succeeded
+INFO:root:C code :
+#include <string.h>
+
+char* langRomTypeMicrosolFdc() { return "Microsol Disk Controller"; }
+INFO:root:current LLM prompt size: 2210
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  langRomTypeMicrosolFdc
+langRomTypeMicrosolFdc:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movq    $.Lstr, %rax
+    popq    %rbp
+    retq
+
+.Lstr:
+    .asciz  "Microsol Disk Controller"
+
+WARNING:root:CASE 63 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccnMhRd4.o: relocation R_X86_64_32S against `.text' can not be used when making a PIE object; recompile with -fPIE
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int do_386() { return 386; }
+INFO:root:current LLM prompt size: 2198
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  do_386
+do_386:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    $386, %eax    # return 386
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 64 succeeded
+INFO:root:C code :
+
+int function(int a, int b) { return a+b; }
+INFO:root:current LLM prompt size: 2201
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  function
+function:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)     # a
+    movl    %esi, -8(%rbp)     # b
+    movl    -4(%rbp), %eax     # load a into %eax
+    addl    -8(%rbp), %eax     # add b to %eax
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 65 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+double
+UC_11_1_11
+(
+    double F_g_s_rep,
+
+    double F_g_u_d
+
+)
+{
+        return (F_g_s_rep / F_g_u_d);
+}
+INFO:root:current LLM prompt size: 2242
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  UC_11_1_11
+UC_11_1_11:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp              # Allocate space for local variables
+    movsd   %xmm0, -8(%rbp)        # F_g_s_rep
+    movsd   %xmm1, -16(%rbp)       # F_g_u_d
+    movsd   -8(%rbp), %xmm0        # Load F_g_s_rep into xmm0
+    divsd   -16(%rbp), %xmm0       # Divide xmm0 by F_g_u_d
+    leave
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 66 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <sys/types.h>
+
+#include <sys/stat.h>
+
+#include <signal.h>
+
+#include <fcntl.h>
+
+#include <unistd.h>
+
+#include <stdlib.h>
+
+#include <sys/wait.h>
+
+int stop_process(int pid)
+{
+ return kill(pid, 15);
+}
+INFO:root:current LLM prompt size: 2249
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  stop_process
+stop_process:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)      # pid
+    movl    $15, %esi           # signal number 15 (SIGTERM)
+    movl    -4(%rbp), %edi      # pid
+    call    kill                # call kill(pid, 15)
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 67 succeeded
+INFO:root:C code :
+#include <string.h>
+
+int vout_finish(void)
+{
+  return 0;
+}
+INFO:root:current LLM prompt size: 2204
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  vout_finish
+vout_finish:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    $0, %eax       # return 0
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 68 succeeded
+INFO:root:C code :
+
+int alloc(int *p)
+{
+  int tmp = 5;
+
+
+
+  return 0;
+}
+INFO:root:current LLM prompt size: 2207
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  alloc
+alloc:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp           # Allocate space on the stack
+    movq    %rdi, -8(%rbp)      # Store the pointer p in -8(%rbp)
+    movl    $5, -12(%rbp)       # Initialize tmp to 5
+    movl    $0, %eax            # Return 0
+    leave
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 69 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stddef.h>
+
+#include <string.h>
+
+char* mote64_Name(void) {
+ return "MOTE64";
+}
+INFO:root:current LLM prompt size: 2215
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  mote64_Name
+mote64_Name:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movq    $.L.str, %rax       # Load address of the string "MOTE64" into %rax
+    popq    %rbp
+    retq
+
+    .section .rodata
+.L.str:
+    .string "MOTE64"
+
+WARNING:root:CASE 70 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccb0h95Y.o: relocation R_X86_64_32S against `.rodata' can not be used when making a PIE object; recompile with -fPIE
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h>
+
+char *hello(void) {
+    return "hello";
+}
+INFO:root:current LLM prompt size: 2203
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  hello
+hello:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movq    $.Lhello_string, %rax  # Load the address of the string "hello" into %rax
+    popq    %rbp
+    retq
+
+    .section .rodata
+.Lhello_string:
+    .string "hello"
+
+WARNING:root:CASE 71 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccMBXpVM.o: relocation R_X86_64_32S against `.rodata' can not be used when making a PIE object; recompile with -fPIE
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+
+
+
+
+int exists(const char *filename)
+{
+ return (0);
+}
+INFO:root:current LLM prompt size: 2200
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  exists
+exists:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movq    %rdi, -8(%rbp)    # filename
+    movl    $0, %eax          # return 0
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 72 succeeded
+INFO:root:C code :
+#include <math.h>
+
+float fast_cbrtf(float x)
+{
+   union {int ix; float x;} v;
+   v.x = x;
+   v.ix = v.ix/4 + v.ix/16;
+   v.ix = v.ix + v.ix/16;
+   v.ix = v.ix + v.ix/256;
+   v.ix = 0x2a511cd0 + v.ix;
+   return v.x;
+}
+INFO:root:current LLM prompt size: 2277
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  fast_cbrtf
+fast_cbrtf:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp                # Allocate stack space for local variables
+
+    movss   %xmm0, -4(%rbp)          # param_x
+    movss   -4(%rbp), %xmm0
+    movd    %xmm0, %eax
+    movl    %eax, -8(%rbp)           # v.x = param_x
+
+    movl    -8(%rbp), %eax
+    movl    %eax, %ecx
+    shrl    $2, %ecx
+    movl    %eax, %edx
+    shrl    $4, %edx
+    addl    %ecx, %edx
+    movl    %edx, -8(%rbp)           # v.ix = v.ix/4 + v.ix/16
+
+    movl    -8(%rbp), %eax
+    movl    %eax, %ecx
+    shrl    $4, %ecx
+    addl    %ecx, %eax
+    movl    %eax, -8(%rbp)           # v.ix = v.ix + v.ix/16
+
+    movl    -8(%rbp), %eax
+    movl    %eax, %ecx
+    shrl    $8, %ecx
+    addl    %ecx, %eax
+    movl    %eax, -8(%rbp)           # v.ix = v.ix + v.ix/256
+
+    movl    -8(%rbp), %eax
+    addl    $0x2a511cd0, %eax
+    movl    %eax, -8(%rbp)           # v.ix = 0x2a511cd0 + v.ix
+
+    movl    -8(%rbp), %eax
+    movd    %eax, %xmm0
+    movss   %xmm0, -4(%rbp)          # return v.x
+
+    movss   -4(%rbp), %xmm0
+    leave
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 73 succeeded
+INFO:root:C code :
+#include <stddef.h>
+
+int GO_strcmp (char *d, char *s)
+{
+ while ('\0' != *d) {
+  if (*d != *s)
+   return *d - *s;
+  d++;
+  s++;
+ }
+
+ return *d - *s;
+}
+INFO:root:current LLM prompt size: 2244
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  GO_strcmp
+GO_strcmp:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp          # Allocate space for local variables
+    movq    %rdi, -8(%rbp)     # d
+    movq    %rsi, -16(%rbp)    # s
+
+.L1:
+    movq    -8(%rbp), %rax     # Load d
+    movb    (%rax), %dl        # Load *d
+    testb   %dl, %dl           # Check if *d == '\0'
+    je      .L2                # If *d == '\0', jump to end
+    movq    -16(%rbp), %rax    # Load s
+    movb    (%rax), %cl        # Load *s
+    cmpb    %cl, %dl           # Compare *d and *s
+    jne     .L3                # If *d != *s, jump to return difference
+    movq    -8(%rbp), %rax     # Load d
+    addq    $1, %rax           # Increment d
+    movq    %rax, -8(%rbp)     # Store updated d
+    movq    -16(%rbp), %rax    # Load s
+    addq    $1, %rax           # Increment s
+    movq    %rax, -16(%rbp)    # Store updated s
+    jmp     .L1                # Repeat loop
+
+.L2:
+    movq    -8(%rbp), %rax     # Load d
+    movb    (%rax), %dl        # Load *d
+    movq    -16(%rbp), %rax    # Load s
+    movb    (%rax), %cl        # Load *s
+    subb    %cl, %dl           # Calculate *d - *s
+    movsbl  %dl, %eax          # Sign extend result to 32 bits
+    leave
+    ret
+
+.L3:
+    movq    -8(%rbp), %rax     # Load d
+    movb    (%rax), %dl        # Load *d
+    movq    -16(%rbp), %rax    # Load s
+    movb    (%rax), %cl        # Load *s
+    subb    %cl, %dl           # Calculate *d - *s
+    movsbl  %dl, %eax          # Sign extend result to 32 bits
+    leave
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 74 succeeded
+INFO:root:C code :
+
+int
+test_01 (volatile short* x)
+{
+  return *x;
+}
+INFO:root:current LLM prompt size: 2205
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  test_01
+test_01:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movq    %rdi, -8(%rbp)      # x
+    movq    -8(%rbp), %rax
+    movzwl  (%rax), %eax        # Load the short value pointed by x and zero-extend it to 32 bits
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 75 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <ctype.h>
+
+int isspec(char c)
+{
+    return (((c >= '!') && (c <= '/')) || (c >= ':' && c <= '@') || ((c >= '[') && (c <= '`')) || ((c >= '{') && (c <= 'DEL')));
+}
+INFO:root:current LLM prompt size: 2262
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  isspec
+isspec:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp
+    movb    %dil, -1(%rbp)      # c_0
+
+    movb    -1(%rbp), %al
+    cmpb    $'!', %al
+    jl      .L1
+    cmpb    $'/', %al
+    jle     .L2
+.L1:
+    movb    -1(%rbp), %al
+    cmpb    $':', %al
+    jl      .L3
+    cmpb    $'@', %al
+    jle     .L2
+.L3:
+    movb    -1(%rbp), %al
+    cmpb    $'[', %al
+    jl      .L4
+    cmpb    $'`', %al
+    jle     .L2
+.L4:
+    movb    -1(%rbp), %al
+    cmpb    $'{', %al
+    jl      .L5
+    cmpb    $'DEL', %al
+    jle     .L2
+.L5:
+    movl    $0, %eax
+    jmp     .L6
+.L2:
+    movl    $1, %eax
+.L6:
+    leave
+    ret
+
+WARNING:root:CASE 76 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:31: Error: junk `EL44%al' after expression
+tmp.s:31: Error: number of operands mismatch for `cmp'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+int hash_val (int key)
+{
+    return key;
+}
+INFO:root:current LLM prompt size: 2200
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  hash_val
+hash_val:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)     # key
+    movl    -4(%rbp), %eax     # return key
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 77 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+#include <string.h>
+
+#include <stdlib.h>
+
+#include <stdint.h>
+
+#include <math.h>
+
+int cat_nums(char *str_out, char *str){
+
+ int i=0,j=0;
+ while(str[i]!='\0'){
+  if(str[i] >= '0' && str[i] <= '9'){
+   str_out[j++] = str[i];
+  }
+  i++;
+ }
+ str_out[j] = '\0';
+ return(j);
+}
+INFO:root:current LLM prompt size: 2282
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  cat_nums
+cat_nums:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $24, %rsp              # Allocate space for local variables
+    movq    %rdi, -8(%rbp)         # str_out
+    movq    %rsi, -16(%rbp)        # str
+    movl    $0, -20(%rbp)          # i = 0
+    movl    $0, -24(%rbp)          # j = 0
+
+.L1:
+    movl    -20(%rbp), %eax        # i
+    movq    -16(%rbp), %rdx        # str
+    movzbl  (%rdx,%rax,1), %eax    # str[i]
+    testb   %al, %al
+    je      .L2                    # if (str[i] == '\0') break
+
+    cmpb    $'0', %al
+    jl      .L3                    # if (str[i] < '0') continue
+    cmpb    $'9', %al
+    jg      .L3                    # if (str[i] > '9') continue
+
+    movl    -24(%rbp), %edx        # j
+    movq    -8(%rbp), %rcx         # str_out
+    movb    %al, (%rcx,%rdx,1)     # str_out[j] = str[i]
+    addl    $1, -24(%rbp)          # j++
+
+.L3:
+    addl    $1, -20(%rbp)          # i++
+    jmp     .L1
+
+.L2:
+    movl    -24(%rbp), %eax        # j
+    movq    -8(%rbp), %rdx         # str_out
+    movb    $'\0', (%rdx,%rax,1)   # str_out[j] = '\0'
+    movl    -24(%rbp), %eax        # return j
+
+    leave
+    ret
+
+WARNING:root:WARNING: code failed to execute for input 9 in case 78
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 78 failed
+INFO:root:C code :
+#include <stdio.h>
+
+#include <stdarg.h>
+
+#include <sys/types.h>
+
+#include <sys/stat.h>
+
+__attribute__ ((used))
+int _write(int file, char *ptr, int len)
+{
+# 103 "/scratch/repos/new/home/jordi_armengol_estape/c-scraper/outputs/2022-01-22/02-19-57/repos/LCRS-UCC/STM32F4Discovery-expansion/refs/heads/Working/OtharSoft/syscalls/syscalls.c"
+    return len;
+}
+INFO:root:current LLM prompt size: 2297
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  _write
+_write:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)      # file
+    movq    %rsi, -16(%rbp)     # ptr
+    movl    %edx, -20(%rbp)     # len
+    movl    -20(%rbp), %eax     # return len
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 79 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int countVowels(char *str)
+{
+ int i,count=0;
+ for(i=0;str[i]!='\0';++i)
+  if('a' == str[i] ||
+     'e' == str[i] ||
+     'i' == str[i] ||
+     'o' == str[i] ||
+     'u' == str[i] ||
+     'A' == str[i] ||
+     'E' == str[i] ||
+     'I' == str[i] ||
+     'O' == str[i] ||
+     'U' == str[i] )
+   count++;
+ return count;
+}
+INFO:root:current LLM prompt size: 2319
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  countVowels
+countVowels:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp          # Allocate space for local variables
+    movq    %rdi, -8(%rbp)     # str
+    movl    $0, -12(%rbp)      # i = 0
+    movl    $0, -16(%rbp)      # count = 0
+
+.L1:
+    movl    -12(%rbp), %eax    # i
+    movq    -8(%rbp), %rdx     # str
+    movzbl  (%rdx,%rax,1), %eax
+    testb   %al, %al
+    je      .L2                # if str[i] == '\0', exit loop
+
+    cmpb    $'a', %al
+    je      .L3
+    cmpb    $'e', %al
+    je      .L3
+    cmpb    $'i', %al
+    je      .L3
+    cmpb    $'o', %al
+    je      .L3
+    cmpb    $'u', %al
+    je      .L3
+    cmpb    $'A', %al
+    je      .L3
+    cmpb    $'E', %al
+    je      .L3
+    cmpb    $'I', %al
+    je      .L3
+    cmpb    $'O', %al
+    je      .L3
+    cmpb    $'U', %al
+    je      .L3
+    jmp     .L4
+
+.L3:
+    addl    $1, -16(%rbp)      # count++
+
+.L4:
+    addl    $1, -12(%rbp)      # i++
+    jmp     .L1
+
+.L2:
+    movl    -16(%rbp), %eax    # return count
+    leave
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 80 succeeded
+INFO:root:C code :
+#include <string.h>
+
+char* langRomTypeMirroredRam1k() { return "1kB Mirrored RAM"; }
+INFO:root:current LLM prompt size: 2212
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .section .rodata
+.LC0:
+    .string "1kB Mirrored RAM"
+
+    .text
+    .globl  langRomTypeMirroredRam1k
+langRomTypeMirroredRam1k:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movq    $.LC0, %rax
+    popq    %rbp
+    retq
+
+WARNING:root:CASE 81 failed to assemble the code to executable!
+WARNING:root:ret.stderr: /usr/bin/ld: /tmp/ccUDSPB0.o: relocation R_X86_64_32S against `.rodata' can not be used when making a PIE object; recompile with -fPIE
+collect2: error: ld returned 1 exit status
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+unsigned long unsignedlong_id(unsigned long x){return x;}
+INFO:root:current LLM prompt size: 2199
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  unsignedlong_id
+unsignedlong_id:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movq    %rdi, -8(%rbp)      # Move parameter x to stack
+    movq    -8(%rbp), %rax      # Move x to return register
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 82 succeeded
+INFO:root:C code :
+#include <stdlib.h>
+
+void pointerExample1(int *ptr1, int *ptr2){
+ ptr1 = ptr2;
+}
+INFO:root:current LLM prompt size: 2212
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  pointerExample1
+pointerExample1:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movq    %rdi, -8(%rbp)      # ptr1_0
+    movq    %rsi, -16(%rbp)     # ptr2_0
+    movq    -16(%rbp), %rax
+    movq    %rax, -8(%rbp)      # ptr1_0 = ptr2_0
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 83 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int hcf_iterative(int a, int b){
+ int q, r;
+ if(a > 0 && b > 0){
+  if(a < b)
+   return hcf_iterative(b, a);
+
+  q = a / b;
+  r = a % b;
+  while(r != 0 && r != 1){
+   a = b;
+   b = r;
+   q = a / b;
+   r = a % b;
+  }
+
+  if(r == 0)
+   return b;
+  else if(r == 1)
+   return 1;
+ }
+ return -1;
+}
+INFO:root:current LLM prompt size: 2316
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  hcf_iterative
+hcf_iterative:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp          # Allocate space for q and r
+
+    movl    %edi, -4(%rbp)     # a
+    movl    %esi, -8(%rbp)     # b
+
+    cmpl    $0, -4(%rbp)       # if(a > 0)
+    jle     .L_return_neg1
+    cmpl    $0, -8(%rbp)       # if(b > 0)
+    jle     .L_return_neg1
+
+    movl    -4(%rbp), %eax
+    cmpl    -8(%rbp), %eax     # if(a < b)
+    jge     .L_no_swap
+    movl    -8(%rbp), %edi     # hcf_iterative(b, a)
+    movl    -4(%rbp), %esi
+    call    hcf_iterative
+    jmp     .L_cleanup
+
+.L_no_swap:
+    movl    -4(%rbp), %eax
+    cltd
+    idivl   -8(%rbp)           # q = a / b
+    movl    %eax, -12(%rbp)
+    movl    %edx, -16(%rbp)    # r = a % b
+
+.L_while:
+    cmpl    $1, -16(%rbp)
+    jle     .L_while_end       # while(r != 0 && r != 1)
+
+    movl    -8(%rbp), %eax     # a = b
+    movl    %eax, -4(%rbp)
+    movl    -16(%rbp), %eax    # b = r
+    movl    %eax, -8(%rbp)
+
+    movl    -4(%rbp), %eax
+    cltd
+    idivl   -8(%rbp)           # q = a / b
+    movl    %eax, -12(%rbp)
+    movl    %edx, -16(%rbp)    # r = a % b
+
+    jmp     .L_while
+
+.L_while_end:
+    cmpl    $0, -16(%rbp)
+    jne     .L_return_1
+    movl    -8(%rbp), %eax     # return b
+    jmp     .L_cleanup
+
+.L_return_1:
+    movl    $1, %eax           # return 1
+    jmp     .L_cleanup
+
+.L_return_neg1:
+    movl    $-1, %eax          # return -1
+
+.L_cleanup:
+    leave
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 84 succeeded
+INFO:root:C code :
+
+int soma3(int a, int b, int c)
+{
+ return a+b+c;
+}
+INFO:root:current LLM prompt size: 2206
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  soma3
+soma3:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)     # a
+    movl    %esi, -8(%rbp)     # b
+    movl    %edx, -12(%rbp)    # c
+    movl    -4(%rbp), %eax     # load a into %eax
+    addl    -8(%rbp), %eax     # add b to %eax
+    addl    -12(%rbp), %eax    # add c to %eax
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 85 succeeded
+INFO:root:C code :
+
+unsigned long int_sqrt(unsigned long x)
+{
+        unsigned long b, m, y = 0;
+
+        if (x <= 1)
+                return x;
+
+        m = 1UL << ((sizeof(long) * 8) - 2);
+        while (m != 0) {
+                b = y + m;
+                y >>= 1;
+
+                if (x >= b) {
+                        x -= b;
+                        y += m;
+                }
+                m >>= 2;
+        }
+
+        return y;
+}
+INFO:root:current LLM prompt size: 2294
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  int_sqrt
+int_sqrt:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $32, %rsp                # Allocate space for local variables
+    movq    %rdi, -8(%rbp)           # param_x
+
+    movq    $0, -32(%rbp)            # y = 0
+    movq    -8(%rbp), %rax
+    cmpq    $1, %rax
+    jbe     .L_return_param_x        # if (param_x <= 1) return param_x
+
+    movq    $1, %rax
+    shlq    $62, %rax                # m = 1UL << ((sizeof(long) * 8) - 2)
+    movq    %rax, -24(%rbp)
+
+.L_while:
+    cmpq    $0, -24(%rbp)            # while (m != 0)
+    je      .L_end_while
+
+    movq    -32(%rbp), %rax
+    addq    -24(%rbp), %rax          # b = y + m
+    movq    %rax, -16(%rbp)
+
+    movq    -32(%rbp), %rax
+    shrq    $1, %rax                 # y >>= 1
+    movq    %rax, -32(%rbp)
+
+    movq    -8(%rbp), %rax
+    cmpq    -16(%rbp), %rax
+    jb      .L_skip_if               # if (param_x < b) skip
+
+    subq    -16(%rbp), -8(%rbp)      # param_x -= b
+    addq    -24(%rbp), -32(%rbp)     # y += m
+
+.L_skip_if:
+    movq    -24(%rbp), %rax
+    shrq    $2, %rax                 # m >>= 2
+    movq    %rax, -24(%rbp)
+    jmp     .L_while
+
+.L_end_while:
+    movq    -32(%rbp), %rax          # return y
+    jmp     .L_return
+
+.L_return_param_x:
+    movq    -8(%rbp), %rax           # return param_x
+
+.L_return:
+    leave
+    ret
+
+WARNING:root:CASE 86 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:35: Error: too many memory references for `sub'
+tmp.s:36: Error: too many memory references for `add'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+#include <stdio.h> 
+
+int comp(int num)
+{
+    int res = 0;
+    int cnt = 0;
+
+    while (num) {
+        if (!(num & 1)) {
+            res = res | (1 << cnt);
+        }
+        ++cnt;
+        num = num >> 1;
+    }
+
+    return res;
+}
+INFO:root:current LLM prompt size: 2258
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  comp
+comp:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $12, %rsp            # Allocate space for local variables
+    movl    %edi, -4(%rbp)       # param_num
+
+    movl    $0, -8(%rbp)         # res = 0
+    movl    $0, -12(%rbp)        # cnt = 0
+
+.L1:
+    movl    -4(%rbp), %eax       # Load param_num into %eax
+    testl   %eax, %eax           # Test if param_num is zero
+    je      .L2                  # If zero, jump to end of loop
+
+    movl    -4(%rbp), %eax       # Load param_num into %eax
+    andl    $1, %eax             # param_num & 1
+    jnz     .L3                  # If result is not zero, skip setting bit in res
+
+    movl    -12(%rbp), %ecx      # Load cnt into %ecx
+    movl    $1, %edx             # Load 1 into %edx
+    sall    %cl, %edx            # 1 << cnt
+    orl     -8(%rbp), %edx       # res | (1 << cnt)
+    movl    %edx, -8(%rbp)       # Store result back into res
+
+.L3:
+    addl    $1, -12(%rbp)        # ++cnt
+    sarl    -4(%rbp)             # param_num = param_num >> 1
+    jmp     .L1                  # Repeat the loop
+
+.L2:
+    movl    -8(%rbp), %eax       # Load res into %eax for return value
+    leave
+    ret
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 87 succeeded
+INFO:root:C code :
+
+int logicalShift(int x, int n) {
+ int a=(x>>31&1)<<32+~n;
+ return (x^a<<n)>>n^a;
+}
+INFO:root:current LLM prompt size: 2224
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  logicalShift
+logicalShift:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp              # Allocate space for local variables
+
+    movl    %edi, -4(%rbp)         # param_x
+    movl    %esi, -8(%rbp)         # param_n
+
+    movl    -4(%rbp), %eax         # %eax = param_x
+    sarl    $31, %eax              # %eax = param_x >> 31
+    andl    $1, %eax               # %eax = (param_x >> 31) & 1
+    movl    -8(%rbp), %ecx         # %ecx = param_n
+    notl    %ecx                   # %ecx = ~param_n
+    addl    $32, %ecx              # %ecx = 32 + ~param_n
+    sall    %cl, %eax              # %eax = (param_x >> 31 & 1) << (32 + ~param_n)
+    movl    %eax, -12(%rbp)        # a = (param_x >> 31 & 1) << (32 + ~param_n)
+
+    movl    -4(%rbp), %eax         # %eax = param_x
+    movl    -12(%rbp), %ecx        # %ecx = a
+    sall    -8(%rbp), %ecx         # %ecx = a << param_n
+    xorl    %ecx, %eax             # %eax = param_x ^ (a << param_n)
+    sarl    -8(%rbp), %eax         # %eax = (param_x ^ (a << param_n)) >> param_n
+    xorl    -12(%rbp), %eax        # %eax = (param_x ^ (a << param_n)) >> param_n ^ a
+
+    leave
+    ret
+
+WARNING:root:CASE 88 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:23: Error: operand size mismatch for `sal'
+tmp.s:25: Error: operand size mismatch for `sar'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+double light_time(double distance) {
+    double t = 0.0;
+
+
+
+    return t;
+}
+INFO:root:current LLM prompt size: 2208
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  light_time
+light_time:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp           # Allocate space for local variables
+    movsd   %xmm0, -8(%rbp)     # distance
+    movsd   .LC0, -16(%rbp)     # t = 0.0
+    movsd   -16(%rbp), %xmm0    # return t
+    leave
+    retq
+
+    .section .rodata
+.LC0:
+    .double 0.0
+
+WARNING:root:WARNING: code failed to execute for input 0 in case 89
+WARNING:root:WARNING: code failed to execute for input 1 in case 89
+WARNING:root:WARNING: code failed to execute for input 2 in case 89
+WARNING:root:WARNING: code failed to execute for input 3 in case 89
+WARNING:root:WARNING: code failed to execute for input 4 in case 89
+WARNING:root:WARNING: code failed to execute for input 5 in case 89
+WARNING:root:WARNING: code failed to execute for input 6 in case 89
+WARNING:root:WARNING: code failed to execute for input 7 in case 89
+WARNING:root:WARNING: code failed to execute for input 8 in case 89
+WARNING:root:WARNING: code failed to execute for input 9 in case 89
+INFO:root:Local error rate: 100.0%
+INFO:root:CASE 89 failed
+INFO:root:C code :
+
+double business_sum(double in, double in2) {
+    return in + in2;
+}
+INFO:root:current LLM prompt size: 2206
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  business_sum
+business_sum:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movsd   %xmm0, -8(%rbp)    # in
+    movsd   %xmm1, -16(%rbp)   # in2
+    movsd   -8(%rbp), %xmm0    # load in into xmm0
+    addsd   -16(%rbp), %xmm0   # add in2 to xmm0
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 90 succeeded
+INFO:root:C code :
+
+int do_961() { return 961; }
+INFO:root:current LLM prompt size: 2198
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  do_961
+do_961:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    $961, %eax    # return 961
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 91 succeeded
+INFO:root:C code :
+
+
+
+
+
+int chroma_sub_implemented(int mode)
+{
+  switch (mode) {
+  case 0:
+  case 1:
+  case 3:
+    return 1;
+  case 2:
+  case 4:
+  case 5:
+  case 7:
+  case 6:
+  default:
+    return 0;
+  }
+}
+INFO:root:current LLM prompt size: 2259
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  chroma_sub_implemented
+chroma_sub_implemented:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)       # mode
+
+    movl    -4(%rbp), %eax       # Load mode into %eax
+    cmpl    $3, %eax
+    je      .L_return_1
+    cmpl    $1, %eax
+    je      .L_return_1
+    cmpl    $0, %eax
+    je      .L_return_1
+
+    cmpl    $7, %eax
+    je      .L_return_0
+    cmpl    $6, %eax
+    je      .L_return_0
+    cmpl    $5, %eax
+    je      .L_return_0
+    cmpl    $4, %eax
+    je      .L_return_0
+    cmpl    $2, %eax
+    je      .L_return_0
+
+.L_return_0:
+    movl    $0, %eax
+    jmp     .L_end
+
+.L_return_1:
+    movl    $1, %eax
+
+.L_end:
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 92 succeeded
+INFO:root:C code :
+#include <stdio.h>
+
+int leapyear(int year) {
+  if (year % 400 == 0)
+    return 1;
+  else if (year % 4 == 0 && year % 100 != 0)
+    return 1;
+  else
+    return 0;
+}
+INFO:root:current LLM prompt size: 2248
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  leapyear
+leapyear:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)     # year
+
+    # if (year % 400 == 0)
+    movl    -4(%rbp), %eax
+    movl    $400, %ecx
+    cltd
+    idivl   %ecx
+    testl   %edx, %edx
+    jnz     .L1
+    movl    $1, %eax
+    jmp     .L2
+
+.L1:
+    # else if (year % 4 == 0 && year % 100 != 0)
+    movl    -4(%rbp), %eax
+    movl    $4, %ecx
+    cltd
+    idivl   %ecx
+    testl   %edx, %edx
+    jnz     .L3
+
+    movl    -4(%rbp), %eax
+    movl    $100, %ecx
+    cltd
+    idivl   %ecx
+    testl   %edx, %edx
+    jz      .L3
+
+    movl    $1, %eax
+    jmp     .L2
+
+.L3:
+    movl    $0, %eax
+
+.L2:
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 93 succeeded
+INFO:root:C code :
+
+int subtract(int x, int y) {
+    return x - y;
+}
+INFO:root:current LLM prompt size: 2203
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  subtract
+subtract:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    %edi, -4(%rbp)     # param_x
+    movl    %esi, -8(%rbp)     # param_y
+    movl    -4(%rbp), %eax     # load param_x into %eax
+    subl    -8(%rbp), %eax     # subtract param_y from %eax
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 94 succeeded
+INFO:root:C code :
+#include <ctype.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <stdint.h>
+
+#include <math.h>
+
+#include <time.h>
+
+#include <fcntl.h>
+
+#include <sys/types.h>
+
+#include <errno.h>
+
+#include <limits.h>
+
+double calc_swst(unsigned short swst_dn, double pri)
+{
+
+
+     return ((double) swst_dn * 210.94e-09 + 9.0 * pri - 6.6E-6);
+}
+INFO:root:current LLM prompt size: 2289
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  calc_swst
+calc_swst:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp          # Allocate space for local variables
+
+    movw    %di, -2(%rbp)      # swst_dn
+    movsd   %xmm0, -16(%rbp)   # pri
+
+    movzwl  -2(%rbp), %eax     # Load swst_dn into %eax
+    cvtsi2sd %eax, %xmm1       # Convert swst_dn to double in %xmm1
+    movsd   .LC0(%rip), %xmm2  # Load 210.94e-09 into %xmm2
+    mulsd   %xmm2, %xmm1       # xmm1 = swst_dn * 210.94e-09
+
+    movsd   -16(%rbp), %xmm3   # Load pri into %xmm3
+    movsd   .LC1(%rip), %xmm4  # Load 9.0 into %xmm4
+    mulsd   %xmm3, %xmm4       # xmm4 = 9.0 * pri
+
+    addsd   %xmm4, %xmm1       # xmm1 = (swst_dn * 210.94e-09) + (9.0 * pri)
+    movsd   .LC2(%rip), %xmm5  # Load 6.6E-6 into %xmm5
+    subsd   %xmm5, %xmm1       # xmm1 = (swst_dn * 210.94e-09 + 9.0 * pri) - 6.6E-6
+
+    movsd   %xmm1, %xmm0       # Move result to %xmm0 for return
+
+    leave
+    retq
+
+    .section .rodata
+.LC0:
+    .double 210.94e-09
+.LC1:
+    .double 9.0
+.LC2:
+    .double 6.6E-6
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 95 succeeded
+INFO:root:C code :
+
+int gsl_TouchNear(void)
+{
+  return 0;
+}
+INFO:root:current LLM prompt size: 2201
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  gsl_TouchNear
+gsl_TouchNear:
+    pushq   %rbp                # Save base pointer
+    movq    %rsp, %rbp          # Set base pointer to stack pointer
+    movl    $0, %eax            # Return 0
+    popq    %rbp                # Restore base pointer
+    retq                        # Return from function
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 96 succeeded
+INFO:root:C code :
+
+int _link (const char *old_name, const char *new_name)
+{
+  return -1;
+}
+INFO:root:current LLM prompt size: 2210
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  _link
+_link:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movq    %rdi, -8(%rbp)      # old_name
+    movq    %rsi, -16(%rbp)     # new_name
+    movl    $-1, %eax           # return -1
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 97 succeeded
+INFO:root:C code :
+
+int quant(int n, int m)
+{
+ int i, neg;
+
+ neg = 0;
+ if (n < 0) {
+  neg++;
+  n = -n;
+ }
+
+ i = n / m;
+ if (n - m * i > m / 2)
+  i += 1;
+ i *= m;
+ if (neg)
+  i = -i;
+ return(i);
+}
+INFO:root:current LLM prompt size: 2267
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  quant
+quant:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp            # Allocate space for local variables
+
+    movl    %edi, -4(%rbp)       # n
+    movl    %esi, -8(%rbp)       # m
+
+    movl    $0, -16(%rbp)        # neg = 0
+
+    cmpl    $0, -4(%rbp)         # if (n < 0)
+    jge     .L1
+    addl    $1, -16(%rbp)        # neg++
+    negl    -4(%rbp)             # n = -n
+.L1:
+    movl    -4(%rbp), %eax
+    cltd
+    idivl   -8(%rbp)             # i = n / m
+    movl    %eax, -12(%rbp)
+
+    movl    -4(%rbp), %eax
+    imull   -8(%rbp), %eax       # m * i
+    subl    %eax, -4(%rbp)       # n - m * i
+    movl    -8(%rbp), %eax
+    sarl    %eax                 # m / 2
+    cmpl    %eax, -4(%rbp)       # if (n - m * i > m / 2)
+    jle     .L2
+    addl    $1, -12(%rbp)        # i += 1
+.L2:
+    imull   -8(%rbp), -12(%rbp)  # i *= m
+
+    cmpl    $0, -16(%rbp)        # if (neg)
+    je      .L3
+    negl    -12(%rbp)            # i = -i
+.L3:
+    movl    -12(%rbp), %eax      # return i
+
+    leave
+    ret
+
+WARNING:root:CASE 98 failed to assemble the code to executable!
+WARNING:root:ret.stderr: tmp.s: Assembler messages:
+tmp.s:33: Error: too many memory references for `imul'
+
+WARNING:root:ret.stdout: 
+INFO:root:C code :
+
+void fs_scandir(char *dir, char *name)
+{
+}
+INFO:root:current LLM prompt size: 2202
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:x86 code: 
+
+    .text
+    .globl  fs_scandir
+fs_scandir:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movq    %rdi, -8(%rbp)      # dir
+    movq    %rsi, -16(%rbp)     # name
+    popq    %rbp
+    retq
+
+INFO:root:Local error rate: 0.0%
+INFO:root:CASE 99 succeeded
+INFO:root:Done
+INFO:root:Passed cases: [25, 26, 27, 28, 29, 30, 31, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 52, 53, 54, 55, 56, 57, 58, 59, 61, 62, 64, 65, 66, 67, 68, 69, 72, 73, 74, 75, 77, 79, 80, 82, 83, 84, 85, 87, 90, 91, 92, 93, 94, 95, 96, 97, 99]
+INFO:root:Pass rate: 81.33333333333333%
+INFO:root:End time: 2024-07-08 14:30:26.362321
+
+
+0-100 Pass rate: 84.0%[GCC]
+however, case 63, 70, 71, 81, are clang compilable(compiler option handy)
+so actual pass rate is 88.0%[REAL]

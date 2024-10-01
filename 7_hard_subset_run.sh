@@ -1,0 +1,6 @@
+# python main.py --model deepseek-coder --use_hard_subset True --use_mask False --tempue --use_mask False --temperature 0.0 --begin_id 0 --end_id 200
+# python main.py --model deepseek-coder --use_hard_subset True --use_mask True --mask_stage baseline --temperature 0.6 --pass_k 5 --begin_id 0 --end_id 200
+# python main.py --model deepseek-coder --use_hard_subset True --use_mask True --mask_stage pass@5 --temperature 0.6 --self_correct True --do_analyze True --correct_round 3 --pass_k 5 --begin_id 0 --end_id 200
+# python main.py --model deepseek-coder --use_hard_subset True --use_mask True --mask_stage fix --temperature 0.6 --self_correct True --do_analyze True --prompt_style cot --correct_round 3 --pass_k 5 --begin_id 0 --end_id 200
+# python main.py --model deepseek-coder --use_hard_subset True --begin_id 0 --end_id 200 --pass_k 1 --do_analyze True --self_correct True --correct_round 1 --temperature 0.6 --use_mask True --mask_stage baseline --prompt_style cot
+# python main.py --model deepseek-coder --use_hard_subset True --begin_id 0 --end_id 200 --pass_k 1 --do_analyze True --self_correct True --correct_round 3 --temperature 0.6 --use_mask True --mask_stage baseline --prompt_style cot

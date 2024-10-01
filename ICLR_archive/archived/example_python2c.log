@@ -1,0 +1,113 @@
+INFO:root:log file created!
+INFO:root:Start time: 2024-06-17 16:41:15.429071
+INFO:openai._base_client:Retrying request to /chat/completions in 0.924957 seconds
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Assistant response: 
+"Translate the following Python code into C code."
+
+```python
+def sum_list(arr: List[int], n: int) -> int:
+    sum = 0
+    for i in range(n):
+        sum += arr[i]
+    return sum
+```
+
+
+```c
+#include <stdio.h>
+
+int sum_list(int arr[], int n) {
+    int sum = 0;
+    for(int i = 0; i < n; i++) {
+        sum += arr[i];
+    }
+    return sum;
+}
+```
+INFO:root:Paraphrased text: 
+"Translate the following Python code into C code."
+
+```python
+def sum_list(arr: List[int], n: int) -> int:
+    sum = 0
+    for i in range(n):
+        sum += arr[i]
+    return sum
+```
+
+
+```c
+#include <stdio.h>
+
+int sum_list(int arr[], int n) {
+    int sum = 0;
+    for(int i = 0; i < n; i++) {
+        sum += arr[i];
+    }
+    return sum;
+}
+```
+INFO:httpx:HTTP Request: POST https://api.perplexity.ai/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Assistant response: 
+#Description:
+Translate the following Python code into C code.
+
+#Input:
+Python code:
+```python
+def fib(n: int):
+    if n <= 1:
+        return n
+    return fib(n - 1) + fib(n - 2)
+```
+
+#Output:
+C code:
+```c
+#include <stdio.h>
+
+int fib(int n) {
+    if (n <= 1) {
+        return n;
+    }
+    return fib(n - 1) + fib(n - 2);
+}
+```
+INFO:root:Translated code: 
+#Description:
+Translate the following Python code into C code.
+
+#Input:
+Python code:
+```python
+def fib(n: int):
+    if n <= 1:
+        return n
+    return fib(n - 1) + fib(n - 2)
+```
+
+#Output:
+C code:
+```c
+#include <stdio.h>
+
+int fib(int n) {
+    if (n <= 1) {
+        return n;
+    }
+    return fib(n - 1) + fib(n - 2);
+}
+```
+INFO:root:target c code: 
+
+#include <stdio.h>
+
+int fib(int n) {
+    if (n <= 1) {
+        return n;
+    }
+    return fib(n - 1) + fib(n - 2);
+}
+
+INFO:root:End time: 2024-06-17 16:41:25.650180
