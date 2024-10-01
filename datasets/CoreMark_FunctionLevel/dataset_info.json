@@ -1,0 +1,46 @@
+{
+  "builder_name": "parquet",
+  "citation": "",
+  "config_name": "default",
+  "dataset_name": "core_mark_function_level",
+  "dataset_size": 36665,
+  "description": "",
+  "download_checksums": {
+    "hf://datasets/mistral0105/CoreMark_FunctionLevel@af6e619475685c1ef5a5a624a36a63462a1b670e/data/train-00000-of-00001.parquet": {
+      "num_bytes": 16060,
+      "checksum": null
+    }
+  },
+  "download_size": 16060,
+  "features": {
+    "name": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "function_name": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "c_src": {
+      "dtype": "string",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": "",
+  "size_in_bytes": 52725,
+  "splits": {
+    "train": {
+      "name": "train",
+      "num_bytes": 36665,
+      "num_examples": 40,
+      "dataset_name": "core_mark_function_level"
+    }
+  },
+  "version": {
+    "version_str": "0.0.0",
+    "major": 0,
+    "minor": 0,
+    "patch": 0
+  }
+}

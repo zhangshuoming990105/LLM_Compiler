@@ -1,0 +1,209 @@
+{
+  "builder_name": "parquet",
+  "citation": "",
+  "config_name": "default",
+  "dataset_name": "exebench_io_hard2_full_cleaned",
+  "dataset_size": 22765779,
+  "description": "",
+  "download_checksums": {
+    "hf://datasets/mistral0105/exebench_io_hard2_full_cleaned@35f0cbb055ba21b37a6908ae0060b70fe0bbc1d5/data/train-00000-of-00001.parquet": {
+      "num_bytes": 6546568,
+      "checksum": null
+    }
+  },
+  "download_size": 6546568,
+  "features": {
+    "path": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "func_def": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "func_head": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "func_head_types": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "fname": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "signature": {
+      "feature": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "_type": "Sequence"
+    },
+    "asm": {
+      "code": {
+        "feature": {
+          "dtype": "string",
+          "_type": "Value"
+        },
+        "_type": "Sequence"
+      },
+      "target": {
+        "feature": {
+          "dtype": "string",
+          "_type": "Value"
+        },
+        "_type": "Sequence"
+      }
+    },
+    "synth_deps": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "real_deps": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "synth_io_pairs": {
+      "dummy_funcs": {
+        "feature": {
+          "dtype": "string",
+          "_type": "Value"
+        },
+        "_type": "Sequence"
+      },
+      "dummy_funcs_seed": {
+        "feature": {
+          "dtype": "int64",
+          "_type": "Value"
+        },
+        "_type": "Sequence"
+      },
+      "input": [
+        {
+          "value": {
+            "feature": {
+              "dtype": "string",
+              "_type": "Value"
+            },
+            "_type": "Sequence"
+          },
+          "var": {
+            "feature": {
+              "dtype": "string",
+              "_type": "Value"
+            },
+            "_type": "Sequence"
+          }
+        }
+      ],
+      "output": [
+        {
+          "value": {
+            "feature": {
+              "dtype": "string",
+              "_type": "Value"
+            },
+            "_type": "Sequence"
+          },
+          "var": {
+            "feature": {
+              "dtype": "string",
+              "_type": "Value"
+            },
+            "_type": "Sequence"
+          }
+        }
+      ]
+    },
+    "real_io_pairs": {
+      "dummy_funcs": {
+        "feature": {
+          "dtype": "null",
+          "_type": "Value"
+        },
+        "_type": "Sequence"
+      },
+      "dummy_funcs_seed": {
+        "feature": {
+          "dtype": "null",
+          "_type": "Value"
+        },
+        "_type": "Sequence"
+      },
+      "input": [
+        {
+          "value": {
+            "feature": {
+              "dtype": "string",
+              "_type": "Value"
+            },
+            "_type": "Sequence"
+          },
+          "var": {
+            "feature": {
+              "dtype": "string",
+              "_type": "Value"
+            },
+            "_type": "Sequence"
+          }
+        }
+      ],
+      "output": [
+        {
+          "value": {
+            "feature": {
+              "dtype": "string",
+              "_type": "Value"
+            },
+            "_type": "Sequence"
+          },
+          "var": {
+            "feature": {
+              "dtype": "string",
+              "_type": "Value"
+            },
+            "_type": "Sequence"
+          }
+        }
+      ]
+    },
+    "synth_exe_wrapper": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "real_exe_wrapper": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "ref": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "synth_iospec": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "real_iospec": {
+      "dtype": "string",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": "",
+  "size_in_bytes": 29312347,
+  "splits": {
+    "train": {
+      "name": "train",
+      "num_bytes": 22765779,
+      "num_examples": 1996,
+      "dataset_name": "exebench_io_hard2_full_cleaned"
+    }
+  },
+  "version": {
+    "version_str": "0.0.0",
+    "major": 0,
+    "minor": 0,
+    "patch": 0
+  }
+}
