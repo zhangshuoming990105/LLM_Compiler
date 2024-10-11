@@ -17,41 +17,48 @@ hard_total_inst_count = [44, 79, 25, 69, 120, 39, 106, 69, 46, 56, 50, 65, 49, 4
 
 
 # draw figure of the bb_count_list
-# bins = [0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 300]
-# plt.hist(bb_count_list, bins=bins, edgecolor='black')
+# bins = 0-80, interval 2
+# bins = [0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80]
+# plt.hist(bb_count_list, bins=bins, edgecolor='black', alpha=0.7)
 # plt.xlabel('BB Count')
 # plt.ylabel('Frequency')
-# plt.savefig("exebench_bb_count_histogram.pdf")
+# plt.savefig("exebench_bb_count.pdf")
 
-# bins = [0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 300]
-# plt.hist(bb_max_insts, bins=bins, edgecolor='black')
+# bins = 0-80, interval 2
+# bins = [0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80]
+# plt.hist(bb_max_insts, bins=bins, edgecolor='black', alpha=0.7)
 # plt.xlabel('Max Instructions in BB')
 # plt.ylabel('Frequency')
-# plt.savefig("exebench_bb_max_insts_histogram.pdf")
+# plt.savefig("exebench_max_insts.pdf")
 
-# bins = [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200]
+# bins = 0-200, interval 10
+# bins = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200]
 # plt.hist(case_total_insts, bins=bins, edgecolor='black', alpha=0.7)
-# plt.xlabel('Total Insts')
+# plt.xlabel('Total Insts Count')
 # plt.ylabel('Frequency')
-# plt.savefig("exebench_total_insts_histogram.pdf")
+# plt.savefig("exebench_total_insts.pdf")
 
 # draw the hard_max_insts histogram
-
-# plt.hist(hard_max_insts, bins=100, edgecolor='black', alpha=0.7)
-# plt.xlabel('Hard Max Insts')
+# bins = 0-80, interval 2
+# bins = [0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80]
+# plt.hist(hard_max_insts, bins=bins, edgecolor='black', alpha=0.7)
+# plt.xlabel('Hard Max Instructions in BB')
 # plt.ylabel('Frequency')
-# plt.savefig("exebench_hard_max_insts_histogram.pdf")
+# plt.savefig("hard_max_insts.pdf")
 
-# plt.hist(hard_bb_count, bins=100, edgecolor='black', alpha=0.7)
-# plt.xlabel('Hard BB Count')
-# plt.ylabel('Frequency')
-# plt.savefig("exebench_hard_bb_count_histogram.pdf")
-
-bins = [0, 40, 80, 120, 160, 200, 240, 280, 320, 360, 400, 440, 480, 520, 560, 600]
-plt.hist(hard_total_inst_count, bins=bins, edgecolor='black', alpha=0.7)
-plt.xlabel('Total Inst Count')
+# bins = 0-80, interval 2
+bins = [0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80]
+plt.hist(hard_bb_count, bins=bins, edgecolor='black', alpha=0.7)
+plt.xlabel('Hard BB Count')
 plt.ylabel('Frequency')
-plt.savefig("exebench_hard_inst_count_histogram.pdf")
+plt.savefig("hard_bb_count.pdf")
+
+# bins = 0-600, interval 20
+# bins = [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260, 280, 300, 320, 340, 360, 380, 400, 420, 440, 460, 480, 500, 520, 540, 560, 580, 600]
+# plt.hist(hard_total_inst_count, bins=bins, edgecolor='black', alpha=0.7)
+# plt.xlabel('Hard Total Insts Count')
+# plt.ylabel('Frequency')
+# plt.savefig("hard_total_insts.pdf")
 
 
 
